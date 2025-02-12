@@ -1,0 +1,51 @@
+# LaTeX auxiliary files
+*.aux
+*.bbl
+*.blg
+*.brf
+*.fls
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.nav
+*.snm
+*.vrb
+*.fdb_latexmk
+*.synctex.gz
+*.synctex
+*.xdv
+
+# Temporary files
+*.tmp
+*.bak
+*.backup
+*~
+
+# Editor-specific files
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# PDF, DVI, and PS output
+*.pdf
+*.dvi
+*.ps
+
+# BibTeX and bibliography-related files
+*.bbl
+*.blg
+
+# Generated figures (if applicable)
+*.eps-converted-to.pdf
+
+# LaTeX auto-build tools
+latexmkrc
+*.dpth
+*.md5
+*.run.xml
+
+# Overleaf/Cloud-based tools
+*.synctex(busy)

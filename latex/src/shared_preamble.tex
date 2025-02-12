@@ -1,0 +1,300 @@
+\usepackage{iftex}
+
+% text input and font
+\ifluatex  % LuaLaTeX
+    \usepackage{fontspec}
+    % main font automatically: Latin Modern
+    \IfFontExistsTF{Fira Code}{% true branch
+        \setmonofont{Fira Code}[
+            Contextuals=Alternate,  % Activate the calt feature
+            StylisticSet={1,3,5,8}, % fontspec docs S. 46
+            CharacterVariant={16}, % fontspec docs S. 37
+            Numbers={SlashedZero} % fontspec docs S. 44
+        ]}{% false branch
+    }
+\else  % pdfLaTeX
+    \usepackage[utf8]{inputenc}  % input in UTF-8
+    \usepackage[T1]{fontenc}  % output in T1 fonts (west European encoding)
+    \usepackage{lmodern}  % Latin modern font for main text
+    \IfFileExists{fira.sty}{% true branch
+        \usepackage[mono]{fira}  % Fira (not Code!) font for monospaced text
+    }{% false branch
+    }
+\fi
+
+% text processing
+\usepackage{babel}  % language package
+\usepackage[intlimits]{mathtools}  % upgrade of amsmath (automatically loaded) - \int^_ like \limits^_
+\usepackage{amssymb}  % upgrade of amsfonts (American Math Society)
+\usepackage{amstext}  % \text command in math environments
+\usepackage{letltxmacro}  % \let command for robust macros (new sqrt)
+\usepackage{chemformula}  % typeset chemical formulas
+
+
+% page geometry
+\usepackage{scrlayer-scrpage}  % page formatting with KOMA options
+% \usepackage[paper=a4paper, hmargin=3cm, vmargin=2.5cm, includehead, includefoot]{geometry}  % horizontal: 3cm, vertical: 2.5cm strict with or without headers and footers
+\usepackage{tabto}  % tab stops
+\NumTabs{8}  % 8 equally spaced of \textwidth tab stops
+
+
+
+% floats
+\usepackage[hypcap=false, labelfont=bf]{caption, subcaption}  % caption editing - hypcap warning with hyperref
+% counter prefixed with section number and therefore reset at each section:
+% \counterwithin{figure}{section}
+% \counterwithin{table}{section}
+\usepackage{float}  % for [H] (forced here) specifier
+\usepackage{tabularray}  % better tables
+\usepackage{caption}  % better captions
+
+
+% graphical input
+\usepackage{graphicx}  % input JPEG, PNG, PDF, etc.
+\usepackage{pdfpages}  % input PDF as whole pages
+\usepackage{lastpage}  % reference to last page
+\usepackage{import} % include files from other directories
+
+
+% text
+\usepackage[locale=DE, uncertainty-mode=separate]{siunitx}  % SI units, German formatting - \pm stays \pm instead of ..(.)
+\let\sqty\qty  % physics overrides \qty of siunitx, therefore make it available as \sqty
+\usepackage{physics}  % macros for easier typesetting of physical formulas
+\usepackage{icomma}  % no space after commas instead of English points) in decimal values
+\usepackage{enumitem}  % better enumerating with style options
+\usepackage{nicefrac}  % inline-fractions in n/d-style
+\usepackage{xcolor}  % custom colors
+%TU-Graz colors
+\definecolor{TUred}{HTML}{e4154b}
+\definecolor{TUgray}{HTML}{bcbcbc}
+\usepackage{listings, scrhack}  % code display; listings in combination with KOMA
+\ifluatex
+    \IfFontExistsTF{Fira Code}{%
+        \usepackage[verbatim]{lstfiracode}  % Fira Code in listings
+        \lstset{style=FiraCodeStyle}
+    }{}
+\fi
+\usepackage{fancyvrb}  % Verbatim environment with better options (capital V!)
+
+
+% literacy
+\usepackage[sorting=none, giveninits=true]{biblatex}  % defaults: backend=Biber, style=numeric
+% bibliography styles: https://www.overleaf.com/learn/latex/Biblatex_bibliography_styles
+% citation styles: https://www.overleaf.com/learn/latex/Biblatex_citation_styles
+\usepackage{csquotes}  % better quotation - should also be used in combination with package babel (warning)
+\usepackage{xurl}  % breaks links - after BibLaTeX, but before hyperref!
+\usepackage[hidelinks]{hyperref}  % produces most errors, last to load
+
+
+% enumerate paragraphs and subparagraphs
+% depths: https://www.overleaf.com/learn/latex/Sections_and_chapters
+% -1 \part{part}
+%  0 \chapter{chapter}
+%  1 \section{section}
+%  2 \subsection{subsection}
+%  3 \subsubsection{subsubsection}
+%  4 \paragraph{paragraph}
+%  5 \subparagraph{subparagraph}
+\setcounter{secnumdepth}{3}
+
+
+% KOMA setups
+% header and footer
+\pagestyle{scrheadings}  % KOMA style
+\clearpairofpagestyles  % reset
+\setkomafont{pageheadfoot}{\normalfont}  % standard font in header and footer
+\setlength{\headheight}{27.2pt}  % warning
+\cfoot{\pagemark{} / \pageref*{LastPage}}  % center foot - *: ref but no hyperlink
+% {}: empty statement
+% \ : protected space
+% \,: small space
+\DeclareTOCStyleEntry[linefill=\TOCLineLeaderFill]{tocline}{section}  % sections in TableOfContents with dotted lines
+% source: https://tex.stackexchange.com/a/651532
+\KOMAoptions{parskip=half-}  % paragraphs with half a line height space instead of indentation, last line with no special treatment
+
+
+% package setups
+
+% rewrite names (babel overwrites German with standard English names, therefore at document beginn [after everything is loaded])
+\AtBeginDocument{\renewcommand{\refname}{Literaturverzeichnis}}
+% others:
+% \contentsname
+% \listtablename
+% \listfigurename
+
+% make title in bibliography upright
+\DeclareFieldFormat{title}{#1}  % https://tex.stackexchange.com/a/311837
+% make size of url in bibliography smaller
+\renewcommand{\UrlFont}{\footnotesize\ttfamily}  % https://tex.stackexchange.com/a/151115, https://www.overleaf.com/learn/latex/Font_sizes%2C_families%2C_and_styles
+
+
+% xcolor
+\definecolor{code_keyword}{HTML}{A06E9D}
+\definecolor{code_string}{HTML}{AD6E3E}
+\definecolor{code_comment}{HTML}{6A9955}
+% \definecolor{keyword_pink}{HTML}{c678dd}
+% \definecolor{vscode_bg}{HTML}{282c34}
+% \definecolor{vscode_var}{HTML}{e06c75}
+% \definecolor{vscode_comment}{HTML}{7f848e}
+% \definecolor{vscode_constant}{HTML}{d19a66}
+% \definecolor{vscode_function}{HTML}{61afe3}
+% \definecolor{background_grey}{HTML}{f8f8f8}
+% \definecolor{code_basic}{HTML}{D4D4D4}
+% \definecolor{code_background}{HTML}{1E1E1E}
+
+% custom siunitx units
+\DeclareSIUnit{\dig}{dig}  % digits for uncertainty of electronical measurement devices
+\DeclareSIUnit{\px}{px}  % pixels
+\sisetup{table-align-uncertainty=true}
+
+
+% listings
+\lstset{
+    basicstyle=\ttfamily\footnotesize,%\color{code_basic},  % \footnotesize contains \selectfont implicitly
+    %backgroundcolor=\color{code_background},
+    commentstyle=\color{code_comment},
+    keywordstyle=\bfseries\color{code_keyword},
+    numberstyle=\tiny,
+    stringstyle=\color{code_string},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+
+
+% new sqrt
+% https://en.wikibooks.org/wiki/LaTeX/Mathematics
+\makeatletter
+\let\oldr@@t\r@@t
+\def\r@@t#1#2{%
+    \setbox0=\hbox{$\oldr@@t#1{#2\,}$}\dimen0=\ht0
+    \advance\dimen0-0.2\ht0
+    \setbox2=\hbox{\vrule height\ht0 depth -\dimen0}%
+    {\box0\lower0.4pt\box2}}
+\LetLtxMacro{\oldsqrt}{\sqrt}
+\renewcommand{\sqrt}[2][\ ]{\oldsqrt[#1]{#2} }
+\makeatother
+
+
+% own commands
+% \newcommand* can't contain multiple lines
+% \newcommand can
+\newcommand*{\mup}[1]{\ensuremath{\text{\textup{#1}}}}  % math mode upright normal font
+\newcommand*{\inkgraphics}[3][\linewidth]{\def\svgwidth{#1}\import{#2}{#3}}
+
+
+% custom tabularray environments
+
+% imports and setups of tabularray: {
+%     expl3,
+%     xparse,
+%     ninecolors
+%     \hypersetup{pdfborder={0 0 0}}
+% }
+
+% additionally loaded libraries:
+% diagbox
+% varwidth
+% booktabs
+% counter
+
+\UseTblrLibrary{amsmath}  % +array, +matrix, +bmatrix, +Bmatrix, +pmatrix, +vmatrix, +Vmatrix and +cases like tabularray with graphical options
+\UseTblrLibrary{siunitx}  % siunitx suited for tabularray
+\UseTblrLibrary{diagbox}  % table cells with diagonal lines, suited for tabularray
+\UseTblrLibrary{varwidth}  % measure cell width
+\UseTblrLibrary{booktabs}
+\UseTblrLibrary{counter}
+
+
+% custom tabularray environments:
+
+% info:
+% colcycle: https://github.com/lvjr/tabularray/issues/74
+% guard: https://github.com/lvjr/tabularray/issues/175#event-6567229210
+
+% guard S columns if latest feature ={guard} is not yet available
+\newcommand*{\SiGuard}[1]{{#1}}
+
+% standard environment
+\SetTblrInner{
+    hlines,
+    vlines,
+    columns={
+            halign=c,
+            valign=m,
+        },
+    measure=vbox,
+}
+
+% X columns
+\NewTblrEnviron{tblrx}
+\SetTblrInner[tblrx]{
+    hlines,
+    vlines,
+    columns={
+            halign=c,
+            valign=m,
+            co=1,  % coefficient of width for expendable columns (X columns)
+        },
+    width=\linewidth,
+    vspan=minimal,
+    measure=vbox,
+}
+
+% -X columns
+\NewTblrEnviron{tblr-x}
+\SetTblrInner[tblr-x]{
+    hlines,
+    vlines,
+    columns={
+            halign=c,
+            valign=m,
+            co=-1,  % shrinks X column down to natural width
+        },
+    width=\linewidth,
+    vspan=minimal,
+    measure=vbox,
+}
+
+% no hline and vline left and on top of first cell
+\NewTblrEnviron{tblr_omit_first_cell}
+\SetTblrInner[tblr_omit_first_cell]{
+    hlines,
+    vlines,
+    columns={
+            halign=c,
+            valign=m,
+        },
+    hspan=even,
+    vspan=minimal,
+    %
+    hline{1}={1}{white},  % first row, only first cell
+    vline{1}={1}{white},
+    measure=vbox,
+}
+
+% longtblr
+\DefTblrTemplate{conthead-text}{default}{(Fortsetzung)}  % default: define and set at the same time
+\DefTblrTemplate{contfoot-text}{default}{Fortsetzung auf nächster Seite}
+\SetTblrStyle{caption-tag}{font=\bfseries}  % caption tag bold
+\SetTblrInner[longtblr]{
+    hlines,
+    vlines,
+    columns={
+            halign=c,
+            valign=m,
+        },
+    measure=vbox,
+}
+
+% longtblr - to adjust width of caption 
+\DefTblrTemplate{firsthead}{default}{\addtocounter{table}{-1}\captionof{table}[\InsertTblrText{entry}]{\InsertTblrText{caption}}}
+\DefTblrTemplate{middlehead,lasthead}{default}{\addtocounter{table}{-1}\captionof{table}[]{\InsertTblrText{caption}~(Fortsetzung)}}
+%info ADD this to a local environment around the longtblr: \captionsetup{format=plain,labelfont=bf,font=small,  width=\linewidth}
