@@ -26,3 +26,16 @@ https://www.molpro.net/manual/doku.php?id=table_of_contents
 
 https://manual.q-chem.com/5.4/
 
+
+# Info Session 
+- [ ] z-Matrix Format
+
+Jobtype: SP -> single point
+OPT -> optimization (for geometry)
+
+Basis sets: https://www.basissetexchange.org/
+All Electron / Orbital with ECP (innere Schalen werden durch ein effektives Potential ersetzt)
+
+*Ase* Python -> Package - Schnittstellen zu verschiedenen Programmen (z.b. QChem, etc) -> erstellt direkt die Input files + liest Output files aus. 
+
+*PyQchem* -> ähnlich aber wesentlich ausführlicher weil programmspezifisch. 
