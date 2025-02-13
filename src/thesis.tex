@@ -1,0 +1,125 @@
+% !TEX Program = lualatex
+\documentclass[11pt,
+  oneside,openany,    % for one-sided printing and screens
+  %parskip=half,      % enable if you want paragraphs separated by vertical spacing instead of indents
+  %draft              % enable to compile faster and test layout
+]{scrreprt}
+
+% Settings
+%info defined in shared preamble
+\usepackage[ngerman,english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{microtype}
+\usepackage[all]{nowidow}
+\usepackage[msc,             % for Bachelor's Thesis titlepage
+            claim,iaik]{iaikthesis}
+\addtokomafont{disposition}{\rmfamily}
+\academicdegree{Dipl. Ing.}
+
+% <INSERT YOUR CUSTOM MACROS AND PACKAGES HERE>
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{\baselineskip}
+
+%--- PREAMBLE ------------------------------------------------------------------
+\input{shared_preamble.tex}
+\newcommand{\todo}[1]{\textbf{\textcolor{TUred}{#1\\}}}
+
+\addbibresource{thesis.bib}
+\usepackage{adjustbox}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{datetime}
+\usepackage{tocloft}
+\usepackage{tikz}
+\usepackage[absolute,overlay]{textpos} % Enable absolute positioning\usepackage{datetime}
+
+\usetikzlibrary{arrows}
+
+\providecommand{\algorithmautorefname}{Algorithm}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+
+\newcommand{\hrefu}[2]{\underline{\href{#1}{#2}}} % underline links
+\newcommand{\TODO}[1]{\textcolor{red}{\textbf{TODO #1}}}
+
+\begin{document}
+% Autoref with cap letters
+\renewcommand{\subsectionautorefname}{Subsection}
+\renewcommand{\sectionautorefname}{Section}
+\renewcommand{\chapterautorefname}{Chapter}
+\renewcommand{\figureautorefname}{Figure}
+\renewcommand{\tableautorefname}{Table}
+\renewcommand{\algorithmiccomment}[1]{\hspace{-1cm}\hfill$\triangleright$ \texttt{#1}}
+\newdateformat{mydate}{\THEDAY\ \monthname[\THEMONTH]\ \THEYEAR}
+
+%--- INSERT INFORMATION FOR TITLEPAGE ------------------------------------------
+
+% Your name + previous academic degrees:
+\thesisauthor{Elias Wachmann, BSc. BSc.}
+
+% Title of your thesis:
+\thesistitle{\TODO{}}
+
+% Date of completion:
+\thesisdate{\monthname\ \the\year}
+
+% Supervisor:
+\supervisortitle{Supervisors} % or Supervisor
+\supervisor{%
+Assoc.Prof. Dr.phil. Dr.techn. Hauser Andreas
+
+Dr.techn. Ralf Meyer
+
+\medskip
+Institute of Experimental Physics\\
+Graz University of Technology
+
+}
+
+% Name of your degree programme according to your curriculum
+\curriculum{Technical Physics}
+
+
+% --- Meta data ----------------------------------------------------------------
+%! TODO
+\hypersetup{
+  pdfauthor={Wachmann Elias},
+  pdftitle={TODO},
+  pdfkeywords={computational physics, TODO}
+  }
+  
+  %--- FRONT MATTER --------------------------------------------------------------
+  
+  \printthesistitle
+  
+  %--- FRONT MATTER --------------------------------------------------------------
+  \input{../content/abstract}
+  \input{../content/acknowledgements}
+\clearpage
+\setlength{\cftbeforesecskip}{3pt} % adjust as needed
+\setlength\cftparskip{-2pt} % adjust as needed
+\tableofcontents
+\listoffigures
+\listoftables
+\input{../content/introduction}
+\input{../content/background}
+\input{../content/methods}
+\input{../content/results}
+\input{../content/discussion}
+\input{../content/conclusion}
+\input{../content/declaration}
+
+
+%--- INDEX and BIBLIOGRAPHY ----------------------------------------------------
+
+%% Print List of Acronyms and Symbols  (optional)
+%\printnoidxglossary[title={Notation}]
+%\printnoidxglossary[type=acronym]
+\newpage
+% Print bibliography and include it in the table of contents:
+\printbibliography[heading=bibintoc]
+
+\end{document}
