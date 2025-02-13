@@ -1,0 +1,13 @@
+$rem
+   MEM_TOTAL 16000
+   MEM_STATIC 4000
+   JOBTYPE  OPT
+   EXCHANGE b3lyp
+   BASIS    6-31G
+$end
+
+$molecule
+   0 1
+ H     0.0000 0.0000 0.0000
+ F     0.7500 0.0000 0.0000
+$end
