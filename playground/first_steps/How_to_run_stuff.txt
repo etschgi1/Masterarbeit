@@ -1,0 +1,3 @@
+qchem -nt 2 inputfile > outputfile &
+
+molpo -n 2 inputfile
