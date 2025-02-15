@@ -1,7 +1,7 @@
 # Initial Todos: 
 
 ## Learning
-- [ ] MoMs VO (6/12)
+- [ ] MoMs VO (8/12)
 - [ ] Lehtola_2019 lesen
 - [ ] Cartus Methodik lesen! 
 - [ ] Report Dominik lesen
