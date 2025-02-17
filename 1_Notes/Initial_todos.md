@@ -1,7 +1,7 @@
 # Initial Todos: 
 
 ## Learning
-- [ ] MoMs VO (8/12)
+- [ ] MoMs VO (10/12)
 - [ ] Lehtola_2019 lesen
 - [ ] Cartus Methodik lesen! 
 - [ ] Report Dominik lesen
@@ -15,8 +15,10 @@ DONE
 ## Doing 
 - [ ] Ideen für Kostenfunktion abklären!
 - [ ] Arbeitsplatz mit Bettina abklären 
-- [ ] Example scripts PySCF 
+- [x] Example scripts PySCF 
 - [ ] Schnittstelle für PySCF Dominik
+  - [ ] Ralf um access zum Repo bitten.
+  - [ ] Metric in Pyscf implementieren  
 - [ ] PyQchem + ASE Packages ansehen
 - [ ] Kostenfunktion überlegen, was wir brauchen
 
