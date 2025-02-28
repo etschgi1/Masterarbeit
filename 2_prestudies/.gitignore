@@ -1,0 +1,52 @@
+# Byte-compiled / cached files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+*.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Logs and debugging files
+*.log
+*.out
+*.err
+*.swp
+
+# Data files
+*.csv
+*.json
+*.db
+*.sqlite
+*.h5
+*.parquet
+
+# Environment variables / secrets
+.env
+*.key
+*.pem
+
+# IDE-specific files
+.vscode/
+.idea/
+*.iml
+
+# Distribution / Packaging
+dist/
+build/
+*.egg-info/
+*.tar.gz
+*.whl
+
+# macOS / Windows
+.DS_Store
+Thumbs.db
+
+# Git submodules
+.gitmodules
