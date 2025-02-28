@@ -9,7 +9,7 @@ import re
 from typing import Optional
 
 os.environ["OMP_NUM_THREADS"] = "8"
-ENGINE = Psi4Engine(cache=True)
+ENGINE = PySCFEngine(cache=True)
 TIMEOUT_SECONDS = 60 # per molecule for calculation
 # GUESS_METHODS = ['CORE', 'SAD', 'SADNO', 'GWH', 'HUCKEL', 'MODHUCKEL', 'SAP', 'SAPGAU'] 
 # all Psi4 Methods

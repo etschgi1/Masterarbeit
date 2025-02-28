@@ -20,7 +20,6 @@ pip-delete-this-directory.txt
 *.swp
 
 # Data files
-*.csv
 *.json
 *.db
 *.sqlite
