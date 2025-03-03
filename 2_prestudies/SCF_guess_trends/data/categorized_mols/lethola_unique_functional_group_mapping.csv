@@ -1,0 +1,778 @@
+molecule,functional_group,smi,inchi
+ch,(Fallback) Organic,"[CH]	molecule ""ch"" dataset ""non-multireference W4-17"" charge 0 multiplicity 2
+","InChI=1S/CH/h1H
+"
+cch,Alkyne,"[C]#C	molecule ""cch"" dataset ""non-multireference W4-17"" charge 0 multiplicity 2
+","InChI=1S/C2H/c1-2/h1H
+"
+ch2ch,Alkene,"[CH]=C	molecule ""ch2ch"" dataset ""non-multireference W4-17"" charge 0 multiplicity 2
+","InChI=1S/C2H3/c1-2/h1H,2H2
+"
+Ti(BH4)3,(Fallback) Inorganic,"[Ti].[BH4].[BH4].[BH4]	molecule ""Ti(BH4)3"" dataset ""Bühl 2006"" charge 0 multiplicity 2
+","InChI=1S/3BH4.Ti/h3*1H4;
+"
+cyclopropyl,(Fallback) Organic,"C1C[CH]1	molecule ""cyclopropyl"" dataset ""non-multireference W4-17"" charge 0 multiplicity 2
+","InChI=1S/C3H5/c1-2-3-1/h1H,2-3H2
+"
+bn3pi,(Fallback) Inorganic,"B#N	molecule ""bn3pi"" dataset ""non-multireference W4-17"" charge 0 multiplicity 3
+","InChI=1S/BN/c1-2
+"
+cn,(Fallback) Organic,"[C]#N	molecule ""cn"" dataset ""non-multireference W4-17"" charge 0 multiplicity 2
+","InChI=1S/CN/c1-2
+"
+allyl,Alkene,"C=C[CH2]	molecule ""allyl"" dataset ""non-multireference W4-17"" charge 0 multiplicity 2
+","InChI=1S/C3H5/c1-3-2/h3H,1-2H2
+"
+Cu(acac)2,Alkene,"C1=C(O[Cu@]2(O[C]1C)O[C](C=C(O2)C)C)C	molecule ""Cu(acac)2"" dataset ""Bühl 2006"" charge 0 multiplicity 2
+","InChI=1S/2C5H8O2.Cu/c2*1-4(6)3-5(2)7;/h2*3,6H,1-2H3;/q2*-1;+4/p-2/b2*4-3-;
+"
+cf,(Fallback) Organic,"[C]F	molecule ""cf"" dataset ""non-multireference W4-17"" charge 0 multiplicity 2
+","InChI=1S/CF/c1-2
+"
+h2cn,(Fallback) Organic,"C=[N]	molecule ""h2cn"" dataset ""non-multireference W4-17"" charge 0 multiplicity 2
+","InChI=1S/CH2N/c1-2/h1H2
+"
+ch3nh,(Fallback) Organic,"C[NH]	molecule ""ch3nh"" dataset ""non-multireference W4-17"" charge 0 multiplicity 2
+","InChI=1S/CH4N/c1-2/h2H,1H3
+"
+t-hooo,(Fallback) Inorganic,"[O]OO	molecule ""t-hooo"" dataset ""non-multireference W4-17"" charge 0 multiplicity 2
+","InChI=1S/HO3/c1-3-2/h1H
+"
+ch2nh2,Amine,"[CH2]N	molecule ""ch2nh2"" dataset ""non-multireference W4-17"" charge 0 multiplicity 2
+","InChI=1S/CH4N/c1-2/h1-2H2
+"
+h2ccn,Nitrile,"[CH2]C#N	molecule ""h2ccn"" dataset ""non-multireference W4-17"" charge 0 multiplicity 2
+","InChI=1S/C2H2N/c1-2-3/h1H2
+"
+ch3,(Fallback) Organic,"[CH3]	molecule ""ch3"" dataset ""non-multireference W4-17"" charge 0 multiplicity 2
+","InChI=1S/CH3/h1H3
+"
+V(NMe2)4,Amine,"[V](N(C)C)(N(C)C)(N(C)C)N(C)C	molecule ""V(NMe2)4"" dataset ""Bühl 2006"" charge 0 multiplicity 2
+","InChI=1S/4C2H6N.V/c4*1-3-2;/h4*1-2H3;/q4*-1;+4
+"
+clo,(Fallback) Inorganic,"Cl[O]	molecule ""clo"" dataset ""non-multireference W4-17"" charge 0 multiplicity 2
+","InChI=1S/ClO/c1-2
+"
+hcnh,(Fallback) Organic,"[CH]=N	molecule ""hcnh"" dataset ""non-multireference W4-17"" charge 0 multiplicity 2
+","InChI=1S/CH2N/c1-2/h1-2H
+"
+c-hooo,(Fallback) Inorganic,"[O]OO	molecule ""c-hooo"" dataset ""non-multireference W4-17"" charge 0 multiplicity 2
+","InChI=1S/HO3/c1-3-2/h1H
+"
+sif,(Fallback) Inorganic,"F[Si]	molecule ""sif"" dataset ""non-multireference W4-17"" charge 0 multiplicity 2
+","InChI=1S/FSi/c1-2
+"
+n2h,(Fallback) Inorganic,"N=[N]	molecule ""n2h"" dataset ""non-multireference W4-17"" charge 0 multiplicity 2
+","InChI=1S/HN2/c1-2/h1H
+"
+ch2-trip,(Fallback) Organic,"[CH2]	molecule ""ch2-trip"" dataset ""non-multireference W4-17"" charge 0 multiplicity 3
+","InChI=1S/CH2/h1H2
+"
+no2,(Fallback) Inorganic,"N(=O)[O]	molecule ""no2"" dataset ""non-multireference W4-17"" charge 0 multiplicity 2
+","InChI=1S/NO2/c2-1-3
+"
+h2no,Amine,"N[O]	molecule ""h2no"" dataset ""non-multireference W4-17"" charge 0 multiplicity 2
+","InChI=1S/H2NO/c1-2/h1H2
+"
+nh2,(Fallback) Inorganic,"[NH2]	molecule ""nh2"" dataset ""non-multireference W4-17"" charge 0 multiplicity 2
+","InChI=1S/H2N/h1H2
+"
+so,(Fallback) Inorganic,"S=O	molecule ""so"" dataset ""non-multireference W4-17"" charge 0 multiplicity 3
+","InChI=1S/OS/c1-2
+"
+hco,(Fallback) Organic,"O=[CH]	molecule ""hco"" dataset ""non-multireference W4-17"" charge 0 multiplicity 2
+","InChI=1S/CHO/c1-2/h1H
+"
+hoo,(Fallback) Inorganic,"[O]O	molecule ""hoo"" dataset ""non-multireference W4-17"" charge 0 multiplicity 2
+","InChI=1S/HO2/c1-2/h1H
+"
+no,(Fallback) Inorganic,"[N]=O	molecule ""no"" dataset ""non-multireference W4-17"" charge 0 multiplicity 2
+","InChI=1S/NO/c1-2
+"
+ssh,Thiol,"S[S]	molecule ""ssh"" dataset ""non-multireference W4-17"" charge 0 multiplicity 2
+","InChI=1S/HS2/c1-2/h1H
+"
+oh,(Fallback) Inorganic,"[OH]	molecule ""oh"" dataset ""non-multireference W4-17"" charge 0 multiplicity 2
+","InChI=1S/HO/h1H
+"
+nh,(Fallback) Inorganic,"[NH]	molecule ""nh"" dataset ""non-multireference W4-17"" charge 0 multiplicity 3
+","InChI=1S/HN/h1H
+"
+sih,(Fallback) Inorganic,"[SiH]	molecule ""sih"" dataset ""non-multireference W4-17"" charge 0 multiplicity 2
+","InChI=1S/HSi/h1H
+"
+o2,(Fallback) Inorganic,"O=O	molecule ""o2"" dataset ""non-multireference W4-17"" charge 0 multiplicity 3
+","InChI=1S/O2/c1-2
+"
+hs,(Fallback) Inorganic,"[SH]	molecule ""hs"" dataset ""non-multireference W4-17"" charge 0 multiplicity 2
+","InChI=1S/HS/h1H
+"
+s2,(Fallback) Inorganic,"[S][S]	molecule ""s2"" dataset ""non-multireference W4-17"" charge 0 multiplicity 3
+","InChI=1S/S2/c1-2
+"
+Mn(NO)3CO,(Fallback) Organometallic,"[Mn]([C][O])([N][O])([N][O])[N][O]	molecule ""Mn(NO)3CO"" dataset ""van Lenthe 2006"" charge 0 multiplicity 1
+","InChI=1S/CO.Mn.3NO/c1-2;;3*1-2
+"
+Ni(C5H5)NO,Alkene,"C1=C[C@@H](C=C1)[Ni][N][O]	molecule ""Ni(C5H5)NO"" dataset ""van Lenthe 2006"" charge 0 multiplicity 1
+","InChI=1S/C5H5.NO.Ni/c1-2-4-5-3-1;1-2;/h1-5H;;
+"
+Mn(C5H5)(CO)3,Alkene,"[Mn]1([C@H]2[CH][C@@H]1C=C2)([C][O])([C][O])[C][O]	molecule ""Mn(C5H5)(CO)3"" dataset ""van Lenthe 2006"" charge 0 multiplicity 1
+","InChI=1S/C5H5.3CO.Mn/c1-2-4-5-3-1;3*1-2;/h1-5H;;;;
+"
+b2h6,(Fallback) Inorganic,"[BH2].[BH4]	molecule ""b2h6"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/BH4.BH2/h1H4;1H2
+"
+Fe(C4H4)(CO)3,(Fallback) Organometallic,"[Fe]1([C@H]2[CH][C@@H]1[CH]2)([C][O])([C][O])[C][O]	molecule ""Fe(C4H4)(CO)3"" dataset ""van Lenthe 2006"" charge 0 multiplicity 1
+","InChI=1S/C4H4.3CO.Fe/c1-2-4-3-1;3*1-2;/h1-4H;;;;
+"
+ED14,Ketone,"c1c(cccc1)[P]1(CC(=O)O[NiH]1)c1ccccc1	molecule ""ED14"" dataset ""MOR41"" charge 0 multiplicity 1
+","InChI=1S/C14H13O2P.Ni.H/c15-14(16)11-17(12-7-3-1-4-8-12)13-9-5-2-6-10-13;;/h1-10H,11H2,(H,15,16);;/q;+1;/p-1
+"
+Fe(CO)2(NO)2,(Fallback) Organometallic,"[Fe]([C][O])([C][O])([N][O])[N][O]	molecule ""Fe(CO)2(NO)2"" dataset ""Bühl 2006"" charge 0 multiplicity 1
+","InChI=1S/2CO.Fe.2NO/c2*1-2;;2*1-2
+"
+MnCp(CO)3,Alkene,"[Mn]1([C@@H]2C=C[C@H]1[CH]2)([C][O])([C][O])[C][O]	molecule ""MnCp(CO)3"" dataset ""Bühl 2006"" charge 0 multiplicity 1
+","InChI=1S/C5H5.3CO.Mn/c1-2-4-5-3-1;3*1-2;/h1-5H;;;;
+"
+Fe(CO)3(tmm),(Fallback) Organometallic,"[Fe](C([CH2])([CH2])[CH2])([C][O])([C][O])[C][O]	molecule ""Fe(CO)3(tmm)"" dataset ""Bühl 2006"" charge 0 multiplicity 1
+","InChI=1S/C4H6.3CO.Fe/c1-4(2)3;3*1-2;/h1-3H2;;;;
+"
+Mn(CO)5CN,Nitrile,"[Mn](C#N)([C][O])([C][O])([C][O])([C][O])[C][O]	molecule ""Mn(CO)5CN"" dataset ""van Lenthe 2006"" charge 0 multiplicity 1
+","InChI=1S/CN.5CO.Mn/c6*1-2;
+"
+Fe(C4H6)(CO)3,Alkene,"[C@@H](C=C)([CH2])[Fe]([C][O])([C][O])[C][O]	molecule ""Fe(C4H6)(CO)3"" dataset ""van Lenthe 2006"" charge 0 multiplicity 1
+","InChI=1S/C4H6.3CO.Fe/c1-3-4-2;3*1-2;/h3-4H,1-2H2;;;;
+"
+Cr(C6H6)(CO)3,Alkene,"[Cr]([C@@H]1[CH]C=CC=C1)([C][O])([C][O])[C][O]	molecule ""Cr(C6H6)(CO)3"" dataset ""van Lenthe 2006"" charge 0 multiplicity 1
+","InChI=1S/C6H6.3CO.Cr/c1-2-4-6-5-3-1;3*1-2;/h1-6H;;;;
+"
+c2h6,(Fallback) Organic,"CC	molecule ""c2h6"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C2H6/c1-2/h1-2H3
+"
+ch4,(Fallback) Organic,"C	molecule ""ch4"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CH4/h1H4
+"
+PR04,Alkene,"[C@@H]1(C=CC=C1)[Co@]1(C=CC=C1)[C][O]	molecule ""PR04"" dataset ""MOR41"" charge 0 multiplicity 1
+","InChI=1S/C5H5.C4H4.CO.Co/c1-2-4-5-3-1;1-3-4-2;1-2;/h1-5H;1-4H;;
+"
+Fe(CO)4(C2H4),(Fallback) Organometallic,"[Fe](C[CH2])([C][O])([C][O])([C][O])[C][O]	molecule ""Fe(CO)4(C2H4)"" dataset ""Bühl 2006"" charge 0 multiplicity 1
+","InChI=1S/C2H4.4CO.Fe/c5*1-2;/h1-2H2;;;;;
+"
+tetrahedrane,(Fallback) Organic,"[C@@H]12[C@H]3[C@@H]1[C@@H]23	molecule ""tetrahedrane"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C4H4/c1-2-3(1)4(1)2/h1-4H/t1-,2+,3-,4+
+"
+PR05,(Fallback) Organometallic,"[Mn]([C][O])([C][O])([C][O])([C][O])([C][O])C=O	molecule ""PR05"" dataset ""MOR41"" charge 0 multiplicity 1
+","InChI=1S/CHO.5CO.Mn/c6*1-2;/h1H;;;;;;
+"
+propene,Alkene,"CC=C	molecule ""propene"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C3H6/c1-3-2/h3H,1H2,2H3
+"
+Co(C3H5)(CO)3,(Fallback) Organometallic,"[Co](C([CH2])[CH2])([C][O])([C][O])[C][O]	molecule ""Co(C3H5)(CO)3"" dataset ""van Lenthe 2006"" charge 0 multiplicity 1
+","InChI=1S/C3H5.3CO.Co/c1-3-2;3*1-2;/h3H,1-2H2;;;;
+"
+cyclopropane,(Fallback) Organic,"C1CC1	molecule ""cyclopropane"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C3H6/c1-2-3-1/h1-3H2
+"
+ED04,Alkene,"C1=CC=C[CH]1.[Co](C=[CH])C=[CH]	molecule ""ED04"" dataset ""MOR41"" charge 0 multiplicity 1
+","InChI=1S/C5H5.2C2H2.Co/c1-2-4-5-3-1;2*1-2;/h1-5H;2*1-2H;
+"
+Fe(C2H4)(CO)4,(Fallback) Organometallic,"[Fe](C[CH2])([C][O])([C][O])([C][O])[C][O]	molecule ""Fe(C2H4)(CO)4"" dataset ""van Lenthe 2006"" charge 0 multiplicity 1
+","InChI=1S/C2H4.4CO.Fe/c5*1-2;/h1-2H2;;;;;
+"
+propane,(Fallback) Organic,"CCC	molecule ""propane"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C3H8/c1-3-2/h3H2,1-2H3
+"
+cyclobutene,Alkene,"C1=CCC1	molecule ""cyclobutene"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C4H6/c1-2-4-3-1/h1-2H,3-4H2
+"
+ED15,(Fallback) Organometallic,"[Ni](C([CH2])[CH2])C([CH2])[CH2]	molecule ""ED15"" dataset ""MOR41"" charge 0 multiplicity 1
+","InChI=1S/2C3H5.Ni/c2*1-3-2;/h2*3H,1-2H2;
+"
+Ni(C3H5)2,(Fallback) Organometallic,"[Ni](C([CH2])[CH2])C([CH2])[CH2]	molecule ""Ni(C3H5)2"" dataset ""van Lenthe 2006"" charge 0 multiplicity 1
+","InChI=1S/2C3H5.Ni/c2*1-3-2;/h2*3H,1-2H2;
+"
+n-butane,(Fallback) Organic,"CCCC	molecule ""n-butane"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C4H10/c1-3-4-2/h3-4H2,1-2H3
+"
+cyclopropene,Alkene,"C1C=C1	molecule ""cyclopropene"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C3H4/c1-2-3-1/h1-2H,3H2
+"
+VCp(CO)4,Alkene,"[V]([C@@H]1C=CC=C1)([C][O])([C][O])([C][O])[C][O]	molecule ""VCp(CO)4"" dataset ""Bühl 2006"" charge 0 multiplicity 1
+","InChI=1S/C5H5.4CO.V/c1-2-4-5-3-1;4*1-2;/h1-5H;;;;;
+"
+oxetane,Ether,"C1CCO1	molecule ""oxetane"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C3H6O/c1-2-4-3-1/h1-3H2
+"
+cyclobutane,(Fallback) Organic,"C1CCC1	molecule ""cyclobutane"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C4H8/c1-2-4-3-1/h1-4H2
+"
+n-pentane,(Fallback) Organic,"C(CCC)C	molecule ""n-pentane"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C5H12/c1-3-5-4-2/h3-5H2,1-2H3
+"
+c2h4,Alkene,"C=C	molecule ""c2h4"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C2H4/c1-2/h1-2H2
+"
+ch3nh2,Amine,"CN	molecule ""ch3nh2"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CH5N/c1-2/h2H2,1H3
+"
+Mn(CO)4NO,(Fallback) Organometallic,"[Mn]([N][O])([C][O])([C][O])([C][O])[C][O]	molecule ""Mn(CO)4NO"" dataset ""van Lenthe 2006"" charge 0 multiplicity 1
+","InChI=1S/4CO.Mn.NO/c4*1-2;;1-2
+"
+ethanol,Alcohol,"OCC	molecule ""ethanol"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C2H6O/c1-2-3/h3H,2H2,1H3
+"
+cyclopentadiene,Alkene,"C1C=CC=C1	molecule ""cyclopentadiene"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C5H6/c1-2-4-5-3-1/h1-4H,5H2
+"
+Cr(NO)4,(Fallback) Inorganic,"[Cr]([N][O])([N][O])([N][O])[N][O]	molecule ""Cr(NO)4"" dataset ""Bühl 2006"" charge 0 multiplicity 1
+","InChI=1S/Cr.4NO/c;4*1-2
+"
+propyne,Alkyne,"C#CC	molecule ""propyne"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C3H4/c1-3-2/h1H,2H3
+"
+PR14,Ketone,"c1c(cccc1)P(c1ccccc1)CC(=O)O[Ni]1[C@@H]2CCC[CH][C@H]1CC2	molecule ""PR14"" dataset ""MOR41"" charge 0 multiplicity 1
+","InChI=1S/C14H13O2P.C8H13.Ni/c15-14(16)11-17(12-7-3-1-4-8-12)13-9-5-2-6-10-13;1-2-4-6-8-7-5-3-1;/h1-10H,11H2,(H,15,16);1-2,7H,3-6,8H2;/q;;+1/p-1
+"
+ED05,(Fallback) Organometallic,"[MnH]([C][O])([C][O])([C][O])([C][O])[C][O]	molecule ""ED05"" dataset ""MOR41"" charge 0 multiplicity 1
+","InChI=1S/5CO.Mn.H/c5*1-2;;
+"
+t-butadiene,Alkene,"C(=C)C=C	molecule ""t-butadiene"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C4H6/c1-3-4-2/h3-4H,1-2H2
+"
+cyclobutadiene,Alkene,"C1=CC=C1	molecule ""cyclobutadiene"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C4H4/c1-2-4-3-1/h1-4H
+"
+FeCp2,Alkene,"[Fe][C@@H]1[CH]C=C[CH]1.C1=CC=C[CH]1	molecule ""FeCp2"" dataset ""Bühl 2006"" charge 0 multiplicity 1
+","InChI=1S/2C5H5.Fe/c2*1-2-4-5-3-1;/h2*1-5H;
+"
+Fe(C5Me5)(P5),Alkene,"[Fe]1[C@@]2([C]([C@]1(C(=C2C)C)C)C)C.P1=PP=P[P]1	molecule ""Fe(C5Me5)(P5)"" dataset ""Bühl 2006"" charge 0 multiplicity 1
+","InChI=1S/C10H15.Fe.P5/c1-6-7(2)9(4)10(5)8(6)3;;1-2-4-5-3-1/h1-5H3;;
+"
+allene,Alkene,"C(=C)=C	molecule ""allene"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C3H4/c1-3-2/h1-2H2
+"
+borole,Alkene,"C1=CC=CB1	molecule ""borole"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C4H5B/c1-2-4-5-3-1/h1-5H
+"
+PMe3,(Fallback) Organic,"P(C)(C)C	molecule ""PMe3"" dataset ""MOR41"" charge 0 multiplicity 1
+","InChI=1S/C3H9P/c1-4(2)3/h1-3H3
+"
+beta-lactim,Alcohol,"C1N=C(C1)O	molecule ""beta-lactim"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C3H5NO/c5-3-1-2-4-3/h1-2H2,(H,4,5)
+"
+PR15,Alkene,"[Ni]1(C([CH2])[CH2])O[C](O1)CC=C	molecule ""PR15"" dataset ""MOR41"" charge 0 multiplicity 1
+","InChI=1S/C4H5O2.C3H5.Ni/c1-2-3-4(5)6;1-3-2;/h2H,1,3H2;3H,1-2H2;/q-2;;+2
+"
+silole,Alkene,"C1=CC=C[SiH2]1	molecule ""silole"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C4H6Si/c1-2-4-5-3-1/h1-4H,5H2
+"
+PR40,(Fallback) Organometallic,"[Ti](C)(C)(C[Al](C)C)Cl	molecule ""PR40"" dataset ""MOR41"" charge 0 multiplicity 1
+","InChI=1S/4CH3.CH2.Al.ClH.Ti/h4*1H3;1H2;;1H;/q;;;;;;;+1/p-1
+"
+ch2c,Alkene,"[C]=C	molecule ""ch2c"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C2H2/c1-2/h1H2
+"
+Ni(acac)2,Alkene,"[Ni@@]12(O[C](C=C(O1)C)C)O[C](C=C(O2)C)C	molecule ""Ni(acac)2"" dataset ""Bühl 2006"" charge 0 multiplicity 1
+","InChI=1S/2C5H8O2.Ni/c2*1-4(6)3-5(2)7;/h2*3,6H,1-2H3;/q2*-1;+4/p-2/b2*4-3-;
+"
+ED28,(Fallback) Organic,"P(CCP(C)C)(C)C	molecule ""ED28"" dataset ""MOR41"" charge 0 multiplicity 1
+","InChI=1S/C6H16P2/c1-7(2)5-6-8(3)4/h5-6H2,1-4H3
+"
+c2h5f,Halogenalkane,"FCC	molecule ""c2h5f"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C2H5F/c1-2-3/h2H2,1H3
+"
+ED27,(Fallback) Organic,"P(C)(C)CP(C)C	molecule ""ED27"" dataset ""MOR41"" charge 0 multiplicity 1
+","InChI=1S/C5H14P2/c1-6(2)5-7(3)4/h5H2,1-4H3
+"
+furan,Furan,"c1ccco1	molecule ""furan"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C4H4O/c1-2-4-5-3-1/h1-4H
+"
+Co(CO)3(NO),(Fallback) Organometallic,"[Co]([N][O])([C][O])([C][O])[C][O]	molecule ""Co(CO)3(NO)"" dataset ""Bühl 2006"" charge 0 multiplicity 1
+","InChI=1S/3CO.Co.NO/c3*1-2;;1-2
+"
+pyrrole,Pyrrole,"c1ccc[nH]1	molecule ""pyrrole"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C4H5N/c1-2-4-5-3-1/h1-5H
+"
+Sc(acac)3,Alkene,"[Sc]123(OC(=C[C](O1)C)C)(O[C](C=C(O3)C)C)OC(=C[C](O2)C)C	molecule ""Sc(acac)3"" dataset ""Bühl 2006"" charge 0 multiplicity 1
+","InChI=1S/3C5H8O2.Sc/c3*1-4(6)3-5(2)7;/h3*3,6H,1-2H3;/q3*-1;+6/p-3/b3*4-3-;
+"
+ED40a,(Fallback) Organometallic,"[Ti](=C)(C)C	molecule ""ED40a"" dataset ""MOR41"" charge 0 multiplicity 1
+","InChI=1S/2CH3.CH2.Ti/h2*1H3;1H2;
+"
+PR12,(Fallback) Organometallic,"[Cr]([C][O])([C][O])([C][O])([C][O])([C][O])C[CH2]	molecule ""PR12"" dataset ""MOR41"" charge 0 multiplicity 1
+","InChI=1S/C2H4.5CO.Cr/c6*1-2;/h1-2H2;;;;;;
+"
+oxirane,"Ether, Epoxide","O1CC1	molecule ""oxirane"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C2H4O/c1-2-3-1/h1-2H2
+"
+PR02,(Fallback) Organometallic,"[Fe]([C][O])([C][O])([C][O])([C][O])[C][O]	molecule ""PR02"" dataset ""MOR41"" charge 0 multiplicity 1
+","InChI=1S/5CO.Fe/c5*1-2;
+"
+Cr(C6H6)2,Alkene,"[Cr@@]12([C@H]3C=C[C@@H]1C=C3)[C@H]1C=C[C@@H]2C=C1	molecule ""Cr(C6H6)2"" dataset ""Bühl 2006"" charge 0 multiplicity 1
+","InChI=1S/2C6H6.Cr/c2*1-2-4-6-5-3-1;/h2*1-6H;
+"
+acetaldehyde,"Aldehyde, Ketone","C(=O)C	molecule ""acetaldehyde"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C2H4O/c1-2-3/h2H,1H3
+"
+benzene,(Fallback) Organic,"c1ccccc1	molecule ""benzene"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C6H6/c1-2-4-6-5-3-1/h1-6H
+"
+Fe(CO)5,(Fallback) Organometallic,"[Fe]([C][O])([C][O])([C][O])([C][O])[C][O]	molecule ""Fe(CO)5"" dataset ""van Lenthe 2006"" charge 0 multiplicity 1
+","InChI=1S/5CO.Fe/c5*1-2;
+"
+PCy3,(Fallback) Organic,"P(C1CCCCC1)(C1CCCCC1)C1CCCCC1	molecule ""PCy3"" dataset ""MOR41"" charge 0 multiplicity 1
+","InChI=1S/C18H33P/c1-4-10-16(11-5-1)19(17-12-6-2-7-13-17)18-14-8-3-9-15-18/h16-18H,1-15H2
+"
+ch3ph2,(Fallback) Organic,"CP	molecule ""ch3ph2"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CH5P/c1-2/h2H2,1H3
+"
+ED31,Alkene,"P(/C=C\P(c1ccccc1)c1ccccc1)(c1ccccc1)c1ccccc1	molecule ""ED31"" dataset ""MOR41"" charge 0 multiplicity 1
+","InChI=1S/C26H22P2/c1-5-13-23(14-6-1)27(24-15-7-2-8-16-24)21-22-28(25-17-9-3-10-18-25)26-19-11-4-12-20-26/h1-22H/b22-21-
+"
+ED30,(Fallback) Organic,"P(n1cccc1)(n1cccc1)CCP(n1cccc1)n1cccc1	molecule ""ED30"" dataset ""MOR41"" charge 0 multiplicity 1
+","InChI=1S/C18H20N4P2/c1-2-10-19(9-1)23(20-11-3-4-12-20)17-18-24(21-13-5-6-14-21)22-15-7-8-16-22/h1-16H,17-18H2
+"
+methanol,Alcohol,"CO	molecule ""methanol"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CH4O/c1-2/h2H,1H3
+"
+thiophene,Thiophene,"c1cccs1	molecule ""thiophene"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C4H4S/c1-2-4-5-3-1/h1-4H
+"
+dithiotane,(Fallback) Organic,"C1SCS1	molecule ""dithiotane"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C2H4S2/c1-3-2-4-1/h1-2H2
+"
+CoH(CO)4,(Fallback) Organometallic,"[CoH]([C][O])([C][O])([C][O])[C][O]	molecule ""CoH(CO)4"" dataset ""Bühl 2006"" charge 0 multiplicity 1
+","InChI=1S/4CO.Co.H/c4*1-2;;
+"
+c2clh5,Halogenalkane,"ClCC	molecule ""c2clh5"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C2H5Cl/c1-2-3/h2H2,1H3
+"
+PhSH,Thiol,"c1(ccccc1)S	molecule ""PhSH"" dataset ""MOR41"" charge 0 multiplicity 1
+","InChI=1S/C6H6S/c7-6-4-2-1-3-5-6/h1-5,7H
+"
+nh3,(Fallback) Inorganic,"N	molecule ""nh3"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/H3N/h1H3
+"
+AcCl,Ketone,"CC(=O)Cl	molecule ""AcCl"" dataset ""MOR41"" charge 0 multiplicity 1
+","InChI=1S/C2H3ClO/c1-2(3)4/h1H3
+"
+c2h2,Alkyne,"C#C	molecule ""c2h2"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C2H2/c1-2/h1-2H
+"
+ED40b,(Fallback) Organometallic,"[Al](Cl)(C)C	molecule ""ED40b"" dataset ""MOR41"" charge 0 multiplicity 1
+","InChI=1S/2CH3.Al.ClH/h2*1H3;;1H/q;;+1;/p-1
+"
+CuCN,Nitrile,"[Cu]C#N	molecule ""CuCN"" dataset ""Bühl 2006"" charge 0 multiplicity 1
+","InChI=1S/CN.Cu/c1-2;
+"
+acetic,"Alcohol, Carboxylic Acid, Ketone","C(=O)(C)O	molecule ""acetic"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C2H4O2/c1-2(3)4/h1H3,(H,3,4)
+"
+ch2nh,(Fallback) Organic,"C=N	molecule ""ch2nh"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CH3N/c1-2/h2H,1H2
+"
+c2clh3,Alkene,"C=CCl	molecule ""c2clh3"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C2H3Cl/c1-2-3/h2H,1H2
+"
+n2h4,Amine,"NN	molecule ""n2h4"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/H4N2/c1-2/h1-2H2
+"
+c2h3f,Alkene,"C=CF	molecule ""c2h3f"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C2H3F/c1-2-3/h2H,1H2
+"
+dioxetane,Ether,"C1OCO1	molecule ""dioxetane"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C2H4O2/c1-3-2-4-1/h1-2H2
+"
+cclh3,Halogenalkane,"ClC	molecule ""cclh3"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CH3Cl/c1-2/h1H3
+"
+ketene,Alkene,"C=C=O	molecule ""ketene"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C2H2O/c1-2-3/h1H2
+"
+bh3,(Fallback) Inorganic,"B	molecule ""bh3"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/BH3/h1H3
+"
+TiCl2Me2,(Fallback) Organometallic,"[Ti](Cl)(Cl)(C)C	molecule ""TiCl2Me2"" dataset ""Bühl 2006"" charge 0 multiplicity 1
+","InChI=1S/2CH3.2ClH.Ti/h2*1H3;2*1H;/q;;;;+2/p-2
+"
+ED02,(Fallback) Organometallic,"[Fe]([C][O])([C][O])([C][O])[C][O]	molecule ""ED02"" dataset ""MOR41"" charge 0 multiplicity 1
+","InChI=1S/4CO.Fe/c4*1-2;
+"
+c2clh,Alkyne,"ClC#C	molecule ""c2clh"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C2HCl/c1-2-3/h1H
+"
+oxadiazole,(Fallback) Organic,"c1cnon1	molecule ""oxadiazole"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C2H2N2O/c1-2-4-5-3-1/h1-2H
+"
+formamide,(Fallback) Organic,"C(=O)N	molecule ""formamide"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CH3NO/c2-1-3/h1H,(H2,2,3)
+"
+clcn,Nitrile,"ClC#N	molecule ""clcn"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CClN/c2-1-3
+"
+PhSeH,(Fallback) Organic,"c1(ccccc1)[SeH]	molecule ""PhSeH"" dataset ""MOR41"" charge 0 multiplicity 1
+","InChI=1S/C6H6Se/c7-6-4-2-1-3-5-6/h1-5,7H
+"
+PR06,(Fallback) Organometallic,"[CrH].O=[C].[C]=O.[C]=O.[C]=O.[C]=O.[H]	molecule ""PR06"" dataset ""MOR41"" charge 0 multiplicity 1
+","InChI=1S/5CO.Cr.2H/c5*1-2;;;
+"
+oxirene,"Ether, Alkene","C1=CO1	molecule ""oxirene"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C2H2O/c1-2-3-1/h1-2H
+"
+ocs,(Fallback) Organic,"[O][C][S]	molecule ""ocs"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/COS/c2-1-3
+"
+Zn(CH3)2,(Fallback) Organometallic,"[Zn](C)C	molecule ""Zn(CH3)2"" dataset ""van Lenthe 2006"" charge 0 multiplicity 1
+","InChI=1S/2CH3.Zn/h2*1H3;
+"
+CuMe,(Fallback) Organometallic,"[Cu]C	molecule ""CuMe"" dataset ""Bühl 2006"" charge 0 multiplicity 1
+","InChI=1S/CH3.Cu/h1H3;
+"
+PR01,(Fallback) Organometallic,"[Cr]([C][O])([C][O])([C][O])([C][O])([C][O])[C][O]	molecule ""PR01"" dataset ""MOR41"" charge 0 multiplicity 1
+","InChI=1S/6CO.Cr/c6*1-2;
+"
+ch3f,Halogenalkane,"FC	molecule ""ch3f"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CH3F/c1-2/h1H3
+"
+ch2clf,Halogenalkane,"C(F)Cl	molecule ""ch2clf"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CH2ClF/c2-1-3/h1H2
+"
+Cr(CO)6,(Fallback) Organometallic,"[Cr]([C][O])([C][O])([C][O])([C][O])([C][O])[C][O]	molecule ""Cr(CO)6"" dataset ""van Lenthe 2006"" charge 0 multiplicity 1
+","InChI=1S/6CO.Cr/c6*1-2;
+"
+dioxetan2one,"Ester, Ether","C1(=O)OCO1	molecule ""dioxetan2one"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C2H2O3/c3-2-4-1-5-2/h1H2
+"
+clcof,(Fallback) Organic,"C(=O)(F)Cl	molecule ""clcof"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CClFO/c2-1(3)4
+"
+cs2,(Fallback) Organic,"C(#[S])[S]	molecule ""cs2"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CS2/c2-1-3
+"
+cs,(Fallback) Organic,"[C]#[S]	molecule ""cs"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CS/c1-2
+"
+ccl2h2,Halogenalkane,"C(Cl)Cl	molecule ""ccl2h2"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CH2Cl2/c2-1-3/h1H2
+"
+cis-c2f2cl2,Alkene,"C(=C(\Cl)/F)(\Cl)/F	molecule ""cis-c2f2cl2"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C2Cl2F2/c3-1(5)2(4)6/b2-1-
+"
+trans-c2f2cl2,Alkene,"C(=C(\F)/Cl)(\Cl)/F	molecule ""trans-c2f2cl2"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C2Cl2F2/c3-1(5)2(4)6/b2-1+
+"
+glyoxal,"Aldehyde, Ketone","C(=O)C=O	molecule ""glyoxal"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C2H2O2/c3-1-2-4/h1-2H
+"
+clno,(Fallback) Inorganic,"Cl[N][O]	molecule ""clno"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/ClNO/c1-2-3
+"
+p4,(Fallback) Inorganic,"P12P3P1P23	molecule ""p4"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/P4/c1-2-3(1)4(1)2/t1-,2+,3-,4+
+"
+hccf,Alkyne,"C#CF	molecule ""hccf"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C2HF/c1-2-3/h1H
+"
+c2cl2,Alkyne,"ClC#CCl	molecule ""c2cl2"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C2Cl2/c3-1-2-4
+"
+ccl2o,(Fallback) Organic,"C(=O)(Cl)Cl	molecule ""ccl2o"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CCl2O/c2-1(3)4
+"
+formic-anhydride,"Ester, Ether","O(C=O)C=O	molecule ""formic-anhydride"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C2H2O3/c3-1-5-2-4/h1-2H
+"
+dioxirane,(Fallback) Organic,"C1OO1	molecule ""dioxirane"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CH2O2/c1-2-3-1/h1H2
+"
+h2co,(Fallback) Organic,"O=C	molecule ""h2co"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CH2O/c1-2/h1H2
+"
+nh2oh,Amine,"NO	molecule ""nh2oh"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/H3NO/c1-2/h2H,1H2
+"
+cf2cl2,Halogenalkane,"C(Cl)(Cl)(F)F	molecule ""cf2cl2"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CCl2F2/c2-1(3,4)5
+"
+ED01,(Fallback) Organometallic,"[Cr]([C][O])([C][O])([C][O])([C][O])[C][O]	molecule ""ED01"" dataset ""MOR41"" charge 0 multiplicity 1
+","InChI=1S/5CO.Cr/c5*1-2;
+"
+nh2cl,Amine,"NCl	molecule ""nh2cl"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/ClH2N/c1-2/h2H2
+"
+ccl3h,Halogenalkane,"C(Cl)(Cl)Cl	molecule ""ccl3h"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CHCl3/c2-1(3)4/h1H
+"
+hnc,(Fallback) Organic,"N=[C]	molecule ""hnc"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CHN/c1-2/h2H
+"
+hnnn,(Fallback) Inorganic,"N=[N]=[N]	molecule ""hnnn"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/HN3/c1-3-2/h1H
+"
+TiCl3Me,(Fallback) Organometallic,"[Ti](Cl)(Cl)(Cl)C	molecule ""TiCl3Me"" dataset ""Bühl 2006"" charge 0 multiplicity 1
+","InChI=1S/CH3.3ClH.Ti/h1H3;3*1H;/q;;;;+3/p-3
+"
+CrO2Cl2,(Fallback) Inorganic,"[Cr]([O])([O])(Cl)Cl	molecule ""CrO2Cl2"" dataset ""Bühl 2006"" charge 0 multiplicity 1
+","InChI=1S/2ClH.Cr.2O/h2*1H;;;/q;;+2;;/p-2
+"
+formic,"Alcohol, Carboxylic Acid","C(=O)O	molecule ""formic"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CH2O2/c2-1-3/h1H,(H,2,3)
+"
+nccn,Nitrile,"N#CC#N	molecule ""nccn"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C2N2/c3-1-2-4
+"
+c2cl4,Alkene,"C(=C(Cl)Cl)(Cl)Cl	molecule ""c2cl4"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C2Cl4/c3-1(4)2(5)6
+"
+t-hcoh,Alcohol,"[CH]O	molecule ""t-hcoh"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CH2O/c1-2/h1-2H
+"
+sio,(Fallback) Inorganic,"[Si]=O	molecule ""sio"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/OSi/c1-2
+"
+s2o,(Fallback) Inorganic,"S=S=O	molecule ""s2o"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/OS2/c1-3-2
+"
+t-n2h2,(Fallback) Inorganic,"[NH][NH]	molecule ""t-n2h2"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/H2N2/c1-2/h1-2H
+"
+honc,(Fallback) Organic,"O[N]#[C]	molecule ""honc"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CHNO/c1-2-3/h3H
+"
+c-hcoh,Alcohol,"[CH]O	molecule ""c-hcoh"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CH2O/c1-2/h1-2H
+"
+hcno,(Fallback) Organic,"[CH][N][O]	molecule ""hcno"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CHNO/c1-2-3/h1H
+"
+hnco,(Fallback) Organic,"C(=O)=N	molecule ""hnco"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CHNO/c2-1-3/h2H
+"
+Ni(CO)4,(Fallback) Organometallic,"[Ni]([C][O])([C][O])([C][O])[C][O]	molecule ""Ni(CO)4"" dataset ""Bühl 2006"" charge 0 multiplicity 1
+","InChI=1S/4CO.Ni/c4*1-2;
+"
+PR03,(Fallback) Organometallic,"[Ni]([C][O])([C][O])([C][O])[C][O]	molecule ""PR03"" dataset ""MOR41"" charge 0 multiplicity 1
+","InChI=1S/4CO.Ni/c4*1-2;
+"
+c-n2h2,(Fallback) Inorganic,"N=N	molecule ""c-n2h2"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/H2N2/c1-2/h1-2H/b2-1-
+"
+c2cl6,Halogenalkane,"C(C(Cl)(Cl)Cl)(Cl)(Cl)Cl	molecule ""c2cl6"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C2Cl6/c3-1(4,5)2(6,7)8
+"
+CrO2(NO3)2,Amine,"[Cr]12([O])([O])(ON(O1)[O])ON(O2)[O]	molecule ""CrO2(NO3)2"" dataset ""Bühl 2006"" charge 0 multiplicity 1
+","InChI=1S/Cr.2NO3.2O/c;2*2-1(3)4;;/q+4;2*-2;;
+"
+hcn,Nitrile,"C#N	molecule ""hcn"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CHN/c1-2/h1H
+"
+ccl4,Halogenalkane,"ClC(Cl)(Cl)Cl	molecule ""ccl4"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CCl4/c2-1(3,4)5
+"
+Ni(PH3)2,(Fallback) Inorganic,"[Ni]([PH3])[PH3]	molecule ""Ni(PH3)2"" dataset ""van Lenthe 2006"" charge 0 multiplicity 1
+","InChI=1S/Ni.2H3P/h;2*1H3
+"
+h2o,(Fallback) Inorganic,"O	molecule ""h2o"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/H2O/h1H2
+"
+ccl2,(Fallback) Organic,"[C](Cl)Cl	molecule ""ccl2"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CCl2/c2-1-3
+"
+si2h6,(Fallback) Inorganic,"[SiH3][SiH3]	molecule ""si2h6"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/H6Si2/c1-2/h1-2H3
+"
+hocn,"Alcohol, Nitrile","C(#N)O	molecule ""hocn"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CHNO/c2-1-3/h3H
+"
+fccf,Alkyne,"FC#CF	molecule ""fccf"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C2F2/c3-1-2-4
+"
+ch2-sing,(Fallback) Organic,"[CH2]	molecule ""ch2-sing"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CH2/h1H2
+"
+ch2f2,Halogenalkane,"C(F)F	molecule ""ch2f2"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CH2F2/c2-1-3/h1H2
+"
+MnO3F,(Fallback) Inorganic,"[Mn](F)([O])([O])[O]	molecule ""MnO3F"" dataset ""Bühl 2006"" charge 0 multiplicity 1
+","InChI=1S/FH.Mn.3O/h1H;;;;/q;+1;;;/p-1
+"
+c2f4,Alkene,"C(=C(F)F)(F)F	molecule ""c2f4"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C2F4/c3-1(4)2(5)6
+"
+ED03,(Fallback) Organometallic,"[Ni]([C][O])([C][O])[C][O]	molecule ""ED03"" dataset ""MOR41"" charge 0 multiplicity 1
+","InChI=1S/3CO.Ni/c3*1-2;
+"
+c2f6,Halogenalkane,"C(C(F)(F)F)(F)(F)F	molecule ""c2f6"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/C2F6/c3-1(4,5)2(6,7)8
+"
+sih4,(Fallback) Inorganic,"[SiH4]	molecule ""sih4"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/H4Si/h1H4
+"
+n2o4,Amine,"N(=O)(=O)N(=O)=O	molecule ""n2o4"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/N2O4/c3-1(4)2(5)6
+"
+hcof,(Fallback) Organic,"C(=O)F	molecule ""hcof"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CHFO/c2-1-3/h1H
+"
+nh2f,Amine,"NF	molecule ""nh2f"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/FH2N/c1-2/h2H2
+"
+VOCl3,(Fallback) Inorganic,"[V]([O])(Cl)(Cl)Cl	molecule ""VOCl3"" dataset ""Bühl 2006"" charge 0 multiplicity 1
+","InChI=1S/3ClH.O.V/h3*1H;;/q;;;;+3/p-3
+"
+t-hono,(Fallback) Inorganic,"[O][N]O	molecule ""t-hono"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/HNO2/c2-1-3/h2H
+"
+hoclo,(Fallback) Inorganic,"[OH].Cl[O]	molecule ""hoclo"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/ClO.HO/c1-2;/h;1H
+"
+hocl,(Fallback) Inorganic,"OCl	molecule ""hocl"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/ClHO/c1-2/h2H
+"
+TiCl4,(Fallback) Inorganic,"[Ti](Cl)(Cl)(Cl)Cl	molecule ""TiCl4"" dataset ""Bühl 2006"" charge 0 multiplicity 1
+","InChI=1S/4ClH.Ti/h4*1H;/q;;;;+4/p-4
+"
+c-hono,(Fallback) Inorganic,"[O][N]O	molecule ""c-hono"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/HNO2/c2-1-3/h2H
+"
+ph3,(Fallback) Inorganic,"P	molecule ""ph3"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/H3P/h1H3
+"
+hooh,(Fallback) Inorganic,"OO	molecule ""hooh"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/H2O2/c1-2/h1-2H
+"
+hoclo2,(Fallback) Inorganic,"[OH].Cl[O].[O]	molecule ""hoclo2"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/ClO.HO.O/c1-2;;/h;1H;
+"
+chf3,Halogenalkane,"C(F)(F)F	molecule ""chf3"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CHF3/c2-1(3)4/h1H
+"
+n2o,(Fallback) Inorganic,"[N][N][O]	molecule ""n2o"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/N2O/c1-2-3
+"
+co2,(Fallback) Organic,"C(=O)=O	molecule ""co2"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CO2/c2-1-3
+"
+hclo4,(Fallback) Inorganic,"[OH].Cl[O].[O].[O]	molecule ""hclo4"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/ClO.HO.2O/c1-2;;;/h;1H;;
+"
+f2co,(Fallback) Organic,"O=C(F)F	molecule ""f2co"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CF2O/c2-1(3)4
+"
+sih3f,(Fallback) Inorganic,"F[SiH3]	molecule ""sih3f"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/FH3Si/c1-2/h2H3
+"
+hno,(Fallback) Inorganic,"N=O	molecule ""hno"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/HNO/c1-2/h1H
+"
+so2,(Fallback) Inorganic,"S(=O)=O	molecule ""so2"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/O2S/c1-3-2
+"
+bhf2,(Fallback) Inorganic,"B(F)F	molecule ""bhf2"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/BF2H/c2-1-3/h1H
+"
+alf,(Fallback) Inorganic,"[Al]F	molecule ""alf"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/Al.FH/h;1H/q+1;/p-1
+"
+p2,(Fallback) Inorganic,"P#P	molecule ""p2"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/P2/c1-2
+"
+cf4,Halogenalkane,"FC(F)(F)F	molecule ""cf4"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CF4/c2-1(3,4)5
+"
+co,(Fallback) Organic,"[C]=O	molecule ""co"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CO/c1-2
+"
+Ni(PF3)4,(Fallback) Inorganic,"[Ni]([P](F)(F)F)([P](F)(F)F)([P](F)(F)F)[P](F)(F)F	molecule ""Ni(PF3)4"" dataset ""Bühl 2006"" charge 0 multiplicity 1
+","InChI=1S/4F3P.Ni/c4*1-4(2)3;
+"
+n2,(Fallback) Inorganic,"N#N	molecule ""n2"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/N2/c1-2
+"
+fno,(Fallback) Inorganic,"F[N][O]	molecule ""fno"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/FNO/c1-2-3
+"
+alcl3,(Fallback) Inorganic,"[Al](Cl)(Cl)Cl	molecule ""alcl3"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/Al.3ClH/h;3*1H/q+3;;;/p-3
+"
+sf6,(Fallback) Inorganic,"S(F)(F)(F)(F)(F)F	molecule ""sf6"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/F6S/c1-7(2,3,4,5)6
+"
+bf3,(Fallback) Inorganic,"B(F)(F)F	molecule ""bf3"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/BF3/c2-1(3)4
+"
+so3,(Fallback) Inorganic,"S(=O)(=O)=O	molecule ""so3"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/O3S/c1-4(2)3
+"
+h2s,(Fallback) Inorganic,"S	molecule ""h2s"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/H2S/h1H2
+"
+pf3,(Fallback) Inorganic,"P(F)(F)F	molecule ""pf3"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/F3P/c1-4(2)3
+"
+hof,(Fallback) Inorganic,"OF	molecule ""hof"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/FHO/c1-2/h2H
+"
+alcl,(Fallback) Inorganic,"[Al]Cl	molecule ""alcl"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/Al.ClH/h;1H/q+1;/p-1
+"
+CrF6,(Fallback) Inorganic,"[Cr](F)(F)(F)(F)(F)F	molecule ""CrF6"" dataset ""van Lenthe 2006"" charge 0 multiplicity 1
+","InChI=1S/Cr.6FH/h;6*1H/q+6;;;;;;/p-6
+"
+alh3,(Fallback) Inorganic,"[AlH3]	molecule ""alh3"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/Al.3H
+"
+cf2,(Fallback) Organic,"[C](F)F	molecule ""cf2"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/CF2/c2-1-3
+"
+VOF3,(Fallback) Inorganic,"[V]([O])(F)(F)F	molecule ""VOF3"" dataset ""van Lenthe 2006"" charge 0 multiplicity 1
+","InChI=1S/3FH.O.V/h3*1H;;/q;;;;+3/p-3
+"
+bf,(Fallback) Inorganic,"F[B]	molecule ""bf"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/BF/c1-2
+"
+CrO2F2,(Fallback) Inorganic,"[Cr]([O])([O])(F)F	molecule ""CrO2F2"" dataset ""van Lenthe 2006"" charge 0 multiplicity 1
+","InChI=1S/Cr.2FH.2O/h;2*1H;;/q+2;;;;/p-2
+"
+pf5,(Fallback) Inorganic,"P(F)(F)(F)(F)F	molecule ""pf5"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/F5P/c1-6(2,3,4)5
+"
+VF5,(Fallback) Inorganic,"[V](F)(F)(F)(F)F	molecule ""VF5"" dataset ""van Lenthe 2006"" charge 0 multiplicity 1
+","InChI=1S/5FH.V/h5*1H;/q;;;;;+5/p-5
+"
+bh,(Fallback) Inorganic,"[BH]	molecule ""bh"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/BH/h1H
+"
+sif4,(Fallback) Inorganic,"F[Si](F)(F)F	molecule ""sif4"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/F4Si/c1-5(2,3)4
+"
+hf,(Fallback) Inorganic,"F	molecule ""hf"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/FH/h1H
+"
+clf,(Fallback) Inorganic,"ClF	molecule ""clf"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/ClF/c1-2
+"
+TiF4,(Fallback) Inorganic,"[Ti](F)(F)(F)F	molecule ""TiF4"" dataset ""van Lenthe 2006"" charge 0 multiplicity 1
+","InChI=1S/4FH.Ti/h4*1H;/q;;;;+4/p-4
+"
+ScF3,(Fallback) Inorganic,"[Sc](F)(F)F	molecule ""ScF3"" dataset ""van Lenthe 2006"" charge 0 multiplicity 1
+","InChI=1S/3FH.Sc/h3*1H;/q;;;+3/p-3
+"
+alh,(Fallback) Inorganic,"[AlH]	molecule ""alh"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/Al.H
+"
+alf3,(Fallback) Inorganic,"[Al](F)(F)F	molecule ""alf3"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/Al.3FH/h;3*1H/q+3;;;/p-3
+"
+cl2,(Fallback) Inorganic,"ClCl	molecule ""cl2"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/Cl2/c1-2
+"
+hcl,(Fallback) Inorganic,"Cl	molecule ""hcl"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/ClH/h1H
+"
+f2,(Fallback) Inorganic,"FF	molecule ""f2"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/F2/c1-2
+"
+h2,(Fallback) Inorganic,"[H][H]	molecule ""h2"" dataset ""non-multireference W4-17"" charge 0 multiplicity 1
+","InChI=1S/H2/h1H
+"
