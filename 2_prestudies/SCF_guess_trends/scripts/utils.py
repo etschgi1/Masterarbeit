@@ -54,7 +54,6 @@ def categorize_organic(molecule):
 
 def categorize_functional_group(smiles):
     mol = pybel.readstring("smi", smiles)
-    print(mol)
     detected_groups = [name for name, pattern in functional_groups.items() if pattern.findall(mol)]
     if detected_groups:
         return ", ".join(detected_groups)
