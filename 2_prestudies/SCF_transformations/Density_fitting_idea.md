@@ -1,0 +1,4 @@
+# How to implement ML with density fitting
+The problem we are facing is simply a varying size of the density matrix for various molecules. If we guess directly in the basis set of the calculation (molecule-orbitals: e.g. pcseg-x) we will have to develop a flexible ML model that can handle varying input sizes. 
+
+However, there is another approach: We could guess the density matrices in a fixed atomic basis set (such as def2-universal-jkfit) and then transform them to the basis set of the calculation. This would allow us to use a fixed-size input for the ML model. Furthermore, one could use specialty models for different atom types. ML models will guess the density matrices in the atom basis set for each atom - a postprocessing step will combine the guesses and transform them back to the other basis for computation. 
