@@ -1,0 +1,17 @@
+#!/bin/bash
+#
+#  usage: sbatch ./gpu_test.scrpt               
+#
+#
+#SBATCH -J a100             
+#SBATCH -N 1 
+#SBATCH -p zen3_0512_a100x2
+#SBATCH --qos=zen3_0512_a100x2
+#SBATCH --gres=gpu:2  
+
+spack unload 
+spack load cuda@11.8.0%gcc@9.5.0/ananl33
+
+nvidia-smi
+
+

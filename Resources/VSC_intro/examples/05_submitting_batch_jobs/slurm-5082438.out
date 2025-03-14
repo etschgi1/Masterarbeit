@@ -1,0 +1,33 @@
+stress: info: [97067] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [97080] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [97069] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [97071] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [97075] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [97086] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [97077] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [97070] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [97090] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [97079] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [97066] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [97068] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [97083] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [97078] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [97076] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [97065] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [97087] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [97085] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [97088] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [97074] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [97072] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [97081] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [97089] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [97084] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [97082] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [97073] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [97065] successful run completed in 1s
+stress: info: [97066] successful run completed in 6s
+stress: info: [97067] successful run completed in 11s
+stress: info: [97068] successful run completed in 16s
+stress: info: [97069] successful run completed in 21s
+stress: info: [97070] successful run completed in 26s
+slurmstepd: error: *** JOB 5082438 ON n3501-011 CANCELLED AT 2025-03-13T14:56:10 ***

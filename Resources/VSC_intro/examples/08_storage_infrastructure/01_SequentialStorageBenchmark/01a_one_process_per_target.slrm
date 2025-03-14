@@ -1,0 +1,47 @@
+#!/bin/bash
+#
+### usage:  sbatch 01a_one_process_per_target.slrm
+# 
+#SBATCH -J io01a
+#SBATCH -N 1
+#SBATCH --ntasks-per-node=1
+#SBATCH --ntasks-per-core=1
+
+
+module purge
+module load gcc/4.9 openmpi/1.10.2
+
+echo "==== Begin Storage Benchmark with 1 Process on 1 Node ===="
+echo "Writing to HOME:"
+mpirun -np 1 IOR -a POSIX -F -k -w -b512m -t8m -e -i 1 -o $HOME/$SLURM_JOB_ID.out
+
+echo "=========================================================="
+echo "Writing to GLOBAL:"
+mpirun -np 1 IOR -a POSIX -F -k -w -b512m -t8m -e -i 1 -o $GLOBAL/$SLURM_JOB_ID.out
+
+echo "=========================================================="
+echo "Writing to BINFL:"
+mpirun -np 1 IOR -a POSIX -F -k -w -b512m -t8m -e -i 1 -o $BINFL/$SLURM_JOB_ID.out
+
+echo "=========================================================="
+echo "Writing to BINFS:"
+mpirun -np 1 IOR -a POSIX -F -k -w -b512m -t8m -e -i 1 -o $BINFS/$SLURM_JOB_ID.out
+
+echo "=========================================================="
+echo "Writing to TMP:"
+mpirun -np 1 IOR -a POSIX -F -k -w -b512m -t8m -e -i 1 -o $TMPDIR/$SLURM_JOB_ID.out
+
+echo "=========================================================="
+echo "Cleaning up:"
+echo "Output file in" $HOME
+echo "Output file in" $GLOBAL
+echo "Output file in" $BINFL 
+echo "Output file in" $BINFS
+echo "Output file in" $TMPDIR
+rm $HOME/$SLURM_JOB_ID.out.00000000
+rm $GLOBAL/$SLURM_JOB_ID.out.00000000
+rm $BINFL/$SLURM_JOB_ID.out.00000000
+rm $BINFS/$SLURM_JOB_ID.out.00000000
+rm $TMPDIR/$SLURM_JOB_ID.out.00000000
+
+

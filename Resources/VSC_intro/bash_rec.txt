@@ -1,0 +1,136 @@
+# .bashrc
+
+################################################################################
+### This file ~/.bashrc is sourced by ~/.bash_profile                        ###
+### The user specific environment (e.g.: PATH) is set by ~/.bash_profile     ###
+################################################################################
+         
+# Source global definitions ####################################################
+if [ -f /etc/bashrc ]; then
+        . /etc/bashrc
+fi
+             
+# User specific aliases and functions ##########################################
+
+# shortcut to display only the user's own jobs
+export SQUEUE_FORMAT='%.18i %.25P %.25j %.12u %.2t %.10M %.6D %R'
+alias sq='squeue -u $USER'
+
+# sqos on JH (not needed if z-slurminfo.sh is included on the compute nodes)
+alias sqos='/opt/adm/vsc/cluster-admin/src/python_modules/vsc_node_tools/scripts/sqos.sh usage'
+
+# file manipulations set to interactive - ask before deleting or overwriting
+alias rm='rm -i'
+alias mv='mv -i'
+alias cp='cp -i'
+
+# shortcuts for ls ( # already set by /etc/bashrc )
+#alias ll='ls -l --color=auto'
+alias llt='ls -lt --color=auto'
+#alias l.='ls -d .* --color=auto'
+alias ll.='ls -dl .* --color=auto'
+alias llt.='ls -dlt .* --color=auto'
+alias lla='ls -la --color=auto'
+alias llat='ls -lat --color=auto'
+alias llta='ls -lat --color=auto'
+alias llr='ls -lr --color=auto'
+alias llar='ls -lar --color=auto'
+alias llra='ls -lar --color=auto'
+alias llatr='ls -latr --color=auto'
+alias llart='ls -latr --color=auto'
+alias lltar='ls -latr --color=auto'
+alias lltra='ls -latr --color=auto'
+alias llrta='ls -latr --color=auto'
+alias llrat='ls -latr --color=auto'
+
+# shortcuts ( # already set by /etc/bashrc )
+alias ..='cd ..'
+#alias vi='vim'
+#alias which='alias | /usr/bin/which --tty-only --read-alias --show-dot --show-tilde'
+#alias mc='. /usr/libexec/mc/mc-wrapper.sh'
+
+# example for a colorful prompt ################################################
+# \[\e[35m\]skylake \[\e[0m\]\[\e[35m\]\[\e[34;1m\]\u\[\e[37;1m\]@\[\e[36;1m\]\h\[\e[0m\]:\w$
+# export PS1='[\u@\h \W]\$ '    # this was previously the default prompt
+# export PS1='[\u@\[\033[1;31m\]\h\[\033[0;32m\] \[\033[0;32m\]\W\[\033[0m\]]\$ '
+# export PS1='$ ' # ultra short prompt,  just a $
+
+# correct setting for locale (to display type: locale) #########################
+export LANG=en_US.UTF-8       # EVERYONE SHOULD SET THESE THREE LINES !
+export LC_CTYPE=en_US.UTF-8   # EVERYONE (not only Mac users) NEEDS IT,
+export LC_ALL=en_US.UTF-8     #          e.g., for Intel tools
+### Explanation - connecting from a Mac:
+### Connecting from a Mac might display a warning like:
+###    -bash: warning: setlocale: LC_CTYPE: cannot change locale (UTF-8)...
+### If the above 2 lines are set, the warning can be savely ignored !
+### To suppress the warning, please change the following on your Mac:
+###    Terminal -> Preferences -> Profiles/Settings -> Advanced -> International
+###       - Uncheck the option “Set locale environment variables on startup”
+###       - Restart Terminal
+
+
+################################################################################
+### trainee## user specific aliases ############################################
+################################################################################
+
+JOBS_FORMAT="%.18i %.16q %.25j %.18u %.2t %.10M %.6D %.15R %.25v"
+
+# check standard jupyter nodes
+# --cluster vsc4 -p skylake_0096_jupyter
+# --cluster vsc5 -p zen3_0512_jupyter
+# --cluster vsc5 -p zen2_0256_a40x2_jupyter
+# --cluster vsc5 -p zen3_0512_a100x2_jupyter
+alias jupyterpartitioninfo='scontrol --cluster vsc4 show partition skylake_0096_jupyter ; scontrol --cluster vsc5 show partition zen3_0512_jupyter ; scontrol --cluster vsc5 show partition zen2_0256_a40x2_jupyter ; scontrol --cluster vsc5 show partition zen3_0512_a100x2_jupyter'
+alias jupyternodeinfo='sinfo --cluster vsc4 -p skylake_0096_jupyter -N --format="%10N %10T %30E" ; sinfo --cluster vsc5 -p zen3_0512_jupyter -N --format="%10N %10T %30E" ; sinfo --cluster vsc5 -p zen2_0256_a40x2_jupyter -N --format="%10N %10T %30E" ; sinfo --cluster vsc5 -p zen3_0512_a100x2_jupyter -N --format="%10N %10T %30E"'
+alias jupyterjobs='squeue --cluster vsc4 -p skylake_0096_jupyter --format="$JOBS_FORMAT" ; squeue --cluster vsc5 -p zen3_0512_jupyter --format="$JOBS_FORMAT" ;squeue --cluster vsc5 -p zen2_0256_a40x2_jupyter --format="$JOBS_FORMAT" ;squeue --cluster vsc5 -p zen3_0512_a100x2_jupyter --format="$JOBS_FORMAT"'
+
+# works with reservations that start with "jh_training"
+JH_TRAINING_RESERVATION=jh_training
+alias jupytertrainingreservation='sinfo -T | grep $JH_TRAINING_RESERVATION'
+alias jupytertrainingnodes="jupytertrainingreservation | awk '{print \$NF}'"
+alias jupytertrainingnodeinfo='sinfo -N --format="%10N %10T %30E" -n $( jupytertrainingnodes )'
+alias jupytertrainingjobs='squeue -R $JH_TRAINING_RESERVATION --format="$JOBS_FORMAT"'
+alias vsc4jupytertrainingreservation='sinfo --cluster vsc4 -T | grep $JH_TRAINING_RESERVATION'
+alias vsc4jupytertrainingnodes="vsc4jupytertrainingreservation | awk '{print \$NF}'"
+alias vsc4jupytertrainingnodeinfo='sinfo --cluster vsc4 -N --format="%10N %10T %30E" -n $( vsc4jupytertrainingnodes )'
+alias vsc4jupytertrainingjobs='squeue --cluster vsc4 -R $JH_TRAINING_RESERVATION --format="$JOBS_FORMAT"'
+alias vsc5jupytertrainingreservation='sinfo --cluster vsc5 -T | grep $JH_TRAINING_RESERVATION'
+alias vsc5jupytertrainingnodes="vsc5jupytertrainingreservation | awk '{print \$NF}'"
+alias vsc5jupytertrainingnodeinfo='sinfo --cluster vsc5 -N --format="%10N %10T %30E" -n $( vsc5jupytertrainingnodes )'
+alias vsc5jupytertrainingjobs='squeue --cluster vsc5 -R $JH_TRAINING_RESERVATION --format="$JOBS_FORMAT"'
+
+# works only exactly for reservation "training"
+TRAINING_RESERVATION=training
+alias trainingreservation='sinfo -T | grep "$TRAINING_RESERVATION "'
+alias trainingnodes="trainingreservation | awk '{print \$NF}'"
+alias trainingnodeinfo='sinfo -N --format="%10N %10T %30E" -n $( trainingnodes )'
+alias trainingjobs='squeue -R $TRAINING_RESERVATION --format="$JOBS_FORMAT"'
+alias vsc4trainingreservation='sinfo --cluster vsc4 -T | grep "$TRAINING_RESERVATION "'
+alias vsc4trainingnodes="vsc4trainingreservation | awk '{print \$NF}'"
+alias vsc4trainingnodeinfo='sinfo --cluster vsc4 -N --format="%10N %10T %30E" -n $( trainingnodes )'
+alias vsc4trainingjobs='squeue --cluster vsc4 -R $TRAINING_RESERVATION --format="$JOBS_FORMAT"'
+alias vsc5trainingreservation='sinfo --cluster vsc5 -T | grep "$TRAINING_RESERVATION "'
+alias vsc5trainingnodes="vsc5trainingreservation | awk '{print \$NF}'"
+alias vsc5trainingnodeinfo='sinfo --cluster vsc5 -N --format="%10N %10T %30E" -n $( trainingnodes )'
+alias vsc5trainingjobs='squeue --cluster vsc5 -R $TRAINING_RESERVATION --format="$JOBS_FORMAT"'
+
+# sqt / sqtt / sqtn / sqtc
+alias sqt='squeue -o "%.8i %.8q %.12j %.10u %.2t %.10M %.6D %R %.8v" | grep trainee'
+alias sqtt='sqt | sort -k 4 ; sqt | wc'
+alias sqtn='sqt | sort -k 8 ; sqt | wc'
+alias sqtc='sqt | wc'
+alias vsc4sqt='squeue --cluster vsc4 -o "%.8i %.8q %.12j %.10u %.2t %.10M %.6D %R %.8v" | grep trainee'
+alias vsc4sqtt='vsc4sqt | sort -k 4 ; vsc4sqt | wc'
+alias vsc4sqtn='vsc4sqt | sort -k 8 ; vsc4sqt | wc'
+alias vsc4sqtc='vsc4sqt | wc'
+alias vsc5sqt='squeue --cluster vsc5 -o "%.8i %.8q %.12j %.10u %.2t %.10M %.6D %R %.8v" | grep trainee'
+alias vsc5sqtt='vsc5sqt | sort -k 4 ; vsc5sqt | wc'
+alias vsc5sqtn='vsc5sqt | sort -k 8 ; vsc5sqt | wc'
+alias vsc5sqtc='vsc5sqt | wc'
+
+# CUDA course
+alias alloc_1_gpu='cd ~ ; sbatch ~training/alloc_1_gpu.sh'
+alias goto_my_gpu='cd ~ ; `head -1 info_my_gpu`' 
+
+# LLMs course
+export HF_HOME=$DATA/hf-cache

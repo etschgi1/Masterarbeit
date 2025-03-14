@@ -1,0 +1,12 @@
+
+Hello from node: n3501-013
+Number of nodes: 1
+Tasks per node:  128
+Partition used:  zen3_0512
+QOS used:        vsc-5 regular cpu nodes with 512 gb of memory
+Using the nodes: n3501-013
+
+n3501-013
+              total        used        free      shared  buff/cache   available
+Mem:      528087036    15925172   510393476     1323624     1768388   509070348
+Swap:             0           0           0

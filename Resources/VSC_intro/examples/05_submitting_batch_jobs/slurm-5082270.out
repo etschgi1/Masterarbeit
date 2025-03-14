@@ -1,0 +1,30 @@
+  Loading Matlab/R2024b from: /opt/sw/vsc4/VSC/x86_64/generic/Matlab/R2024b
+
+Hello from node: n3501-016
+Number of nodes: 1
+Tasks per node:  128
+Partition used:  zen3_0512
+QOS used:        vsc-5 regular cpu nodes with 512 gb of memory
+Using the nodes: n3501-016
+Run matlab....
+MATLAB is selecting SOFTWARE rendering.
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2024 The MathWorks, Inc.
+                  R2024b (24.2.0.2712019) 64-bit (glnxa64)
+                              August 22, 2024
+
+ 
+To get started, type doc.
+For product information, visit www.mathworks.com.
+ 
+
+	Sponsored License -- for use in support of a program or activity sponsored by MathWorks.
+	Not for government, commercial or other non-sponsored organizational use.
+
+>> 
+ans =
+
+     4
+
+>> 

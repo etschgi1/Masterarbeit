@@ -1,0 +1,71 @@
+Hello fromn3501-012
+Hello fromn3501-012
+Hello fromn3501-012
+Hello fromn3501-012
+Hello fromn3501-012
+Hello fromn3501-012
+Hello fromn3501-012
+Hello fromn3501-012
+Hello fromn3501-012
+Hello fromn3501-012
+Hello fromn3501-012
+Hello fromn3501-012
+Hello fromn3501-012
+Hello fromn3501-012
+Hello fromn3501-012
+Hello fromn3501-012
+Hello fromn3501-012
+Hello fromn3501-012
+Hello fromn3501-012
+Hello fromn3501-012
+Hello fromn3501-012
+Hello fromn3501-012
+Hello fromn3501-012
+Hello fromn3501-012
+Hello fromn3501-012
+Hello fromn3501-012
+stress: info: [3242445] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [3242450] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [3242456] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [3242451] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [3242460] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [3242458] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [3242446] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [3242469] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [3242467] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [3242466] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [3242444] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [3242461] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [3242465] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [3242468] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [3242452] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [3242447] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [3242457] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [3242463] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [3242449] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [3242448] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [3242464] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [3242462] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [3242454] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [3242455] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [3242453] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [3242459] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+stress: info: [3242444] successful run completed in 1s
+stress: info: [3242445] successful run completed in 6s
+stress: info: [3242446] successful run completed in 11s
+stress: info: [3242447] successful run completed in 16s
+stress: info: [3242448] successful run completed in 21s
+stress: info: [3242449] successful run completed in 26s
+stress: info: [3242450] successful run completed in 31s
+stress: info: [3242451] successful run completed in 36s
+stress: info: [3242452] successful run completed in 41s
+stress: info: [3242453] successful run completed in 46s
+stress: info: [3242454] successful run completed in 51s
+stress: info: [3242455] successful run completed in 56s
+stress: info: [3242456] successful run completed in 61s
+stress: info: [3242457] successful run completed in 66s
+stress: info: [3242458] successful run completed in 71s
+stress: info: [3242459] successful run completed in 76s
+stress: info: [3242460] successful run completed in 81s
+stress: info: [3242461] successful run completed in 86s
+slurmstepd: error: *** JOB 5082439 ON n3501-012 CANCELLED AT 2025-03-13T14:57:55 ***
