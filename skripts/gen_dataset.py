@@ -2,8 +2,8 @@ import numpy as np
 from scf_guess_tools import PyEngine, PsiEngine
 import os
 
-XYZ_INPUT_FOLDER = "/home/etschgi1/REPOS/Masterarbeit/datasets/QM9/xyz"
-OUTPUT_ROOT = "/home/etschgi1/REPOS/Masterarbeit/datasets/QM9/out"
+XYZ_INPUT_FOLDER = "/home/ewachmann/REPOS/Masterarbeit/datasets/QM9/xyz"
+OUTPUT_ROOT = "/home/ewachmann/REPOS/Masterarbeit/datasets/QM9/out"
 
 class GenDataset: 
     def __init__(self, xyz_root, output_folder, calc_basis, options={}):

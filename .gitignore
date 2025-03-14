@@ -1,3 +1,6 @@
 *.dat
 *.clean
 datasets/*
+
+!datasets/**/*.py
+!datasets/**/*.md
