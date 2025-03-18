@@ -4,3 +4,5 @@ datasets/*
 
 !datasets/**/*.py
 !datasets/**/*.md
+
+/**/*.out

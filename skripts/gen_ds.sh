@@ -1,10 +1,12 @@
 #!/bin/bash
 
-#SBATCH -J Testjob
-#SBATCH -c 4                  # Use 4 CPU cores
+#SBATCH -J Gen_ds
+#SBATCH -c 48
 #SBATCH -N 1                  # Ensure it runs on a single node
 #SBATCH --partition=local     # use partition that fits to the qos
-#SBATCH --mem=4G
+#SBATCH --mem=128G
+
+cd "/home/ewachmann/REPOS/Masterarbeit/skripts"
 
 module purge
 module load python/3.11.9-gcc-13.2.0-eqozuli miniconda3/latest
@@ -21,4 +23,4 @@ echo 'Partition used:  '$SLURM_JOB_PARTITION
 echo 'Using the nodes: '$SLURM_JOB_NODELIST
 echo 
 
-python test.py
+python gen_dataset.py
