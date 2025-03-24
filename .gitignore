@@ -6,3 +6,4 @@ datasets/*
 !datasets/**/*.md
 
 /**/*.out
+*scf_guess_tools/**

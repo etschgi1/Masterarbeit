@@ -2,7 +2,7 @@ from rdkit import Chem
 import os, re
 import numpy as np
 
-FOLDER = "/home/ewachmann/REPOS/Masterarbeit/datasets/QM9/xyz_c7h10o2"
+FOLDER = "/home/etschgi1/REPOS/Masterarbeit/datasets/QM9/xyz_c7h10o2"
 
 VALENCE_ELECTRONS = {
     1: 1,   # H
@@ -34,6 +34,10 @@ def add_charge_and_mult(folder_path):
             continue
         filepath = os.path.join(folder_path, file)
         with open(filepath, "r") as f: 
+            # check if file is already preprocessed
+            if "charge" in f.read():
+                print(f"File {filepath} already preprocessed") 
+                continue
             content = f.read().split("\n")
             inchi_ = content[-2].split("\t")[0].split("=")[-1]
             smiles = content[-3].split("\t")[0]
@@ -45,3 +49,5 @@ def add_charge_and_mult(folder_path):
 
 if __name__ == "__main__": 
     add_charge_and_mult(FOLDER)
+    nr_files = len([f for f in os.listdir(FOLDER) if f.endswith(".xyz")])
+    print(f"Added charge and multiplicity to {nr_files} files in {FOLDER}")

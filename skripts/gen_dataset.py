@@ -13,8 +13,10 @@ import psi4, pyscf
 pyscf.lib.num_threads(slurm_threads)
 psi4.set_num_threads(slurm_threads)
 
-XYZ_INPUT_FOLDER = "/home/ewachmann/REPOS/Masterarbeit/datasets/QM9/xyz_c7h10o2"
-OUTPUT_ROOT = "/home/ewachmann/REPOS/Masterarbeit/datasets/QM9/out"
+# XYZ_INPUT_FOLDER = "/home/ewachmann/REPOS/Masterarbeit/datasets/QM9/xyz_c7h10o2"
+# OUTPUT_ROOT = "/home/ewachmann/REPOS/Masterarbeit/datasets/QM9/out"
+XYZ_INPUT_FOLDER = "/home/etschgi1/REPOS/Masterarbeit/datasets/QM9/xyz_c7h10o2"
+OUTPUT_ROOT = "/home/etschgi1/REPOS//Masterarbeit/datasets/QM9/out"
 
 class GenDataset: 
     def __init__(self, backend, xyz_root, output_folder, calc_basis, options={}):
@@ -63,6 +65,7 @@ class GenDataset:
         """Create a valid xyz which is suitable for psi / pyscf"""
         with open(file, "r") as f: 
             raw = f.readlines()
+        filename = os.path.basename(file).split(".")[0]
         cleaned = raw[:2]
         for c, l in enumerate(raw[2:]): #first 2 lines ok!
             atom_sym = l.split("\t")[0]
@@ -70,46 +73,34 @@ class GenDataset:
                 break
             xyz_data = "\t".join(l.split("\t")[:4])+"\n"
             cleaned.append(xyz_data)
-        temp_path = "/tmp/valid.xyz" # got enough for now
+        temp_path = f"/tmp/{filename}_valid.xyz" # got enough for now
         with open(temp_path, "w") as f: 
             f.writelines(cleaned)
         return temp_path
 
-    def gen_from_files_same_dim(self, guess_type): 
-        """This only works for same mat-dimension"""
-        engine_name = self.backend_name
-        output_folder_ = os.path.join(self.output_folder, engine_name)
-        if not os.path.exists(output_folder_):
-            os.makedirs(output_folder_)
+    def gen_from_files(self, guess_type): 
+        cache_folder = os.path.join(self.output_folder, self.backend_name)
+        if not os.path.exists(cache_folder):
+            os.makedirs(cache_folder)
+        for c, file in enumerate(self.files): 
+            try:
+                if "early_stop" in self.options.keys() and self.options["early_stop"] < c: 
+                    break
+                file = self.create_valid_xyz(file) #! only needed for psi4 at the moment 
+                mol = load(file, self.backend)
+                print(f"Loaded mol from {file} ({c} / {len(self.files)})")
+                refernce_energy = self.get_ref_energy(file) #! Todo clean up and rewrite in separate class
+                wf = calculate(mol, self.calc_basis, guess_type, cache=cache_folder)
 
-        mat_shape = (self.options["mat_size"], self.options["mat_size"])
-        output_file_path = os.path.join(output_folder_, "scf_from_files.h5")
-        with h5py.File(output_file_path, "w") as f:
-            ds = f.create_dataset("scf_data", 
-                                  shape=(len(self.files), *mat_shape),
-                                  dtype=np.float64,
-                                  chunks=(1, *mat_shape))
-            for c, file in enumerate(self.files): 
+            except Exception as e: #some files seem to fail
+                print("Failed :(")
+                print(e)
+            finally: 
                 try:
-                    if "early_stop" in self.options.keys() and self.options["early_stop"] < c: 
-                        break
-                    file = self.create_valid_xyz(file) #! only needed for psi4 at the moment 
-                    mol = load(file, self.backend, symmetry=True, cache=False)
-                    print(f"Loaded mol from {file} ({c} / {len(self.files)})")
-                    refernce_energy = self.get_ref_energy(file) #! Todo clean up and rewrite in separate class
-                    wf = calculate(mol, self.calc_basis, guess_type, cache=False)
-                    ds[c] = wf.density().native
-                    f.flush() # write data to file!
-                except Exception as e: #some files seem to fail
-                    print("Failed :(")
-                    print(e)
-                finally: 
-                    try:
-                        scf_energy = wf.native.e_tot
-                        print(f"Diff to reference energy: {refernce_energy - scf_energy}")
-                    except: 
-                        print("No diff - only supported in pyscf currently")
-            f.flush()
+                    scf_energy = wf.electronic_energy()
+                    print(f"Diff to reference energy: {refernce_energy - scf_energy}")
+                except: 
+                    print("No diff - only supported in pyscf currently")
         
     def gen(self): 
         if self.backend.value == "Psi": #Psi4
@@ -122,12 +113,12 @@ class GenDataset:
                 print(f"PSI_SCRATCH is already set to: {os.environ['PSI_SCRATCH']}")
             print("Start psi4")
 
-            self.gen_from_files_same_dim(self.options["psi4_guess_type"])
+            self.gen_from_files(self.options["psi4_guess_type"])
 
         elif self.backend.value == "Py": 
             assert "pyscf_guess_type" in dir(self), "Missing guess type for pyscf engine"
             print("Start pyscf")
-            self.gen_from_files_same_dim(self.options["pyscf_guess_type"])
+            self.gen_from_files(self.options["pyscf_guess_type"])
 
         else: 
             raise Exception(f"Backend {self.backend.value} not supported!")
@@ -138,9 +129,10 @@ class GenDataset:
 
 
 if __name__ == "__main__": 
-    gds_options = {"psi4_guess_type": "auto", "pyscf_guess_type": "minao", "output_folder_name": "c7h10o2", "mat_size": 176, "nr_threads": 64} #! Symmetry???
+    gds_options = {"psi4_guess_type": "auto", "pyscf_guess_type": "minao", "output_folder_name": "c7h10o2", "mat_size": 176, "nr_threads": 16, "early_stop":2} #! Symmetry???
     gds = GenDataset(Backend.PY, XYZ_INPUT_FOLDER, OUTPUT_ROOT, "pcseg-1", gds_options)
     gds.gen()
+    #6-31G(2df,p)
 
     # ! way slower than PY?!
     # gds = GenDataset(Backend.PSI, XYZ_INPUT_FOLDER, OUTPUT_ROOT, "pcseg-1", gds_options)
