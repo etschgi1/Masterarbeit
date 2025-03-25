@@ -90,14 +90,21 @@ class GenDataset:
                 mol = load(file, self.backend)
                 print(f"Loaded mol from {file} ({c} / {len(self.files)})")
                 refernce_energy = self.get_ref_energy(file) #! Todo clean up and rewrite in separate class
-                wf = calculate(mol, self.calc_basis, guess_type, cache=cache_folder)
+                if hasattr(self, "method"): 
+                    method_ = self.method.lower()
+                    if method_ == "dft": 
+                        assert hasattr(self, "functional"), "Missing functional for dft calculation"
+                        wf = calculate(mol, self.calc_basis, guess_type, method=method_, functional=self.functional, cache=cache_folder)
+                else:
+                    print("Fallback to default method: hf!")
+                    wf = calculate(mol, self.calc_basis, guess_type, cache=cache_folder)
 
             except Exception as e: #some files seem to fail
                 print("Failed :(")
                 print(e)
             finally: 
                 try:
-                    scf_energy = wf.electronic_energy()
+                    scf_energy = wf.electronic_energy() + wf.nuclear_repulsion_energy()
                     print(f"Diff to reference energy: {refernce_energy - scf_energy}")
                 except: 
                     print("No diff - only supported in pyscf currently")
@@ -129,8 +136,8 @@ class GenDataset:
 
 
 if __name__ == "__main__": 
-    gds_options = {"psi4_guess_type": "auto", "pyscf_guess_type": "minao", "output_folder_name": "c7h10o2", "mat_size": 176, "nr_threads": 16, "early_stop":2} #! Symmetry???
-    gds = GenDataset(Backend.PY, XYZ_INPUT_FOLDER, OUTPUT_ROOT, "pcseg-1", gds_options)
+    gds_options = {"psi4_guess_type": "auto", "pyscf_guess_type": "minao", "output_folder_name": "c7h10o2", "mat_size": 176, "nr_threads": 16, "early_stop":2, "method":"dft", "functional":"b3lypg"} #! Symmetry???
+    gds = GenDataset(Backend.PY, XYZ_INPUT_FOLDER, OUTPUT_ROOT, "6-31G(2df,p)", gds_options)
     gds.gen()
     #6-31G(2df,p)
 
