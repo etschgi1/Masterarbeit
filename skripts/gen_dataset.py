@@ -84,7 +84,7 @@ class GenDataset:
             os.makedirs(cache_folder)
         for c, file in enumerate(self.files): 
             try:
-                if "early_stop" in self.options.keys() and self.options["early_stop"] < c: 
+                if "early_stop" in self.options.keys() and self.options["early_stop"] <= c: 
                     break
                 file = self.create_valid_xyz(file) #! only needed for psi4 at the moment 
                 mol = load(file, self.backend)
@@ -106,6 +106,8 @@ class GenDataset:
                 try:
                     scf_energy = wf.electronic_energy() + wf.nuclear_repulsion_energy()
                     print(f"Diff to reference energy: {refernce_energy - scf_energy}")
+                    print(f"SCF Energy: {scf_energy}")
+                    print(f"Reference Energy: {refernce_energy}")
                 except: 
                     print("No diff - only supported in pyscf currently")
         
@@ -136,13 +138,14 @@ class GenDataset:
 
 
 if __name__ == "__main__": 
-    gds_options = {"psi4_guess_type": "auto", "pyscf_guess_type": "minao", "output_folder_name": "c7h10o2", "mat_size": 176, "nr_threads": 16, "early_stop":2, "method":"dft", "functional":"b3lypg"} #! Symmetry???
+    gds_options = {"psi4_guess_type": "auto", "pyscf_guess_type": "minao", "output_folder_name": "c7h10o2", "mat_size": 176, "nr_threads": 16, "early_stop":2, "method":"dft", "functional":"b3lypg"} 
     gds = GenDataset(Backend.PY, XYZ_INPUT_FOLDER, OUTPUT_ROOT, "6-31G(2df,p)", gds_options)
     gds.gen()
-    #6-31G(2df,p)
 
     # ! way slower than PY?!
-    # gds = GenDataset(Backend.PSI, XYZ_INPUT_FOLDER, OUTPUT_ROOT, "pcseg-1", gds_options)
-    # gds.gen()
+    gds_options["functional"] = "b3lyp"
+    basis_set_path = "../datasets/basis/6-31g_2df_p.gbs" # not in default basis sets
+    gds = GenDataset(Backend.PSI, XYZ_INPUT_FOLDER, OUTPUT_ROOT, basis_set_path, gds_options)
+    gds.gen()
     
     
