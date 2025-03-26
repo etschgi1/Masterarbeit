@@ -13,10 +13,8 @@ import psi4, pyscf
 pyscf.lib.num_threads(slurm_threads)
 psi4.set_num_threads(slurm_threads)
 
-# XYZ_INPUT_FOLDER = "/home/ewachmann/REPOS/Masterarbeit/datasets/QM9/xyz_c7h10o2"
-# OUTPUT_ROOT = "/home/ewachmann/REPOS/Masterarbeit/datasets/QM9/out"
-XYZ_INPUT_FOLDER = "/home/etschgi1/REPOS/Masterarbeit/datasets/QM9/xyz_c7h10o2"
-OUTPUT_ROOT = "/home/etschgi1/REPOS//Masterarbeit/datasets/QM9/out"
+XYZ_INPUT_FOLDER = "../datasets/QM9/xyz_c7h10o2"
+OUTPUT_ROOT = "../datasets/QM9/out"
 
 class GenDataset: 
     def __init__(self, backend, xyz_root, output_folder, calc_basis, options={}):
@@ -45,7 +43,6 @@ class GenDataset:
         # else: # set all threads we can get
         #     os.environ["OMP_NUM_THREADS"] = str(slurm_threads)
         #     os.environ["MKL_NUM_THREADS"] = str(slurm_threads)
-
     def get_input_files(self): 
         if self.files: 
             return self.files

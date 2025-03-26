@@ -11,7 +11,7 @@ cd "/home/ewachmann/REPOS/Masterarbeit/skripts"
 module purge
 module load python/3.11.9-gcc-13.2.0-eqozuli miniconda3/latest
 eval "$(conda shell.bash hook)"
-conda activate scf_dev
+conda activate scf_tools_311
 "using python: $( python --version ) from $( which python )"
 
 echo 
