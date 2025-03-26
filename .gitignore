@@ -4,6 +4,7 @@ datasets/*
 
 !datasets/**/*.py
 !datasets/**/*.md
+!datasets/basis/
 
 /**/*.out
 *scf_guess_tools/**
