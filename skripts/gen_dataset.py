@@ -13,6 +13,8 @@ import psi4, pyscf
 pyscf.lib.num_threads(slurm_threads)
 psi4.set_num_threads(slurm_threads)
 
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 XYZ_INPUT_FOLDER = "../datasets/QM9/xyz_c7h10o2"
 OUTPUT_ROOT = "../datasets/QM9/out"
 
@@ -84,7 +86,7 @@ class GenDataset:
                 if "early_stop" in self.options.keys() and self.options["early_stop"] <= c: 
                     break
                 file = self.create_valid_xyz(file) #! only needed for psi4 at the moment 
-                mol = load(file, self.backend)
+                mol = load(file, self.backend, symmetry=False)
                 print(f"Loaded mol from {file} ({c} / {len(self.files)})")
                 refernce_energy = self.get_ref_energy(file) #! Todo clean up and rewrite in separate class
                 if hasattr(self, "method"): 
@@ -139,7 +141,7 @@ if __name__ == "__main__":
     gds = GenDataset(Backend.PY, XYZ_INPUT_FOLDER, OUTPUT_ROOT, "6-31G(2df,p)", gds_options)
     gds.gen()
 
-    # ! way slower than PY?!
+    # ! way slower than PY?! - 
     gds_options["functional"] = "b3lyp"
     basis_set_path = "../datasets/basis/6-31g_2df_p.gbs" # not in default basis sets
     gds = GenDataset(Backend.PSI, XYZ_INPUT_FOLDER, OUTPUT_ROOT, basis_set_path, gds_options)
