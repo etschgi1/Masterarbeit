@@ -17,13 +17,16 @@
 \addtokomafont{disposition}{\rmfamily}
 \academicdegree{Dipl. Ing.}
 
+
+%--- PREAMBLE ------------------------------------------------------------------
+\input{shared_preamble.tex}
+
 % <INSERT YOUR CUSTOM MACROS AND PACKAGES HERE>
 
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{\baselineskip}
 
-%--- PREAMBLE ------------------------------------------------------------------
-\input{shared_preamble.tex}
+\newcommand{\bigO}[1]{\mathcal{O}\left(#1\right)}
 \newcommand{\todo}[1]{\textbf{\textcolor{TUred}{#1\\}}}
 
 \addbibresource{thesis.bib}

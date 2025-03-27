@@ -1,2 +1,8 @@
 \chapter{Introduction}
 \label{sec:introduction}
+
+Quantum chemistry ab initio methods lay the basis for understanding the distribution and arrangement of atoms and their respective electrons in molecules. Independent of the method used, a many-particle problem has to be treted in a self-consistant way. This means that the simulation has to determine a starting state,  the initial distribution of the electron density. From that guess it tries to iteratively refine the density until the energy of the system is minimized under the constraints given by the Schrödinger equation. These self consistant field (SCF\footnote{In the context of this work SCF doesn't exclusively refer to the Hartree-Fock method but as a general term refering to both Hartree-Fock and Kohn-Sham methods.}) methods scale very poorly with the number of basis functions used for the expansion of the multi-electron-wavefunction. Although huge progress, both in theory as well as in algorithm design and compute power, has been made in the last decades, the scaling of SCF calculations is of $\bigO{n^4}$ - $\bigO{n^7}$ with the number of basis functions $n$. Especially for large and poorly converging systems, this remains a bottleneck. \\
+One way of addressing this problem is to make a more informed and ultimately better initial guess in order to reduce the number of iterations needed to converge to a solution. \TODO{Insert refernces to classical guessing schemes}. This Thesis aims to use statistical and machine learning methods to predict a more custom tailored initial guess for the electron density. \TODO{Add what was done}. 
+
+\TODO{Outline of Thesis}
+
