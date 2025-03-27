@@ -58,7 +58,9 @@ class GenDataset:
     def get_ref_energy(self, file):
         with open(file, "r") as f: 
             l2 = f.readlines()[1]
-        return float(l2.split("\t")[11])
+        E0 = float(l2.split()[12])
+        ZPE = float(l2.split()[11])
+        return E0 - ZPE
     
     def create_valid_xyz(self, file): 
         """Create a valid xyz which is suitable for psi / pyscf"""
