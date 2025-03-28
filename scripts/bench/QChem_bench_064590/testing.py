@@ -50,16 +50,18 @@ def main_scf_guess():
 
     _, e_ref = read_molecule("./064590_valid.xyz")
     # pyscf backend
-    # backend = Backend.PY
-    # mol = load("./064590_valid.xyz", backend, symmetry = False)
-    # wf = calculate(molecule=mol,
-    #                basis = "6-31G(2df,p)", # custom_basis_py.gbs
-    #                guess = None,
-    #                method = "DFT",
-    #                functional = "B3LYPG",
-    #                cache = "./cache")
-    # scf_energy_pyscf = wf.electronic_energy() + wf.nuclear_repulsion_energy()
-    # print(f"Final energy: {scf_energy_pyscf} Ha compared to the reference energy of {e_ref} (delta: {e_ref - scf_energy_pyscf})")
+    backend = Backend.PY
+    mol = load("./064590_valid.xyz", backend, symmetry = False)
+    wf = calculate(molecule=mol,
+                   basis = "6-31G(2df,p)", # custom_basis_py.gbs
+                   guess = None,
+                   method = "DFT",
+                   functional = "WB97X_V",
+                   cache = "./cache")
+    scf_energy_pyscf = wf.electronic_energy() + wf.nuclear_repulsion_energy()
+    print(f"Final energy: {scf_energy_pyscf} Ha compared to the reference energy of {e_ref} (delta: {e_ref - scf_energy_pyscf})")
+
+    return 
 
     # pure pyscf
     mol = pyscf.gto.Mole()

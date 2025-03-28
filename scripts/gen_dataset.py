@@ -139,14 +139,19 @@ class GenDataset:
 
 
 if __name__ == "__main__": 
-    gds_options = {"psi4_guess_type": "auto", "pyscf_guess_type": "minao", "output_folder_name": "c7h10o2", "mat_size": 176, "nr_threads": 16, "early_stop":2, "method":"dft", "functional":"b3lypg"} 
-    gds = GenDataset(Backend.PY, XYZ_INPUT_FOLDER, OUTPUT_ROOT, "6-31G(2df,p)", gds_options)
+    import time
+    gds_options = {"psi4_guess_type": "auto", "pyscf_guess_type": "minao", "output_folder_name": "c7h10o2", "nr_threads": 16, "early_stop":2, "method":"dft", "functional":"WB97X_V"} 
+    gds = GenDataset(Backend.PY, XYZ_INPUT_FOLDER, OUTPUT_ROOT, "aug-cc-pVDZ", gds_options)
+    start_ = time.time()
     gds.gen()
-
+    print(f"Time elapsed (pyscf): {time.time() - start_}")
+    
     # ! way slower than PY?! - 
-    gds_options["functional"] = "b3lyp"
-    basis_set_path = "../datasets/basis/6-31g_2df_p.gbs" # not in default basis sets
-    gds = GenDataset(Backend.PSI, XYZ_INPUT_FOLDER, OUTPUT_ROOT, basis_set_path, gds_options)
-    gds.gen()
+
+    # start_ = time.time()
+    # gds_options["functional"] = "wb97x-v"
+    # gds = GenDataset(Backend.PSI, XYZ_INPUT_FOLDER, OUTPUT_ROOT, "aug-cc-pVDZ", gds_options)
+    # gds.gen()
+    # print(f"Time elapsed (psi4): {time.time() - start_}")
     
     
