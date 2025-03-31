@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #SBATCH -J Gen_ds
-#SBATCH -c 48
+#SBATCH -c 32
 #SBATCH -N 1                  # Ensure it runs on a single node
 #SBATCH --partition=local     # use partition that fits to the qos
 #SBATCH --mem=128G
@@ -13,6 +13,10 @@ module load python/3.11.9-gcc-13.2.0-eqozuli miniconda3/latest
 eval "$(conda shell.bash hook)"
 conda activate scf_tools_311
 "using python: $( python --version ) from $( which python )"
+
+export PYSCF_TMPDIR=~/scratch/pyscf_tmp
+mkdir -p $PYSCF_TMPDIR
+echo 'Setting PYSCF_TMPDIR to '$PYSCF_TMPDIR
 
 echo 
 echo 'Hello from node: '$HOSTNAME

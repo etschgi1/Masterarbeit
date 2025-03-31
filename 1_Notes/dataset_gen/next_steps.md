@@ -16,23 +16,15 @@ rmsd - packet verwenden um den rms zwischen dne beiden molekühlen anordnen
 Schrittweite kleiner einstellen. 
 
 - Fock Matrix implementieren
+- Dichte 
+- Overlap speichern. 
 
 
-TEST mit WB97X_V & aug-cc-pVDZ: 
-Got 6095 files from ../datasets/QM9/xyz_c7h10o2!
-Start pyscf
-Loaded mol from /tmp/dsgdb9nsd_082759_valid.xyz (0 / 6095)
-converged SCF energy = -423.086570214557
-Diff to reference energy: -0.06483778544287588
-SCF Energy: -423.0865702145571
-Reference Energy: -423.151408
-Loaded mol from /tmp/dsgdb9nsd_040155_valid.xyz (1 / 6095)
-converged SCF energy = -423.052071219599
-Diff to reference energy: -0.0802677804014138
-SCF Energy: -423.0520712195986
-Reference Energy: -423.132339
-Diff to reference energy: -0.0802677804014138
-SCF Energy: -423.0520712195986
-Reference Energy: -423.132339
-Time elapsed (pyscf): 247.97326636314392
+ML raten auf der Fock Matrix als first step 
+    - Fock Matrix ist prop zu overlaps
+    -> Zerlegung der Matrix (Dichte / Fock) - in homo/hetero teile siehe Cartus. Zerlegung für Dichtematrix -> 
+    - Fock Matrix enthält auch alle Energien der unbesetzten 
+Koeffizientenmatrix als alternative
 
+
+-> pyscf 6-31g(2df_p) basis verwenden und b3lypg

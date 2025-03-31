@@ -8,7 +8,8 @@ os.environ["OMP_NUM_THREADS"] = str(slurm_threads)
 os.environ["MKL_NUM_THREADS"] = str(slurm_threads)
 os.environ["NUMEXPR_MAX_THREADS"] = str(slurm_threads)  # NumPy multi-threading
 
-from scf_guess_tools import Backend, load, calculate
+from scf_guess_tools import Backend
+from to_cache import density_fock_overlap
 import psi4, pyscf
 pyscf.lib.num_threads(slurm_threads)
 psi4.set_num_threads(slurm_threads)
@@ -83,34 +84,39 @@ class GenDataset:
         cache_folder = os.path.join(self.output_folder, self.backend_name)
         if not os.path.exists(cache_folder):
             os.makedirs(cache_folder)
+        print(f"Using following for density_fock_overlap:")
+        print(f"File: e.g. {self.files[0]} (total: {len(self.files)})")
+        print(f"Filename: **")
+        print(f"Method: {self.method}")
+        print(f"Calculation Basis: {self.calc_basis}")
+        print(f"Functional: {self.functional}")
+        print(f"Guess Type: {guess_type}")
+        print(f"Backend: pyscf")
+        print(f"Cache Folder: {cache_folder}")
         for c, file in enumerate(self.files): 
             try:
                 if "early_stop" in self.options.keys() and self.options["early_stop"] <= c: 
                     break
+                filename = os.path.basename(file).strip()
+                print(f"\n---\nProcessing: {c+1}/{len(self.files)}: {filename}")
                 file = self.create_valid_xyz(file) #! only needed for psi4 at the moment 
-                mol = load(file, self.backend, symmetry=False)
-                print(f"Loaded mol from {file} ({c} / {len(self.files)})")
-                refernce_energy = self.get_ref_energy(file) #! Todo clean up and rewrite in separate class
-                if hasattr(self, "method"): 
-                    method_ = self.method.lower()
-                    if method_ == "dft": 
-                        assert hasattr(self, "functional"), "Missing functional for dft calculation"
-                        wf = calculate(mol, self.calc_basis, guess_type, method=method_, functional=self.functional, cache=cache_folder)
-                else:
-                    print("Fallback to default method: hf!")
-                    wf = calculate(mol, self.calc_basis, guess_type, cache=cache_folder)
+                ret = density_fock_overlap(file, filename, self.method, self.calc_basis, self.functional, guess=guess_type, backend="pyscf", cache=cache_folder)
+                if any([x is None for x in ret]): 
+                    print("Not all data available!")
+                else: 
+                    print(f"Got all data for {filename}")
 
             except Exception as e: #some files seem to fail
                 print("Failed :(")
                 print(e)
-            finally: 
-                try:
-                    scf_energy = wf.electronic_energy() + wf.nuclear_repulsion_energy()
-                    print(f"Diff to reference energy: {refernce_energy - scf_energy}")
-                    print(f"SCF Energy: {scf_energy}")
-                    print(f"Reference Energy: {refernce_energy}")
-                except: 
-                    print("No diff - only supported in pyscf currently")
+            # finally: 
+            #     try:
+            #         scf_energy = wf.electronic_energy() + wf.nuclear_repulsion_energy()
+            #         print(f"Diff to reference energy: {refernce_energy - scf_energy}")
+            #         print(f"SCF Energy: {scf_energy}")
+            #         print(f"Reference Energy: {refernce_energy}")
+            #     except: 
+            #         print("No diff")
         
     def gen(self): 
         if self.backend.value == "Psi": #Psi4
@@ -140,8 +146,8 @@ class GenDataset:
 
 if __name__ == "__main__": 
     import time
-    gds_options = {"psi4_guess_type": "auto", "pyscf_guess_type": "minao", "output_folder_name": "c7h10o2", "nr_threads": 16, "early_stop":2, "method":"dft", "functional":"WB97X_V"} 
-    gds = GenDataset(Backend.PY, XYZ_INPUT_FOLDER, OUTPUT_ROOT, "aug-cc-pVDZ", gds_options)
+    gds_options = {"pyscf_guess_type": "minao", "output_folder_name": "c7h10o2_b3lypg_6-31G(2df,p)", "nr_threads": 32, "method":"dft", "functional":"b3lypg"} 
+    gds = GenDataset(Backend.PY, XYZ_INPUT_FOLDER, OUTPUT_ROOT, "6-31G(2df,p)", gds_options)
     start_ = time.time()
     gds.gen()
     print(f"Time elapsed (pyscf): {time.time() - start_}")
