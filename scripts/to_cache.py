@@ -1,7 +1,7 @@
 from scf_guess_tools import Backend, cache, load, calculate
 import os
 
-@cache(ignore=["filepath"])
+@cache(ignore=["filepath", "basis"])
 def density_fock_overlap(filepath, 
                          filename, 
                          method = "dft",
