@@ -146,7 +146,7 @@ class GenDataset:
 
 if __name__ == "__main__": 
     import time
-    gds_options = {"pyscf_guess_type": "minao", "output_folder_name": "c7h10o2_b3lypg_6-31G(2df,p)", "nr_threads": 32, "method":"dft", "functional":"b3lypg", "early_stop": 2} 
+    gds_options = {"pyscf_guess_type": "minao", "output_folder_name": "c7h10o2_b3lypg_6-31G(2df,p)", "nr_threads": 32, "method":"dft", "functional":"b3lypg"} 
     basis_path = "6-31g_2df_p_custom_nwchem.gbs"
     gds = GenDataset(Backend.PY, XYZ_INPUT_FOLDER, OUTPUT_ROOT, basis_path, gds_options)
     start_ = time.time()
