@@ -1,6 +1,7 @@
 *.dat
 *.clean
 *.xyz
+*._xyz
 *.xyz:Zone.Identifier
 *pkl
 *tar.bz2

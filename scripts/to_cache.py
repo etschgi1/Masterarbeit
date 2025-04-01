@@ -53,3 +53,6 @@ def density_fock_overlap(filepath,
 
     return density, fock, overlap, core_hamiltonian, electronic_energy
     
+def check_import():
+    print("Import worked")
+    return True
