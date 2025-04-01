@@ -2,7 +2,8 @@ import os, shutil
 import numpy as np
 
 XYZ_INPUT_FOLDER = "datasets/QM9/xyz"
-OUTPUT_FOLDER = "/home/etschgi1/REPOS/Masterarbeit/datasets/QM9/xyz_c7h10o2"
+# OUTPUT_FOLDER = "/home/etschgi1/REPOS/Masterarbeit/datasets/QM9/xyz_c7h10o2"
+OUTPUT_FOLDER = "/home/etschgi1/REPOS/Masterarbeit/datasets/QM9/xyz_c5h4n2o2"
 
 def filterc7h10o2(raw_text): 
     nr_atoms = int(raw_text[0])
@@ -15,6 +16,16 @@ def filterc7h10o2(raw_text):
         return True
     return False
 
+def filterc5h4n2o2(raw_text): 
+    nr_atoms = int(raw_text[0])
+    if nr_atoms != 13: 
+        return False
+    start_of_lines = [l.split("\t")[0] for l in raw_text]
+    start_of_lines = np.array([x for x in start_of_lines if x in ["C", "H", "N", "O"]])
+    _, counts = np.unique(start_of_lines, return_counts=True)
+    if np.array_equal(counts, [5,4,2,2]):
+        return True
+    return False
 
 
 def filter_ds(input_folder, output_folder, filter, copy=True): 
@@ -35,6 +46,8 @@ def filter_ds(input_folder, output_folder, filter, copy=True):
                     shutil.copy(file_path, dest_path)
                 else:
                     shutil.move(file_path, dest_path)
+    
 
 
-filter_ds(XYZ_INPUT_FOLDER, OUTPUT_FOLDER, filterc7h10o2)
+# filter_ds(XYZ_INPUT_FOLDER, OUTPUT_FOLDER, filterc7h10o2)
+filter_ds(XYZ_INPUT_FOLDER, OUTPUT_FOLDER, filterc5h4n2o2)
