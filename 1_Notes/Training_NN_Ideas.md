@@ -1,3 +1,7 @@
+# Fragen
+-> Um von Fock Matrix zur density zu kommen muss man ja einmal FC = SCe lösen -> sprich eine Iteration des Problems
+
+
 # Using Fourier NN 
 https://arxiv.org/pdf/2010.08895
 

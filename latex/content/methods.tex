@@ -6,7 +6,7 @@ To train any kind of statistical or machine learning model we need a large enoug
 \section{QM9 dataset \parencite{ref:data_qm9}}
 \label{sec:qm9}
 Time savings given through faster convergence are especially relevant for larger systems where the number of SCF iterations are and especially the number of integrals to be calculated are large. Stated differently, it is of little interest to optimize guessing methods for small systems which converge in a near instantly on conventional hardware. Furthermore, a constant input and output size is required to train most machine learning models. \\
-The QM9 dataset \parencite{ref:article1_qm9,ref:article2_qm9} ticks both of these two boxes. It offers a diverse variety of molecules from as little as 3 constituent atoms up to 29 atoms. Additionally, there are large enough chunks of constitutional isomers to train models on these subsets of same sized matrices. 
+The QM9 dataset \parencite{ref:article1_qm9,ref:article2_qm9} ticks both of these two boxes. It offers a diverse variety of molecules from as little as 3 constituent atoms up to 29 atoms. Additionally, there are large enough chunks of constitutional isomers to train models on these subsets of same sized matrices. The distribution of molecules by atom count with the predominant constitutional isomers is shown in \autoref{fig:method_qm9_overview}.
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{../fig/qm9_general/qm9_overview_stacked_bar.pdf}
@@ -18,9 +18,22 @@ The QM9 dataset \parencite{ref:article1_qm9,ref:article2_qm9} ticks both of thes
 \section{Fock Matrix prediction: A first trial}
 \label{sec:first_predictions}
 SCF methods by nature initially need a density matrix to start off their iterative calculations. Independent of the way the initial guess is chosen the computational effort of this step should be negligible compared to the actual SCF iterations. 
+\TODO{Add more details about the Fock matrix prediction - Reasoning for the choice.}
 
+As explained in \autoref{sec:background} (\TODO{Background SCF}) the density matrix $P$ is calculated from the coefficient matrix $C$ which is obtained from the eigenvalue problem of the Fock matrix $F$:
+\begin{equation}
+    FC = SC\varepsilon \rightarrow P = 2CC^T
+\end{equation}
+Effectively, one performs part of the SCF cycle here to obtain the density matrix, which ideally should be close to the final density matrix. This step takes $\bigO{N^3}$ time, which is assymtotically faster than the $\bigO{N^4}$ time of the SCF cycle. 
+
+Additionally, learning the Fock matrix tends to involve fewer strict physical constraints. A Fock matrix primarily needs to be Hermitian, while a density matrix must be strictly positive semidefinite, normalized to the correct number of electrons, and maintain other physical conditions. That makes direct density-matrix learning more challenging, whereas learning the Fock matrix and then obtaining the density through the standard diagonalization or partial SCF step can be simpler to implement. \TODO{Reference?}
+
+\TODO{Plot of Fock matrix -> Density constructed from Fock matrix}
 
 \subsection{\ch{C5H4N2O2}}
+\label{subsec:qm9_c5h4n2o2}
+As a proof of concept we will use 508 constitutional isomers\footnote{From the 509 constitutional isomers of \ch{C5H4N2O2} only 508 converged using the sto-3g basis and the B3LYP functional.} of \ch{C5H4N2O2} from the QM9 dataset. 
+Single point simulations in pyscf \TODO{cite} were performed for these molecules using the B3LYP\footnote{b3lypg to be consitant with the functional used in Gaussian} functional and the sto-3g basis set. 
 
 \section{Software and Implementation Specifics}
 \label{sec:software_and_implementation}
