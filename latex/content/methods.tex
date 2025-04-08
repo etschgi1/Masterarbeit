@@ -33,8 +33,16 @@ Additionally, learning the Fock matrix tends to involve fewer strict physical co
 \subsection{\ch{C5H4N2O2}}
 \label{subsec:qm9_c5h4n2o2}
 As a proof of concept we will use 508 constitutional isomers\footnote{From the 509 constitutional isomers of \ch{C5H4N2O2} only 508 converged using the sto-3g basis and the B3LYP functional.} of \ch{C5H4N2O2} from the QM9 dataset. 
-Single point simulations in pyscf \TODO{cite} were performed for these molecules using the B3LYP\footnote{b3lypg to be consitant with the functional used in Gaussian} functional and the sto-3g basis set. 
+Single point RKS simulations in \textsc{PySCF} \parencite{ref:pyscf} were performed for these molecules using the B3LYP\footnote{B3LYPG was used to be consitant with the Gaussian} functional and the sto-3g basis. The resulting converged density-, fock-, and overlap-matrices were saved for future training purposes. For our very minimal basis these matrices are of size $49 \times 49$ as seen in \autoref{fig:density_dsgdb9nsd_022700}. 
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../fig/c5h4n2o2/density\_dsgdb9nsd\_022700.pdf}
+    \caption[Density matrix of dsgdb9nsd\_022700 in the sto-3g basis with theory level B3LYP]{\TODO{}}
+    \label{fig:density_dsgdb9nsd_022700}
+\end{figure}
+
+\TODO{Rescaling hat es schlechter gemacht in unserem Fall.}
 \section{Software and Implementation Specifics}
 \label{sec:software_and_implementation}
 Reproducability crisis
