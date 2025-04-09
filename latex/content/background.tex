@@ -11,3 +11,14 @@
 \subsection{Cost Functions}
 \label{subsec:background_cost_function}
 \TODO{also discuss f-score}
+
+\section{QM9 dataset \parencite{ref:data_qm9}}
+\label{sec:qm9}
+Time savings given through faster convergence are especially relevant for larger systems where the number of SCF iterations are and especially the number of integrals to be calculated are large. Stated differently, it is of little interest to optimize guessing methods for small systems which converge in a near instantly on conventional hardware. Furthermore, a constant input and output size is required to train most machine learning models. \\
+The QM9 dataset \parencite{ref:article1_qm9,ref:article2_qm9} ticks both of these two boxes. It offers a diverse variety of molecules from as little as 3 constituent atoms up to 29 atoms. Additionally, there are large enough chunks of constitutional isomers to train models on these subsets of same sized matrices. The distribution of molecules by atom count with the predominant constitutional isomers is shown in \autoref{fig:method_qm9_overview}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../fig/qm9_general/qm9_overview_stacked_bar.pdf}
+    \caption[QM9 dataset overview]{Overview of the QM9 dataset. The dataset contains 134k molecules with up to nine heavy - \ch{C} \ch{O} \ch{N} \ch{F} - atoms. Large groups of constitutional isomers are present (largest depicted in red). The properties are calculated using DFT with the B3LYP functional and the 6-31G(2df,p) basis set.}
+    \label{fig:method_qm9_overview}
+\end{figure}

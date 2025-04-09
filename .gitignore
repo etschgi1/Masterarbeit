@@ -3,7 +3,7 @@
 *.xyz
 *._xyz
 *.xyz:Zone.Identifier
-*pkl
+*.pkl
 *tar.bz2
 *.tar.gz
 *.tar.xz
