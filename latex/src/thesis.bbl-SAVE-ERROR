@@ -1,0 +1,440 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{none/global//global/global}
+    \entry{ref:article1_qm9}{article}{}
+      \name{author}{4}{}{%
+        {{hash=02cb8463f5550c5389288a4a6d88e8d1}{%
+           family={Ruddigkeit},
+           familyi={R\bibinitperiod},
+           given={Lars},
+           giveni={L\bibinitperiod}}}%
+        {{hash=c99842434ff698ec41b064f7ae94badf}{%
+           family={Van\bibnamedelima Deursen},
+           familyi={V\bibinitperiod\bibinitdelim D\bibinitperiod},
+           given={Ruud},
+           giveni={R\bibinitperiod}}}%
+        {{hash=1879988687cb3d08b044fa8997024458}{%
+           family={Blum},
+           familyi={B\bibinitperiod},
+           given={Lorenz},
+           giveni={L\bibinitperiod}}}%
+        {{hash=1d622479cd29b21e5e9e9f62c737898a}{%
+           family={Reymond},
+           familyi={R\bibinitperiod},
+           given={Jean-Louis},
+           giveni={J\bibinithyphendelim L\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {American Chemical Society (ACS)}%
+      }
+      \strng{namehash}{e4fe2ea47e2561e839b5fb0f7a55618c}
+      \strng{fullhash}{bc2fb35851a6f7d0730e0f5ee39d4ccd}
+      \strng{bibnamehash}{e4fe2ea47e2561e839b5fb0f7a55618c}
+      \strng{authorbibnamehash}{e4fe2ea47e2561e839b5fb0f7a55618c}
+      \strng{authornamehash}{e4fe2ea47e2561e839b5fb0f7a55618c}
+      \strng{authorfullhash}{bc2fb35851a6f7d0730e0f5ee39d4ccd}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{day}{1}
+      \field{journaltitle}{Journal of Chemical Information and Modeling}
+      \field{month}{11}
+      \field{number}{11}
+      \field{title}{Enumeration of 166 Billion Organic Small Molecules in the Chemical Universe Database GDB-17}
+      \field{volume}{52}
+      \field{year}{2012}
+      \field{dateera}{ce}
+      \field{pages}{2864\bibrangedash 2875}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1021/ci300415d
+      \endverb
+    \endentry
+    \entry{ref:article2_qm9}{article}{}
+      \name{author}{4}{}{%
+        {{hash=28322231a418243314954d2bce103a74}{%
+           family={Ramakrishnan},
+           familyi={R\bibinitperiod},
+           given={Raghunathan},
+           giveni={R\bibinitperiod}}}%
+        {{hash=dee5a555a2395a3ce2a877d73ddbe6be}{%
+           family={Dral},
+           familyi={D\bibinitperiod},
+           given={Pavlo\bibnamedelima O},
+           giveni={P\bibinitperiod\bibinitdelim O\bibinitperiod}}}%
+        {{hash=0eba1e8d9af2b92d47a642a803034003}{%
+           family={Rupp},
+           familyi={R\bibinitperiod},
+           given={Matthias},
+           giveni={M\bibinitperiod}}}%
+        {{hash=ca745b5acdf3d4bf19edcd7892ad563d}{%
+           family={Lilienfeld},
+           familyi={L\bibinitperiod},
+           given={O\bibnamedelima Anatole},
+           giveni={O\bibinitperiod\bibinitdelim A\bibinitperiod},
+           prefix={von},
+           prefixi={v\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Nature Publishing Group}%
+      }
+      \strng{namehash}{82cedc5338bc73e9c2c023226ed97eab}
+      \strng{fullhash}{c44c022ee3741cd58f3fc0408c591c7d}
+      \strng{bibnamehash}{82cedc5338bc73e9c2c023226ed97eab}
+      \strng{authorbibnamehash}{82cedc5338bc73e9c2c023226ed97eab}
+      \strng{authornamehash}{82cedc5338bc73e9c2c023226ed97eab}
+      \strng{authorfullhash}{c44c022ee3741cd58f3fc0408c591c7d}
+      \field{extraname}{1}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Scientific Data}
+      \field{title}{Quantum chemistry structures and properties of 134 kilo molecules}
+      \field{volume}{1}
+      \field{year}{2014}
+    \endentry
+    \entry{ref:data_qm9}{misc}{}
+      \name{author}{5}{}{%
+        {{hash=28322231a418243314954d2bce103a74}{%
+           family={Ramakrishnan},
+           familyi={R\bibinitperiod},
+           given={Raghunathan},
+           giveni={R\bibinitperiod}}}%
+        {{hash=876df6be92bb44962d47cbc599af6f8b}{%
+           family={Dral},
+           familyi={D\bibinitperiod}}}%
+        {{hash=c74b5187be4161a60f5ebe5c7749f8f5}{%
+           family={Pavlo},
+           familyi={P\bibinitperiod},
+           given={;},
+           giveni={;\bibinitperiod}}}%
+        {{hash=0eba1e8d9af2b92d47a642a803034003}{%
+           family={Rupp},
+           familyi={R\bibinitperiod},
+           given={Matthias},
+           giveni={M\bibinitperiod}}}%
+        {{hash=83f66fa7e825f4528c3ae0e6193652bd}{%
+           family={Anatole\bibnamedelimb Von\bibnamedelima Lilienfeld},
+           familyi={A\bibinitperiod\bibinitdelim V\bibinitperiod\bibinitdelim L\bibinitperiod},
+           given={O},
+           giveni={O\bibinitperiod}}}%
+      }
+      \strng{namehash}{82cedc5338bc73e9c2c023226ed97eab}
+      \strng{fullhash}{a0592c661f62dbbeb42f03827b11042c}
+      \strng{bibnamehash}{82cedc5338bc73e9c2c023226ed97eab}
+      \strng{authorbibnamehash}{82cedc5338bc73e9c2c023226ed97eab}
+      \strng{authornamehash}{82cedc5338bc73e9c2c023226ed97eab}
+      \strng{authorfullhash}{a0592c661f62dbbeb42f03827b11042c}
+      \field{extraname}{2}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Quantum chemistry structures and properties of 134 kilo molecules. figshare}
+      \field{year}{2014}
+      \field{dateera}{ce}
+      \verb{doi}
+      \verb 10.6084/m9.figshare.c.978904.v5
+      \endverb
+    \endentry
+    \entry{ref:pyscf}{article}{}
+      \name{author}{12}{}{%
+        {{hash=bf2f0fea67d22eff11c39fd7c77f9576}{%
+           family={Sun},
+           familyi={S\bibinitperiod},
+           given={Qiming},
+           giveni={Q\bibinitperiod}}}%
+        {{hash=c3feaf0f2be533ececca1a3dbde35096}{%
+           family={Berkelbach},
+           familyi={B\bibinitperiod},
+           given={Timothy\bibnamedelima C.},
+           giveni={T\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+        {{hash=00b6c15ec0c0a2d58580a113d994fc78}{%
+           family={Blunt},
+           familyi={B\bibinitperiod},
+           given={Nick\bibnamedelima S.},
+           giveni={N\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+        {{hash=8c7b2231792946b925014d762dcf665a}{%
+           family={Booth},
+           familyi={B\bibinitperiod},
+           given={George\bibnamedelima H.},
+           giveni={G\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+        {{hash=3a9d67501ea85d43b265fde76fbe089a}{%
+           family={Guo},
+           familyi={G\bibinitperiod},
+           given={Sheng},
+           giveni={S\bibinitperiod}}}%
+        {{hash=8eca32b3641a3a1cb575811e4667929b}{%
+           family={Li},
+           familyi={L\bibinitperiod},
+           given={Zhendong},
+           giveni={Z\bibinitperiod}}}%
+        {{hash=4314a8366b23c342bd6c41855b48f6d2}{%
+           family={Liu},
+           familyi={L\bibinitperiod},
+           given={Junzi},
+           giveni={J\bibinitperiod}}}%
+        {{hash=d9d94a0ba9dda30fa08df8c55d66cebc}{%
+           family={McClain},
+           familyi={M\bibinitperiod},
+           given={James\bibnamedelima D.},
+           giveni={J\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+        {{hash=a80907fe4952209721528cc27c1826b3}{%
+           family={Sayfutyarova},
+           familyi={S\bibinitperiod},
+           given={Elvira\bibnamedelima R.},
+           giveni={E\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
+        {{hash=027548649176a2d51c9ecb5e7bdd747e}{%
+           family={Sharma},
+           familyi={S\bibinitperiod},
+           given={Sandeep},
+           giveni={S\bibinitperiod}}}%
+        {{hash=9fc73182d7837cef25d9aa53a70c8a93}{%
+           family={Wouters},
+           familyi={W\bibinitperiod},
+           given={Sebastian},
+           giveni={S\bibinitperiod}}}%
+        {{hash=d86911b9553b28c2bdffd784ab60da96}{%
+           family={Chan},
+           familyi={C\bibinitperiod},
+           given={Garnet\bibnamedelima Kin‐Lic},
+           giveni={G\bibinitperiod\bibinitdelim K\bibinithyphendelim L\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Wiley}%
+      }
+      \strng{namehash}{82e4bff563c82784b765c7573114c8af}
+      \strng{fullhash}{bbaf6b47bb9f7b30bfa85cabe83a2e05}
+      \strng{bibnamehash}{82e4bff563c82784b765c7573114c8af}
+      \strng{authorbibnamehash}{82e4bff563c82784b765c7573114c8af}
+      \strng{authornamehash}{82e4bff563c82784b765c7573114c8af}
+      \strng{authorfullhash}{bbaf6b47bb9f7b30bfa85cabe83a2e05}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{1759-0884}
+      \field{journaltitle}{WIREs Computational Molecular Science}
+      \field{month}{9}
+      \field{number}{1}
+      \field{title}{PySCF: the Python‐based simulations of chemistry framework}
+      \field{volume}{8}
+      \field{year}{2017}
+      \field{dateera}{ce}
+      \verb{doi}
+      \verb 10.1002/wcms.1340
+      \endverb
+    \endentry
+    \entry{ref:rule_of_10}{article}{}
+      \name{author}{5}{}{%
+        {{hash=ef98c6c7e7e1f2dc9a5b42a00b399f19}{%
+           family={Peduzzi},
+           familyi={P\bibinitperiod},
+           given={Peter},
+           giveni={P\bibinitperiod}}}%
+        {{hash=aca799bd462dd07465216f1baf171ac4}{%
+           family={Concato},
+           familyi={C\bibinitperiod},
+           given={John},
+           giveni={J\bibinitperiod}}}%
+        {{hash=7cce7d8fb56d45dc7b402bd3c3d73929}{%
+           family={Kemper},
+           familyi={K\bibinitperiod},
+           given={Elizabeth},
+           giveni={E\bibinitperiod}}}%
+        {{hash=d123e6aa6d0090542969c7eaf17c3faf}{%
+           family={Holford},
+           familyi={H\bibinitperiod},
+           given={Theodore},
+           giveni={T\bibinitperiod}}}%
+        {{hash=d798926e55531e9e9374c1446ce2222b}{%
+           family={Feinstein},
+           familyi={F\bibinitperiod},
+           given={Alvan},
+           giveni={A\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Elsevier BV}%
+      }
+      \strng{namehash}{b400e9139be47d41d51c7ab94901302c}
+      \strng{fullhash}{37457b2f157b963e434b245ad5d28269}
+      \strng{bibnamehash}{b400e9139be47d41d51c7ab94901302c}
+      \strng{authorbibnamehash}{b400e9139be47d41d51c7ab94901302c}
+      \strng{authornamehash}{b400e9139be47d41d51c7ab94901302c}
+      \strng{authorfullhash}{37457b2f157b963e434b245ad5d28269}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Clinical Epidemiology}
+      \field{month}{12}
+      \field{number}{12}
+      \field{title}{A simulation study of the number of events per variable in logistic regression analysis}
+      \field{volume}{49}
+      \field{year}{1996}
+      \field{dateera}{ce}
+      \field{pages}{1373\bibrangedash 1379}
+      \range{pages}{7}
+      \verb{doi}
+      \verb 10.1016/s0895-4356(96)00236-3
+      \endverb
+    \endentry
+    \entry{ref:sk-learn}{article}{}
+      \name{author}{16}{}{%
+        {{hash=6e96fec0d63277626bb324bd28cdecb7}{%
+           family={Pedregosa},
+           familyi={P\bibinitperiod},
+           given={F.},
+           giveni={F\bibinitperiod}}}%
+        {{hash=b99c2df2144dc5ee09317a7833dea42d}{%
+           family={Varoquaux},
+           familyi={V\bibinitperiod},
+           given={G.},
+           giveni={G\bibinitperiod}}}%
+        {{hash=955f19cea89ae97bb7936078898e6255}{%
+           family={Gramfort},
+           familyi={G\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod}}}%
+        {{hash=2787869c9954c1d4e9891098995feb75}{%
+           family={Michel},
+           familyi={M\bibinitperiod},
+           given={V.},
+           giveni={V\bibinitperiod}}}%
+        {{hash=86d47ab9ca1a9dae108b4d4a0418c679}{%
+           family={Thirion},
+           familyi={T\bibinitperiod},
+           given={B.},
+           giveni={B\bibinitperiod}}}%
+        {{hash=d42f9e9cec95da1dad2232eac74982ab}{%
+           family={Grisel},
+           familyi={G\bibinitperiod},
+           given={O.},
+           giveni={O\bibinitperiod}}}%
+        {{hash=8bd8ef25258dd2311f92df23fe71ecf7}{%
+           family={Blondel},
+           familyi={B\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=a5ee41fa92b9e425806e1773853f1932}{%
+           family={Prettenhofer},
+           familyi={P\bibinitperiod},
+           given={P.},
+           giveni={P\bibinitperiod}}}%
+        {{hash=0c808557734e8929976d1f06f99c4ff2}{%
+           family={Weiss},
+           familyi={W\bibinitperiod},
+           given={R.},
+           giveni={R\bibinitperiod}}}%
+        {{hash=9662a6ea01596c6dd450817ccac81c4a}{%
+           family={Dubourg},
+           familyi={D\bibinitperiod},
+           given={V.},
+           giveni={V\bibinitperiod}}}%
+        {{hash=39e81a3e2193b954680a0ab847a0bb55}{%
+           family={Vanderplas},
+           familyi={V\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod}}}%
+        {{hash=14c4a498c032f77d0b83f86c710dd50e}{%
+           family={Passos},
+           familyi={P\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod}}}%
+        {{hash=dc075b18fb4710a1a37b258804c57efe}{%
+           family={Cournapeau},
+           familyi={C\bibinitperiod},
+           given={D.},
+           giveni={D\bibinitperiod}}}%
+        {{hash=67ec0e8add781665a43010c9559111e9}{%
+           family={Brucher},
+           familyi={B\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=dcb3918f09eb8785e6b212a907cc37cf}{%
+           family={Perrot},
+           familyi={P\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=ab20fcf381cd45daa82417c6fc595051}{%
+           family={Duchesnay},
+           familyi={D\bibinitperiod},
+           given={E.},
+           giveni={E\bibinitperiod}}}%
+      }
+      \strng{namehash}{3a097aa3ebf2b8c2acf988341dde9710}
+      \strng{fullhash}{7a67607c66e4af944b5f16461d6d0a87}
+      \strng{bibnamehash}{3a097aa3ebf2b8c2acf988341dde9710}
+      \strng{authorbibnamehash}{3a097aa3ebf2b8c2acf988341dde9710}
+      \strng{authornamehash}{3a097aa3ebf2b8c2acf988341dde9710}
+      \strng{authorfullhash}{7a67607c66e4af944b5f16461d6d0a87}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Machine Learning Research}
+      \field{title}{{Scikit-learn: Machine Learning in Python }}
+      \field{volume}{12}
+      \field{year}{2011}
+      \field{pages}{2825\bibrangedash 2830}
+      \range{pages}{6}
+    \endentry
+    \entry{ref:Lehtola2019}{article}{}
+      \name{author}{1}{}{%
+        {{hash=9d22c08c2c5ed286d40e1b044bed9407}{%
+           family={Lehtola},
+           familyi={L\bibinitperiod},
+           given={Susi},
+           giveni={S\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {American Chemical Society (ACS)}%
+      }
+      \strng{namehash}{9d22c08c2c5ed286d40e1b044bed9407}
+      \strng{fullhash}{9d22c08c2c5ed286d40e1b044bed9407}
+      \strng{bibnamehash}{9d22c08c2c5ed286d40e1b044bed9407}
+      \strng{authorbibnamehash}{9d22c08c2c5ed286d40e1b044bed9407}
+      \strng{authornamehash}{9d22c08c2c5ed286d40e1b044bed9407}
+      \strng{authorfullhash}{9d22c08c2c5ed286d40e1b044bed9407}
+      \field{sortinit}{8}
+      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{day}{17}
+      \field{journaltitle}{Journal of Chemical Theory and Computation}
+      \field{month}{1}
+      \field{number}{3}
+      \field{title}{Assessment of Initial Guesses for Self-Consistent Field Calculations. Superposition of Atomic Potentials: Simple yet Efficient}
+      \field{volume}{15}
+      \field{year}{2019}
+      \field{dateera}{ce}
+      \field{pages}{1593\bibrangedash 1604}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1021/acs.jctc.8b01089
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
