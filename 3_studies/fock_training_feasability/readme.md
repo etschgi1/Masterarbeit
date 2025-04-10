@@ -1,0 +1,1 @@
+# Test if a close fit on a fock matrix yields faster convergence

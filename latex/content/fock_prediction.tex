@@ -64,7 +64,7 @@ The Ridge Regressor is setup with a typical $80 / 20$ train/test split. Overlap 
 
 \begin{table}[h]
     \centering
-    \caption{Comparison of different guessing schemes for 102 (20\%) test samples from the \ch{C5H4N2O2} subset from QM9 \parencite{ref:article1_qm9}. The F-score is calculated using the Fock matrix prediction from the Ridge regression model and various guessing schemes implemented in \textsc{PySCF}. The number of iterations until convergence is shown as well as the percentage samples not converging within 50 iterations.}
+    \caption{Comparison of different guessing schemes for 102 (20\%) test samples from the \ch{C5H4N2O2} subset from QM9 \parencite{ref:article1_qm9}. The F-score is calculated using the Fock matrix prediction from the Ridge regression model and various guessing schemes implemented in \textsc{PySCF}. The number of iterations until convergence is shown as well as the percentage samples not converging within 50 iterations and the inference time as a factor of the inference time of the Ridge model.}
     \label{tab:fscore_comparison}
     \resizebox{\textwidth}{!}{
     \begin{tabular}{l
@@ -78,26 +78,37 @@ The Ridge Regressor is setup with a typical $80 / 20$ train/test split. Overlap 
         \textbf{Method} & \texttt{Ridge-model} & \texttt{minao} & \texttt{1e} & \texttt{atom} & \texttt{huckel} & \texttt{vsap} \\
         \midrule
         F-score / 1 & 0.88 \pm 0.06 & 0.899 \pm 0.002 & 0.71 \pm 0.02 & 0.802 \pm 0.001 & 0.840 \pm 0.010 & 0.993 \pm 0.002 \\
-        Iterations / 1 & 20.3 \pm 4.0 & 11.7 \pm 1.0 & 23.4 \pm 3.8 & 11.4 \pm 0.8 & 21.9 \pm 5.5 & 12.8 \pm 1.1 \\
-        Not-Converged / \% & 4 & 0 &  31 & 0 & 27 & 0\\
+        Iterations / 1 & 17.6 \pm 5.6 & 11.7 \pm 1.0 & 23.4 \pm 3.8 & 11.4 \pm 0.8 & 21.9 \pm 5.5 & 12.8 \pm 1.1 \\
+        Not-Converged / \% & 15 & 0 &  31 & 0 & 27 & 0\\
+        Inference-speed / 1 & 1.0 & 0.6 \pm 0.4 &  0.07 \pm 0.02 & 1.1 \pm 1.0 & 1.2 \pm 0.6 & 4.6 \pm 1.0\\
         \bottomrule
     \end{tabular}
     }
 \end{table}
-Ridge regression seems to do slightly better than the \texttt{1e} and \texttt{huckel} guessing schemes but drastically worse in comparison to the \texttt{minao}, \texttt{atom} and \texttt{vsap} guessing schemes. Furthermore, it has to be noted that the correlation of the F-score with the number of iterations is not given here. This hints at the fact that some guessing strategies might guess better in regions in the density matrix which are more relevant for convergence than others. While \texttt{vsap} yields by far the highest F-score, it on average takes one iteration more to converge than the \texttt{minao} guessing scheme. \\
+Ridge regression seems to do slightly better than the \texttt{1e} and \texttt{huckel} guessing schemes but drastically worse in comparison to the \texttt{minao}, \texttt{atom} and \texttt{vsap} guessing schemes. Furthermore, it has to be noted that the correlation of the F-score with the number of iterations is not given here. This hints at the fact that some guessing strategies might guess better in regions in the density matrix which are more relevant for convergence speed than others. While \texttt{vsap} yields by far the highest F-score, it on average takes one iteration more to converge than the \texttt{minao} guessing scheme. \\
 Comparing the normalized difference to the reference density for the 102 test sample for \texttt{minao}, \texttt{vsap} and the Ridge regression model in \autoref{fig:density_error_comparison} gives different error patterns.  
-
-
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{../fig/c5h4n2o2/density_error_comparison.pdf}
-    \caption[]{bla}
+    \caption[Normalized difference of density guesses]{Normalized difference of density guesses to converged density for \texttt{minao} and \texttt{vsap} guess and the Ridge regression model.}
     \label{fig:density_error_comparison}
 \end{figure}
+The \texttt{minao} guessing scheme handles the p-orbitals in the main diagonal with less error than the \texttt{vsap} and Ridge regression model. 
 
-\section{Software and Implementation Specifics}
-\label{sec:software_and_implementation}
-Reproducability crisis
-\section{Cost function}
-\section{Dataset}
+\TODO{A bissl Überleitung}
+
+\textbf{}
+
+Ideas: 
+\begin{itemize}
+    \item Maybe use spectral loss (eigenvalues?!)
+    \item CNN
+    \item NN 
+    \item Maybe two step network -> first guess fock then get rid of noise?
+\end{itemize}
+
+
+\section{Building guesses block-by-block}
+\label{sec:blockwise_guessing}
+\TODO{Guess main diagonal and then construct or guess off-diagonal elements.}
