@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from scf_guess_tools import calculate, load, Backend
 from pyscf import scf
 from scipy.linalg import eigh
+import re
 
 def check_positive_definite(S, tol=1e-10):
     eigvals = np.linalg.eigvalsh(S)
@@ -68,9 +69,9 @@ def perform_calculation(file, density_guess, basis_set, method, functional=None)
         raise ValueError("Method must be either 'HF' or 'DFT'.")
     wf.kernel(dm0=density_guess)
 
-    return {"cycles": wf.cycles, "conv": wf.converged, "summary": wf.scf_summary}
+    return {"cycles": wf.cycles, "conv": wf.converged, "summary": wf.scf_summary, "wf": wf, "mol": mol_native}
 
-def plot_mat_comp(reference, prediction, reshape=False, title="Fock Matrix Comparison", ref_title="Reference", pred_title="Prediction", vmax=1.5):
+def plot_mat_comp(reference, prediction, reshape=False, title="Fock Matrix Comparison", ref_title="Reference", pred_title="Prediction", vmax=1.5, labels1=None, labels2=None):
     diff = reference - prediction
     rmse = root_mean_squared_error(reference, prediction)
     
@@ -90,8 +91,61 @@ def plot_mat_comp(reference, prediction, reshape=False, title="Fock Matrix Compa
     diff_plot = ax[2].imshow(diff, cmap='RdBu', vmin=-vmax, vmax=vmax)
     ax[2].set_title("Difference")
     
+    if labels1: 
+        ax[0].set_xticks(range(len(labels1)))
+        ax[0].set_xticklabels(labels1, rotation=90, fontsize=7, va='bottom')
+        ax[0].set_yticks(range(len(labels1)))
+        ax[0].set_yticklabels(labels1, fontsize=7, ha='left')
+        ax[0].tick_params(axis='x', labelbottom=True, pad=30)
+        ax[0].tick_params(axis='y', labelleft=True, pad=30)
+    if labels2: 
+        ax[1].set_xticks(range(len(labels2)))
+        ax[1].set_xticklabels(labels2, rotation=90, fontsize=7, va='bottom')
+        ax[1].set_yticks(range(len(labels2)))
+        ax[1].set_yticklabels(labels2, fontsize=7, ha='left')
+        ax[1].tick_params(axis='x', labelbottom=True, pad=30)
+        ax[1].tick_params(axis='y', labelleft=True, pad=30)
+    
     cbar = fig.colorbar(diff_plot, cax=ax[3])
     cbar.set_label("Difference Scale")
     
     plt.tight_layout()
     plt.show()
+
+def permute_xyz_file(filename, perm_index=None,  tmp_file = "/tmp/perm.xyz"): 
+    """Permute the coordinates of a XYZ file."""
+    with open(filename, 'r') as f:
+        lines = f.readlines()
+    num_atoms = int(lines[0])
+    atom_lines = lines[2:2 + num_atoms]
+    perm_index = np.random.permutation(num_atoms) if perm_index is None else perm_index
+
+    permuted_lines = [atom_lines[i] for i in perm_index]
+    lines = lines[:2] + list(permuted_lines)  
+    with open(tmp_file, 'w') as f:
+        f.writelines(lines)
+    return tmp_file, np.argsort(perm_index) # inverse permutation
+
+def reverse_mat_permutation(M, atom_labels, inv_perm_index):
+    """Reverse the permutation of a matrix.
+    atom_labels: ao_labels() return for mol"""
+    atom_ids = []
+    pattern = re.compile(r'(\d+)')
+    for lbl in atom_labels:
+        match = pattern.search(lbl)
+        if match:
+            atom_ids.append(int(match.group(1)))
+        else:
+            raise ValueError(f"Keine Atom-ID in Label: {lbl}")
+    unique_ids = sorted(set(atom_ids))
+    start = 0
+    atom_ranges = []
+    for uid in unique_ids:
+        count_id = atom_ids.count(uid)
+        atom_ranges.append((start, start + count_id))
+        start += count_id
+    reordered_ranges = [atom_ranges[i] for i in inv_perm_index]
+    reordered_indices = []
+    for (s, e) in reordered_ranges:
+        reordered_indices.extend(range(s, e))
+    return M[np.ix_(reordered_indices, reordered_indices)]
