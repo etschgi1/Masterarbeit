@@ -11,3 +11,4 @@
 
 /**/*.out
 *scf_guess_tools/**
+**/M-OFDFT/**
