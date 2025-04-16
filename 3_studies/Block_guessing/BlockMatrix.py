@@ -177,6 +177,10 @@ class BlockMatrix():
         """Get all blocks"""
         return self.get_blocks_by_atom(None, block_type=None)
     
+    def get_diagonal(self): 
+        """Get the diagonal of the matrix"""
+        return np.diag(self.Matrix)
+    
 
 if __name__ == "__main__": 
     cur_path = os.path.dirname(__file__)
