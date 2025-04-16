@@ -71,6 +71,31 @@ def perform_calculation(file, density_guess, basis_set, method, functional=None)
 
     return {"cycles": wf.cycles, "conv": wf.converged, "summary": wf.scf_summary, "wf": wf, "mol": mol_native}
 
+def benchmark_cycles(files, density_guesses, scheme_names, basis_set, method, functional=None):
+    """Benchmarks the number of cycles needed to converge the SCF calculation."""
+    results = {}
+    assert len(scheme_names) == len(density_guesses)
+    for scheme in scheme_names:
+        results[scheme] = {"cycles": [], "converged": [], "summary": [], "wf": [], "mol": []}
+        print("Starting scheme:", scheme)
+        for file, density_guess in zip(files, density_guesses):
+            try:
+                result = perform_calculation(file, density_guess, basis_set, method, functional)
+                results[scheme]["cycles"].append(result["cycles"])
+                results[scheme]["converged"].append(result["conv"])
+                results[scheme]["summary"].append(result["summary"])
+                results[scheme]["wf"].append(result["wf"])
+                results[scheme]["mol"].append(result["mol"])
+                # print(f"Finished scheme {scheme} for file {file}: {result['cycles']} cycles, converged: {result['conv']}")
+            except Exception as e:
+                print(f"Error processing {file} with scheme {scheme}: {e}")
+                results[scheme]["cycles"].append(None)
+                results[scheme]["converged"].append(False)
+                results[scheme]["summary"].append(None)
+                results[scheme]["wf"].append(None)
+                results[scheme]["mol"].append(None)
+    return results
+
 def plot_mat_comp(reference, prediction, reshape=False, title="Fock Matrix Comparison", ref_title="Reference", pred_title="Prediction", vmax=1.5, labels1=None, labels2=None):
     diff = reference - prediction
     rmse = root_mean_squared_error(reference, prediction)
