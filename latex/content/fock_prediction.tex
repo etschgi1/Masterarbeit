@@ -59,12 +59,13 @@ Due to the symmetry of the matrices we can discard nearly half of the elements a
     \label{fig:density_dsgdb9nsd_022700}
 \end{figure}
 
+\TODO{Switch heading? -> Ridge Regressor as title and not dataset?!}
 \textbf{Ridge Regressor model}\\
 The Ridge Regressor is setup with a typical $80 / 20$ train/test split. Overlap (input) as well as Fock (output) matrices are flattend and used as is (rescaling did not improve model accuracy). Using a 5-fold cross validation the model is a Multi-Ouput-Regressor is trained using \textsc{scikit-learn} \parencite{ref:sk-learn} with equally $\log_{10}$-spaced $L^2$-regularization parameter $\alpha$ values ranging from $10^{-2}$ to $10^{3}$. Subsequently, the model is retrained with the arithmetic mean of the best performing $\alpha$ values. For the Fock matrix prediction the model yields a RMSE of $0.046$ on the training set and $0.059$ on the test set which indicates slight overfitting. Using the F-Score metric \parencite{ref:Lehtola2019} (outlined in \autoref{subsec:background_cost_function}) \textcolor{red}{which can be used as a proxy for the convergence speed} we obtain the results in \autoref{tab:fscore_comparison} for the model and various guessing schemes impolemented in \textsc{PySCF} (further guessing scheme implementation details can be found in \autoref{sec:pyscf_initial_guessing_methods}).
 
 \begin{table}[h]
     \centering
-    \caption{Comparison of different guessing schemes for 102 (20\%) test samples from the \ch{C5H4N2O2} subset from QM9 \parencite{ref:article1_qm9}. The F-score is calculated using the Fock matrix prediction from the Ridge regression model and various guessing schemes implemented in \textsc{PySCF}. The number of iterations until convergence is shown as well as the percentage samples not converging within 50 iterations and the inference time as a factor of the inference time of the Ridge model.}
+    \caption{Comparison of different guessing schemes for 102 (20\%) test samples from the \ch{C5H4N2O2} subset from QM9 \parencite{ref:article1_qm9}. The F-score is calculated using the Fock matrix prediction from the Ridge regression model and various guessing schemes implemented in \textsc{PySCF}. The number of iterations until convergence is shown as well as the percentage samples not converging within 50 iterations and the inference time as a factor of the inference time of the minao guess.}
     \label{tab:fscore_comparison}
     \resizebox{\textwidth}{!}{
     \begin{tabular}{l
@@ -77,10 +78,10 @@ The Ridge Regressor is setup with a typical $80 / 20$ train/test split. Overlap 
         \toprule
         \textbf{Method} & \texttt{Ridge-model} & \texttt{minao} & \texttt{1e} & \texttt{atom} & \texttt{huckel} & \texttt{vsap} \\
         \midrule
-        F-score / 1 & 0.88 \pm 0.06 & 0.899 \pm 0.002 & 0.71 \pm 0.02 & 0.802 \pm 0.001 & 0.840 \pm 0.010 & 0.993 \pm 0.002 \\
-        Iterations / 1 & 17.6 \pm 5.6 & 11.7 \pm 1.0 & 23.4 \pm 3.8 & 11.4 \pm 0.8 & 21.9 \pm 5.5 & 12.8 \pm 1.1 \\
+        F-score / 1 & 0.88 \pm 0.06 & 0.899 \pm 0.002 & 0.71 \pm 0.02 & 0.802 \pm 0.0010 & 0.840 \pm 0.010 & 0.993 \pm 0.002 \\
+        Iterations / 1 & 18 \pm 6 & 11.7 \pm 1.0 & 23 \pm 4 & 11.4 \pm 0.8 & 22 \pm 6 & 12.8 \pm 1.1 \\
         Not-Converged / \% & 15 & 0 &  31 & 0 & 27 & 0\\
-        Inference-speed / 1 & 1.0 & 0.6 \pm 0.4 &  0.07 \pm 0.02 & 1.1 \pm 1.0 & 1.2 \pm 0.6 & 4.6 \pm 1.0\\
+        Inference-speed / 1 & 1.8 \pm 0.9 & 1.0 &  0.18 \pm 0.15 & 1.7 \pm 1.4 & 2.0 \pm 1.0 & 8 \pm 5 \\
         \bottomrule
     \end{tabular}
     }
@@ -91,14 +92,15 @@ Comparing the normalized difference to the reference density for the 102 test sa
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{../fig/c5h4n2o2/density_error_comparison.pdf}
-    \caption[Normalized difference of density guesses]{Normalized difference of density guesses to converged density for \texttt{minao} and \texttt{vsap} guess and the Ridge regression model.}
+    \caption[Normalized difference of density guesses]{Normalized mean difference of density guesses to converged density for \texttt{minao} \& \texttt{vsap} guess and the Ridge regression model evaluated on the testset: 102 (20\%) test samples from the \ch{C5H4N2O2} subset from QM9 \parencite{ref:article1_qm9}.}
     \label{fig:density_error_comparison}
 \end{figure}
-The \texttt{minao} guessing scheme handles the p-orbitals in the main diagonal with less error than the \texttt{vsap} and Ridge regression model. 
+All three guessing schemes have spots on the main diagonal of the density matrix where they are likely to differ from the reference solution. Interestingly, a Mullikan population analysis (see \TODO{Background}) \parencite{ref:Mulliken_population_analysis} yields a mean value of $31.766$ the test set prediction for \texttt{minao} while \texttt{vsap} yield the expected $32$ (only $\alpha$-electrons). This slight deviation in the guess doesn't impair the convergence process, as this is fixed anyhow during the first self consistent iteration. Comparing \texttt{minao} and \texttt{vsap} with our Ridge Model the later fares worse on the main diagonal, especially for p-Orbitals. While \texttt{minao} exhibits more pronounced off-diagonal noise, particularly in the top right, this does not significantly affect convergence. These deviations appear to be less detrimental than the smaller diagonal inaccuracies observed in \texttt{vsap}. \\
+From that we might conclude that a good guess should be close to the reference density especially on the main diagonal, but not necessarily in the off-diagonal elements. We shall continue to investigate this in the next section.
 
-\TODO{A bissl Überleitung}
-
-\textbf{}
+\section{Predicting the Main Diagonal}
+\label{sec:main_diagonal}
+\TODO{Reference Cartus + GWH construction}
 
 Ideas: 
 \begin{itemize}

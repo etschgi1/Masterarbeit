@@ -5,6 +5,7 @@ from scf_guess_tools import calculate, load, Backend
 from pyscf import scf
 from scipy.linalg import eigh
 import re
+from time import time
 
 def check_positive_definite(S, tol=1e-10):
     eigvals = np.linalg.eigvalsh(S)
@@ -51,6 +52,7 @@ def unflatten_triang_batch(flat_batch, N):
     M_batch[:, iu[1], iu[0]] = flat_batch  
     return M_batch
 
+
 def perform_calculation(file, density_guess, basis_set, method, functional=None): 
     """Only RHF and RKS are supported."""
     mol = load(file, Backend.PY)
@@ -67,18 +69,28 @@ def perform_calculation(file, density_guess, basis_set, method, functional=None)
         wf = scf.RHF(mol_native)
     else:
         raise ValueError("Method must be either 'HF' or 'DFT'.")
-    wf.kernel(dm0=density_guess)
-
+    if type(density_guess) == np.ndarray:
+        wf.kernel(dm0=density_guess)
+    elif type(density_guess) == str:
+        assert density_guess in ["atom", "1e", "minao", "huckel", "vsap"], "Density guess must be 'atom', '1e', 'minao', 'huckel' or 'vsap'."
+        dm0 = wf.get_init_guess(key=density_guess)
+        wf.kernel(dm0=dm0)
+    else:
+        raise ValueError("Density guess must be either a numpy array or a string.")
     return {"cycles": wf.cycles, "conv": wf.converged, "summary": wf.scf_summary, "wf": wf, "mol": mol_native}
 
-def benchmark_cycles(files, density_guesses, scheme_names, basis_set, method, functional=None):
+def benchmark_cycles(files, density_guesses, scheme_names, basis_set, method, functional=None, max_samples=None):
     """Benchmarks the number of cycles needed to converge the SCF calculation."""
     results = {}
     assert len(scheme_names) == len(density_guesses)
-    for scheme in scheme_names:
+    for i, scheme in enumerate(scheme_names):
+        cur_samples = 0
         results[scheme] = {"cycles": [], "converged": [], "summary": [], "wf": [], "mol": []}
         print("Starting scheme:", scheme)
-        for file, density_guess in zip(files, density_guesses):
+        if density_guesses[i] is None: # mock array
+            density_guesses[i] = [None] * len(files)
+        for file, density_guess in zip(files, density_guesses[i]):
+            density_guess = density_guess if density_guess is not None else scheme_names[i].lower()
             try:
                 result = perform_calculation(file, density_guess, basis_set, method, functional)
                 results[scheme]["cycles"].append(result["cycles"])
@@ -86,7 +98,11 @@ def benchmark_cycles(files, density_guesses, scheme_names, basis_set, method, fu
                 results[scheme]["summary"].append(result["summary"])
                 results[scheme]["wf"].append(result["wf"])
                 results[scheme]["mol"].append(result["mol"])
-                # print(f"Finished scheme {scheme} for file {file}: {result['cycles']} cycles, converged: {result['conv']}")
+                print(f"Finished scheme {scheme} for file {file}: {result['cycles']} cycles, converged: {result['conv']}")
+                cur_samples += 1
+                if max_samples is not None and cur_samples >= max_samples:
+                    print(f"Reached max_samples for scheme {scheme}: {max_samples}")
+                    break
             except Exception as e:
                 print(f"Error processing {file} with scheme {scheme}: {e}")
                 results[scheme]["cycles"].append(None)
@@ -94,6 +110,7 @@ def benchmark_cycles(files, density_guesses, scheme_names, basis_set, method, fu
                 results[scheme]["summary"].append(None)
                 results[scheme]["wf"].append(None)
                 results[scheme]["mol"].append(None)
+                print(f"Failed scheme {scheme} for file {file}: {e}")
     return results
 
 def plot_mat_comp(reference, prediction, reshape=False, title="Fock Matrix Comparison", ref_title="Reference", pred_title="Prediction", vmax=1.5, labels1=None, labels2=None):
