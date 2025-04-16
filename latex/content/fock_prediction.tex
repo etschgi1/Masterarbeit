@@ -98,6 +98,10 @@ Comparing the normalized difference to the reference density for the 102 test sa
 All three guessing schemes have spots on the main diagonal of the density matrix where they are likely to differ from the reference solution. Interestingly, a Mullikan population analysis (see \TODO{Background}) \parencite{ref:Mulliken_population_analysis} yields a mean value of $31.766$ the test set prediction for \texttt{minao} while \texttt{vsap} yield the expected $32$ (only $\alpha$-electrons). This slight deviation in the guess doesn't impair the convergence process, as this is fixed anyhow during the first self consistent iteration. Comparing \texttt{minao} and \texttt{vsap} with our Ridge Model the later fares worse on the main diagonal, especially for p-Orbitals. While \texttt{minao} exhibits more pronounced off-diagonal noise, particularly in the top right, this does not significantly affect convergence. These deviations appear to be less detrimental than the smaller diagonal inaccuracies observed in \texttt{vsap}. \\
 From that we might conclude that a good guess should be close to the reference density especially on the main diagonal, but not necessarily in the off-diagonal elements. We shall continue to investigate this in the next section.
 
+\textbf{Further trials}\\
+\TODO{Maybe add a bit more details about failed other trials on whole Fock-matrix}
+
+
 \section{Predicting the Main Diagonal}
 \label{sec:main_diagonal}
 \TODO{Reference Cartus + GWH construction}
