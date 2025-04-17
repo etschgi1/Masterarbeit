@@ -98,19 +98,25 @@ Comparing the normalized difference to the reference density for the 102 test sa
 All three guessing schemes have spots on the main diagonal of the density matrix where they are likely to differ from the reference solution. Interestingly, a Mullikan population analysis (see \TODO{Background}) \parencite{ref:Mulliken_population_analysis} yields a mean value of $31.766$ the test set prediction for \texttt{minao} while \texttt{vsap} yield the expected $32$ (only $\alpha$-electrons). This slight deviation in the guess doesn't impair the convergence process, as this is fixed anyhow during the first self consistent iteration. Comparing \texttt{minao} and \texttt{vsap} with our Ridge Model the later fares worse on the main diagonal, especially for p-Orbitals. While \texttt{minao} exhibits more pronounced off-diagonal noise, particularly in the top right, this does not significantly affect convergence. These deviations appear to be less detrimental than the smaller diagonal inaccuracies observed in \texttt{vsap}. \\
 From that we might conclude that a good guess should be close to the reference density especially on the main diagonal, but not necessarily in the off-diagonal elements. We shall continue to investigate this in the next section.
 
-\textbf{Further trials}\\
+\textbf{Further trials \& other Basissize}\\
 \TODO{Maybe add a bit more details about failed other trials on whole Fock-matrix}
 
 
 \section{Predicting the Main Diagonal}
 \label{sec:main_diagonal}
 \TODO{Reference Cartus + GWH construction}
+Previously we tried to learn a mapping from overlap to Fock matrix soley via machine learning means. We have established that the quality for these guesses even on the minimal sto-3g basis is not on par with the established guessing schemes.\\
+Predicting the main diagonal for a given system is an easier target given the fact that the model predicts $N$ features from the $N^2$ input features. One established way of constructing the off diagonal elements is the generalized Wolfsberg-Helmholtz (GWH) construction \parencite{ref:gwh_wolfsberg1952spectra} (see \TODO{Background - guessing schemes}).
+
+\textbf{Simple Multi Perceptron Regressor}\\
+
+
 
 Ideas: 
 \begin{itemize}
-    \item Maybe use spectral loss (eigenvalues?!)
-    \item CNN
-    \item NN 
+    \item Maybe use spectral loss (eigenvalues?!) -> first ad hoc implementation didn't really work better
+    \item CNN -> both okish on whole data but worse than ridge (without cycles benchmark) 
+    \item NN  -> both okish on whole data but worse than ridge (without cycles benchmark)
     \item Maybe two step network -> first guess fock then get rid of noise?
 \end{itemize}
 
@@ -118,3 +124,5 @@ Ideas:
 \section{Building guesses block-by-block}
 \label{sec:blockwise_guessing}
 \TODO{Guess main diagonal and then construct or guess off-diagonal elements.}
+
+\TODO{Apply to larger basis sets.}
