@@ -61,12 +61,12 @@ Due to the symmetry of the matrices we can discard nearly half of the elements a
 
 \TODO{Switch heading? -> Ridge Regressor as title and not dataset?!}
 \textbf{Ridge Regressor model}\\
-The Ridge Regressor is setup with a typical $80 / 20$ train/test split. Overlap (input) as well as Fock (output) matrices are flattend and used as is (rescaling did not improve model accuracy). Using a 5-fold cross validation the model is a Multi-Ouput-Regressor is trained using \textsc{scikit-learn} \parencite{ref:sk-learn} with equally $\log_{10}$-spaced $L^2$-regularization parameter $\alpha$ values ranging from $10^{-2}$ to $10^{3}$. Subsequently, the model is retrained with the arithmetic mean of the best performing $\alpha$ values. For the Fock matrix prediction the model yields a RMSE of $0.046$ on the training set and $0.059$ on the test set which indicates slight overfitting. Using the F-Score metric \parencite{ref:Lehtola2019} (outlined in \autoref{subsec:background_cost_function}) \textcolor{red}{which can be used as a proxy for the convergence speed} we obtain the results in \autoref{tab:fscore_comparison} for the model and various guessing schemes impolemented in \textsc{PySCF} (further guessing scheme implementation details can be found in \autoref{sec:pyscf_initial_guessing_methods}).
+The Ridge Regressor is setup with a typical $80 / 20$ train/test split. Overlap (input) as well as Fock (output) matrices are flattend and used as is (rescaling did not improve model accuracy). Using a 5-fold cross validation the model is a Multi-Ouput-Regressor is trained using \textsc{scikit-learn} \parencite{ref:sk-learn} with equally $\log_{10}$-spaced $L^2$-regularization parameter $\alpha$ values ranging from $10^{-2}$ to $10^{3}$. Subsequently, the model is retrained with the arithmetic mean of the best performing $\alpha$ values. For the Fock matrix prediction the model yields a RMSE of $0.046$ on the training set and $0.059$ on the test set which indicates slight overfitting. Using the F-Score metric \parencite{ref:Lehtola2019} (outlined in \autoref{subsec:background_cost_function}) \textcolor{red}{which can be used as a proxy for the convergence speed} we obtain the results in \autoref{tab:ridge_metrics} for the model and various guessing schemes impolemented in \textsc{PySCF} (further guessing scheme implementation details can be found in \autoref{sec:pyscf_initial_guessing_methods}).
 
 \begin{table}[h]
     \centering
     \caption{Comparison of different guessing schemes for 102 (20\%) test samples from the \ch{C5H4N2O2} subset from QM9 \parencite{ref:article1_qm9}. The F-score is calculated using the Fock matrix prediction from the Ridge regression model and various guessing schemes implemented in \textsc{PySCF}. The number of iterations until convergence is shown as well as the percentage samples not converging within 50 iterations and the inference time as a factor of the inference time of the minao guess.}
-    \label{tab:fscore_comparison}
+    \label{tab:ridge_metrics}
     \resizebox{\textwidth}{!}{
     \begin{tabular}{l
                     S[table-format=1.2(2)]
@@ -110,6 +110,32 @@ Predicting the main diagonal for a given system is an easier target given the fa
 
 \textbf{Simple Multi Perceptron Regressor}\\
 
+
+--- 
+\begin{table}[h]
+    \centering
+    \caption{\TODO{\dots} Comparison of different guessing schemes for 102 (20\%) test samples from the \ch{C5H4N2O2} subset from QM9 \parencite{ref:article1_qm9}. The F-score is calculated using the Fock matrix prediction from the Ridge regression model and various guessing schemes implemented in \textsc{PySCF}. The number of iterations until convergence is shown as well as the percentage samples not converging within 50 iterations and the inference time as a factor of the inference time of the minao guess.}
+    \label{tab:NN_basic_metrics}
+    \resizebox{\textwidth}{!}{
+    \begin{tabular}{l
+                    S[table-format=1.2(2)]
+                    S[table-format=1.3(3)]
+                    S[table-format=1.2(2)]
+                    S[table-format=1.3(3)]
+                    S[table-format=1.3(3)]
+                    S[table-format=1.3(3)]}
+        \toprule
+        \textbf{Method} & \texttt{NN-GWH-model} & \texttt{minao} & \texttt{1e} & \texttt{atom} & \texttt{huckel} & \texttt{vsap} \\
+        \midrule
+        F-score / 1 &  &  &  &  &  &  \\
+        Iterations / 1 & 15 \pm 4 & 11.7 \pm 1.0 & 23 \pm 4 & 11.4 \pm 0.8 & 22 \pm 6 & 12.8 \pm 1.1 \\
+        Not-Converged / \% & 4 & 0 &  32 & 0 & 28 & 0\\
+        Inference-speed / 1 & 1.2 \pm 1.2 & 1.0 &  0.18 \pm 0.15 & 1.7 \pm 1.4 & 2.0 \pm 1.0 & 8 \pm 5 \\
+        \bottomrule
+    \end{tabular}
+    }
+\end{table}
+---
 
 
 Ideas: 

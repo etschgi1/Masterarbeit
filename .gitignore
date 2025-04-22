@@ -8,9 +8,13 @@
 *.tar.gz
 *.tar.xz
 *.tar
+*.pyc
+*.bcf
+*.keras
 
 /**/*.out
 *scf_guess_tools/**
 **/M-OFDFT/**
 
 /**/logs/
+/**/data/

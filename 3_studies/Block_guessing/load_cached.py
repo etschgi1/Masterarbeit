@@ -30,6 +30,8 @@ def load_cached(file_paths, cache_path, basis, guess="minao", method="dft", func
                                 guess = guess,
                                 backend = backend,
                                 cache = cache_path)
+            print(f"Using: file={file} - mol_name={mol_name} - basis={None} - guess={guess} - method={method} - functional={functional}")
+            break
         except Exception as e: 
             error_list.append(e)
             error_files.append(mol_name)

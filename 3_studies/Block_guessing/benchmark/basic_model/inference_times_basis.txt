@@ -1,0 +1,14 @@
+NN: 0.0559+/-0.0064 s - 1.166+/-0.656x comp. MINAO
+Minao: 0.0480+/-0.0264 s - 1.000+/-0x comp. MINAO
+1e: 0.0059+/-0.0010 s - 0.123+/-0.071x comp. MINAO
+Atom: 0.0469+/-0.0230 s - 0.977+/-0.720x comp. MINAO
+Huckel: 0.0593+/-0.0243 s - 1.236+/-0.849x comp. MINAO
+VSAP: 0.3115+/-0.0348 s - 6.495+/-3.649x comp. MINAO
+
+---
+NN: 14.88+/-3.89 cycles
+Minao: 11.68+/-0.99 cycles
+1e: 23.21+/-3.55 cycles
+Atom: 11.44+/-0.75 cycles
+Huckel: 21.94+/-5.46 cycles
+VSAP: 12.74+/-1.02 cycles

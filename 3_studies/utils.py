@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scf_guess_tools import calculate, load, Backend
 from pyscf import scf
+from pyscf.gto import Mole
 from scipy.linalg import eigh
 import re
 from time import time
@@ -27,6 +28,26 @@ def comp_trace(overlap, *args):
     for arg in args: 
         trace_ = np.trace(arg @ overlap)
         print(f"Trace: {trace_}")
+
+def get_overlap(file, basis_set, symmetry=False, backend=Backend.PY): 
+    lines = open(file).readlines()
+    mol = load(file, backend)
+    q = int(re.search(r"charge\s+(-?\d+)", lines[1]).group(1))
+    m = int(re.search(r"multiplicity\s+(\d+)", lines[1]).group(1))
+    mol = Mole(atom=file, charge=q, spin=m - 1, symmetry=symmetry)
+    mol.basis = basis_set
+    mol.build()
+    return mol.intor('int1e_ovlp')
+
+def load_mol(file, basis_set, symmetry=False, backend=Backend.PY):
+    lines = open(file).readlines()
+    q = int(re.search(r"charge\s+(-?\d+)", lines[1]).group(1))
+    m = int(re.search(r"multiplicity\s+(\d+)", lines[1]).group(1))
+    mol = Mole(atom=file, charge=q, spin=m - 1, symmetry=symmetry)
+    mol.basis = basis_set
+    mol.build()
+    return mol
+
 
 def flatten_triang(M): 
     return M[np.triu_indices(M.shape[0], k=0)]
@@ -191,3 +212,16 @@ def reverse_mat_permutation(M, atom_labels, inv_perm_index):
     for (s, e) in reordered_ranges:
         reordered_indices.extend(range(s, e))
     return M[np.ix_(reordered_indices, reordered_indices)]
+
+def reconstruct_Fock(diag, ovlp, K = 1.75): 
+    """Take diagonal and reconstruct the Fock matrix using GWH
+    """
+    mat_dim = diag.shape[0]
+    out = np.zeros((mat_dim, mat_dim))
+    for i in range(mat_dim):
+        for j in range(mat_dim):
+            if i == j:
+                out[i, j] = diag[i]
+            else:
+                out[i, j] = K * ovlp[i, j] * (diag[i] + diag[j]) / 2
+    return out
