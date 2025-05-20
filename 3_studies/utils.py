@@ -225,3 +225,29 @@ def reconstruct_Fock(diag, ovlp, K = 1.75):
             else:
                 out[i, j] = K * ovlp[i, j] * (diag[i] + diag[j]) / 2
     return out
+
+def plot_fock_comparison(ex_test, ex_pred, size, matrix_metric="Fock", title="Fock Matrix Comparison", vmax=1.5):
+    diff = ex_test - ex_pred
+    rmse = root_mean_squared_error(ex_test, ex_pred)
+    
+    test_mat = unflatten_triang(ex_test, size) if ex_test.shape[0] != size else ex_test
+    pred_mat = unflatten_triang(ex_pred, size) if ex_pred.shape[0] != size else ex_pred
+    diff_mat = unflatten_triang(diff, size) if diff.shape[0] != size else diff
+    
+    fig, ax = plt.subplots(1, 4, figsize=(15, 5), width_ratios=[1, 1, 1, 0.1])
+    fig.suptitle(f"{title}  |  RMSE: {rmse:.8f}")
+    
+    ax[0].imshow(test_mat, cmap='RdBu', vmin=-vmax, vmax=vmax)
+    ax[0].set_title(f"{matrix_metric} converged (REFERENCE)")
+    
+    ax[1].imshow(pred_mat, cmap='RdBu', vmin=-vmax, vmax=vmax)
+    ax[1].set_title(f"{matrix_metric} from overlap (PREDICTION)")
+    
+    diff_plot = ax[2].imshow(diff_mat, cmap='RdBu', vmin=-vmax, vmax=vmax)
+    ax[2].set_title("Difference")
+    
+    cbar = fig.colorbar(diff_plot, cax=ax[3])
+    cbar.set_label("Difference Scale")
+    
+    plt.tight_layout()
+    plt.show()
