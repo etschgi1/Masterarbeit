@@ -10,22 +10,56 @@ The following introductry overview of the Hartree-Fock method is largely based o
 
 \subsection{Ideas behind the Hartree-Fock method}
 \label{subsec:background_hf}
-The Born Oppenheimer approximations allows the seperate treatment of the nuclear and electronic problem of a system. This is motivated by the vastly different masses and hence time-scales of nuclei and electrons. The total wavefunction of a system may be writen as a product state of electronic and nuclear wavefunction (using the convention of small letters for electrons and capital letters for nuclei coordinates):
+The Born Oppenheimer approximations allows for a seperate treatment of the nuclear and electronic problem of a system. This is motivated by the vastly different masses and hence time-scales of nuclei and electron movement. The total wavefunction of a system may be writen as a product state of electronic and nuclear wavefunction (using the convention of small letters for electrons and capital letters for nuclei coordinates):
 \begin{equation}
     \Psi_{\text{tot}}(\mathbf{r}_n, \mathbf{R}_m) = \Psi_{\text{elec}}(\mathbf{r}_n; \mathbf{R}_m) \Psi_{\text{nuc}}(\mathbf{R}_m)
 \end{equation}
-Given our approximation the total wavefunction can be derived rather easily from the electronic wavefunction via an effective potential for the nuclear motion, given by a solved electronic wavefunction. However, we will focus on the prerequisit of the electronic wavefunction. It depends parametically on the nuclear coordinates and is the solution to the time independent Schrödinger equation:
+Given our approximation, the total wavefunction can be derived rather easily from the electronic wavefunction via an effective potential for the nuclear motion, given by a solved electronic wavefunction. However, we will focus on the prerequisit of the electronic wavefunction and hence drop the subscript from now on. It depends parametically on the nuclear coordinates and is the solution to the time independent Schrödinger equation:
 \begin{equation}
-    H_\text{elec} \Psi_{\text{elec}}(\mathbf{r}_n; \mathbf{R}_m) = E_{\text{elec}}(\mathbf{R}_m) \Psi_{\text{elec}}(\mathbf{r}_n; \mathbf{R}_m)
+    H \Psi(\mathbf{r}_n; \mathbf{R}_m) = E(\mathbf{R}_m) \Psi(\mathbf{r}_n; \mathbf{R}_m)
 \end{equation}
-With the electronic energy $E_{\text{elec}}$ being a functional of the electronic wavefunction which will be minimized under ceratin constraints as we'll see later. 
-The Hamiltonian operator $H_\text{elec}$ reads: 
+With the electronic energy $E$ being a functional of the electronic wavefunction which will be minimized under ceratin constraints as we'll see later. 
+The Hamiltonian operator $H$ reads: 
 \begin{equation}
-    H_\text{elec} = T + V_{\text{ne}} + V_{\text{ee}} = -\frac{1}{2} \sum_{i=1}^N \nabla_i^2 - \sum_{i=1}^N \sum_{A=1}^M \frac{Z_A}{|\mathbf{r}_i - \mathbf{R}_A|} + \sum_{i<j}^N \frac{1}{|\mathbf{r}_i - \mathbf{r}_j|}
+    H = T + V_{\text{ne}} + V_{\text{ee}} = -\frac{1}{2} \sum_{i=1}^N \nabla_i^2 - \sum_{i=1}^N \sum_{A=1}^M \frac{Z_A}{|\mathbf{r}_i - \mathbf{R}_A|} + \sum_{i<j}^N \frac{1}{|\mathbf{r}_i - \mathbf{r}_j|}
 \end{equation}
-for $N$ electrons and $M$ nuclei in atomic units. 
+for $N$ electrons and $M$ nuclei in atomic units. Note that we do not include kinetic or repulsion terms for the nuclei as we are only considering the electronic problem. The first term is the kinetic energy operator, the second term describes the interaction of the electrons with the nuclei and the last term describes the electron-electron interaction.\\
 
-%!Todo good start -> go on with Antisysmmetrization (part slater & fock introduced) - Hartree-Fock equations - .... - variational method + energy - matrices used - basis sets - SCF algorithm - kohn-sham equations & DFT - CC / other methods (short) - 
+Given the Fermionic problem at hand we have to take antisymmetrization into account. Mathematically this can be achieved by writing the wavefunction using a determinant which ensures parity change under exchange of two rows\footnote{Furthermore, if two electrons occupy the same orbital the determinant will vanish}. For $N$ electrons this can be written as:
+\begin{equation}
+    \Psi(\mathbf{x}_1, \mathbf{x}_2, \ldots, \mathbf{x}_N) = \frac{1}{\sqrt{N!}}
+    \begin{vmatrix}
+    \chi_1(\mathbf{x}_1) & \chi_2(\mathbf{x}_1) & \cdots & \chi_N(\mathbf{x}_1) \\
+    \chi_1(\mathbf{x}_2) & \chi_2(\mathbf{x}_2) & \cdots & \chi_N(\mathbf{x}_2) \\
+    \vdots & \vdots & \ddots & \vdots \\
+    \chi_1(\mathbf{x}_N) & \chi_2(\mathbf{x}_N) & \cdots & \chi_N(\mathbf{x}_N)
+    \end{vmatrix}
+\end{equation}
+To write down this so called Slater determinant we have introduced the notation $\mathbf{x}_i = (\mathbf{r}_i, \sigma_i)$ with $\sigma_i$ being the spin of electron $i$. The functions $\chi_i$ are called spin orbitals and are a product of spatial and spin functions. 
+\begin{equation}
+    \chi_i(\mathbf{x}) = \sum_{\mu} C_{i\mu} \chi_\mu(\mathbf{x}) = \sum_{\mu} C_{i\mu} \phi_\mu(\mathbf{r}) \sigma(\sigma)
+\end{equation}
+Using this expansion we reduce the problem to the determination of the coefficients $C_{i\mu}$ for a given set of orthogonal basis functions $\phi_\mu(\mathbf{r})$. For a complete set of basis functions this expansion is exact. However, in practice we have to limit the number of basis functions and hence the size of our Slater determinant to a computationally feasible size. For the subsequent considerations we introduce the shorthand ket for a slater determinant $\ket{\Psi} = \ket{\chi_1, \chi_2, \ldots, \chi_N}$ or $\ket{\Psi} = \ket{1, 2, \ldots, N}$ for the sake of brevity.
+
+%Energy functional
+
+%Sketch derivation of HF Equations
+%Fock operator
+%Coulomb and X-change terms
+
+\subsection{Computational Treatment of the Hartree-Fock Method}
+\label{subsec:background_hf_computational}
+\TODO{Computational treatment + Überleitung hier her}
+The Fock matrix depends on the electron density, which in turn depends on the molecular orbitals, leading to a self-consistent field (SCF) procedure:
+\begin{enumerate}
+    \item Guess an initial set of molecular orbital coefficients $\mathbf{C}$ (often from a core Hamiltonian or superposition of atomic densities).
+    \item Construct the density matrix $\mathbf{P}$ from $\mathbf{C}$.
+    \item Build the Fock matrix $\mathbf{F}$ using $\mathbf{P}$.
+    \item Solve the generalized eigenvalue problem to obtain new $\mathbf{C}$ and $\mathbf{\varepsilon}$.
+    \item Check for convergence of the total energy or density matrix. If not converged, repeat from step 2.
+\end{enumerate}
+
+%!Hartree-Fock equations - .... - variational method + energy - matrices used - basis sets - SCF algorithm - kohn-sham equations & DFT - CC / other methods (short) - 
 \section{Machine Learning}
 \label{sec:background_ml}
 %! Intor to ML & Statistical Learning. 

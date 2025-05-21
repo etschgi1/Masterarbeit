@@ -99,10 +99,33 @@ Comparing the normalized difference to the reference density for the 102 test sa
 All three guessing schemes have spots on the main diagonal of the density matrix where they are likely to differ from the reference solution. Interestingly, a Mulliken population analysis (see \TODO{Background}) \parencite{ref:Mulliken_population_analysis} yields a mean value of $31.766$ the test set prediction for \texttt{minao} while \texttt{vsap} yield the expected $32$ (only $\alpha$-electrons). A small error in the initial guess doesn't slow down convergence, since the self-consistent cycle corrects it right away. Comparing \texttt{minao} and \texttt{vsap} with our Ridge Model the later fares worse on the main diagonal, especially for p-Orbitals. While \texttt{minao} exhibits more pronounced off-diagonal noise in comparision with \texttt{vsap}, this does not seem to affect convergence speed. At least for this small basisset it seems that errors in the off-diagonal do not hinder fast convergence.\\
 % From that we might conclude that a good guess should be close to the reference density especially on the main diagonal, but not necessarily in the off-diagonal elements. We shall continue to investigate this in the next section.
 
-\textbf{Kernel Ridge Regression}
-Our baseline Ridge Regression model already introduced $L^2$-regularization handling collinearity which is doomed to happen in our dataset. However, it only models linear relationships between our input and output features. Kernel Ridge Regression (KRR) extends this by using kernel functions to generate a mapping from the input space via a higher dimensional feature space to the output space. This allows nonlinear relationships to be learned. \\
-Using the same train/test split as before we train a KRR model with three different 
-\TODO{...}
+\textbf{Kernel Ridge Regression}\\
+Our baseline Ridge Regression (RR) model already introduced $L^2$-regularization handling collinearity which is doomed to happen in our dataset. However, it only models linear relationships between our input and output features. Kernel Ridge Regression (KRR) extends this by using kernel functions to generate a mapping from the input space via a higher dimensional feature space to the output space. This allows nonlinear relationships to be learned. \\
+Using the same train/test split as before we train a KRR model with three different kernels: RBF, polynomial of degree 2 and polynomial of degree 3. 
+Contrary to the mean-alpha heuristic given by the best performing target $\alpha$ value of the Ridge regression model, we use a global BayesSearch with 5-fold cross validation and 30 iterations\footnote{Search space: $\alpha \sim \operatorname{LogUniform}(10^{-8},10^{4})$, $\gamma \sim \operatorname{LogUniform}(10^{-6},10^{3})$, and $\mathrm{coef0} \sim \operatorname{Uniform}(0,1)$ for polynomial kernels; for the RBF kernel $\mathrm{coef0}$ is ignored} to obtain the results in \autoref{tab:kernel_ridge_metrics}.
+
+\begin{table}[h]
+    \centering
+    \caption{Comparison of different guessing schemes for 102 (20\%) test samples from the \ch{C5H4N2O2} subset from QM9 \parencite{ref:article1_qm9}. The F-score is calculated using the Fock matrix prediction from the Kernel-Ridge regression model and the \texttt{minao} guess. The number of iterations until convergence is shown as well as the percentage samples not converging within 50 iterations and the inference time as a factor of the inference time of the minao guess.}
+    \label{tab:kernel_ridge_metrics}
+    \begin{tabular}{l
+                    S[table-format=1.2(2)]
+                    S[table-format=1.3(3)]
+                    S[table-format=1.2(2)]
+                    S[table-format=1.3(3)]}
+        \toprule
+        \textbf{Method} & \texttt{KRR-RBF} & \texttt{KRR-poly} & \texttt{1e} & \texttt{minao} \\
+        \midrule
+        F-score / 1         &  &  &  & 0.93 \pm 0.04 \\
+        Iterations / 1      & 14 \pm 3 & 14 \pm 3 & 20 \pm 5 & 11.7 \pm 1.0 \\
+        Not-Converged / \%  & 4 & 4 & 12 & 0\\
+        Inference-speed / 1 &  &  &  & 1.0\\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\TODO{Interpretation of results of KRR}
+
 \textbf{Further trials \& other Basissize}\\
 \TODO{Maybe add a bit more details about failed other trials on whole Fock-matrix}
 
