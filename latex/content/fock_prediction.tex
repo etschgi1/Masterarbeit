@@ -62,7 +62,7 @@ Due to the symmetry of the matrices we can discard nearly half of the elements a
 
 \textbf{Ridge Regressor model}\\ % updated with new sorted dataset
 The Ridge Regressor (RR) is setup with a typical $80 / 20$ train/test split. Overlap (input) as well as Fock (output) matrices are flattend and Overlap (input) is additionally rescaled using the \textsc{scikit-learn}'s default Standard Scaler. \parencite{ref:sk-learn} Using a 5-fold cross validation the model, a Multi-Ouput-Regressor, is trained \footnote{also using \textsc{scikit-learn}'s \textsc{RidgeCV} and \textsc{MultiOutputRegressor} classes} with 10 equally $\log_{10}$-spaced $L^2$-regularization parameter $\alpha$ values ranging from $10^{-2}$ to $10^{3}$. Subsequently, the model is retrained with the arithmetic mean of the best performing $\alpha$ values ($\alpha_{\text{mean}} \approx 34$). %! Note the averaging actually leads to a lower RMSE in test set compared to non-averaging the Multiregressor Model!  
-For the Fock matrix prediction the model yields a RMSE of $0.0057$ on the training set and $0.032$ on the test set which indicates overfitting of the model. Using the F-Score metric \parencite{ref:Lehtola2019} (outlined in \autoref{subsec:background_cost_function}) \textcolor{red}{which can be used as a proxy for the convergence speed} we obtain the results in \autoref{tab:ridge_metrics} for the model and various guessing schemes implemented in \textsc{PySCF} (further guessing scheme implementation details can be found in \autoref{sec:pyscf_initial_guessing_methods}).
+For the Fock matrix prediction the model yields a RMSE of $0.0057$ on the training set and $0.032$ on the test set which indicates overfitting of the model. We obtain the results in \autoref{tab:ridge_metrics} for the model and various guessing schemes implemented in \textsc{PySCF} (further guessing scheme implementation details can be found in \autoref{sec:pyscf_initial_guessing_methods}).
 
 \begin{table}[h]
     \centering
@@ -79,25 +79,25 @@ For the Fock matrix prediction the model yields a RMSE of $0.0057$ on the traini
         \toprule
         \textbf{Method} & \texttt{Ridge-model} & \texttt{minao} & \texttt{1e} & \texttt{atom} & \texttt{huckel} & \texttt{vsap} \\
         \midrule
-        F-score / 1 & 0.74 \pm 0.05 & 0.899 \pm 0.002 & 0.71 \pm 0.02 & 0.802 \pm 0.0010 & 0.840 \pm 0.010 & 0.993 \pm 0.002 \\
-        Iterations / 1 & 19 \pm 4 & 11.7 \pm 1.0 & 23 \pm 4 & 11.4 \pm 0.8 & 22 \pm 6 & 12.8 \pm 1.1 \\
-        Inference-speed / 1 & 0.6 \pm 0.4 & 1.0 &  0.07 \pm 0.06 & 0.9 \pm 0.7 & 0.8 \pm 0.6 & 3 \pm 2 \\
-        Not-Converged / \% & 23 & 0 &  31 & 0 & 27 & 0\\
+        F-score / 1 & 0.93 \pm 0.04 & 0.899 \pm 0.002 & 0.71 \pm 0.02 & 0.802 \pm 0.0010 & 0.840 \pm 0.010 & 0.993 \pm 0.002 \\
+        Iterations / 1 & 14 \pm 3 & 11.7 \pm 1.0 & 23 \pm 4 & 11.4 \pm 0.8 & 22 \pm 6 & 12.8 \pm 1.1 \\
+        Inference-speed / 1 & 0.7 \pm 0.3 & 1.0 &  0.05 \pm 0.02 & 0.5 \pm 0.4 & 0.5 \pm 0.3 & 3 \pm 1.3 \\
+        Not-Converged / \% & 4 & 0 &  31 & 0 & 27 & 0\\
         \bottomrule
     \end{tabular}
     }
 \end{table}
-Ridge regression seems to do slightly better than the \texttt{1e} and \texttt{huckel} guessing schemes but drastically worse in comparison to the \texttt{minao}, \texttt{atom} and \texttt{vsap} guessing schemes. It has to be noted that theere seems to be no significant correlation of the F-score with the number of iterations till convergence. While \texttt{vsap} yields by far the highest F-score, it on average takes one iteration more to converge than the \texttt{minao} guessing scheme. This hints at the fact that some guessing strategies might guess better in regions in the density matrix which are more relevant for convergence speed than others. \\
+Ridge regression seems to do better than the \texttt{1e} and \texttt{huckel} guessing schemes in terms of iterations but still fares worse in comparison to the \texttt{minao}, \texttt{atom} and \texttt{vsap} guessing schemes. It has to be noted that there seems to be no significant correlation of the F-score with the number of iterations till convergence. While \texttt{vsap} yields by far the highest F-score, it on average takes one iteration more to converge than the \texttt{minao} guessing scheme. This hints at the fact that some guessing strategies might guess better in regions in the density matrix which are more relevant for convergence speed than others. \\
 Comparing the normalized difference to the reference density for the 102 test sample for \texttt{minao}, \texttt{vsap} and the Ridge regression model in \autoref{fig:density_error_comparison} gives different error patterns.  
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{../fig/c5h4n2o2/density_error_comparison.pdf}
-    \caption[Normalized difference of density guesses]{Normalized mean difference of density guesses to converged density for \texttt{minao} \& \texttt{vsap} guess and the Ridge regression model evaluated on the testset: 102 (20\%) test samples from the \ch{C5H4N2O2} subset from QM9 \parencite{ref:article1_qm9}.}
+    \caption[Normalized difference of density guesses]{Normalized mean absolute difference of $\alpha$-electron density guesses to their converged density for \texttt{minao} \& \texttt{vsap} guess and the Ridge regression model evaluated on the testset: 102 (20\%) test samples from the \ch{C5H4N2O2} subset from QM9 \parencite{ref:article1_qm9}.}
     \label{fig:density_error_comparison}
 \end{figure}
-All three guessing schemes have spots on the main diagonal of the density matrix where they are likely to differ from the reference solution. Interestingly, a Mulliken population analysis (see \TODO{Background}) \parencite{ref:Mulliken_population_analysis} yields a mean value of $31.766$ the test set prediction for \texttt{minao} while \texttt{vsap} yield the expected $32$ (only $\alpha$-electrons). This slight deviation in the guess doesn't impair the convergence process, as this is fixed anyhow during the first self consistent iteration. Comparing \texttt{minao} and \texttt{vsap} with our Ridge Model the later fares worse on the main diagonal, especially for p-Orbitals. While \texttt{minao} exhibits more pronounced off-diagonal noise, particularly in the top right, this does not significantly affect convergence. These deviations appear to be less detrimental than the smaller diagonal inaccuracies observed in \texttt{vsap}. \\
-From that we might conclude that a good guess should be close to the reference density especially on the main diagonal, but not necessarily in the off-diagonal elements. We shall continue to investigate this in the next section.
+All three guessing schemes have spots on the main diagonal of the density matrix where they are likely to differ from the reference solution. Interestingly, a Mulliken population analysis (see \TODO{Background}) \parencite{ref:Mulliken_population_analysis} yields a mean value of $31.766$ the test set prediction for \texttt{minao} while \texttt{vsap} yield the expected $32$ (only $\alpha$-electrons). A small error in the initial guess doesn't slow down convergence, since the self-consistent cycle corrects it right away. Comparing \texttt{minao} and \texttt{vsap} with our Ridge Model the later fares worse on the main diagonal, especially for p-Orbitals. While \texttt{minao} exhibits more pronounced off-diagonal noise in comparision with \texttt{vsap}, this does not seem to affect convergence speed. At least for this small basisset it seems that errors in the off-diagonal do not hinder fast convergence.\\
+% From that we might conclude that a good guess should be close to the reference density especially on the main diagonal, but not necessarily in the off-diagonal elements. We shall continue to investigate this in the next section.
 
 \textbf{Kernel Ridge Regression}
 Our baseline Ridge Regression model already introduced $L^2$-regularization handling collinearity which is doomed to happen in our dataset. However, it only models linear relationships between our input and output features. Kernel Ridge Regression (KRR) extends this by using kernel functions to generate a mapping from the input space via a higher dimensional feature space to the output space. This allows nonlinear relationships to be learned. \\
