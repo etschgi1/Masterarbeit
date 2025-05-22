@@ -2,8 +2,8 @@ import os
 import numpy as np
 from mendeleev import element
 
-XYZ_INPUT_FOLDER = "/home/etschgi1/REPOS/Masterarbeit/datasets/QM9/xyz_c5h4n2o2"
-OUTPUT_FOLDER = "/home/etschgi1/REPOS/Masterarbeit/datasets/QM9/xyz_c5h4n2o2_sorted"
+XYZ_INPUT_FOLDER = "/home/etschgi1/REPOS/Masterarbeit/datasets/QM9/xyz_c7h10o2"
+OUTPUT_FOLDER = "/home/etschgi1/REPOS/Masterarbeit/datasets/QM9/xyz_c7h10o2_sorted"
 if not os.path.exists(OUTPUT_FOLDER): 
     os.makedirs(OUTPUT_FOLDER)
 

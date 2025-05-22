@@ -251,3 +251,85 @@ def plot_fock_comparison(ex_test, ex_pred, size, matrix_metric="Fock", title="Fo
     
     plt.tight_layout()
     plt.show()
+
+
+def get_reordering(xyz_old, xyz_new): 
+    """
+    Get the reordering of the atoms in the new xyz xyz_file compared to the old one.
+    Indices in list are the indices of the old xyz xyz_file! 
+    """
+    # read in the old and new xyz files
+    with open(xyz_old, 'r') as f:
+        old_lines = f.readlines()
+    with open(xyz_new, 'r') as f:
+        new_lines = f.readlines()
+    
+    nr_atoms = int(old_lines[0].strip())
+
+    # get the atom names and coordinates from the old and new xyz files
+    old_atoms = [line.split() for line in old_lines[2:nr_atoms+2]]
+    new_atoms = [line.split() for line in new_lines[2:nr_atoms+2]]
+    
+    # get the reordering of the atoms
+    reordering = [old_atoms.index(atom) for atom in new_atoms]
+    assert len(reordering) == len(new_atoms), "Reordering length does not match new atom length"
+    assert len(set(reordering)) == len(reordering), "Reordering contains duplicate indices"
+    return reordering
+
+def reorder_matrix(mat: np.ndarray,
+                   reordering: list[int],
+                   mol) -> np.ndarray:
+    """
+    Reorder an AO-based square matrix in atom blocks.
+
+    Parameters
+    ----------
+    mat : (M, M) array
+        The original AO matrix (M = total number of AOs).
+    reordering : length-N_atoms list
+        Each entry j is the index of the *old* atom that should
+        move to new atom-position j.
+    mol : pyscf.gto.Mole
+        A PySCF molecule, used to get `mol.ao_labels()` and thus
+        recover how many AOs live on each atom in the old ordering.
+
+    Returns
+    -------
+    mat_new : (M, M) array
+        The same matrix, but with atom-blocks permuted according
+        to `reordering`.
+    """
+    # 1) Group AO indices by old-atom
+    labels = mol.ao_labels()  # e.g. ["2 O 1s", "2 O 2s", "3 C 1s", ...]
+    old2aos: dict[int, list[int]] = {}
+    for ao_idx, lab in enumerate(labels):
+        atom_idx = int(lab.split()[0])   # PySCF labels are 1-based
+        old2aos.setdefault(atom_idx, []).append(ao_idx)
+
+    # 2) Build new AO ordering by flattening blocks in the new atom order
+    new_order = []
+    for new_atom in range(len(reordering)):
+        old_atom = reordering[new_atom]
+        new_order.extend(old2aos[old_atom])
+
+    # 3) Permute both axes
+    mat_new = mat[np.ix_(new_order, new_order)]
+    return mat_new
+
+def reorder_Matrix_using_xyz_perm(mat: np.ndarray,
+                                  xyz_old: str,
+                                  xyz_new: str,
+                                  mol) -> np.ndarray:
+        """Reorder an AO-based square matrix in atom blocks
+        using the permutation of the atoms in the xyz files.
+        Parameters
+        ----------
+        mat : (M, M) array
+            The original AO matrix (M = total number of AOs).
+        xyz_old : str
+        xyz_new : str
+        mol : pyscf.gto.Mole
+            THE OLD MOL (loaded with xyz_old and correct basis!), PySCF molecule, used to get `mol.ao_labels()`
+        """
+        reordering = get_reordering(xyz_old, xyz_new)
+        return reorder_matrix(mat, reordering, mol)

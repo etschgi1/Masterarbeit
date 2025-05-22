@@ -1,4 +1,4 @@
-\chapter{Fock Matrix prediction: A first trial}
+\chapter{Fock Matrix prediction}
 \label{chap:fock_matrix_predictions}
 
 SCF methods by nature initially need a density matrix to start off their iterative calculations. Independent of the way the initial guess is chosen the computational effort of this step should be negligible compared to the actual SCF iterations. 
@@ -43,13 +43,15 @@ Effectively, one performs part of the SCF cycle here to obtain the density matri
     \label{fig:method_data_flow}
 \end{figure}
 
-The schematic workflow of generating a density matrix from the overlap matrix is shown in \autoref{fig:method_data_flow}. While the overlap and density might look very similar and one might think that predicting the density matrix directly from the overlap matrix would be easier. However, learning the Fock matrix tends to involve fewer strict physical constraints. A Fock matrix primarily needs to be Hermitian, while a density matrix must be strictly positive semidefinite by construction, as well as normalized to the correct number of electrons. That makes direct density matrix learning more challenging, whereas learning the Fock matrix and then obtaining the density through the diagonalization could yield better results. \TODO{Reference?}
+The schematic workflow of generating a density matrix from the overlap matrix is shown in \autoref{fig:method_data_flow}. While the overlap and density might look very similar and one might think that predicting the density matrix directly from the overlap matrix would be easier. However, learning the Fock matrix tends to involve fewer strict physical constraints. A Fock matrix primarily needs to be Hermitian, while a density matrix must be strictly positive semidefinite by construction, as well as normalized to the correct number of electrons. That makes direct density matrix learning more challenging, whereas learning the Fock matrix and then obtaining the density through the diagonalization will most likely yield better results.\TODO{Reference?}\\
+
+Additionally, the reconstruction from Fock to density inflates residual errors of the computed Fock matrix to the ground truth because the density is a self-consitent eigenproblem in $F$ and $S$. Errors in the density should ultimately be small enough to not affect the iterations significantly. In practice, some iterations (2-5) are always needed, even if one tries to run the calculation with a guessed density constructed from the converged $F$ \& $S$ matrices.\\
 
 \section{\ch{C5H4N2O2}-subset: A first trial}
 \label{sec:qm9_c5h4n2o2}
 
 As a proof of concept we will use 508 constitutional isomers\footnote{From the 509 constitutional isomers of \ch{C5H4N2O2} 508 converged using the STO-3G basis and the B3LYP functional.} of \ch{C5H4N2O2} from the QM9 dataset. 
-Single point RKS simulations in \textsc{PySCF} \parencite{ref:pyscf} were performed for these molecules using the B3LYP\footnote{B3LYPG was used to be consitant with the Gaussian} functional and the STO-3G basis. The resulting converged density-, fock-, and overlap-matrices were saved for future training purposes. For our very minimal basis these matrices are of size $49 \times 49$ as can be seen for a converged density in \autoref{fig:density_dsgdb9nsd_022700}. 
+Single point RKS simulations in \textsc{PySCF} \parencite{ref:pyscf} were performed for these molecules using the B3LYP\footnote{B3LYPG was used to be consistent with the Gaussian} functional and the STO-3G basis. The resulting converged density-, fock-, and overlap-matrices were saved for future training purposes. For our very minimal basis these matrices are of size $49 \times 49$ as can be seen for a converged density in \autoref{fig:density_dsgdb9nsd_022700}. 
 Due to the symmetry of the matrices we can discard nearly half of the elements and are left with 1225 features to learn. A rule of thumb for training classical statistical models is to have at least 10 samples per feature. \parencite{ref:rule_of_10} The given dataset of 508 samples is therefore far off from this rule if we discard multiplicity in atoms in the samples. As a first step we shall limit our efforts to single models predicting the system based on the full overlap matrix. Nevertheless, the row / column order of our atoms in the overlap matrix has to be consistent for all the samples in the dataset (as seen in \autoref{fig:density_dsgdb9nsd_022700}). This will simply be done by sorting the atoms in the overlap matrix according to their atomic number. Now we are ready to start off our endeavour with a Ridge regression model as a first trial. 
 
 \begin{figure}[H]
@@ -61,7 +63,7 @@ Due to the symmetry of the matrices we can discard nearly half of the elements a
 
 
 \textbf{Ridge Regressor model}\\ % updated with new sorted dataset
-The Ridge Regressor (RR) is setup with a typical $80 / 20$ train/test split. Overlap (input) as well as Fock (output) matrices are flattend and Overlap (input) is additionally rescaled using the \textsc{scikit-learn}'s default Standard Scaler. \parencite{ref:sk-learn} Using a 5-fold cross validation the model, a Multi-Ouput-Regressor, is trained \footnote{also using \textsc{scikit-learn}'s \textsc{RidgeCV} and \textsc{MultiOutputRegressor} classes} with 10 equally $\log_{10}$-spaced $L^2$-regularization parameter $\alpha$ values ranging from $10^{-2}$ to $10^{3}$. Subsequently, the model is retrained with the arithmetic mean of the best performing $\alpha$ values ($\alpha_{\text{mean}} \approx 34$). %! Note the averaging actually leads to a lower RMSE in test set compared to non-averaging the Multiregressor Model!  
+The Ridge Regressor (RR) is setup with a typical $80 / 20$ train/test split. Overlap (input) as well as Fock (output) matrices are flattend and Overlap (input) is additionally rescaled using the \textsc{scikit-learn}'s default Standard Scaler. \parencite{ref:sk-learn} Using a 5-fold cross validation the model, a Multi-Ouput-Regressor, is trained \footnote{also using \textsc{scikit-learn}'s \textsc{RidgeCV} and \textsc{MultiOutputRegressor} classes} with 10 equally $\log_{10}$-spaced $L^2$-regularization parameter $\alpha$ values ranging from $10^{-2}$ to $10^{3}$. Subsequently, the model is retrained with the arithmetic mean of the best performing $\alpha$ values ($\alpha_{\text{mean}} \approx 34$). This averaging leads to lower overfitting and a slightly lower RMSE in the testset. %! Note the averaging actually leads to a lower RMSE in test set compared to non-averaging the Multiregressor Model!  test RMSE 0.03231 vs. 0.03228 (averaging)
 For the Fock matrix prediction the model yields a RMSE of $0.0057$ on the training set and $0.032$ on the test set which indicates overfitting of the model. We obtain the results in \autoref{tab:ridge_metrics} for the model and various guessing schemes implemented in \textsc{PySCF} (further guessing scheme implementation details can be found in \autoref{sec:pyscf_initial_guessing_methods}).
 
 \begin{table}[h]
@@ -101,12 +103,12 @@ All three guessing schemes have spots on the main diagonal of the density matrix
 
 \textbf{Kernel Ridge Regression}\\
 Our baseline Ridge Regression (RR) model already introduced $L^2$-regularization handling collinearity which is doomed to happen in our dataset. However, it only models linear relationships between our input and output features. Kernel Ridge Regression (KRR) extends this by using kernel functions to generate a mapping from the input space via a higher dimensional feature space to the output space. This allows nonlinear relationships to be learned. \\
-Using the same train/test split as before we train a KRR model with three different kernels: RBF, polynomial of degree 2 and polynomial of degree 3. 
-Contrary to the mean-alpha heuristic given by the best performing target $\alpha$ value of the Ridge regression model, we use a global BayesSearch with 5-fold cross validation and 30 iterations\footnote{Search space: $\alpha \sim \operatorname{LogUniform}(10^{-8},10^{4})$, $\gamma \sim \operatorname{LogUniform}(10^{-6},10^{3})$, and $\mathrm{coef0} \sim \operatorname{Uniform}(0,1)$ for polynomial kernels; for the RBF kernel $\mathrm{coef0}$ is ignored} to obtain the results in \autoref{tab:kernel_ridge_metrics}.
+Using the same train/test split as before we fit a KRR model with three different kernels: RBF, polynomial of degree 2 and polynomial of degree 3. 
+Rahter than averaging per-target $\alpha$ values (like in the RidgeCV above), we use a joint BayesSearch with 5-fold cross validation and 30 iterations\footnote{Hyperparameters see \autoref{tab:kernel_ridge_hyperparams}} to obtain the results in \autoref{tab:kernel_ridge_metrics}.
 
 \begin{table}[h]
     \centering
-    \caption{Comparison of different guessing schemes for 102 (20\%) test samples from the \ch{C5H4N2O2} subset from QM9 \parencite{ref:article1_qm9}. The F-score is calculated using the Fock matrix prediction from the Kernel-Ridge regression model and the \texttt{minao} guess. The number of iterations until convergence is shown as well as the percentage samples not converging within 50 iterations and the inference time as a factor of the inference time of the minao guess.}
+    \caption{Comparison of different Kernel Ridge regression (KRR) guessing schemes for 102 (20\%) test samples from the \ch{C5H4N2O2} subset from QM9 \parencite{ref:article1_qm9}. The F-score is calculated using the Fock matrix prediction from the Kernel-Ridge regression model and the \texttt{minao} guess. The number of iterations until convergence is shown as well as the percentage samples not converging within 50 iterations and the inference time as a factor of the inference time of the minao guess.}
     \label{tab:kernel_ridge_metrics}
     \begin{tabular}{l
                     S[table-format=1.2(2)]
@@ -114,34 +116,47 @@ Contrary to the mean-alpha heuristic given by the best performing target $\alpha
                     S[table-format=1.2(2)]
                     S[table-format=1.3(3)]}
         \toprule
-        \textbf{Method} & \texttt{KRR-RBF} & \texttt{KRR-poly} & \texttt{1e} & \texttt{minao} \\
+        \textbf{Method} & \texttt{KRR RBF} & \texttt{KRR quadratic poly} & \texttt{KRR cubic poly} & \texttt{minao} \\
         \midrule
-        F-score / 1         &  &  &  & 0.93 \pm 0.04 \\
+        F-score / 1         & 94 \pm 4 & 94 \pm 4 & 53 \pm 1.5 & 0.899 \pm 0.002 \\
         Iterations / 1      & 14 \pm 3 & 14 \pm 3 & 20 \pm 5 & 11.7 \pm 1.0 \\
+        Inference-speed / 1 & 30 & 20 & 19 & 1.0\\ %! This is obciously very amousing in terms of uncertainty (therefore no uncertainty here)
         Not-Converged / \%  & 4 & 4 & 12 & 0\\
-        Inference-speed / 1 &  &  &  & 1.0\\
         \bottomrule
     \end{tabular}
 \end{table}
+The Hyperparameters found by the BayesSearch are given in \autoref{tab:kernel_ridge_hyperparams}.
 
-\TODO{Interpretation of results of KRR}
+\begin{table}[h]
+        \centering
+    \caption{Hyperparameters found using BayesSearch for the Kernel Ridge regression models with different kernels.\\Search space: $\alpha \sim \operatorname{LogUniform}(10^{-8},10^{4})$, $\gamma \sim \operatorname{LogUniform}(10^{-6},10^{3})$ and $\mathrm{coef0} \sim \operatorname{Uniform}(0,1)$ for polynomial kernels; for the RBF kernel $\mathrm{coef0}$ is ignored}
+    \label{tab:kernel_ridge_hyperparams}
+    \begin{tabular}{l
+                    S[table-format=1.0e1]
+                    S[table-format=1.1e1]
+                    S[table-format=1.1e1]}
+        \toprule
+        \textbf{Method} & \texttt{KRR RBF} & \texttt{KRR quadratic poly} & \texttt{KRR cubic poly}\\
+        \midrule
+        $\alpha$ & 2e-8 & 1e-8 & 5e-2 \\
+        $\gamma$ & 4e-5 & 7e-5 & 1e-6 \\
+        $\mathrm{coef0}$ & \text{-} & 7.5e-1 & 1.4e-1 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+\TODO{Interpretation of the results}\\
 
-\textbf{Further trials \& other Basissize}\\
-\TODO{Maybe add a bit more details about failed other trials on whole Fock-matrix}
 
-
-\textbf{Predicting the Main Diagonal}
-\TODO{Reference Cartus + GWH construction}
+\textbf{Further trials}\\
 Previously we tried to learn a mapping from overlap to Fock matrix soley via machine learning means. We have established that the quality for these guesses even on the minimal STO-3G basis is not on par with the established guessing schemes.\\
 Predicting the main diagonal for a given system is an easier target given the fact that the model predicts $N$ features from the $N^2$ input features. One established way of constructing the off diagonal elements is the generalized Wolfsberg-Helmholtz (GWH) construction \parencite{ref:gwh_wolfsberg1952spectra} (see \TODO{Background - guessing schemes}).
-
-\textbf{Simple Multi Perceptron Regressor}\\
-
+Utilizing this construction on our dataset we obtain comparable results to our base Ridge regression model in terms of iterations till convergence. \\
+Changing the basis set to a larger 6-31G one, we see the limitations of our initial approach. Instead of roughly $\nicefrac{49^2}{2}$ features we now have $\nicefrac{254^2}{2}$ which is a lot more than the 1225 features we had before. Only predicting the main diagonal as explained above makes it computationally feasible within the constraints of this thesis. Yet, the reconstruction of off-diagonal elements in $F$ and the subsequent construction of $D$ breaks down for larger systems. One shot full matrix density predictions are thus not feasible and another approach needs to be explored.\\ 
 
 --- 
 \begin{table}[h]
     \centering
-    \caption{\TODO{\dots} Comparison of different guessing schemes for 102 (20\%) test samples from the \ch{C5H4N2O2} subset from QM9 \parencite{ref:article1_qm9}. The F-score is calculated using the Fock matrix prediction from the Ridge regression model and various guessing schemes implemented in \textsc{PySCF}. The number of iterations until convergence is shown as well as the percentage samples not converging within 50 iterations and the inference time as a factor of the inference time of the minao guess.}
+    \caption{\TODO{\dots results from GWH\_interp with diagonal fitting} /}
     \label{tab:NN_basic_metrics}
     \resizebox{\textwidth}{!}{
     \begin{tabular}{l
@@ -162,22 +177,11 @@ Predicting the main diagonal for a given system is an easier target given the fa
     \end{tabular}
     }
 \end{table}
----
 
-
-Ideas: 
-\begin{itemize}
-    \item Maybe use spectral loss (eigenvalues?!) -> first ad hoc implementation didn't really work better
-    \item CNN -> both okish on whole data but worse than ridge (without cycles benchmark) 
-    \item NN  -> both okish on whole data but worse than ridge (without cycles benchmark)
-    \item Maybe two step network -> first guess fock then get rid of noise? (open...)
-    \item GWH construction -> first guess diagonal then use GWH to construct off-diagonal works ok for small set - worse for 6-32g(2d,f)
-    \item Block guessing -> homo/hetero block guessing 
-\end{itemize}
 
 
 \section{Building guesses block-by-block}
 \label{sec:blockwise_guessing}
-\TODO{Guess main diagonal and then construct or guess off-diagonal elements.}
+\TODO{Guess main diagonal and then construct or guess off-diagonal elements. --> doesn't really work!}
 
 \TODO{Apply to larger basis sets.}
