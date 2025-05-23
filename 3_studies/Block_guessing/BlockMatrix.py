@@ -4,15 +4,20 @@ from pyscf import scf
 from itertools import combinations_with_replacement
 import os
 import matplotlib.pyplot as plt
+import pyscf
+from rdkit import Chem
+
 example_mol_path = "../../datasets/QM9/xyz_c5h4n2o2/dsgdb9nsd_022700.xyz"
 
 class Block(np.ndarray):
-    def __new__(cls, input_array, block_type, atoms, base_mat=None, base_ids=None):
+    def __new__(cls, input_array, block_type, atoms, ls, base_mat=None, base_ids=None):
         obj = np.asarray(input_array).view(cls)
+        obj.numpy = np.asarray(input_array)
         obj.block_type = block_type
         obj.atoms = atoms
         obj.base_mat = base_mat
         obj.base_ids = base_ids
+        obj.ls = ls
         return obj
 
     def __array_finalize__(self, obj):
@@ -21,10 +26,11 @@ class Block(np.ndarray):
         self.atoms = getattr(obj, 'atoms', None)
         self.base_mat = getattr(obj, 'base_mat', None)
         self.base_ids = getattr(obj, 'base_ids', None)
+        self.ls = getattr(obj, 'ls', None)
     
     def __repr__(self):
         base_repr = super().__repr__()
-        custom_repr = f"Block(shape={self.shape}, block_type={self.block_type}, atoms={self.atoms}, base_ids={self.base_ids})"
+        custom_repr = f"Block(shape={self.shape}, block_type={self.block_type}, atoms={self.atoms}, base_ids={self.base_ids}, ls={self.ls})"
         return f"{custom_repr}\n{base_repr}"
 
     def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
@@ -45,12 +51,11 @@ class Block(np.ndarray):
             res.block_type = res_block_type
         return res
 
-
 class BlockMatrix(): 
     def __init__(self, mol, Matrix=None):
         """mol: pyscf.Mole object
         Currently only creates block matrices for overlap"""
-        assert type(mol) == scf.gto.Mole, "mol must be a pyscf Mole object"
+        assert type(mol) in [scf.gto.Mole], "mol must be a pyscf Mole object"
         self.mol = mol
         self.Matrix = self.mol.intor("int1e_ovlp") if Matrix is None else Matrix
 
@@ -98,7 +103,9 @@ class BlockMatrix():
             atoms = [key_i.split('_')[0], key_i.split('_')[1], key_j.split('_')[0], key_j.split('_')[1]]
 
             base_ids = [np.arange(idx_i[0], idx_i[-1]+1) , np.arange(idx_j[0], idx_j[-1]+1)]
-            block_dict[block_key] = Block(block_matrix_view, base_mat = matrix.view(), base_ids=base_ids, block_type=block_type, atoms=atoms)
+
+            ls = ([ao_labels[i][2] for i in base_ids[0]], [ao_labels[i][2] for i in base_ids[1]])
+            block_dict[block_key] = Block(block_matrix_view, base_mat = matrix.view(), base_ids=base_ids, block_type=block_type, atoms=atoms, ls=ls)
 
         return block_dict
     
