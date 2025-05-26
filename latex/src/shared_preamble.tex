@@ -58,6 +58,9 @@
 
 % text
 \usepackage[locale=DE, uncertainty-mode=separate]{siunitx}  % SI units, German formatting - \pm stays \pm instead of ..(.)
+% custom units:
+\DeclareSIUnit{\hartree}{\ensuremath{E_{\mathrm{h}}}}
+
 \let\sqty\qty  % physics overrides \qty of siunitx, therefore make it available as \sqty
 \usepackage{physics}  % macros for easier typesetting of physical formulas
 \usepackage{icomma}  % no space after commas instead of English points) in decimal values
