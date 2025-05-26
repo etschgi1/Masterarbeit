@@ -1,3 +1,4 @@
+from collections import defaultdict
 from sklearn.metrics import root_mean_squared_error
 import numpy as np
 import matplotlib.pyplot as plt
@@ -6,7 +7,10 @@ from pyscf import scf
 from pyscf.gto import Mole
 from scipy.linalg import eigh
 import re
+from pyscf.symm.Dmatrix import Dmatrix
+from BlockMatrix import Block, BlockMatrix
 from time import time
+
 
 def check_positive_definite(S, tol=1e-10):
     eigvals = np.linalg.eigvalsh(S)
@@ -333,3 +337,80 @@ def reorder_Matrix_using_xyz_perm(mat: np.ndarray,
         """
         reordering = get_reordering(xyz_old, xyz_new)
         return reorder_matrix(mat, reordering, mol)
+
+
+
+def quaternion_to_euler_zyz(q): 
+    """Convert a quaternion to Euler angles (Z-Y-Z convention)."""
+
+    w, x, y, z = q.w, q.x, q.y, q.z
+    
+    phi = np.arctan2(2 * (w * z + x * y), 1 - 2 * (y**2 + z**2))
+    theta = np.arcsin(2 * (w * y - z * x))
+    psi = np.arctan2(2 * (w * x + y * z), 1 - 2 * (x**2 + y**2))
+    
+    return phi, theta, psi
+
+def quaternion_from_axis_angle(axis, angle):
+    """Generate a unit quaternion from an axis and angle."""
+    half_angle = angle / 2
+    s = np.sin(half_angle)
+    c = np.cos(half_angle)
+    return np.quaternion(c, *(axis * s))
+
+
+def rotate_M(mol, axis, angle, M, maxL=3):
+    """
+    Rotate a Block Matrix M using the Wigner-D matrices for the given axis and angle.
+    The rotation is applied to the blocks of M according to their angular momentum l.
+    mol: PySCF Mole object
+    axis: rotation axis as a 3D vector (numpy array)
+    angle: rotation angle in radians
+    M: BlockMatrix instance to be rotated
+    maxL: maximum angular momentum to consider (default is 3 for s, p, d, f)
+    """
+    if not isinstance(M, BlockMatrix):
+        raise TypeError("M must be a BlockMatrix instance")
+    
+    l_map = {'s': 0, 'p': 1, 'd': 2, 'f': 3, 'g': 4}
+    ao_lbls = mol.ao_labels(fmt=False, base=0)
+    shells = defaultdict(list)
+    for mu, (iatom, _, shell_name, _) in enumerate(ao_lbls):
+        shells[(iatom, shell_name)].append(mu)
+
+    
+    # Unit‐quaternion for the axis‐angle rotation - try out euler to use pyscf's methods to stay consistent
+    alpha, beta, gamma = quaternion_to_euler_zyz(quaternion_from_axis_angle(axis, angle))
+    Dls = {l: Dmatrix(l, alpha, beta, gamma, reorder_p=True) for l in range(maxL)} 
+
+    blocks_orig = M.blocks
+    outM = M.copy()
+    blocks_out = outM.blocks
+    for key, block in blocks_orig.items(): # perform transformations block by block in sub-blocks (according to l)
+        rows, cols = np.array(block.ls[0]), np.array(block.ls[1]) # l's of the rows and columns
+        A = np.array(block.numpy, dtype=float)
+
+        subblocks = {}
+        for li in np.unique(rows):        # e.g. 0 then 1
+            row_idx = np.where(rows == li)[0]
+            for lj in np.unique(cols):    # e.g. 0 then 1
+                if lj[-1] == 's' and li[-1] == 's': # skip s overlaps - no transformation
+                    continue
+                col_idx = np.where(cols == lj)[0]
+                # this picks out the (li,lj) sub‐block
+                sub = A[np.ix_(row_idx, col_idx)]
+                subblocks[(li, lj)] = (row_idx, col_idx, sub)
+        # transform and write back
+        for (li,lj), (row_idx, col_idx, sub) in subblocks.items():
+            # sanity check: len(idxs) should == 2l+1
+            li, lj = l_map[li[-1]], l_map[lj[-1]]   # '2p'[-1] → 'p' → 1
+            if len(row_idx) != 2*li+1 or len(col_idx) != 2*lj+1:
+                raise ValueError(f"Expected {2*li+1} AOs for shell {shell_name}, got {len(row_idx)}")
+            # insert back into block
+            A[np.ix_(row_idx, col_idx)] = Dls[li] @ sub @ Dls[lj].T
+        # overwrite the block with the transformed one
+        blocks_out[key]._replace(A)
+    # resymmetrize the matrix
+    i_u, j_u = np.triu_indices_from(outM.Matrix, k=1)
+    outM.Matrix[j_u, i_u] = outM.Matrix[i_u, j_u]
+    return outM
