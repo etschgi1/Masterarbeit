@@ -6,6 +6,7 @@ import os
 import matplotlib.pyplot as plt
 import pyscf
 from rdkit import Chem
+from copy import deepcopy
 
 example_mol_path = "../../datasets/QM9/xyz_c5h4n2o2/dsgdb9nsd_022700.xyz"
 
@@ -22,6 +23,7 @@ class Block(np.ndarray):
 
     def __array_finalize__(self, obj):
         if obj is None: return
+        self.numpy = getattr(obj, 'numpy', None)
         self.block_type = getattr(obj, 'block_type', None)
         self.atoms = getattr(obj, 'atoms', None)
         self.base_mat = getattr(obj, 'base_mat', None)
@@ -50,6 +52,13 @@ class Block(np.ndarray):
             res = res.view(Block)
             res.block_type = res_block_type
         return res
+    def _replace(self, new_values):
+        """Change the values of the block"""
+        if not isinstance(new_values, np.ndarray):
+            raise ValueError("new_values must be a numpy array")
+        self[...] = new_values
+        self.numpy = new_values.copy()
+        return self
 
 class BlockMatrix(): 
     def __init__(self, mol, Matrix=None):
@@ -60,6 +69,25 @@ class BlockMatrix():
         self.Matrix = self.mol.intor("int1e_ovlp") if Matrix is None else Matrix
 
         self.blocks = self.generate_all_blocks(self.Matrix) 
+    
+    
+    @classmethod
+    def from_blocks(cls, mol, blocks):
+        """Create a BlockMatrix from a dictionary of blocks"""
+        instance = cls(mol)
+        instance.blocks = blocks
+        instance.Matrix = np.zeros((mol.nao, mol.nao))
+        for block in blocks.values():
+            # symmetric assignment
+            instance.Matrix[np.ix_(block.base_ids[0], block.base_ids[1])] = block.numpy
+            instance.Matrix[np.ix_(block.base_ids[1], block.base_ids[0])] = block.numpy.T
+        return instance
+    
+    def copy(self):
+        """Create a copy of the BlockMatrix"""
+        new_instance = BlockMatrix(self.mol, self.Matrix.copy())
+        new_instance.blocks = self.generate_all_blocks(new_instance.Matrix)
+        return new_instance
 
     def get_overlap(self): 
         """Return the overlap matrix"""
