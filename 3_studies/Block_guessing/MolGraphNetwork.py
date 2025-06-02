@@ -27,7 +27,7 @@ BASIS_PATH = "../../scripts/6-31g_2df_p_custom_nwchem.gbs"
 GEOMETRY_Source = "../../datasets/QM9/xyz_c7h10o2_sorted"
 
 
-class MolGraphNetwork(): 
+class MolGraphNetwork(torch.nn.Module): 
     """A class to controll the GNN for density matrix prediction."""
 
     def __init__(self, 
@@ -39,6 +39,7 @@ class MolGraphNetwork():
                  edge_threshold_type="atom_dist",
                  edge_threshold=5 # Angrom for "atom_dist", or dimensionless for "max" or "mean" 
                  ):
+        super().__init__()
 
         self.xyz_source = xyz_source
         self.xyz_files = [os.path.join(xyz_source, f) for f in os.listdir(xyz_source) if f.endswith('.xyz')]
