@@ -1,5 +1,6 @@
 import itertools
 import torch
+from message_net import MessageNet
 
 
 class EncoderDecoderFactory(torch.nn.Module):
@@ -21,7 +22,16 @@ class EncoderDecoderFactory(torch.nn.Module):
     A “pair-key” is the sorted join of two symbols, e.g. "C_H", "H_H", "C_O", etc.
     """
 
-    def __init__(self, atom_types, hidden_dim, max_up, max_sq):
+    def __init__(self, atom_types, hidden_dim, max_up, max_sq, message_layers=2, 
+                 message_dropout=2):
+        """atom_types: list of element symbols, e.g. ["C","H","O"]
+            hidden_dim: dimension of every hidden embedding
+            max_up: size of the largest possible center-block's flattened upper-triangle
+            max_sq: size of the largest possible hetero-block's flattened full matrix
+            message_layers: number of layers in the message net (default=2)
+            message_dropout: dropout probability in the message net (default=0.0)
+        """
+        
         super().__init__()
         self.atom_types = atom_types
         self.hidden_dim = hidden_dim
@@ -39,7 +49,7 @@ class EncoderDecoderFactory(torch.nn.Module):
         })
 
         # 2) NODE UPDATERS (hidden+agg_hidden → new_hidden)
-        #    Typically: [h_i || sum_messages_i] → updated h_i
+        #    [h_i || sum_messages_i] → updated h_i
         self.node_updaters = torch.nn.ModuleDict({
             sym: torch.nn.Sequential(
                 torch.nn.Linear(2 * hidden_dim, hidden_dim),
@@ -55,8 +65,8 @@ class EncoderDecoderFactory(torch.nn.Module):
             for sym in atom_types
         })
 
-        # 4) EDGE ENCODERS (flattened hetero-block + dist → hidden)
-        #    Build keys for all unordered pairs of atom_types (including same-element)
+        # 4) EDGE ENCODERS (flattened hetero/homo-block + dist → hidden)
+        #    Build keys for all unordered pairs of atom_types (including same-element for homo blocks)
         edge_keys = self._make_all_pair_keys(atom_types)
         self.edge_encoders = torch.nn.ModuleDict({
             key: torch.nn.Sequential(
@@ -67,18 +77,18 @@ class EncoderDecoderFactory(torch.nn.Module):
             for key in edge_keys
         })
 
-        # 5) EDGE DECODERS (hidden → flattened hetero-block)
+        # 5) EDGE DECODERS (hidden → flattened hetero/homo-block)
         self.edge_decoders = torch.nn.ModuleDict({
             key: torch.nn.Linear(hidden_dim, max_sq)
             for key in edge_keys
         })
 
         # 6) MESSAGE NET (shared MLP for combining [h_i, h_j, edge_emb])
-        self.message_net = torch.nn.Sequential(
-            torch.nn.Linear(3 * hidden_dim, hidden_dim),
-            torch.nn.ReLU(),
-            torch.nn.Linear(hidden_dim, hidden_dim)
-        )
+        input_dim = 3 * hidden_dim  # h_i, h_j, edge_emb
+        self.message_net = MessageNet(input_dim = input_dim,
+                                      hidden_dim = hidden_dim,
+                                      num_layers = message_layers,
+                                      dropout = message_dropout)
 
     @staticmethod
     def _make_all_pair_keys(atom_types):
