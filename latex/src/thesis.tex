@@ -1,8 +1,9 @@
 % !TEX Program = lualatex
 \documentclass[11pt,
-  twoside,openright,    % for one-sided printing and screens
-  %parskip=half,      % enable if you want paragraphs separated by vertical spacing instead of indents
-  %draft              % enable to compile faster and test layout
+twoside,openright,    % for one-sided printing and screens
+BCOR=15mm,         % binding correction
+%parskip=half,      % enable if you want paragraphs separated by vertical spacing instead of indents
+%draft              % enable to compile faster and test layout
 ]{scrreprt}
 %\documentclass[report,mono,twoside,openright]{tugrazbooklet}
 %\documentclass[a4paper]{book}
@@ -17,6 +18,7 @@
 
 
 
+
 % Example packages for the dummy content
 %info defined in shared preamble
 \usepackage[ngerman,english]{babel}
@@ -26,8 +28,8 @@
 \usepackage[all]{nowidow}
 
 %--- PREAMBLE ------------------------------------------------------------------
-\input{shared_preamble.tex}
 % <INSERT YOUR CUSTOM MACROS AND PACKAGES HERE>
+\input{shared_preamble.tex}
 
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{\baselineskip}
@@ -118,19 +120,30 @@
 % Name of your degree programme according to your curriculum (only for msc/diplom; status of the list: academic year 2019/20)
 \curriculum{Technical Physics } % 486
 
+\pagenumbering{roman}
 \printthesistitle
 
 
   %--- FRONT MATTER --------------------------------------------------------------
+  \input{../content/declaration}
   \input{../content/abstract}
   \input{../content/acknowledgements}
 \clearpage
+
+% Roman page numbers for front matter
+
 \setlength{\cftbeforesecskip}{3pt} % adjust as needed
 \setlength\cftparskip{-2pt} % adjust as needed
 
 \tableofcontents
 \listoffigures
 \listoftables
+
+% Switch to arabic page numbers, starting from 1
+\clearpage
+\pagenumbering{arabic}
+
+
 \input{../content/introduction}
 \input{../content/background}
 \input{../content/fock_prediction}
@@ -138,7 +151,6 @@
 \input{../content/results}
 \input{../content/discussion}
 \input{../content/conclusion}
-\input{../content/declaration}
 \input{../content/appendix.tex}
 
 %--- INDEX and BIBLIOGRAPHY ----------------------------------------------------

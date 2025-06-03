@@ -12,6 +12,8 @@ import torch
 import torch_geometric
 from torch_geometric.data import Data, Batch
 from torch_geometric.loader import DataLoader
+from collections import defaultdict
+from torch_scatter import scatter_add #! maybe use other aggregation functions later on
 
 cur_path = os.path.dirname(__file__)
 os.chdir(cur_path)
@@ -19,10 +21,12 @@ scripts_paths = ["../../../scripts", "../../"]
 [sys.path.append(p) for p in scripts_paths if p not in sys.path]
 from to_cache import density_fock_overlap
 from BlockMatrix import BlockMatrix, Block
-from utils import dprint
+from utils import dprint, set_verbose
 
 from encoder import EncoderDecoderFactory
 
+
+set_verbose(2)  # Set the verbosity level for debugging output
 
 ## Defines
 ATOM_NUMBERS = {"H": 1, "C": 6, "N": 7, "O": 8, "F": 9}
@@ -40,6 +44,7 @@ class MolGraphNetwork(torch.nn.Module):
                  hidden_dim=256,
                  batch_size=32,
                  train_val_test_ratio = (0.8, 0.1, 0.1), # train, val, test
+                 message_passing_steps=2, # Number of message passing steps
                  backend=Backend.PY,
                  basis=BASIS_PATH, 
                  edge_threshold_type="atom_dist",
@@ -70,6 +75,7 @@ class MolGraphNetwork(torch.nn.Module):
         
         self.batch_size = batch_size
         self.hidden_dim = hidden_dim
+        self.message_passing_steps = message_passing_steps  
 
         self.max_block_dim = 26  # Maximum number of atoms in a block (for QM9, this is 26)
         self.max_up = max_block_dim * (max_block_dim + 1) // 2  # Maximum size of upper triangular block
@@ -90,15 +96,15 @@ class MolGraphNetwork(torch.nn.Module):
     def load_data(self, seed=42, max_samples=10, cache_meta={"method":"dft", "basis":BASIS_PATH, "functional": "b3lypg", "guess": "minao", "backend": "pyscf", "cache": "../../../datasets/QM9/out/c7h10o2_b3lypg_6-31G(2df,p)/pyscf"}):
         """Load data from source directory split into train and test sets and create normalized BlockMatrices."""
         #! TODO Data augmentation
-        # print(f"Loading {len(self.xyz_files)} files from {self.xyz_source}...")
+        dprint(1, f"Loading {len(self.xyz_files)} files from {self.xyz_source}...")
         focks_in, dens_in, overlap_in, coords_in = [], [], [], []
         
         if max_samples is not None and max_samples < len(self.xyz_files):
-            print(f"Limiting to {max_samples} samples out of {len(self.xyz_files)} total files.")
+            dprint(1, f"Limiting to {max_samples} samples out of {len(self.xyz_files)} total files.")
             self.xyz_files = self.xyz_files[:max_samples]  # Limit to max_samples if specified - don't care about bad ones meaning we will sample fewer if some are bad!
         for xyz_file in tqdm(self.xyz_files, desc="Loading files"):
             mol_name = os.path.basename(xyz_file).strip()
-            # print(f"Using: {xyz_file}, {mol_name}, {cache_meta}")
+            # dprint(f"Using: {xyz_file}, {mol_name}, {cache_meta}")
             cached_ret = density_fock_overlap(filepath=xyz_file,
                                               filename = mol_name,
                                               method = cache_meta["method"],
@@ -109,7 +115,7 @@ class MolGraphNetwork(torch.nn.Module):
                                               cache = cache_meta["cache"])
             
             if any([r == None for r in cached_ret]): 
-                print(f"File {mol_name} bad - skipping")
+                dprint(1, f"File {mol_name} bad - skipping")
                 continue
             dens_in.append(cached_ret[0].numpy)
             focks_in.append(cached_ret[1].numpy)
@@ -144,14 +150,15 @@ class MolGraphNetwork(torch.nn.Module):
         self.train_graphs = [self.molgraphs[i] for i in train_indices]
         self.val_graphs = [self.molgraphs[i] for i in val_indices]
         self.test_graphs = [self.molgraphs[i] for i in test_indices]
-        print(f"Total samples: {total_samples}, Train: {train_size}, Val: {val_size}, Test: {test_size}")
+        dprint(1, f"Total samples: {total_samples}, Train: {train_size}, Val: {val_size}, Test: {test_size}")
 
         # Normalize 
         self.compute_normalization_factors()
         self.apply_normalization(self.train_graphs, distance_cutoff=True)
         self.apply_normalization(self.val_graphs, distance_cutoff=True)
         self.apply_normalization(self.test_graphs, distance_cutoff=True)
-        print(f"Normalization factors computed and applied. Center stats: {self.center_norm}, Edge stats: {self.edge_norm}")
+        dprint(1, "Normalization factors computed and applied.")
+        dprint(2, f"Center stats: {self.center_norm}, Edge stats: {self.edge_norm}")
 
         # Build DataLoaders
         self.train_loader = DataLoader(self.train_graphs, batch_size=self.batch_size, shuffle=True) # we shuffle for training such that we see all graphs in a different order each epoch
@@ -159,25 +166,102 @@ class MolGraphNetwork(torch.nn.Module):
         self.test_loader = DataLoader(self.test_graphs, batch_size=self.batch_size, shuffle=False)
 
         meta_info = self.setup_model()
-        print(f"---\nModel setup (encoders / decoders message net) complete!")
-        print(f"Total encoders / decoders / updaters: {meta_info['total']}, Node: {meta_info['node']} ({self.atom_types} - atom types) * 3 (enc, dec, update), Edge: {meta_info['edge']} ({self.overlap_types} - overlap types) * 2 (enc, dec).")
+        dprint(1, f"---\nModel setup (encoders / decoders message net) complete!")
+        dprint(2, f"Total encoders / decoders / updaters: {meta_info['total']}, Node: {meta_info['node']} ({self.atom_types} - atom types) * 3 (enc, dec, update), Edge: {meta_info['edge']} ({self.overlap_types} - overlap types) * 2 (enc, dec).")
 
     def train(self, epochs=10, lr=1e-3, weight_decay=1e-5):
         #!TODO
         pass
 
-    def forward(self): 
-        pass
+    def forward(self, batch): 
+        device = batch.edge_index.device  
+        N_total = len(batch.atom_sym)  # Total number of atoms in the batch - i.e. center blocks
+        E_total = batch.edge_index.size(1)  # Total number of edges in the batch
 
-    def setup_model(self, encoder_type="default", decoder_type="default"):
-        factory = EncoderDecoderFactory(
-            atom_types=self.atom_types,
-            hidden_dim=self.hidden_dim,
-            max_up=self.max_up,
-            max_sq=self.max_sq,
-            message_layers=self.message_net_layers if hasattr(self, 'message_net_layers') else 2,  # Default to 2 layers if not set
-            message_dropout=self.message_net_dropout if hasattr(self, 'message_net_dropout') else 0.0,  # Default to 0.0 if not set
-        )
+        # I) Encode node features (center blocks)
+        atom_indices_dict = defaultdict(list)  
+        unique_atom_syms = set(batch.atom_sym)  #! we actually stack same type of atoms for faster processing
+        c = torch.zeros((N_total, self.hidden_dim), device=device) 
+        for u_sym in unique_atom_syms: 
+            atom_sym_indices = [i for i, sym in enumerate(batch.atom_sym) if sym == u_sym]
+            atom_indices_dict[u_sym].extend(atom_sym_indices)
+            raw_center_blocks = torch.stack(
+                [batch.center_blocks[i].to(device) for i in atom_sym_indices], dim=0
+            ) # This now has shape (Nr_of_atoms_for_this_sym, self.center_sizes[u_sym])
+
+            c_sym = self.node_encoders[u_sym](raw_center_blocks) 
+            c[atom_sym_indices] = c_sym  # in h we have the same dimensiom self.hidden_dim for all atoms in the batch
+
+        # II) Encode edge features (edge blocks)
+        unique_edge_keys = set(batch.edge_pair_sym)  # Unique edge types
+        edge_indices_dict = defaultdict(list)  
+        e = torch.zeros((E_total, self.hidden_dim), device=device)  # Edge features
+        for key in unique_edge_keys:
+            edge_key_indices = [i for i, sym in enumerate(batch.edge_pair_sym) if sym == key]
+            edge_indices_dict[key].extend(edge_key_indices)  # Store indices for this edge type
+            raw_edge_blocks = torch.stack(
+                [batch.edge_blocks[i].to(device) for i in edge_key_indices], dim=0
+            )
+            distances = batch.edge_dist[edge_key_indices].to(device).view(-1, 1)  # Reshape distances to match edge blocks -> (Nr of edges for this key, 1)
+            edge_inputs = torch.cat((raw_edge_blocks, distances), dim=1)  
+            
+            e_key = self.edge_encoders[key](edge_inputs)  
+            e[edge_key_indices] = e_key  
+
+        # III) Message passing
+        src_nodes = batch.edge_index[0]  # Remember that we saved two edges for each pair (i,j) and (j,i) in edge_index!
+        tgt_nodes = batch.edge_index[1]  
+        for _round in range(self.message_passing_steps): 
+            c_src = c[src_nodes]  
+            c_tgt = c[tgt_nodes]
+
+            msg_inp = torch.cat([c_src, c_tgt, e], dim=1) # input to message net: [c_u || c_v || e_{u→v}]
+            m = self.message_net(msg_inp)  
+
+            agg = torch.zeros((N_total, self.hidden_dim), device=device)  
+            agg = scatter_add(m, tgt_nodes, dim=0, dim_size=N_total)  
+
+            c_new = torch.zeros_like(c)
+            for i, sym in enumerate(batch.atom_sym):
+                old_and_agg = torch.cat([c[i], agg[i]], dim=0)  # 2*self.hidden_dim; This goes into our node updater!
+                c_new[i] = self.node_updaters[sym](old_and_agg)  # Update node features with the aggregated messages
+            c = c_new 
+        
+        # IV) Decode node features to center blocks
+        pred_center_blocks = [None] * len(batch.center_blocks)  # Note that we do not use numpy arrays here because differnt blocks have different sizes!
+        for sym in unique_atom_syms:
+            atom_sym_indices = atom_indices_dict[sym] #reuse the indices from encoding
+            c_sym_stack = torch.stack([c[i] for i in atom_sym_indices], dim=0)  # (Nr_of_atoms_for_this_sym, self.hidden_dim)
+            center_decoded = self.center_decoders[sym](c_sym_stack)  # Decode to center blocks
+            for i, idx in enumerate(atom_sym_indices):
+                pred_center_blocks[idx] = center_decoded[i]
+        
+        # V) Decode edge features to edge blocks
+        pred_edge_blocks = [None] * len(batch.edge_blocks) 
+        for key in unique_edge_keys: 
+            edge_key_indices = edge_indices_dict[key]
+            e_key_stack = torch.stack([e[i] for i in edge_key_indices], dim=0)  # (Nr_of_edges_for_this_key, self.hidden_dim)
+            edge_decoded = self.edge_decoders[key](e_key_stack)  
+            for i, idx in enumerate(edge_key_indices):
+                pred_edge_blocks[idx] = edge_decoded[i]
+        
+        # Attach to batch object: 
+        batch.pred_center_blocks = pred_center_blocks
+        batch.pred_edge_blocks = pred_edge_blocks
+        return batch
+
+
+    def setup_model(self, model_type="default"):
+        if model_type == "default": 
+            self.gather_block_size_stats()
+            factory = EncoderDecoderFactory(
+                atom_types = self.atom_types,
+                hidden_dim = self.hidden_dim,
+                center_sizes = self.center_sizes,
+                edge_sizes = self.edge_sizes,
+                message_layers = self.message_net_layers if hasattr(self, 'message_net_layers') else 2,  # Default to 2 layers if not set
+                message_dropout = self.message_net_dropout if hasattr(self, 'message_net_dropout') else 0.0,  # Default to 0.0 if not set
+            )
         # encoder / decoders
         self.node_encoders = factory.node_encoders
         self.node_updaters = factory.node_updaters
@@ -194,6 +278,21 @@ class MolGraphNetwork(torch.nn.Module):
             }
         encoder_dec_counts["total"] = 3 * encoder_dec_counts["node"] + 2 * encoder_dec_counts["edge"]
         return encoder_dec_counts
+
+    def gather_block_size_stats(self):
+        """Gather statistics about the sizes of center and edge blocks in the training graphs."""
+        assert len(self.train_graphs) > 0, "No training graphs found. Please load data first."
+        self.center_sizes = {}
+        self.edge_sizes = {}
+        for graph in self.train_graphs:
+            for i, atom_sym in enumerate(graph.atom_sym):
+                if atom_sym not in self.center_sizes:
+                    self.center_sizes[atom_sym] = graph.center_blocks[i].shape[0]
+                    dprint(2, f"Found center block size {self.center_sizes[atom_sym]} for atom type {atom_sym}.")
+            for i, edge_sym in enumerate(graph.edge_pair_sym):
+                if edge_sym not in self.edge_sizes:
+                    self.edge_sizes[edge_sym] = graph.edge_blocks[i].shape[0]
+                    dprint(2, f"Found edge block size {self.edge_sizes[edge_sym]} for edge type {edge_sym}.")
 
     def make_graph(self, S, T, coords, mol): 
         """Create a graph from the overlap matrix S, target matrix T (fock / density) coordinates, and atomic numbers."""
@@ -377,7 +476,7 @@ class MolGraphNetwork(torch.nn.Module):
         self.overlap_types = edge_keys  # Store overlap types for later use
 
         
-        print(f"Found {len(center_keys)} center keys ({center_keys}) and {len(edge_keys)} edge keys ({edge_keys}) in the training set. -> Totaling {len(center_keys) + len(edge_keys)} unique encoder/decoder.")
+        dprint(1, f"Found {len(center_keys)} center keys ({center_keys}) and {len(edge_keys)} edge keys ({edge_keys}) in the training set. -> Totaling {len(center_keys) + len(edge_keys)} unique encoder/decoder.")
         # source normalization factors
         self.center_norm = {key: (0,0) for key in center_keys}  
         self.edge_norm = {key: (0,0) for key in edge_keys}

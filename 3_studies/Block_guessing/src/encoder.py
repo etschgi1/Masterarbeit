@@ -1,5 +1,6 @@
 import itertools
 import torch
+from typing import List, Dict
 from message_net import MessageNet
 
 
@@ -22,12 +23,17 @@ class EncoderDecoderFactory(torch.nn.Module):
     A “pair-key” is the sorted join of two symbols, e.g. "C_H", "H_H", "C_O", etc.
     """
 
-    def __init__(self, atom_types, hidden_dim, max_up, max_sq, message_layers=2, 
-                 message_dropout=2):
+    def __init__(self, 
+                 atom_types: List[str],
+                 hidden_dim: int,
+                 center_sizes: Dict[str, int],
+                 edge_sizes: Dict[str, int],
+                 message_layers: int = 2, 
+                 message_dropout: int = 2):
         """atom_types: list of element symbols, e.g. ["C","H","O"]
             hidden_dim: dimension of every hidden embedding
-            max_up: size of the largest possible center-block's flattened upper-triangle
-            max_sq: size of the largest possible hetero-block's flattened full matrix
+            center_sizes: size of the largest possible center-block's flattened upper-triangle (default=10)
+            edge_sizes: size of the largest possible hetero-block's flattened full matrix (default=10)
             message_layers: number of layers in the message net (default=2)
             message_dropout: dropout probability in the message net (default=0.0)
         """
@@ -35,14 +41,14 @@ class EncoderDecoderFactory(torch.nn.Module):
         super().__init__()
         self.atom_types = atom_types
         self.hidden_dim = hidden_dim
-        self.max_up = max_up
-        self.max_sq = max_sq
+        self.center_sizes = center_sizes
+        self.edge_sizes = edge_sizes
 
         # 1) NODE ENCODERS (center-block → hidden)
         self.node_encoders = torch.nn.ModuleDict({
             sym: torch.nn.Sequential(
-                torch.nn.Linear(max_up, hidden_dim),
-                torch.nn.ReLU(),
+                torch.nn.Linear(self.center_sizes[sym], hidden_dim),
+                torch.nn.GELU(),
                 torch.nn.Linear(hidden_dim, hidden_dim)
             )
             for sym in atom_types
@@ -53,7 +59,7 @@ class EncoderDecoderFactory(torch.nn.Module):
         self.node_updaters = torch.nn.ModuleDict({
             sym: torch.nn.Sequential(
                 torch.nn.Linear(2 * hidden_dim, hidden_dim),
-                torch.nn.ReLU(),
+                torch.nn.GELU(),
                 torch.nn.Linear(hidden_dim, hidden_dim)
             )
             for sym in atom_types
@@ -61,17 +67,17 @@ class EncoderDecoderFactory(torch.nn.Module):
 
         # 3) CENTER DECODERS (hidden → flattened center-block)
         self.center_decoders = torch.nn.ModuleDict({
-            sym: torch.nn.Linear(hidden_dim, max_up)
+            sym: torch.nn.Linear(hidden_dim, self.center_sizes[sym])
             for sym in atom_types
         })
 
-        # 4) EDGE ENCODERS (flattened hetero/homo-block + dist → hidden)
+        # 4) EDGE ENCODERS (flattened hetero/homo-block + dist → hidden) + 1 for distance! 
         #    Build keys for all unordered pairs of atom_types (including same-element for homo blocks)
         edge_keys = self._make_all_pair_keys(atom_types)
         self.edge_encoders = torch.nn.ModuleDict({
             key: torch.nn.Sequential(
-                torch.nn.Linear(max_sq + 1, hidden_dim),
-                torch.nn.ReLU(),
+                torch.nn.Linear(self.edge_sizes[key] + 1, hidden_dim),
+                torch.nn.GELU(),
                 torch.nn.Linear(hidden_dim, hidden_dim)
             )
             for key in edge_keys
@@ -79,7 +85,7 @@ class EncoderDecoderFactory(torch.nn.Module):
 
         # 5) EDGE DECODERS (hidden → flattened hetero/homo-block)
         self.edge_decoders = torch.nn.ModuleDict({
-            key: torch.nn.Linear(hidden_dim, max_sq)
+            key: torch.nn.Linear(hidden_dim, self.edge_sizes[key])
             for key in edge_keys
         })
 
