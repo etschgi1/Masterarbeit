@@ -1,26 +1,32 @@
 % !TEX Program = lualatex
 \documentclass[11pt,
-  oneside,openany,    % for one-sided printing and screens
+  twoside,openright,    % for one-sided printing and screens
   %parskip=half,      % enable if you want paragraphs separated by vertical spacing instead of indents
   %draft              % enable to compile faster and test layout
 ]{scrreprt}
+%\documentclass[report,mono,twoside,openright]{tugrazbooklet}
+%\documentclass[a4paper]{book}
 
-% Settings
+\usepackage[msc,nawi]{tugrazthesis}
+% options:
+%   - msc (for Master's thesis/Masterarbeit) OR
+%     diplom (for Diploma thesis/Diplomarbeit) OR
+%     phd (for Doctoral thesis/Dissertation)
+%   - nawi (for NAWI curricula)
+%   - individual (for Individuelles Masterstudium)
+
+
+
+% Example packages for the dummy content
 %info defined in shared preamble
 \usepackage[ngerman,english]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{geometry}
 \usepackage{microtype}
 \usepackage[all]{nowidow}
-\usepackage[msc,             % for Bachelor's Thesis titlepage
-            claim,iaik]{iaikthesis}
-\addtokomafont{disposition}{\rmfamily}
-\academicdegree{Dipl. Ing.}
-
 
 %--- PREAMBLE ------------------------------------------------------------------
 \input{shared_preamble.tex}
-
 % <INSERT YOUR CUSTOM MACROS AND PACKAGES HERE>
 
 \setlength{\parindent}{0pt}
@@ -34,9 +40,9 @@
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{datetime}
-\usepackage{tocloft}
 \usepackage{tikz}
 \usepackage[absolute,overlay]{textpos} % Enable absolute positioning\usepackage{datetime}
+\usepackage{tocloft}
 
 \usetikzlibrary{arrows}
 \usetikzlibrary{positioning}
@@ -50,6 +56,18 @@
 \newcommand{\TODO}[1]{\textcolor{red}{\textbf{TODO #1}}}
 
 \begin{document}
+
+%- Title ---
+\def\mythesistitle{Machine Learning-Driven Initial Guess Prediction for SCF Procedures}
+\def\mykeywords{computational physics, computational chemistry, machine learning, self-consistent field, initial guess prediction, GNN, graph neural network, density functional theory, DFT, quantum chemistry}
+\def\mykeywordsabstract{computational quantum chemistry $\cdot$ density functional theory $\cdot$ graph neural network $\cdot$ initial guess prediction $\cdot$ machine learning $\cdot$ self-consistent field}
+\hypersetup{
+  pdfauthor={Wachmann Elias},
+  pdftitle={\mythesistitle},
+  pdfkeywords={\mykeywords},
+  pdfsubject={Master's Thesis},
+  }
+
 % Autoref with cap letters
 \renewcommand{\subsectionautorefname}{Subsection}
 \renewcommand{\sectionautorefname}{Section}
@@ -57,54 +75,59 @@
 \renewcommand{\figureautorefname}{Figure}
 \renewcommand{\tableautorefname}{Table}
 \renewcommand{\algorithmiccomment}[1]{\hspace{-1cm}\hfill$\triangleright$ \texttt{#1}}
+
+
+
 \newdateformat{mydate}{\THEDAY\ \monthname[\THEMONTH]\ \THEYEAR}
 
-%--- INSERT INFORMATION FOR TITLEPAGE ------------------------------------------
+%--- INFORMATION FOR TITLEPAGE -------------------------------------------------
 
-% Your name + previous academic degrees:
-\thesisauthor{Elias Wachmann, BSc. BSc.}
+% Your name including previous academic degrees (optional argument sets a different \author{}):
+\thesisauthor[Elias Wachmann]{Elias Wachmann, BSc. BSc.}
 
-% Title of your thesis:
-\thesistitle{Machine Learning-Driven Initial Guess Prediction for SCF Procedures}
+% Title of your thesis (optional argument sets a different \title{}):
+\thesistitle{\mythesistitle}
 
-% Date of completion:
-\thesisdate{\monthname\ \the\year}
+% Date of completion (optional argument sets a different \date{})
+\thesisdate[ ]{\monthname\ \the\year}
 
-% Supervisor:
-\supervisortitle{Supervisors} % or Supervisor
+% Supervisor headline (select male/female/plural version)
+\supervisortitle{\germanenglish{Betreuerin/Betreuer}{Supervisors}}
+
+% Supervisor info
 \supervisor{%
-Ass.Prof. Mag.phil. Dipl.-Ing. Dr.phil. Dr. techn. Hauser W. Andreas
+  Ass.Prof. Mag.phil. Dipl.-Ing. Dr.phil. Dr. techn. Hauser W. Andreas
 
-Dr.techn. Ralf Meyer, BSc MSc
+  Dr.techn. Ralf Meyer, BSc MSc
 
-\medskip
-Institute of Experimental Physics\\
-Graz University of Technology
-
+  \medskip
+  Institute of Experimental Physics\\
+  Graz University of Technology
 }
 
-% Name of your degree programme according to your curriculum
-\curriculum{Technical Physics}
+% Academic degree achieved with this thesis, according to your curriculum (check curriculum and select male/female version):
+\academicdegree{Diplom-Ingenieur}
+% 
+%\academicdegree{Master of Science} % msc
+%\academicdegree{Diplom-Ingenieur/Diplom-Ingenieurin} % msc
+%\academicdegree{Magister/Magistra der Naturwissenschaften} % diplom
+%\academicdegree{Doktor/Doktorin der technischen Wissenschaften} % phd
+%\academicdegree{Doktor/Doktorin der Naturwissenschaften} % phd
+%\academicdegree{Master of ???} % individual
+
+% Name of your degree programme according to your curriculum (only for msc/diplom; status of the list: academic year 2019/20)
+\curriculum{Technical Physics } % 486
+
+\printthesistitle
 
 
-% --- Meta data ----------------------------------------------------------------
-%! TODO
-\hypersetup{
-  pdfauthor={Wachmann Elias},
-  pdftitle={TODO},
-  pdfkeywords={computational physics, TODO}
-  }
-  
-  %--- FRONT MATTER --------------------------------------------------------------
-  
-  \printthesistitle
-  
   %--- FRONT MATTER --------------------------------------------------------------
   \input{../content/abstract}
   \input{../content/acknowledgements}
 \clearpage
 \setlength{\cftbeforesecskip}{3pt} % adjust as needed
 \setlength\cftparskip{-2pt} % adjust as needed
+
 \tableofcontents
 \listoffigures
 \listoftables
@@ -118,7 +141,6 @@ Graz University of Technology
 \input{../content/declaration}
 \input{../content/appendix.tex}
 
-
 %--- INDEX and BIBLIOGRAPHY ----------------------------------------------------
 
 %% Print List of Acronyms and Symbols  (optional)
@@ -127,5 +149,6 @@ Graz University of Technology
 \newpage
 % Print bibliography and include it in the table of contents:
 \printbibliography[heading=bibintoc]
+
 
 \end{document}

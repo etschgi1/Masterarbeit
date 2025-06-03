@@ -162,6 +162,12 @@ class MolGraphNetwork(torch.nn.Module):
         print(f"---\nModel setup (encoders / decoders message net) complete!")
         print(f"Total encoders / decoders / updaters: {meta_info['total']}, Node: {meta_info['node']} ({self.atom_types} - atom types) * 3 (enc, dec, update), Edge: {meta_info['edge']} ({self.overlap_types} - overlap types) * 2 (enc, dec).")
 
+    def train(self, epochs=10, lr=1e-3, weight_decay=1e-5):
+        #!TODO
+        pass
+
+    def forward(self): 
+        pass
 
     def setup_model(self, encoder_type="default", decoder_type="default"):
         factory = EncoderDecoderFactory(
@@ -188,8 +194,6 @@ class MolGraphNetwork(torch.nn.Module):
             }
         encoder_dec_counts["total"] = 3 * encoder_dec_counts["node"] + 2 * encoder_dec_counts["edge"]
         return encoder_dec_counts
-        
-
 
     def make_graph(self, S, T, coords, mol): 
         """Create a graph from the overlap matrix S, target matrix T (fock / density) coordinates, and atomic numbers."""
