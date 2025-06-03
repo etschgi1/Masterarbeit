@@ -1,5 +1,3 @@
-# GNS example: https://medium.com/stanford-cs224w/graph-neural-network-based-simulator-predicting-particulate-and-fluid-systems-08ed0a20b28d
-
 import os
 from typing import List
 from rdkit.Chem import rdmolfiles
@@ -9,7 +7,6 @@ import numpy as np
 from tqdm import tqdm
 
 import torch
-import torch_geometric
 from torch_geometric.data import Data, Batch
 from torch_geometric.loader import DataLoader
 from collections import defaultdict
@@ -178,9 +175,12 @@ class MolGraphNetwork(torch.nn.Module):
         N_total = len(batch.atom_sym)  # Total number of atoms in the batch - i.e. center blocks
         E_total = batch.edge_index.size(1)  # Total number of edges in the batch
 
+        #! TODO flatten per Graph features in order to avoid indexing problems in [i for i, sym in enumerate(batch.atom_sym) if sym == u_sym] & similar for batch_size!=1!
+        
+
         # I) Encode node features (center blocks)
         atom_indices_dict = defaultdict(list)  
-        unique_atom_syms = set(batch.atom_sym)  #! we actually stack same type of atoms for faster processing
+        unique_atom_syms = set(sum(batch.atom_sym, []))  #! we actually stack same type of atoms for faster processing - sum acctually concats 
         c = torch.zeros((N_total, self.hidden_dim), device=device) 
         for u_sym in unique_atom_syms: 
             atom_sym_indices = [i for i, sym in enumerate(batch.atom_sym) if sym == u_sym]
@@ -193,7 +193,7 @@ class MolGraphNetwork(torch.nn.Module):
             c[atom_sym_indices] = c_sym  # in h we have the same dimensiom self.hidden_dim for all atoms in the batch
 
         # II) Encode edge features (edge blocks)
-        unique_edge_keys = set(batch.edge_pair_sym)  # Unique edge types
+        unique_edge_keys = set(sum(batch.edge_pair_sym, []))  # Unique edge types
         edge_indices_dict = defaultdict(list)  
         e = torch.zeros((E_total, self.hidden_dim), device=device)  # Edge features
         for key in unique_edge_keys:

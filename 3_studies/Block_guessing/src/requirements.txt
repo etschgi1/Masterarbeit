@@ -1,0 +1,7 @@
+# requirements.txt
+--find-links https://data.pyg.org/whl/torch-2.4.1+cpu.html
+torch-scatter
+torch-sparse
+torch-cluster
+torch-spline-conv
+torch-geometric
