@@ -1,5 +1,6 @@
 import os
 from typing import List
+from itertools import chain
 from rdkit.Chem import rdmolfiles
 from scf_guess_tools import Backend, load
 import sys
@@ -7,7 +8,7 @@ import numpy as np
 from tqdm import tqdm
 
 import torch
-from torch_geometric.data import Data, Batch
+from torch_geometric.data import Data
 from torch_geometric.loader import DataLoader
 from collections import defaultdict
 from torch_scatter import scatter_add #! maybe use other aggregation functions later on
@@ -45,7 +46,7 @@ class MolGraphNetwork(torch.nn.Module):
                  backend=Backend.PY,
                  basis=BASIS_PATH, 
                  edge_threshold_type="atom_dist",
-                 edge_threshold_val=5, # Angrom for "atom_dist", or dimensionless for "max" or "mean" 
+                 edge_threshold_val=3, # Angrom for "atom_dist", or dimensionless for "max" or "mean" 
                  target="fock"
                  ):
         super().__init__()
@@ -157,30 +158,72 @@ class MolGraphNetwork(torch.nn.Module):
         dprint(1, "Normalization factors computed and applied.")
         dprint(2, f"Center stats: {self.center_norm}, Edge stats: {self.edge_norm}")
 
-        # Build DataLoaders
-        self.train_loader = DataLoader(self.train_graphs, batch_size=self.batch_size, shuffle=True) # we shuffle for training such that we see all graphs in a different order each epoch
-        self.val_loader = DataLoader(self.val_graphs, batch_size=self.batch_size, shuffle=False)
-        self.test_loader = DataLoader(self.test_graphs, batch_size=self.batch_size, shuffle=False)
+        # Build DataLoaders - this doesn't fly idk why
+        # self.train_loader = DataLoader(self.train_graphs, batch_size=self.batch_size, shuffle=True, collate_fn = lambda b: b) # we shuffle for training such that we see all graphs in a different order each epoch
+        # self.val_loader = DataLoader(self.val_graphs, batch_size=self.batch_size, shuffle=False, collate_fn = lambda b: b)
+        # self.test_loader = DataLoader(self.test_graphs, batch_size=self.batch_size, shuffle=False, collate_fn = lambda b: b)
+
+        # manual batching bc i can't get DataLoader to work with my custom Data objects (different sizes)
+        self.train_loader = self.manual_batch(self.train_graphs, shuffle=True)
+        self.val_loader = self.manual_batch(self.val_graphs, shuffle=False)
+        self.test_loader = self.manual_batch(self.test_graphs, shuffle=False)
+        # test batching
+        first_train_batch = next(iter(self.train_loader))
+        len_atom_sym = len(first_train_batch.atom_sym)
+        len_edge_pair_sym = len(first_train_batch.edge_pair_sym)
+        len_center_blocks = len(first_train_batch.center_blocks)
+        print("_----------------")
+        print(f"First train batch: {len_atom_sym} atoms, {len_edge_pair_sym} edges, {len_center_blocks} center blocks.")
 
         meta_info = self.setup_model()
         dprint(1, f"---\nModel setup (encoders / decoders message net) complete!")
         dprint(2, f"Total encoders / decoders / updaters: {meta_info['total']}, Node: {meta_info['node']} ({self.atom_types} - atom types) * 3 (enc, dec, update), Edge: {meta_info['edge']} ({self.overlap_types} - overlap types) * 2 (enc, dec).")
 
-    def train(self, epochs=10, lr=1e-3, weight_decay=1e-5):
-        #!TODO
-        pass
+    def manual_collate(self, batch):
+        """Custom collate function to handle different sizes of center and edge blocks."""
+        # offset indices!
+        new_edge_index = []
+        cum_offset = 0
+        for g in batch:
+            new_edge_index.append(g.edge_index + cum_offset)
+            cum_offset += g.num_nodes
+
+        # Jetzt alle verschobenen edge_index-Tensoren aneinanderhängen
+        new_edge_index = torch.cat(new_edge_index, dim=1)
+
+        batch_data = Data(edge_index=new_edge_index)
+        batch_data.num_nodes = sum(g.num_nodes for g in batch)  
+        batch_data.center_blocks = [cb for g in batch for cb in g.center_blocks]  
+        batch_data.target_center_blocks = [tcb for g in batch for tcb in g.target_center_blocks]  
+        batch_data.edge_blocks = [eb for g in batch for eb in g.edge_blocks]
+        batch_data.target_edge_blocks = [teb for g in batch for teb in g.target_edge_blocks]
+        batch_data.edge_dist = torch.cat([g.edge_dist for g in batch], dim=0)  
+        batch_data.atom_sym = [sym for g in batch for sym in g.atom_sym]
+        batch_data.edge_pair_sym = [eps for g in batch for eps in g.edge_pair_sym]
+
+        return batch_data
+
+
+    def manual_batch(self, graphs, shuffle=True):
+        """Manually batch the graphs into a List."""
+        batched_ = []
+        if shuffle:
+            np.random.shuffle(graphs)  # Shuffle the graphs if required
+        for i in range(0, len(graphs), self.batch_size):
+            batch_graphs = graphs[i:i + self.batch_size]
+            batch_graphs = self.manual_collate(batch_graphs)
+            batched_.append(batch_graphs)
+        return batched_
 
     def forward(self, batch): 
         device = batch.edge_index.device  
         N_total = len(batch.atom_sym)  # Total number of atoms in the batch - i.e. center blocks
         E_total = batch.edge_index.size(1)  # Total number of edges in the batch
 
-        #! TODO flatten per Graph features in order to avoid indexing problems in [i for i, sym in enumerate(batch.atom_sym) if sym == u_sym] & similar for batch_size!=1!
-        
 
         # I) Encode node features (center blocks)
         atom_indices_dict = defaultdict(list)  
-        unique_atom_syms = set(sum(batch.atom_sym, []))  #! we actually stack same type of atoms for faster processing - sum acctually concats 
+        unique_atom_syms = set(batch.atom_sym)  #! we actually stack same type of atoms for faster processing
         c = torch.zeros((N_total, self.hidden_dim), device=device) 
         for u_sym in unique_atom_syms: 
             atom_sym_indices = [i for i, sym in enumerate(batch.atom_sym) if sym == u_sym]
@@ -188,12 +231,12 @@ class MolGraphNetwork(torch.nn.Module):
             raw_center_blocks = torch.stack(
                 [batch.center_blocks[i].to(device) for i in atom_sym_indices], dim=0
             ) # This now has shape (Nr_of_atoms_for_this_sym, self.center_sizes[u_sym])
-
+            assert raw_center_blocks.shape[1] == self.center_sizes[u_sym], f"Center block size {raw_center_blocks.shape[1]} does not match expected size {self.center_sizes[u_sym]} for atom type {u_sym}."
             c_sym = self.node_encoders[u_sym](raw_center_blocks) 
             c[atom_sym_indices] = c_sym  # in h we have the same dimensiom self.hidden_dim for all atoms in the batch
 
         # II) Encode edge features (edge blocks)
-        unique_edge_keys = set(sum(batch.edge_pair_sym, []))  # Unique edge types
+        unique_edge_keys = set(batch.edge_pair_sym)  # Unique edge types
         edge_indices_dict = defaultdict(list)  
         e = torch.zeros((E_total, self.hidden_dim), device=device)  # Edge features
         for key in unique_edge_keys:
@@ -248,6 +291,8 @@ class MolGraphNetwork(torch.nn.Module):
         # Attach to batch object: 
         batch.pred_center_blocks = pred_center_blocks
         batch.pred_edge_blocks = pred_edge_blocks
+
+        dprint(3, "Forward pass complete!")
         return batch
 
 
@@ -395,6 +440,7 @@ class MolGraphNetwork(torch.nn.Module):
         # Finally we assemble our graph data object
         #! We build this manually because we have differntly sized center / overlap blocks for our different encoders and decoders! 
         data = Data(edge_index=edge_index)
+        data.num_nodes = n_atoms 
         data.atom_sym = atom_sym
         data.center_blocks = S_center_blocks
         data.edge_blocks = S_edge_blocks
@@ -516,5 +562,5 @@ class MolGraphNetwork(torch.nn.Module):
 
 if __name__ == "__main__": 
 
-    MGNN = MolGraphNetwork(xyz_source=GEOMETRY_Source, backend=Backend.PY, basis=BASIS_PATH)
+    MGNN = MolGraphNetwork(xyz_source=GEOMETRY_Source, backend=Backend.PY, basis=BASIS_PATH, batch_size=2)
     MGNN.load_data(max_samples=10)

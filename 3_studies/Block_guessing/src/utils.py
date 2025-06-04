@@ -1,4 +1,4 @@
-VERBOSE_LEVEL = 2
+VERBOSE_LEVEL = 3
 
 def dprint(printlevel, *args, **kwargs):
     """Customized printing levels"""

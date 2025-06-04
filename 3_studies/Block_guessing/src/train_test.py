@@ -18,8 +18,9 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 MGNN = MolGraphNetwork(xyz_source=GEOMETRY_Source,
                        backend=Backend.PY,
                        basis=BASIS_PATH,
-                       batch_size=2)
-MGNN.load_data(max_samples=20)  # or however many samples you want for a quick test
+                       batch_size=2,
+                       train_val_test_ratio=(0.5, 0.25, 0.25))
+MGNN.load_data(max_samples=20) 
 MGNN = MGNN.to(device)
 
 # 2. Choose optimizer
