@@ -164,7 +164,6 @@ class MolGraphNetwork(torch.nn.Module):
         len_atom_sym = len(first_train_batch.atom_sym)
         len_edge_pair_sym = len(first_train_batch.edge_pair_sym)
         len_center_blocks = len(first_train_batch.center_blocks)
-        print("_----------------")
         print(f"First train batch: {len_atom_sym} atoms, {len_edge_pair_sym} edges, {len_center_blocks} center blocks.")
 
         meta_info = self.setup_model()
@@ -195,6 +194,23 @@ class MolGraphNetwork(torch.nn.Module):
         batch_data.num_graphs = len(batch)  
 
         return batch_data
+
+    def predict(self, overlap, coords, mol): 
+        """Predict the center and edge blocks for a given overlap matrix and coordinates."""
+        assert self.node_encoders is not None, "Model not set up. Call setup_model() first."
+        assert self.edge_encoders is not None, "Model not set up. Call setup_model() first."
+        
+        target = np.zeros_like(overlap)  
+        graph = self.make_graph(overlap, target, coords, mol)
+        self.apply_normalization([graph], distance_cutoff=True)  # Apply normalization to the graph
+        graph_data = self.manual_collate([graph])  # Collate into a single Data object
+        graph_data = graph_data.to(next(self.parameters()).device)  # Move to the same device as the model
+        with torch.no_grad():
+            graph_data = self.forward(graph_data)
+            pred_center_blocks = graph_data.pred_center_blocks
+            pred_edge_blocks = graph_data.pred_edge_blocks
+            #! TODO rebuild matrix from that! 
+
 
 
     def manual_batch(self, graphs, shuffle=True):
@@ -552,6 +568,75 @@ class MolGraphNetwork(torch.nn.Module):
             self.edge_norm_target[key] = (np.mean(T_edge_vals[key]), max(np.std(T_edge_vals[key]), zero_std_val))
         return
     
+    def train_model(self, num_epochs=5, lr=1e-3, weight_decay=1e-5, device=None, model_save_path=None):
+        import torch.nn.functional as F
+        from tqdm import tqdm
+        
+        if device is None:
+            device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.to(device)
+        optimizer = torch.optim.Adam(self.parameters(), lr=lr, weight_decay=weight_decay)
+        
+        for epoch in range(1, num_epochs + 1):
+            self.train()
+            total_train_loss = 0.0
+
+            for batch in tqdm(self.train_loader, desc=f"Epoch {epoch} [Train]"):
+                batch = batch.to(device)
+                optimizer.zero_grad()
+                batch = self.forward(batch)
+
+                loss_center, loss_edge = 0.0, 0.0
+                for i in range(batch.num_nodes):
+                    loss_center += F.mse_loss(batch.pred_center_blocks[i], batch.target_center_blocks[i].to(device))
+                for k in range(batch.num_edges):
+                    loss_edge += F.mse_loss(batch.pred_edge_blocks[k], batch.target_edge_blocks[k].to(device))
+
+                loss = (loss_center + loss_edge) / batch.num_graphs
+                loss.backward()
+                optimizer.step()
+                total_train_loss += loss.item()
+
+            avg_train_loss = total_train_loss / len(self.train_loader)
+            print(f"Epoch {epoch}/{num_epochs} → Avg Train Loss: {avg_train_loss:.6f}")
+
+            # Validation
+            self.eval()
+            total_val_loss = 0.0
+            with torch.no_grad():
+                for batch in tqdm(self.val_loader, desc=f"Epoch {epoch} [Val]"):
+                    batch = batch.to(device)
+                    batch = self.forward(batch)
+
+                    lc, le = 0.0, 0.0
+                    for i in range(batch.num_nodes):
+                        lc += F.mse_loss(batch.pred_center_blocks[i], batch.target_center_blocks[i].to(device))
+                    for k in range(batch.num_edges):
+                        le += F.mse_loss(batch.pred_edge_blocks[k], batch.target_edge_blocks[k].to(device))
+                    total_val_loss += ((lc + le) / batch.num_graphs).item()
+
+            avg_val_loss = total_val_loss / len(self.val_loader)
+            print(f"Epoch {epoch}/{num_epochs} → Avg Val   Loss: {avg_val_loss:.6f}")
+
+        # test performance: 
+        self.eval()
+        total_test_loss = 0.0
+        with torch.no_grad():
+            for batch in tqdm(self.test_loader, desc=f"Epoch {epoch} [Test]"):
+                batch = batch.to(device)
+                batch = self.forward(batch)
+
+                lt, le = 0.0, 0.0
+                for i in range(batch.num_nodes):
+                    lt += F.mse_loss(batch.pred_center_blocks[i], batch.target_center_blocks[i].to(device))
+                for k in range(batch.num_edges):
+                    le += F.mse_loss(batch.pred_edge_blocks[k], batch.target_edge_blocks[k].to(device))
+                total_test_loss += ((lt + le) / batch.num_graphs).item()
+        avg_test_loss = total_test_loss / len(self.test_loader)
+        print(f"Test  Loss: {avg_test_loss:.6f}")
+        if model_save_path is not None:
+            self.save_model_checkpoint(model_save_path, epoch, optimizer)
+
     def save_model(self, path):
         """Save the model to the specified path."""
         torch.save(self.state_dict(), path)
@@ -576,12 +661,12 @@ class MolGraphNetwork(torch.nn.Module):
         """
         checkpoint = torch.load(path, map_location=lambda storage, loc: storage)
         try:
-            self.load_state_dict(checkpoint, strict=strict)
+            self.load_state_dict(checkpoint["model_state_dict"], strict=strict)
             print(f"Loaded weights from {path} (strict={strict})")
         except RuntimeError as e:
             if strict:
                 print("Compatibility check failed, retrying with strict=False…")
-                self.load_state_dict(checkpoint, strict=False)
+                self.load_state_dict(checkpoint["model_state_dict"], strict=False)
                 print(f"Loaded partial weights from {path} (strict=False)")
             else:
                 raise e
