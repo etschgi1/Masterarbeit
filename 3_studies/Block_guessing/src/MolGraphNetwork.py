@@ -13,13 +13,7 @@ from torch_geometric.loader import DataLoader
 from collections import defaultdict
 from torch_scatter import scatter_add #! maybe use other aggregation functions later on
 
-cur_path = os.path.dirname(__file__)
-os.chdir(cur_path)
-scripts_paths = ["../../../scripts", "../../"]
-[sys.path.append(p) for p in scripts_paths if p not in sys.path]
-from to_cache import density_fock_overlap
-from BlockMatrix import BlockMatrix, Block
-from utils import dprint, set_verbose
+from utils import dprint, set_verbose, density_fock_overlap
 
 from encoder import EncoderDecoderFactory
 
@@ -29,22 +23,19 @@ set_verbose(2)  # Set the verbosity level for debugging output
 ## Defines
 ATOM_NUMBERS = {"H": 1, "C": 6, "N": 7, "O": 8, "F": 9}
 
-BASIS_PATH = "../../../scripts/6-31g_2df_p_custom_nwchem.gbs"
-GEOMETRY_Source = "../../../datasets/QM9/xyz_c7h10o2_sorted"
-
 
 class MolGraphNetwork(torch.nn.Module): 
     """A class to controll the GNN for density matrix prediction."""
 
     def __init__(self, 
-                 xyz_source=GEOMETRY_Source,
+                 xyz_source,
+                 basis, 
                  max_block_dim=26,
                  hidden_dim=256,
                  batch_size=32,
                  train_val_test_ratio = (0.8, 0.1, 0.1), # train, val, test
                  message_passing_steps=2, # Number of message passing steps
                  backend=Backend.PY,
-                 basis=BASIS_PATH, 
                  edge_threshold_type="atom_dist",
                  edge_threshold_val=3, # Angrom for "atom_dist", or dimensionless for "max" or "mean" 
                  target="fock"
@@ -91,7 +82,7 @@ class MolGraphNetwork(torch.nn.Module):
         self.message_net = None # Net to provide message passing! 
 
 
-    def load_data(self, seed=42, max_samples=10, cache_meta={"method":"dft", "basis":BASIS_PATH, "functional": "b3lypg", "guess": "minao", "backend": "pyscf", "cache": "../../../datasets/QM9/out/c7h10o2_b3lypg_6-31G(2df,p)/pyscf"}):
+    def load_data(self, seed=42, max_samples=10, cache_meta={"method":"dft", "basis":None, "functional": "b3lypg", "guess": "minao", "backend": "pyscf", "cache": "../../../datasets/QM9/out/c7h10o2_b3lypg_6-31G(2df,p)/pyscf"}):
         """Load data from source directory split into train and test sets and create normalized BlockMatrices."""
         #! TODO Data augmentation
         dprint(1, f"Loading {len(self.xyz_files)} files from {self.xyz_source}...")
@@ -100,6 +91,7 @@ class MolGraphNetwork(torch.nn.Module):
         if max_samples is not None and max_samples < len(self.xyz_files):
             dprint(1, f"Limiting to {max_samples} samples out of {len(self.xyz_files)} total files.")
             self.xyz_files = self.xyz_files[:max_samples]  # Limit to max_samples if specified - don't care about bad ones meaning we will sample fewer if some are bad!
+        assert os.path.exists(cache_meta["cache"]), f"Cache path {cache_meta['cache']} does not exist. Please create it first."
         for xyz_file in tqdm(self.xyz_files, desc="Loading files"):
             mol_name = os.path.basename(xyz_file).strip()
             # dprint(f"Using: {xyz_file}, {mol_name}, {cache_meta}")
@@ -200,6 +192,7 @@ class MolGraphNetwork(torch.nn.Module):
         batch_data.edge_dist = torch.cat([g.edge_dist for g in batch], dim=0)  
         batch_data.atom_sym = [sym for g in batch for sym in g.atom_sym]
         batch_data.edge_pair_sym = [eps for g in batch for eps in g.edge_pair_sym]
+        batch_data.num_graphs = len(batch)  
 
         return batch_data
 
@@ -558,9 +551,44 @@ class MolGraphNetwork(torch.nn.Module):
             self.edge_norm[key] = (np.mean(S_edge_vals[key]), max(np.std(S_edge_vals[key]), zero_std_val))
             self.edge_norm_target[key] = (np.mean(T_edge_vals[key]), max(np.std(T_edge_vals[key]), zero_std_val))
         return
+    
+    def save_model(self, path):
+        """Save the model to the specified path."""
+        torch.save(self.state_dict(), path)
+        dprint(1, f"Model saved to {path}")
+    
+    def save_model_checkpoint(self, path, epoch, optimizer=None):
+        """Save the model checkpoint to the specified path."""
+        checkpoint = {
+            'epoch': epoch,
+            'model_state_dict': self.state_dict(),
+        }
+        if optimizer is not None:
+            checkpoint['optimizer_state_dict'] = optimizer.state_dict()
+        torch.save(checkpoint, path)
+        dprint(1, f"Model checkpoint saved to {path}")
         
+    def load_model(self, path: str, strict: bool = True):
+        """
+        Load weights from `path` into this model. 
+        If `strict=True`, will error if keys don't match exactly.
+        If `strict=False`, will load only matching keys and ignore others.
+        """
+        checkpoint = torch.load(path, map_location=lambda storage, loc: storage)
+        try:
+            self.load_state_dict(checkpoint, strict=strict)
+            print(f"Loaded weights from {path} (strict={strict})")
+        except RuntimeError as e:
+            if strict:
+                print("Compatibility check failed, retrying with strict=False…")
+                self.load_state_dict(checkpoint, strict=False)
+                print(f"Loaded partial weights from {path} (strict=False)")
+            else:
+                raise e
 
 if __name__ == "__main__": 
-
+    BASIS_PATH = "scripts/6-31g_2df_p_custom_nwchem.gbs"
+    GEOMETRY_Source = "datasets/QM9/xyz_c7h10o2_sorted"
     MGNN = MolGraphNetwork(xyz_source=GEOMETRY_Source, backend=Backend.PY, basis=BASIS_PATH, batch_size=2)
-    MGNN.load_data(max_samples=10)
+    MGNN.load_data(max_samples=10, 
+                   cache_meta={"method":"dft", "basis":None, "functional": "b3lypg", "guess": "minao", "backend": "pyscf", "cache": "datasets/QM9/out/c7h10o2_b3lypg_6-31G(2df,p)/pyscf"})
