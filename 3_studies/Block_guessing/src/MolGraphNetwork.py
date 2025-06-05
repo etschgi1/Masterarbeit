@@ -1,4 +1,4 @@
-import os
+import os, copy
 from typing import List
 from itertools import chain
 from rdkit.Chem import rdmolfiles
@@ -13,7 +13,7 @@ from torch_geometric.loader import DataLoader
 from collections import defaultdict
 from torch_scatter import scatter_add #! maybe use other aggregation functions later on
 
-from utils import dprint, set_verbose, density_fock_overlap
+from utils import dprint, set_verbose, density_fock_overlap, unflatten_triang
 
 from encoder import EncoderDecoderFactory
 
@@ -38,7 +38,8 @@ class MolGraphNetwork(torch.nn.Module):
                  backend=Backend.PY,
                  edge_threshold_type="atom_dist",
                  edge_threshold_val=3, # Angrom for "atom_dist", or dimensionless for "max" or "mean" 
-                 target="fock"
+                 target="fock",
+                 **kwargs
                  ):
         super().__init__()
 
@@ -54,6 +55,8 @@ class MolGraphNetwork(torch.nn.Module):
         assert target in ["fock", "density"], "target must be either 'fock' or 'density'."
         self.target = target
 
+        assert isinstance(train_val_test_ratio, (list, tuple)) and len(train_val_test_ratio) == 3, "train_val_test_ratio must be a list or tuple of three values (train, val, test)."
+        assert sum(train_val_test_ratio) == 1.0, "train_val_test_ratio must sum to 1.0."
         self.train_ratio = train_val_test_ratio[0]
         self.val_ratio = train_val_test_ratio[1]
         self.test_ratio = train_val_test_ratio[2]
@@ -81,10 +84,17 @@ class MolGraphNetwork(torch.nn.Module):
         self.edge_decoders = None # decodes hidden edge features to hetero/homo blocks for edges
         self.message_net = None # Net to provide message passing! 
 
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+        
+        if hasattr(self, "verbose_level"): 
+            print(f"Setting verbose level to: {self.verbose_level}")
+            set_verbose(self.verbose_level)
+
 
     def load_data(self, seed=42, max_samples=10, cache_meta={"method":"dft", "basis":None, "functional": "b3lypg", "guess": "minao", "backend": "pyscf", "cache": "../../../datasets/QM9/out/c7h10o2_b3lypg_6-31G(2df,p)/pyscf"}):
         """Load data from source directory split into train and test sets and create normalized BlockMatrices."""
-        #! TODO Data augmentation
+        self.molgraphs = [] #reset in case this is called again later!
         dprint(1, f"Loading {len(self.xyz_files)} files from {self.xyz_source}...")
         focks_in, dens_in, overlap_in, coords_in = [], [], [], []
         
@@ -140,6 +150,12 @@ class MolGraphNetwork(torch.nn.Module):
         self.train_graphs = [self.molgraphs[i] for i in train_indices]
         self.val_graphs = [self.molgraphs[i] for i in val_indices]
         self.test_graphs = [self.molgraphs[i] for i in test_indices]
+        self.test_ground_truth = [target_in[i] for i in test_indices]  
+        self.val_ground_truth = [target_in[i] for i in val_indices]
+        self.train_ground_truth = [target_in[i] for i in train_indices]
+        self.files = {"train": [self.xyz_files[i] for i in train_indices],
+                      "val": [self.xyz_files[i] for i in val_indices],
+                      "test": [self.xyz_files[i] for i in test_indices]}
         dprint(1, f"Total samples: {total_samples}, Train: {train_size}, Val: {val_size}, Test: {test_size}")
 
         # Normalize 
@@ -192,25 +208,86 @@ class MolGraphNetwork(torch.nn.Module):
         batch_data.atom_sym = [sym for g in batch for sym in g.atom_sym]
         batch_data.edge_pair_sym = [eps for g in batch for eps in g.edge_pair_sym]
         batch_data.num_graphs = len(batch)  
+        #! no offset here and not needed for training - only non-batched predictions supported currently - otherwise we would need to offset these slices as well!
+        # batch_data.ao_slices = [g.ao_slices for g in batch]
+        # batch_data.edge_ao_slices = [g.edge_ao_slices for g in batch]
 
         return batch_data
 
-    def predict(self, overlap, coords, mol): 
-        """Predict the center and edge blocks for a given overlap matrix and coordinates."""
+    def get_graphs(self, set_name="train"):
+        """Return the normalized! test graphs."""
+        assert set_name in ["train", "val", "test"], "set_name must be 'train', 'val', or 'test'."
+        if set_name == "train":
+            return self.train_graphs
+        elif set_name == "val":
+            return self.val_graphs
+        elif set_name == "test":
+            return self.test_graphs
+    
+    def get_files(self, set_name="train"):
+        """Return the file paths for the specified set (train, val, test)."""
+        assert set_name in ["train", "val", "test"], "set_name must be 'train', 'val', or 'test'."
+        return self.files[set_name]
+    
+
+    def rebuild_matrix(self, pred_center_blocks, pred_edge_blocks, ao_slices, edge_ao_slices):
+        N = sum(end-start for _, _, start, end in ao_slices)  
+        out = np.zeros((N, N), dtype=np.float32)  
+        # place center blocks
+        for i, (_, _, start, end) in enumerate(ao_slices):
+            flat_center_block = pred_center_blocks[i]
+            out[start:end, start:end] = unflatten_triang(flat_center_block.numpy(), end - start)
+        for i, ((start_i, end_i), (start_j, end_j)) in enumerate(edge_ao_slices):
+            flat_edge_block = pred_edge_blocks[2*i] #! OC we have to index every second because we doubled the edges (directed edges - see make_graph) but not the indices! 
+            block = flat_edge_block.reshape(end_i - start_i, end_j - start_j)  
+            out[start_i:end_i, start_j:end_j] = block
+            out[start_j:end_j, start_i:end_i] = block.T
+        return out
+        
+    def predict(self, graphs: List[Data], inv_transform=True, raw=False, include_target=False): 
+        """Predict the center and edge blocks for a given overlap matrix and coordinates.
+        if raw is True: returns list of predicted center and edge blocks ordered by graph [(graph_1_center_blocks: List[torch.Tensor], graph_1_edge_blocks: List[torch.Tensor]), ...]
+        if include target is also True: returns list of tuples (pred_center_blocks: List[torch.Tensor], pred_edge_blocks, target_center_blocks, target_edge_blocks) for each graph. or (prediction_matrix, target_matrix) if raw is False."""
         assert self.node_encoders is not None, "Model not set up. Call setup_model() first."
         assert self.edge_encoders is not None, "Model not set up. Call setup_model() first."
         
-        target = np.zeros_like(overlap)  
-        graph = self.make_graph(overlap, target, coords, mol)
-        self.apply_normalization([graph], distance_cutoff=True)  # Apply normalization to the graph
-        graph_data = self.manual_collate([graph])  # Collate into a single Data object
-        graph_data = graph_data.to(next(self.parameters()).device)  # Move to the same device as the model
-        with torch.no_grad():
-            graph_data = self.forward(graph_data)
-            pred_center_blocks = graph_data.pred_center_blocks
-            pred_edge_blocks = graph_data.pred_edge_blocks
-            #! TODO rebuild matrix from that! 
+        pred_matrices = []
+        for graph in graphs:
+            graph = graph.to(next(self.parameters()).device)  
+            with torch.no_grad():
+                graph = self.forward(graph)
+                if inv_transform: 
+                    graph = self.apply_inverse_normalization([graph])[0]
+                pred_center_blocks = graph.pred_center_blocks
+                pred_edge_blocks = graph.pred_edge_blocks
+                if not raw:
+                    pred_rebuild = self.rebuild_matrix(pred_center_blocks, pred_edge_blocks, graph.ao_slices, graph.edge_ao_slices)
+                    if include_target:
+                        target_center_blocks = graph.target_center_blocks
+                        target_edge_blocks = graph.target_edge_blocks
+                        target_rebuild = self.rebuild_matrix(target_center_blocks, target_edge_blocks, graph.ao_slices, graph.edge_ao_slices)
+                        pred_matrices.append((pred_rebuild, target_rebuild))
+                    else:
+                        pred_matrices.append(pred_rebuild)
+                else:
+                    if include_target:
+                        target_center_blocks = graph.target_center_blocks
+                        target_edge_blocks = graph.target_edge_blocks
+                        pred_matrices.append((pred_center_blocks, pred_edge_blocks, target_center_blocks, target_edge_blocks))
+                    else:
+                        pred_matrices.append((pred_center_blocks, pred_edge_blocks))
+                
+        return pred_matrices
 
+    def get_ground_truth(self, set_name="test"):
+        """Get the ground truth matrices (fock / density - depending on self.target) for the specified set (train, val, test)."""
+        assert set_name in ["train", "val", "test"], "set_name must be 'train', 'val', or 'test'."
+        if set_name == "train":
+            return self.train_ground_truth
+        elif set_name == "val":
+            return self.val_ground_truth
+        elif set_name == "test":
+            return self.test_ground_truth
 
 
     def manual_batch(self, graphs, shuffle=True):
@@ -310,6 +387,7 @@ class MolGraphNetwork(torch.nn.Module):
             self.gather_block_size_stats()
             factory = EncoderDecoderFactory(
                 atom_types = self.atom_types,
+                edge_types = self.overlap_types,
                 hidden_dim = self.hidden_dim,
                 center_sizes = self.center_sizes,
                 edge_sizes = self.edge_sizes,
@@ -325,7 +403,7 @@ class MolGraphNetwork(torch.nn.Module):
 
         # message_net
         self.message_net = factory.message_net
-        
+        dprint(2, f"Message net: {self.message_net}")
         encoder_dec_counts = {
             "node": len(self.node_encoders),
             "edge": len(self.edge_encoders),
@@ -405,6 +483,7 @@ class MolGraphNetwork(torch.nn.Module):
                 raise ValueError(f"Unknown edge_threshold_type: {self.edge_threshold_type}. Use 'max', 'mean', 'fro', or 'atom_dist'.")
         
         # build edges
+        edge_ao_slices = []
         for i in range(n_atoms): 
             _, _, ai_start, ai_stop = atom_slices[i]
             n_i = ai_stop - ai_start
@@ -417,6 +496,7 @@ class MolGraphNetwork(torch.nn.Module):
                 coords_i, coords_j = np.array(coords[i]), np.array(coords[j])
                 if not _pass_edge_threshold(S_block, coords=(coords_i, coords_j)): 
                     continue
+                edge_ao_slices.append(((ai_start, ai_stop), (aj_start, aj_stop)))
                 S_flat_ij = S_block.reshape(-1)
                 S_edge_blocks.append(torch.from_numpy(S_flat_ij).float())
 
@@ -457,6 +537,9 @@ class MolGraphNetwork(torch.nn.Module):
         data.edge_pair_sym = edge_pair_sym
         data.target_center_blocks = T_center_blocks
         data.target_edge_blocks = T_edge_blocks
+        # for reconstruction we need the ao_slice information
+        data.ao_slices = atom_slices
+        data.edge_ao_slices = edge_ao_slices
         #! KEEP IN MIND: PyG won't move all attributes to GPU atuomatically!!!
         return data
     
@@ -489,34 +572,46 @@ class MolGraphNetwork(torch.nn.Module):
             graph.edge_dist = graph.edge_dist / self.edge_threshold  # Normalize distances to [0, 1]
 
     def apply_inverse_normalization(self, graph_list):
-        """Apply inverse normalization to the center and edge blocks of the graphs in graph_list."""
+        """Apply inverse normalization to the center and edge blocks of the graphs in graph_list and return a new list of graphs (leaves initial graphs unchanged).
+        Unnormalize source / target and predictions"""
+        inv_graphs = []
         for graph in graph_list:
             # centers
-            for i, (S_center_block, T_center_block) in enumerate(zip(graph.center_blocks, graph.target_center_blocks)):
-                key = graph.atom_sym[i]
+            inv_g = copy.copy(graph)
+            inv_g.center_blocks = [cb.clone() for cb in graph.center_blocks]  
+            inv_g.target_center_blocks = [tcb.clone() for tcb in graph.target_center_blocks]
+            inv_g.edge_blocks = [eb.clone() for eb in graph.edge_blocks]
+            inv_g.target_edge_blocks = [teb.clone() for teb in graph.target_edge_blocks]
+            inv_g.pred_center_blocks = [cb.clone() for cb in graph.pred_center_blocks]
+            inv_g.pred_edge_blocks = [eb.clone() for eb in graph.pred_edge_blocks]
+            # rest shouldn't change + distance is of no importance for our predictions and benchmarking
+            for i, (S_center_block, T_center_block, P_center_block) in enumerate(zip(inv_g.center_blocks, inv_g.target_center_blocks, inv_g.pred_center_blocks)):
+                key = inv_g.atom_sym[i]
                 S_mean_t, S_std_t = torch.tensor(self.center_norm[key][0], device=S_center_block.device), torch.tensor(self.center_norm[key][1], device=S_center_block.device)
-                graph.center_blocks[i] = S_center_block * S_std_t + S_mean_t
+                inv_g.center_blocks[i] = S_center_block * S_std_t + S_mean_t
 
                 T_mean_t, T_std_t = torch.tensor(self.center_norm_target[key][0], device=T_center_block.device), torch.tensor(self.center_norm_target[key][1], device=T_center_block.device)
-                graph.target_center_blocks[i] = T_center_block * T_std_t + T_mean_t
+                inv_g.target_center_blocks[i] = T_center_block * T_std_t + T_mean_t
+
+                inv_g.pred_center_blocks[i] = P_center_block * T_std_t + T_mean_t  # Uses same stats as target (from training set)
             # edges
-            for i, (S_edge_block, T_edge_block) in enumerate(zip(graph.edge_blocks, graph.target_edge_blocks)):
-                key = graph.edge_pair_sym[i]
+            for i, (S_edge_block, T_edge_block, P_edge_block) in enumerate(zip(inv_g.edge_blocks, inv_g.target_edge_blocks, inv_g.pred_edge_blocks)):
+                key = inv_g.edge_pair_sym[i]
                 # source
                 S_mean_t, S_std_t = torch.tensor(self.edge_norm[key][0], device=S_edge_block.device), torch.tensor(self.edge_norm[key][1], device=S_edge_block.device)
-                graph.edge_blocks[i] = S_edge_block * S_std_t + S_mean_t
+                inv_g.edge_blocks[i] = S_edge_block * S_std_t + S_mean_t
                 # target
                 T_mean_t, T_std_t = torch.tensor(self.edge_norm_target[key][0], device=T_edge_block.device), torch.tensor(self.edge_norm_target[key][1], device=T_edge_block.device)
-                graph.target_edge_blocks[i] = T_edge_block * T_std_t + T_mean_t
-            
+                inv_g.target_edge_blocks[i] = T_edge_block * T_std_t + T_mean_t
+
+                inv_g.pred_edge_blocks[i] = P_edge_block * T_std_t + T_mean_t  # Uses same stats as target (from training set)
+
+            inv_graphs.append(inv_g)
             # not really needed for our predictions
             # graph.edge_dist = graph.edge_dist * self.edge_threshold
-        return
+        return inv_graphs
     
-    def compute_normalization_factors(self, zero_std_val = 1e-6):
-        """Compute normalization factors for center and edge blocks & normalization for target blocks.
-        zero_std_val is used to avoid division by zero in case of zero standard deviation (not likely to happen in our case but good to have)."""
-        
+    def setup_atom_edge_keys(self):
         # gather atom sorts: (we loop over all atoms to also support non isomers!)
         center_keys = set()
         for graph in self.train_graphs:
@@ -525,23 +620,35 @@ class MolGraphNetwork(torch.nn.Module):
         edge_keys = set()
         for graph in self.train_graphs:
             edge_keys.update(graph.edge_pair_sym)
+        if hasattr(self, "use_all_data_for_atom_edge_keys") and self.use_all_data_for_atom_edge_keys:
+            for graph in self.val_graphs:
+                center_keys.update(graph.atom_sym)
+                edge_keys.update(graph.edge_pair_sym)
+            for graph in self.test_graphs:
+                center_keys.update(graph.atom_sym)
+                edge_keys.update(graph.edge_pair_sym)
         center_keys = sorted(center_keys)
         edge_keys = sorted(edge_keys)
         self.atom_types = center_keys  # Store atom types for later use
         self.overlap_types = edge_keys  # Store overlap types for later use
-
-        
         dprint(1, f"Found {len(center_keys)} center keys ({center_keys}) and {len(edge_keys)} edge keys ({edge_keys}) in the training set. -> Totaling {len(center_keys) + len(edge_keys)} unique encoder/decoder.")
+    
+    def compute_normalization_factors(self, zero_std_val = 1e-6):
+        """Compute normalization factors for center and edge blocks & normalization for target blocks.
+        zero_std_val is used to avoid division by zero in case of zero standard deviation (not likely to happen in our case but good to have)."""
+        
+        self.setup_atom_edge_keys()
+
         # source normalization factors
-        self.center_norm = {key: (0,0) for key in center_keys}  
-        self.edge_norm = {key: (0,0) for key in edge_keys}
+        self.center_norm = {key: (0,0) for key in self.atom_types}  
+        self.edge_norm = {key: (0,0) for key in self.overlap_types}
 
         # target normalization factors
-        self.center_norm_target = {key: (0,0) for key in center_keys}
-        self.edge_norm_target = {key: (0,0) for key in edge_keys}  
+        self.center_norm_target = {key: (0,0) for key in self.atom_types}
+        self.edge_norm_target = {key: (0,0) for key in self.overlap_types}  
 
-        S_center_vals, S_edge_vals = {key: [] for key in center_keys}, {key: [] for key in edge_keys}
-        T_center_vals, T_edge_vals = {key: [] for key in center_keys}, {key: [] for key in edge_keys}
+        S_center_vals, S_edge_vals = {key: [] for key in self.atom_types}, {key: [] for key in self.overlap_types}
+        T_center_vals, T_edge_vals = {key: [] for key in self.atom_types}, {key: [] for key in self.overlap_types}
 
         for graph in self.train_graphs: 
             # center blocks: 
@@ -575,7 +682,7 @@ class MolGraphNetwork(torch.nn.Module):
         if device is None:
             device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.to(device)
-        optimizer = torch.optim.Adam(self.parameters(), lr=lr, weight_decay=weight_decay)
+        optimizer = torch.optim.AdamW(self.parameters(), lr=lr, weight_decay=weight_decay)
         
         for epoch in range(1, num_epochs + 1):
             self.train()
@@ -639,7 +746,10 @@ class MolGraphNetwork(torch.nn.Module):
 
     def save_model(self, path):
         """Save the model to the specified path."""
-        torch.save(self.state_dict(), path)
+        checkpoint = {
+            'model_state_dict': self.state_dict(),
+        }
+        torch.save(checkpoint, path)
         dprint(1, f"Model saved to {path}")
     
     def save_model_checkpoint(self, path, epoch, optimizer=None):

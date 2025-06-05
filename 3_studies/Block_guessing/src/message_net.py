@@ -12,17 +12,16 @@ class MessageNet(torch.nn.Module):
       num_layers (int): total number of Linear→GELU blocks. The final block
                         produces the message embedding of size hidden_dim.
                         Minimum = 1 (just one Linear→GELU from input_dim→hidden_dim).
-      dropout (float):  dropout probability between layers (0.0 means no dropout).
+      dropout (float):  dropout probability between layers (0.0 means no dropout). default=0.1
     """
 
-    def __init__(self, input_dim, hidden_dim, num_layers=2, dropout=0.0):
+    def __init__(self, input_dim, hidden_dim, num_layers=2, dropout=0.1):
         super().__init__()
         assert num_layers >= 1, "num_layers must be >= 1"
 
         layers = []
         in_dim = input_dim
 
-        # Add (num_layers - 1) hidden blocks: Linear→GELU→(Dropout if set)
         for _ in range(num_layers - 1):
             layers.append(torch.nn.Linear(in_dim, hidden_dim))
             layers.append(torch.nn.GELU())
@@ -30,12 +29,14 @@ class MessageNet(torch.nn.Module):
                 layers.append(torch.nn.Dropout(dropout))
             in_dim = hidden_dim
 
-        # Final block: Linear→GELU to produce a hidden_dim‐sized message
         layers.append(torch.nn.Linear(in_dim, hidden_dim))
         layers.append(torch.nn.GELU())
 
 
         self.net = torch.nn.Sequential(*layers)
+    
+    def __repr__(self):
+        return super().__repr__()
 
     def forward(self, x):
         """

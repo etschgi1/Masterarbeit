@@ -1,3 +1,7 @@
+import numpy as np
+from scf_guess_tools import Backend, cache, load, calculate
+
+
 VERBOSE_LEVEL = 3
 
 def dprint(printlevel, *args, **kwargs):
@@ -11,8 +15,6 @@ def set_verbose(level: int):
     VERBOSE_LEVEL = level
 
 
-from scf_guess_tools import Backend, cache, load, calculate
-import os
 
 
 
@@ -80,3 +82,10 @@ density_fock_overlap = cache(ignore=["filepath", "basis"])(orig)
 def check_import():
     print("Import worked")
     return True
+
+def unflatten_triang(flat, N):
+    M = np.zeros((N, N))
+    iu = np.triu_indices(N)
+    M[iu] = flat
+    M[(iu[1], iu[0])] = flat 
+    return M
