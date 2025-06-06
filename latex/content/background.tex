@@ -37,15 +37,44 @@ Given the Fermionic problem at hand we have to take antisymmetrization into acco
 \end{equation}
 To write down this so called Slater determinant we have introduced the notation $\mathbf{x}_i = (\mathbf{r}_i, \sigma_i)$ with $\sigma_i$ being the spin of electron $i$. The functions $\chi_i$ are called spin orbitals and are a product of spatial and spin functions. 
 \begin{equation}
-    \chi_i(\mathbf{x}) = \sum_{\mu} C_{i\mu} \chi_\mu(\mathbf{x}) = \sum_{\mu} C_{i\mu} \phi_\mu(\mathbf{r}) \sigma(\sigma)
+    \chi_i(\mathbf{x}) = \sum_{\mu} C_{i\mu} \chi_\mu(\mathbf{x}) = \sum_{\mu} C_{i\mu} \phi_\mu(\mathbf{r}) \sigma(\sigma) \text{ with } \bra{\chi_i}\ket{\chi_j} = \delta_{ij}
 \end{equation}
 Using this expansion we reduce the problem to the determination of the coefficients $C_{i\mu}$ for a given set of orthogonal basis functions $\phi_\mu(\mathbf{r})$. For a complete set of basis functions this expansion is exact. However, in practice we have to limit the number of basis functions and hence the size of our Slater determinant to a computationally feasible size. For the subsequent considerations we introduce the shorthand ket for a slater determinant $\ket{\Psi} = \ket{\chi_1, \chi_2, \ldots, \chi_N}$ or $\ket{\Psi} = \ket{1, 2, \ldots, N}$ for the sake of brevity.
 
 %Energy functional
+A slater determinants is one simple way of describing the state of a system as a linear combination of basis functions. From that we can derive the energy of the given systems state $E$ using: 
+\begin{equation}
+    E = \bra{\Psi} H \ket{\Psi}
+\end{equation}
+For our considerations we will be interested in the ground state of the system. This means we need to find the minimum of our energy functional $E[\Psi]$ and it's corresponding slater determinant $\ket{\Psi}$ which marks our approximation to the ground state wavefunction. This is done via the variational principle which yields an eigenvalue problem: 
+\begin{equation}
+    \label{eq:hf_eigenval_equation}
+    F \ket{\Psi_i} = \varepsilon_i \ket{\Psi_i}
+\end{equation}
+called the Hartree-Fock equations. Here $\varepsilon_i$ corresponds to the energy of the $i$-th spin-orbital $\ket{\Psi_i}$. The operator $F$ is called the Fock operator and is defined as an effective one electron operator acting on electron $i$:
+\begin{equation}
+    F(i) = 
+    \underbrace{
+        -\frac{1}{2} \nabla^2 
+        - \sum_{A=1}^M \frac{Z_A}{|\mathbf{r} - \mathbf{R}_A|}
+    }_{\text{core Hamiltonian } h(i)}
+    + 
+    \underbrace{
+        \sum_{j\neq i} J_j(i) - K_j(i)
+    }_{\text{HF potential }v^{HF}(i)}
+\end{equation}
+While the core Hamiltonian $h(i)$ contains the well-known kinetic and nuclear attraction terms, the Hartree-Fock potential $v^{HF}(i)$ condenses all electron-electron interaction into a mean-field effect on electron $i$ using the Coulomb and exchange terms:
+\begin{subequations}
+\begin{align}
+    J_j(i)\chi_i(\mathbf{x}_1) &= \left[ \int d\mathbf{x}_2\, \frac{|\chi_j(\mathbf{x}_2)|^2}{r_{12}} \right] \chi_i(\mathbf{x}_1) \\
+    K_j(i)\chi_i(\mathbf{x}_1) &= \left[ \int d\mathbf{x}_2\, \frac{\chi_j^*(\mathbf{x}_2)\chi_i(\mathbf{x}_2)}{r_{12}} \right] \chi_j(\mathbf{x}_1)
+\end{align}
+\end{subequations}
+Here, $J_j(i)$ is the Coulomb operator, representing the classical electrostatic repulsion, and $K_j(i)$ is the exchange operator, arising from the antisymmetry of the wavefunction.
 
-%Sketch derivation of HF Equations
-%Fock operator
-%Coulomb and X-change terms
+While \autoref{eq:hf_eigenval_equation} seems like an ordinary eigenvalue problem, the $\chi$ terms in $J$ and $K$ depend on our slater determinant wavefunction $\ket{\Psi}$. Thus to get the ground state wavefunction, we need the corresponding Fock operator $F$ which in turn depends on the ground state wavefunction. 
+
+%DONE
 
 \subsection{Computational Treatment of the Hartree-Fock Method}
 \label{subsec:background_hf_computational}
@@ -75,9 +104,10 @@ During selection of a dataset for training two practical considerations dominate
     \item Fixed I/O size: Most ML models are constraint to a constant input and output size. 
 \end{enumerate}
 The QM9 dataset \parencite{ref:article1_qm9,ref:article2_qm9} ticks both of these two boxes. It offers a variety of molecules from as little as 3 constituent atoms up to 29 atoms. Additionally, there are large enough chunks of constitutional isomers to train models on these subsets of same sized matrices. The distribution of molecules by atom count with the predominant constitutional isomers is shown in \autoref{fig:method_qm9_overview}.
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{../fig/qm9_general/qm9_overview_stacked_bar.pdf}
-    \caption[QM9 dataset overview]{Overview of the QM9 dataset. The dataset contains 134k molecules with up to nine heavy - \ch{C} \ch{O} \ch{N} \ch{F} - atoms. Large groups of constitutional isomers are present (largest depicted in red). The properties are calculated using DFT with the B3LYP functional and the 6-31G(2df,p) basis set.}
-    \label{fig:method_qm9_overview}
-\end{figure}
+%!Figure
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=\textwidth]{../fig/qm9_general/qm9_overview_stacked_bar.pdf}
+%     \caption[QM9 dataset overview]{Overview of the QM9 dataset. The dataset contains 134k molecules with up to nine heavy - \ch{C} \ch{O} \ch{N} \ch{F} - atoms. Large groups of constitutional isomers are present (largest depicted in red). The properties are calculated using DFT with the B3LYP functional and the 6-31G(2df,p) basis set.}
+%     \label{fig:method_qm9_overview}
+% \end{figure}
