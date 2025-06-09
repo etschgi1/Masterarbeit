@@ -755,7 +755,7 @@ class MolGraphNetwork(torch.nn.Module):
             self.edge_norm_target[key] = (np.mean(T_edge_vals[key]), max(np.std(T_edge_vals[key]), zero_std_val))
         return
     
-    def train_model(self, num_epochs=5, lr=1e-3, weight_decay=1e-5, device=None, model_save_path=None):
+    def train_model(self, num_epochs=5, lr=1e-3, weight_decay=1e-5, device=None, model_save_path=None, grace_epochs=10):
         import torch.nn.functional as F
         from tqdm import tqdm
         
@@ -763,7 +763,18 @@ class MolGraphNetwork(torch.nn.Module):
             device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.to(device)
         optimizer = torch.optim.AdamW(self.parameters(), lr=lr, weight_decay=weight_decay)
-        
+        scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer,
+                                                               mode='min',
+                                                               factor=0.5,
+                                                               patience=5,
+                                                               min_lr=1e-6)
+        history = {
+            "train_loss": [],
+            "val_loss":[],
+            "lr":[],
+        }
+        best_val, no_imp_epochs = float('inf'), 0
+
         for epoch in range(1, num_epochs + 1):
             self.train()
             total_train_loss = 0.0
@@ -785,6 +796,7 @@ class MolGraphNetwork(torch.nn.Module):
                 total_train_loss += loss.item()
 
             avg_train_loss = total_train_loss / len(self.train_loader)
+            history["train_loss"].append(avg_train_loss)
             print(f"Epoch {epoch}/{num_epochs} → Avg Train Loss: {avg_train_loss:.6f}")
 
             # Validation
@@ -803,7 +815,30 @@ class MolGraphNetwork(torch.nn.Module):
                     total_val_loss += ((lc + le) / batch.num_graphs).item()
 
             avg_val_loss = total_val_loss / len(self.val_loader)
+            history["val_loss"].append(avg_val_loss)
             print(f"Epoch {epoch}/{num_epochs} → Avg Val   Loss: {avg_val_loss:.6f}")
+
+            # early stop!
+            if avg_val_loss < best_val: 
+                best_val = avg_val_loss
+                no_imp_epochs = 0
+                if model_save_path: 
+                    self.save_model_checkpoint(model_save_path, epoch, optimizer)
+            else:
+                no_imp_epochs += 1
+                if no_imp_epochs >= grace_epochs: 
+                    print(f"No improvement for {grace_epochs} -> early stopping")
+                    break
+            scheduler.step(avg_val_loss)
+            history["lr"].append(optimizer.param_groups[0]['lr'])
+
+        # save history
+        import pickle
+        base, _ = os.path.splitext(model_save_path)
+        hist_path = base + ".history"
+        with open(hist_path, "wb") as f: 
+            pickle.dump(history, f)
+        
 
         # test performance: 
         self.eval()
@@ -821,8 +856,9 @@ class MolGraphNetwork(torch.nn.Module):
                 total_test_loss += ((lt + le) / batch.num_graphs).item()
         avg_test_loss = total_test_loss / len(self.test_loader)
         print(f"Test  Loss: {avg_test_loss:.6f}")
-        if model_save_path is not None:
-            self.save_model_checkpoint(model_save_path, epoch, optimizer)
+        # already saved above!
+        # if model_save_path is not None:
+        #     self.save_model_checkpoint(model_save_path, epoch, optimizer)
 
     def save_model(self, path):
         """Save the model to the specified path."""
