@@ -153,6 +153,9 @@ class MolGraphNetwork(torch.nn.Module):
         self.test_ground_truth = [target_in[i] for i in test_indices]  
         self.val_ground_truth = [target_in[i] for i in val_indices]
         self.train_ground_truth = [target_in[i] for i in train_indices]
+        self.test_ovlp_mat = [overlap_in[i] for i in test_indices]
+        self.val_ovlp_mat = [overlap_in[i] for i in val_indices]
+        self.train_ovlp_mat = [overlap_in[i] for i in train_indices]
         self.files = {"train": [self.xyz_files[i] for i in train_indices],
                       "val": [self.xyz_files[i] for i in val_indices],
                       "test": [self.xyz_files[i] for i in test_indices]}
@@ -244,10 +247,46 @@ class MolGraphNetwork(torch.nn.Module):
             out[start_j:end_j, start_i:end_i] = block.T
         return out
         
-    def predict(self, graphs: List[Data], inv_transform=True, raw=False, include_target=False): 
-        """Predict the center and edge blocks for a given overlap matrix and coordinates.
-        if raw is True: returns list of predicted center and edge blocks ordered by graph [(graph_1_center_blocks: List[torch.Tensor], graph_1_edge_blocks: List[torch.Tensor]), ...]
-        if include target is also True: returns list of tuples (pred_center_blocks: List[torch.Tensor], pred_edge_blocks, target_center_blocks, target_edge_blocks) for each graph. or (prediction_matrix, target_matrix) if raw is False."""
+    def predict(self, graphs: List[Data], inv_transform=True, raw=False, include_target=False, transform_to_density=False): 
+        """
+        Run inference on list of molecular graphs, returning either raw block embeddings
+        or full reconstructed matrices, with optional de-normalization and Fock→density conversion.
+
+        Args:
+            graphs (List[Data]):
+                A list of PyG Data objects. Each must have:
+                - `center_blocks` / `edge_blocks` (input overlap blocks),
+                - `target_center_blocks` / `target_edge_blocks` (target blocks),
+                - `ao_slices` / `edge_ao_slices` for reconstruction.
+            inv_transform (bool, optional):
+                If True, apply the inverse of the training normalization to all source, target,
+                and predicted blocks before returning. Default: True.
+            raw (bool, optional):
+                If True, return raw block lists:
+                - without reconstruction to full matrices.
+                If False, return reconstructed square matrices. Default: False.
+            include_target (bool, optional):
+                If True, include target blocks or target matrices alongside predictions in the output.
+                Default: False.
+            transform_to_density (bool, optional):
+                If True *and* raw is False *and* the model's original target was a Fock matrix,
+                transform the predicted (and optionally target) Fock matrices into
+                density matrices.
+                Default: False.
+
+        Returns:
+            List:
+            - **raw=False, include_target=False**  
+                `[ np.ndarray(matrix)_graph1, np.ndarray(matrix)_graph2, … ]`
+            - **raw=False, include_target=True**  
+                `[ (pred_matrix, tgt_matrix)_graph1, … ]`
+            - **raw=True, include_target=False**  
+                `[ (pred_center_blocks, pred_edge_blocks)_graph1, … ]`
+            - **raw=True, include_target=True**  
+                `[ (pred_center_blocks, pred_edge_blocks,
+                    target_center_blocks, target_edge_blocks)_graph1, … ]`
+
+        """
         assert self.node_encoders is not None, "Model not set up. Call setup_model() first."
         assert self.edge_encoders is not None, "Model not set up. Call setup_model() first."
         
@@ -261,23 +300,64 @@ class MolGraphNetwork(torch.nn.Module):
                 pred_center_blocks = graph.pred_center_blocks
                 pred_edge_blocks = graph.pred_edge_blocks
                 if not raw:
-                    pred_rebuild = self.rebuild_matrix(pred_center_blocks, pred_edge_blocks, graph.ao_slices, graph.edge_ao_slices)
+                    ao_slices, edge_ao_slices = graph.ao_slices, graph.edge_ao_slices
+                    if transform_to_density: 
+                        ovlp = self.rebuild_matrix(graph.center_blocks, graph.edge_blocks, ao_slices, edge_ao_slices)
+                        print(f"Ovlp: {ovlp[:10, :10]}")
+                        nocc = sum([ATOM_NUMBERS[sym] for sym in graph.atom_sym])  #! this works only for closed-shell systems!
+                    pred_rebuild = self.rebuild_matrix(pred_center_blocks, pred_edge_blocks, ao_slices, edge_ao_slices)
+                    pred_rebuild = pred_rebuild if not transform_to_density else self.transform_to_density(pred_rebuild, ovlp, nocc)
                     if include_target:
                         target_center_blocks = graph.target_center_blocks
                         target_edge_blocks = graph.target_edge_blocks
-                        target_rebuild = self.rebuild_matrix(target_center_blocks, target_edge_blocks, graph.ao_slices, graph.edge_ao_slices)
+                        target_rebuild = self.rebuild_matrix(target_center_blocks, target_edge_blocks, ao_slices, edge_ao_slices)
+                        target_rebuild = target_rebuild if not transform_to_density else self.transform_to_density(target_rebuild, ovlp, nocc)
                         pred_matrices.append((pred_rebuild, target_rebuild))
                     else:
                         pred_matrices.append(pred_rebuild)
-                else:
+                else: #raw
+                    if transform_to_density:
+                        Warning("transform_to_density is True but raw is also True. This will not transform the target blocks to density matrices!")
                     if include_target:
                         target_center_blocks = graph.target_center_blocks
                         target_edge_blocks = graph.target_edge_blocks
                         pred_matrices.append((pred_center_blocks, pred_edge_blocks, target_center_blocks, target_edge_blocks))
                     else:
                         pred_matrices.append((pred_center_blocks, pred_edge_blocks))
-                
         return pred_matrices
+    
+    def check_positive_definite(self, S, tol=1e-10):
+        eigvals = np.linalg.eigvalsh(S)
+        is_pd = np.all(eigvals > tol)
+        return is_pd
+
+    def density_from_fock(self, fock, overlap, nocc):
+        from scipy.linalg import eigh
+        assert self.check_positive_definite(overlap)
+        _, C = eigh(fock, overlap)
+        C_occ = C[:, :nocc]
+        density = 2 * C_occ @ C_occ.T 
+        return density
+
+    def transform_to_density(self, fock_mat, ovlp_mat, nocc):
+        """Transform Fock matrices to density matrices."""
+        if self.target == "density":
+            Warning("Model was trained on density matrices, so there is no need to set transform_to_density=True. Returning non-transformed matrices.")
+            return fock_mat
+        # transform Fock to density
+        assert self.target == "fock", "Model must be trained on Fock matrices to use this method."
+        assert isinstance(fock_mat, np.ndarray), "fock_matrices must be a numpy array - can only transform reconstructed matrices!"
+        return self.density_from_fock(fock=fock_mat, overlap=ovlp_mat, nocc=nocc)
+    
+    def get_source_mat(self, set_name="test"): 
+        """Get the source overlap matrices for the specified set (train, val, test)."""
+        assert set_name in ["train", "val", "test"], "set_name must be 'train', 'val', or 'test'."
+        if set_name == "train":
+            return self.train_ovlp_mat
+        elif set_name == "val":
+            return self.val_ovlp_mat
+        elif set_name == "test":
+            return self.test_ovlp_mat
 
     def get_ground_truth(self, set_name="test"):
         """Get the ground truth matrices (fock / density - depending on self.target) for the specified set (train, val, test)."""

@@ -89,3 +89,47 @@ def unflatten_triang(flat, N):
     M[iu] = flat
     M[(iu[1], iu[0])] = flat 
     return M
+
+
+def plot_mat_comp(reference, prediction, reshape=False, title="Fock Matrix Comparison", ref_title="Reference", pred_title="Prediction", vmax=1.5, labels1=None, labels2=None):
+    import matplotlib.pyplot as plt
+    from sklearn.metrics import root_mean_squared_error
+    diff = reference - prediction
+    rmse = root_mean_squared_error(reference, prediction)
+    
+    reference = unflatten_triang(reference, reshape) if reshape else reference
+    prediction = unflatten_triang(prediction, reshape) if reshape else prediction
+    diff = unflatten_triang(diff, reshape) if reshape else diff
+    
+    fig, ax = plt.subplots(1, 4, figsize=(15, 5), width_ratios=[1, 1, 1, 0.1])
+    fig.suptitle(f"{title}  |  RMSE: {rmse:.8f}")
+    
+    ax[0].imshow(reference, cmap='RdBu', vmin=-vmax, vmax=vmax)
+    ax[0].set_title(ref_title)
+    
+    ax[1].imshow(prediction, cmap='RdBu', vmin=-vmax, vmax=vmax)
+    ax[1].set_title(pred_title)
+    
+    diff_plot = ax[2].imshow(diff, cmap='RdBu', vmin=-vmax, vmax=vmax)
+    ax[2].set_title("Difference")
+    
+    if labels1: 
+        ax[0].set_xticks(range(len(labels1)))
+        ax[0].set_xticklabels(labels1, rotation=90, fontsize=7, va='bottom')
+        ax[0].set_yticks(range(len(labels1)))
+        ax[0].set_yticklabels(labels1, fontsize=7, ha='left')
+        ax[0].tick_params(axis='x', labelbottom=True, pad=30)
+        ax[0].tick_params(axis='y', labelleft=True, pad=30)
+    if labels2: 
+        ax[1].set_xticks(range(len(labels2)))
+        ax[1].set_xticklabels(labels2, rotation=90, fontsize=7, va='bottom')
+        ax[1].set_yticks(range(len(labels2)))
+        ax[1].set_yticklabels(labels2, fontsize=7, ha='left')
+        ax[1].tick_params(axis='x', labelbottom=True, pad=30)
+        ax[1].tick_params(axis='y', labelleft=True, pad=30)
+    
+    cbar = fig.colorbar(diff_plot, cax=ax[3])
+    cbar.set_label("Difference Scale")
+    
+    plt.tight_layout()
+    plt.show()
