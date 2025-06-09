@@ -37,9 +37,10 @@ Given the Fermionic problem at hand we have to take antisymmetrization into acco
 \end{equation}
 To write down this so called Slater determinant we have introduced the notation $\mathbf{x}_i = (\mathbf{r}_i, \sigma_i)$ with $\sigma_i$ being the spin of electron $i$. The functions $\chi_i$ are called spin orbitals and are a product of spatial and spin functions. 
 \begin{equation}
-    \chi_i(\mathbf{x}) = \sum_{\mu} C_{i\mu} \chi_\mu(\mathbf{x}) = \sum_{\mu} C_{i\mu} \phi_\mu(\mathbf{r}) \sigma(\sigma) \text{ with } \bra{\chi_i}\ket{\chi_j} = \delta_{ij}
+    \label{eq:spin_orbital_expansion}
+    \chi_i(\mathbf{x}) = \sum_{\nu} C_{\nu i} \chi_\nu(\mathbf{x}) = \sum_{\nu} C_{\nu i} \phi_\nu(\mathbf{r}) \sigma(\sigma) \text{ with } \bra{\chi_i}\ket{\chi_j} = \delta_{ij}
 \end{equation}
-Using this expansion we reduce the problem to the determination of the coefficients $C_{i\mu}$ for a given set of orthogonal basis functions $\phi_\mu(\mathbf{r})$. For a complete set of basis functions this expansion is exact. However, in practice we have to limit the number of basis functions and hence the size of our Slater determinant to a computationally feasible size. For the subsequent considerations we introduce the shorthand ket for a slater determinant $\ket{\Psi} = \ket{\chi_1, \chi_2, \ldots, \chi_N}$ or $\ket{\Psi} = \ket{1, 2, \ldots, N}$ for the sake of brevity.
+Using this expansion we reduce the problem to the determination of the coefficients $C_{\nu i}$ for a given set of orthogonal basis functions $\phi_\nu(\mathbf{r})$. For a complete set of basis functions this expansion is exact. However, in practice we have to limit the number of basis functions and hence the size of our Slater determinant to a computationally feasible size. For the subsequent considerations we introduce the shorthand ket for a slater determinant $\ket{\Psi} = \ket{\chi_1, \chi_2, \ldots, \chi_N}$ or $\ket{\Psi} = \ket{1, 2, \ldots, N}$ for the sake of brevity.
 
 %Energy functional
 A slater determinants is one simple way of describing the state of a system as a linear combination of basis functions. From that we can derive the energy of the given systems state $E$ using: 
@@ -51,7 +52,7 @@ For our considerations we will be interested in the ground state of the system. 
     \label{eq:hf_eigenval_equation}
     F \ket{\Psi_i} = \varepsilon_i \ket{\Psi_i}
 \end{equation}
-called the Hartree-Fock equations. Here $\varepsilon_i$ corresponds to the energy of the $i$-th spin-orbital $\ket{\Psi_i}$. The operator $F$ is called the Fock operator and is defined as an effective one electron operator acting on electron $i$:
+called the Hartree-Fock (HF) equations. Here $\varepsilon_i$ corresponds to the energy of the $i$-th spin-orbital $\ket{\Psi_i}$. The operator $F$ is called the Fock operator and is defined as an effective one electron operator acting on electron coordinate $i$:
 \begin{equation}
     F(i) = 
     \underbrace{
@@ -76,19 +77,87 @@ While \autoref{eq:hf_eigenval_equation} seems like an ordinary eigenvalue proble
 
 %DONE
 
-\subsection{Computational Treatment of the Hartree-Fock Method}
+\subsection{Matrix formulation of the Hartree-Fock equations}
 \label{subsec:background_hf_computational}
-\TODO{Computational treatment + Überleitung hier her}
-The Fock matrix depends on the electron density, which in turn depends on the molecular orbitals, leading to a self-consistent field (SCF) procedure:
-\begin{enumerate}
-    \item Guess an initial set of molecular orbital coefficients $\mathbf{C}$ (often from a core Hamiltonian or superposition of atomic densities).
-    \item Construct the density matrix $\mathbf{P}$ from $\mathbf{C}$.
-    \item Build the Fock matrix $\mathbf{F}$ using $\mathbf{P}$.
-    \item Solve the generalized eigenvalue problem to obtain new $\mathbf{C}$ and $\mathbf{\varepsilon}$.
-    \item Check for convergence of the total energy or density matrix. If not converged, repeat from step 2.
+To solve the self-dependence of the Hartree-Fock equations, we need to iteratively update our wavefunction until convergence is reached. To achieve this we first need to express our formal pseudo eigenvalue problem in a way that can be solved numerically. Under the premis that both spin up ($\uparrow$) and spin down ($\downarrow$) electrons have the same spatial distribution -- we call this the restricted HF -- we can write the HF-equations for electron coordinate 1 as:
+\begin{equation}
+    F(\mathbf{x}_1) \chi_i(\mathbf{x}_1) = \varepsilon_i \chi_i(\mathbf{x}_1) \equiv F(\mathbf{x}_1) \psi_i(\mathbf{r}_1) \sigma_i(\sigma_1) = \varepsilon_i \psi_i(\mathbf{r}_1) \sigma_i(\sigma_1)
+\end{equation}
+With the spins integrated out we obtain the HF-equations with spatial orbitals: 
+\begin{equation}
+    \label{eq:hf_eigenval_equation_spatial}
+    F(\mathbf{r}_1) \psi_i(\mathbf{r}_1) = \varepsilon_i \psi_i(\mathbf{r}_1)
+\end{equation}
+
+which differs from \autoref{eq:hf_eigenval_equation} in the fact that we have integrated out the spin degrees of freedom and thus need to sum over half the electrons (i.e. $\uparrow$) and multiply by two. Therefore $F$ writes:
+\begin{equation}
+    \label{eq:fock_operator_spatial}
+    F(\mathbf{r}_1) = h(\mathbf{r}_1) + 2 \sum_{j\neq i}^{\nicefrac{N}{2}} \left( J_j(\mathbf{r}_1) - K_j(\mathbf{r}_1) \right)
+\end{equation}
+
+Finally, we need to represent the spatial orbitals in a finite computer readable way. While the spin orbitals in \autoref{eq:spin_orbital_expansion} are exact for a complete basis set, we will limit ourselvs to a finite set of known basis functions which will approximate the spatial orbitals by linear combination:
+\begin{equation}
+    \label{eq:psi_approximation}
+    \psi_i(\mathbf{r}) \approx \sum_{\nu}^{\nu_\text{max}} C_{\nu i} \phi_\nu(\mathbf{r})
+\end{equation}
+Approximating the spatial wavefunction using these basis functions (for details see \autoref{subsec:background_hf_basis_sets}) will reduce our problem to the determination of the coefficients $C_{\nu i}$. Finally we insert \autoref{eq:psi_approximation} into \autoref{eq:hf_eigenval_equation_spatial} to obtain the matrix form of the HF equations, the so called Roothaan equations:
+\begin{subequations}
+    \label{eq:roothaan_equations}
+    \begin{align}
+        \sum_{\nu}^{\nu_\text{max}} C_{\nu i} \int d\mathbf{r_1} \phi_\mu^*(\mathbf{r_1}) F(\mathbf{r_1}) \phi_\nu^*(\mathbf{r_1})&= \varepsilon_i \sum_{\nu}^{\nu_\text{max}} C_{\nu i} \int d\mathbf{r_1} \phi_\mu^*(\mathbf{r_1})\phi_\nu^*(\mathbf{r_1}) \\
+        \Rightarrow \mathbf{F(C)C} &= \mathbf{SC} \boldsymbol{\varepsilon} \label{eq:roothaan_equations_matrix}\\
+    \end{align}
+\end{subequations}
+Where we identify the Fock matrix $\mathbf{F}$, the overlap matrix $\mathbf{S}$, the coefficient matrix $\mathbf{C}$ and the diagonal eigenvalue matrix $\boldsymbol{\varepsilon}$ with elements: 
+\begin{subequations}
+    \label{eq:roothaan_matrices}
+    \begin{align}
+        F_{\mu \nu} &= \int d\mathbf{r_1} \phi_\mu^*(\mathbf{r_1}) F(\mathbf{r_1}) \phi_\nu^*(\mathbf{r_1}) \label{eq:roothaan_mat_F}\\
+        S_{\mu \nu} &= \int d\mathbf{r_1} \phi_\mu^*(\mathbf{r_1}) \phi_\nu^*(\mathbf{r_1}) \\
+        C_{\mu i} &= C_{\nu i} \text{ (coefficients of the } i\text{-th spin orbital)}\\
+        \varepsilon_{ij} &= \varepsilon_i \delta_{ij} \text{ (diagonal matrix with orbital energies)}
+    \end{align}
+\end{subequations}
+Ultimately, we are interested in the electron density distribution $\rho(\mathbf{r})$ which is given by the sum of the squares of the occupied spin orbitals: 
+\begin{equation}
+    \rho(\mathbf{r}) = 2 \sum_{i=1}^{N/2} |\psi_i(\mathbf{r})|^2 = 2 \sum_{i=1}^{N/2} \sum_{\mu,\nu}^{\nu_\text{max}} C_{\mu i} C_{\nu i}^* \phi_\mu(\mathbf{r}) \phi_\nu^*(\mathbf{r}) = \sum_{\mu,\nu}^{\nu_\text{max}} P_{\mu \nu} \phi_\mu(\mathbf{r}) \phi_\nu^*(\mathbf{r})
+\end{equation}
+Here we have used \autoref{eq:psi_approximation} to express the spatial orbitals in terms of the basis functions\footnote{We still need to multiply by two in order to account for spin up and spin down} and defined the density matrix $\mathbf{P}$.\\
+As we have seen earlier, the Fock operator $F$ and thus the Fock matrix $\mathbf{F}$ depend on the expansion coefficients $\mathbf{C}$ and thus the Fock matrix also depends on the density matrix $\mathbf{F(P)}$. If we insert \autoref{eq:fock_operator_spatial} into \autoref{eq:roothaan_mat_F} and write out Coulomb and exchange terms we have: 
+\begin{align}
+        F_{\mu \nu} &= \underbrace{\int d\mathbf{r}_1\, \phi_\mu^*(\mathbf{r}_1)\, h(\mathbf{r}_1)\, \phi_\nu(\mathbf{r}_1) \nonumber}_{H_{\mu\nu}^\text{core}} \\
+        &\quad + \sum_{\lambda \sigma} \mathbf{P}_{\lambda \sigma} \Bigg[
+            \underbrace{\iint  d\mathbf{r}_1 d\mathbf{r}_2\, \phi_\mu^*(\mathbf{r}_1) \phi_\nu(\mathbf{r}_1) r_{12}^{-1} \phi_\sigma^*(\mathbf{r}_2) \phi_\lambda(\mathbf{r}_2) \nonumber}_{\text{Coulomb-term}} \\
+            &\qquad - \frac{1}{2} \underbrace{\iint d\mathbf{r}_1 d\mathbf{r}_2\, \phi_\mu^*(\mathbf{r}_1) \phi_\lambda(\mathbf{r}_1) r_{12}^{-1} \phi_\sigma^*(\mathbf{r}_2) \phi_\nu(\mathbf{r}_2)}_{\text{Exchange-term}}
+            \Bigg]
+\end{align}
+One and two electron contributions are now split into the core Hamiltonian $H_{\mu\nu}^\text{core}$ which is independent of the density matrix and thus stays constant for a set of basis functions, and the Coulomb and exchange terms which depend on the density matrix $\mathbf{P}$. The later terms are often denoted as $G_{\mu\nu}$, the so called two-electron integrals, hence $F_{\mu \nu} = H_{\mu\nu}^\text{core} + G_{\mu\nu}$.\\
+
+\subsection{Self Consistent Field (SCF) Algorithm}
+\label{subsec:background_hf_scf}
+We now have all ingredients to solve our Matrix equations \autoref{eq:roothaan_equations_matrix} iteratively. The self consistent field (SCF) algorithm is a fixed point iteration method which means that we initially need the atom coordinates $\mathbf{R}_A$ and atomic numbers. Furthermore, we require the number of electrons $N$ and a set of basis functions $\phi_\nu(\mathbf{r})$ to obtain our orbitals.\\
+Initially we also calculate the core Hamiltonian $H_{\mu\nu}^\text{core}$ and the overlap matrix $S_{\mu\nu}$ once (they will be reused in every step) and we guess an initial density. The guess of this initial density is crucial and has a big influences on the convergence speed of the algorithm. Then we start the loop: 
+\begin{enumerate}[itemsep=0.1em]
+    \item Calculate $G_{\mu\nu}$ using the current $\mathbf{P}$.
+    \item Build a new $\mathbf{F}$ using the $H_{\mu\nu}^\text{core}$ and $G_{\mu\nu}$.
+    \item Solve the generalized eigenvalue problem to obtain a new $\mathbf{C}$ and $\boldsymbol{\varepsilon}$. \footnote{For numerical stability one usually converts to a standard eigenproblem using canonical orthonormalization: diagonalize $\mathbf{S}=\mathbf{U}\,s\,\mathbf{U}^T$, form $\mathbf{X}=\mathbf{U}\,s^{-1/2}$, solve the standard problem $\mathbf{X}^T\mathbf{F}\,\mathbf{X}\,\mathbf{C}'=\mathbf{C}'\,\boldsymbol{\varepsilon}$, and recover $\mathbf{C}=\mathbf{X}\,\mathbf{C}'$.}
+    \item Obtain a new density matrix $\mathbf{P}$ from the new $\mathbf{C}$.
+    \item Total energy or $\mathbf{P}$ converged? If not, repeat.
 \end{enumerate}
 
-%!Hartree-Fock equations - .... - variational method + energy - matrices used - basis sets - SCF algorithm - kohn-sham equations & DFT - CC / other methods (short) - 
+Computationally, the calculation of the two-electron integrals $G_{\mu\nu}$ is the most expensive step which scales with the number of basis functions as $\bigO{n^4}$. Given this fact, a small enough basis set which still captures the essence of the physical system should be chosen and the number of iterations shall be kept to a minimum by a good initial guess. Keeping our approximation of the spatial orbitals via \autoref{eq:psi_approximation} in mind, we see that better approximations of the systems wavefunction and energy can be achieved with larger and larger basis sets. Given the drawback of increased computational cost (mostly in step 1 of the SCF algorithm) a reduction of iterations is even more crucial for larger systems and larger basis sets.
+
+\subsection{Basis sets}
+\label{subsec:background_hf_basis_sets}
+For computational treatment our abstract basis functions $\phi_\nu(\mathbf{r})$ need to manifest in a concrete form. 
+\TODO{...}
+
+\subsection{Density Functional Theory (DFT)}
+\label{subsec:background_dft}
+
+\subsection{Post-Hartree-Fock Methods}
+\label{subsec:background_post_hf}
+
 \section{Machine Learning}
 \label{sec:background_ml}
 %! Intor to ML & Statistical Learning. 
@@ -104,10 +173,9 @@ During selection of a dataset for training two practical considerations dominate
     \item Fixed I/O size: Most ML models are constraint to a constant input and output size. 
 \end{enumerate}
 The QM9 dataset \parencite{ref:article1_qm9,ref:article2_qm9} ticks both of these two boxes. It offers a variety of molecules from as little as 3 constituent atoms up to 29 atoms. Additionally, there are large enough chunks of constitutional isomers to train models on these subsets of same sized matrices. The distribution of molecules by atom count with the predominant constitutional isomers is shown in \autoref{fig:method_qm9_overview}.
-%!Figure
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=\textwidth]{../fig/qm9_general/qm9_overview_stacked_bar.pdf}
-%     \caption[QM9 dataset overview]{Overview of the QM9 dataset. The dataset contains 134k molecules with up to nine heavy - \ch{C} \ch{O} \ch{N} \ch{F} - atoms. Large groups of constitutional isomers are present (largest depicted in red). The properties are calculated using DFT with the B3LYP functional and the 6-31G(2df,p) basis set.}
-%     \label{fig:method_qm9_overview}
-% \end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../fig/qm9_general/qm9_overview_stacked_bar.pdf}
+    \caption[QM9 dataset overview]{Overview of the QM9 dataset. The dataset contains 134k molecules with up to nine heavy - \ch{C} \ch{O} \ch{N} \ch{F} - atoms. Large groups of constitutional isomers are present (largest depicted in red). The properties are calculated using DFT with the B3LYP functional and the 6-31G(2df,p) basis set.}
+    \label{fig:method_qm9_overview}
+\end{figure}
