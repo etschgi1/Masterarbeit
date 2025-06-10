@@ -29,3 +29,32 @@ Due to the grid spacing in DFT calculations small deviations ($\approx 0,1 \unit
 
 \section{GNN Design}
 \label{sec:gnn_design}
+
+\section{Training}
+\label{sec:gnn_training}
+\TODO{better text}
+We initially train a model without data augmentation and only on a small subset of our QM9 C7H10O2 molecules (500 atoms simulated with B3LYPG \& pcseg-1) with a 80/10/10 split (train/val/test). 
+Meta: 
+\begin{verbatim}
+batch_size=16,
+hidden_dim=256,
+train_val_test_ratio=(0.8, 0.1, 0.1),
+message_passing_steps=3,
+edge_threshold_val=5,
+message_net_layers=3,
+message_net_dropout=0.1,
+target="fock",
+lr=1e-3 
+weight_decay=1e-5
+trained for 103 epochs (overfitting started earlier - 
+see history data in scripts>gnn>plot_data)
+test_loss: 6.00
+using standards from c2ec04be68ae09bec80153fabaace85234ad1a5e elsewhere!
+\end{verbatim}
+        
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../fig/gnn/mgnn_pcseg1_simple_loss.pdf}
+    \caption[GNN initial training Loss]{\TODO{...}}
+    \label{fig:gnn_initial_training_loss}
+\end{figure}

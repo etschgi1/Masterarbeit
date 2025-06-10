@@ -771,73 +771,70 @@ class MolGraphNetwork(torch.nn.Module):
         history = {
             "train_loss": [],
             "val_loss":[],
+            "test_loss":float,
             "lr":[],
         }
         best_val, no_imp_epochs = float('inf'), 0
+        try: 
+            for epoch in range(1, num_epochs + 1):
+                self.train()
+                total_train_loss = 0.0
 
-        for epoch in range(1, num_epochs + 1):
-            self.train()
-            total_train_loss = 0.0
-
-            for batch in tqdm(self.train_loader, desc=f"Epoch {epoch} [Train]"):
-                batch = batch.to(device)
-                optimizer.zero_grad()
-                batch = self.forward(batch)
-
-                loss_center, loss_edge = 0.0, 0.0
-                for i in range(batch.num_nodes):
-                    loss_center += F.mse_loss(batch.pred_center_blocks[i], batch.target_center_blocks[i].to(device))
-                for k in range(batch.num_edges):
-                    loss_edge += F.mse_loss(batch.pred_edge_blocks[k], batch.target_edge_blocks[k].to(device))
-
-                loss = (loss_center + loss_edge) / batch.num_graphs
-                loss.backward()
-                optimizer.step()
-                total_train_loss += loss.item()
-
-            avg_train_loss = total_train_loss / len(self.train_loader)
-            history["train_loss"].append(avg_train_loss)
-            print(f"Epoch {epoch}/{num_epochs} → Avg Train Loss: {avg_train_loss:.6f}")
-
-            # Validation
-            self.eval()
-            total_val_loss = 0.0
-            with torch.no_grad():
-                for batch in tqdm(self.val_loader, desc=f"Epoch {epoch} [Val]"):
+                for batch in tqdm(self.train_loader, desc=f"Epoch {epoch} [Train]"):
                     batch = batch.to(device)
+                    optimizer.zero_grad()
                     batch = self.forward(batch)
 
-                    lc, le = 0.0, 0.0
+                    loss_center, loss_edge = 0.0, 0.0
                     for i in range(batch.num_nodes):
-                        lc += F.mse_loss(batch.pred_center_blocks[i], batch.target_center_blocks[i].to(device))
+                        loss_center += F.mse_loss(batch.pred_center_blocks[i], batch.target_center_blocks[i].to(device))
                     for k in range(batch.num_edges):
-                        le += F.mse_loss(batch.pred_edge_blocks[k], batch.target_edge_blocks[k].to(device))
-                    total_val_loss += ((lc + le) / batch.num_graphs).item()
+                        loss_edge += F.mse_loss(batch.pred_edge_blocks[k], batch.target_edge_blocks[k].to(device))
 
-            avg_val_loss = total_val_loss / len(self.val_loader)
-            history["val_loss"].append(avg_val_loss)
-            print(f"Epoch {epoch}/{num_epochs} → Avg Val   Loss: {avg_val_loss:.6f}")
+                    loss = (loss_center + loss_edge) / batch.num_graphs
+                    loss.backward()
+                    optimizer.step()
+                    total_train_loss += loss.item()
 
-            # early stop!
-            if avg_val_loss < best_val: 
-                best_val = avg_val_loss
-                no_imp_epochs = 0
-                if model_save_path: 
-                    self.save_model_checkpoint(model_save_path, epoch, optimizer)
-            else:
-                no_imp_epochs += 1
-                if no_imp_epochs >= grace_epochs: 
-                    print(f"No improvement for {grace_epochs} -> early stopping")
-                    break
-            scheduler.step(avg_val_loss)
-            history["lr"].append(optimizer.param_groups[0]['lr'])
+                avg_train_loss = total_train_loss / len(self.train_loader)
+                history["train_loss"].append(avg_train_loss)
+                print(f"Epoch {epoch}/{num_epochs} → Avg Train Loss: {avg_train_loss:.6f}")
 
-        # save history
-        import pickle
-        base, _ = os.path.splitext(model_save_path)
-        hist_path = base + ".history"
-        with open(hist_path, "wb") as f: 
-            pickle.dump(history, f)
+                # Validation
+                self.eval()
+                total_val_loss = 0.0
+                with torch.no_grad():
+                    for batch in tqdm(self.val_loader, desc=f"Epoch {epoch} [Val]"):
+                        batch = batch.to(device)
+                        batch = self.forward(batch)
+
+                        lc, le = 0.0, 0.0
+                        for i in range(batch.num_nodes):
+                            lc += F.mse_loss(batch.pred_center_blocks[i], batch.target_center_blocks[i].to(device))
+                        for k in range(batch.num_edges):
+                            le += F.mse_loss(batch.pred_edge_blocks[k], batch.target_edge_blocks[k].to(device))
+                        total_val_loss += ((lc + le) / batch.num_graphs).item()
+
+                avg_val_loss = total_val_loss / len(self.val_loader)
+                history["val_loss"].append(avg_val_loss)
+                print(f"Epoch {epoch}/{num_epochs} → Avg Val   Loss: {avg_val_loss:.6f}")
+
+                # early stop!
+                if avg_val_loss < best_val: 
+                    best_val = avg_val_loss
+                    no_imp_epochs = 0
+                    if model_save_path: 
+                        self.save_model_checkpoint(model_save_path, epoch, optimizer)
+                else:
+                    no_imp_epochs += 1
+                    if no_imp_epochs >= grace_epochs: 
+                        print(f"No improvement for {grace_epochs} -> early stopping")
+                        break
+                scheduler.step(avg_val_loss)
+                history["lr"].append(optimizer.param_groups[0]['lr'])
+        except KeyboardInterrupt:
+            print("Training interrupted by user. Benchmark...")
+
         
 
         # test performance: 
@@ -855,6 +852,13 @@ class MolGraphNetwork(torch.nn.Module):
                     le += F.mse_loss(batch.pred_edge_blocks[k], batch.target_edge_blocks[k].to(device))
                 total_test_loss += ((lt + le) / batch.num_graphs).item()
         avg_test_loss = total_test_loss / len(self.test_loader)
+        history["test_loss"] = avg_test_loss
+        # save history
+        import pickle
+        base, _ = os.path.splitext(model_save_path)
+        hist_path = base + ".history"
+        with open(hist_path, "wb") as f: 
+            pickle.dump(history, f)
         print(f"Test  Loss: {avg_test_loss:.6f}")
         # already saved above!
         # if model_save_path is not None:

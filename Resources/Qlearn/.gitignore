@@ -1,0 +1,15 @@
+__pycache__/
+.cache/
+.coverage
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+qmlearn.egg-info
+examples/debug
+doc/build/
+.ipynb_checkpoints/
+bak/
+.buildconfig
+doc/source/tutorials/config.rst
+.eggs
