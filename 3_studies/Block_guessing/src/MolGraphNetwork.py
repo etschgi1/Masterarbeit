@@ -288,7 +288,7 @@ class MolGraphNetwork(torch.nn.Module):
             out[start_j:end_j, start_i:end_i] = block.T
         return out
         
-    def predict(self, graphs: List[Data], inv_transform=True, raw=False, include_target=False, transform_to_density=False): 
+    def predict(self, graphs: List[Data], inv_transform=True, raw=False, include_target=False, transform_to_density=True): 
         """
         Run inference on list of molecular graphs, returning either raw block embeddings
         or full reconstructed matrices, with optional de-normalization and Fock→density conversion.
@@ -312,8 +312,8 @@ class MolGraphNetwork(torch.nn.Module):
             transform_to_density (bool, optional):
                 If True *and* raw is False *and* the model's original target was a Fock matrix,
                 transform the predicted (and optionally target) Fock matrices into
-                density matrices.
-                Default: False.
+                density matrices (Note that only one spin component is given *2 to get alpha & beta).
+                Default: True.
 
         Returns:
             List:
@@ -344,7 +344,7 @@ class MolGraphNetwork(torch.nn.Module):
                     ao_slices, edge_ao_slices = graph.ao_slices, graph.edge_ao_slices
                     if transform_to_density: 
                         ovlp = self.rebuild_matrix(graph.center_blocks, graph.edge_blocks, ao_slices, edge_ao_slices)
-                        print(f"Ovlp: {ovlp[:10, :10]}")
+                        # print(f"Ovlp: {ovlp[:10, :10]}")
                         nocc = sum([ATOM_NUMBERS[sym] for sym in graph.atom_sym])  #! this works only for closed-shell systems!
                     pred_rebuild = self.rebuild_matrix(pred_center_blocks, pred_edge_blocks, ao_slices, edge_ao_slices)
                     pred_rebuild = pred_rebuild if not transform_to_density else self.transform_to_density(pred_rebuild, ovlp, nocc)
