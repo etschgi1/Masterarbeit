@@ -1,6 +1,9 @@
 import numpy as np
 from scf_guess_tools import Backend, cache, load, calculate
-
+from collections import defaultdict
+import quaternion
+from pyscf.symm.Dmatrix import Dmatrix
+from BlockMatrix import BlockMatrix, Block
 
 VERBOSE_LEVEL = 3
 
@@ -89,7 +92,128 @@ def unflatten_triang(flat, N):
     M[iu] = flat
     M[(iu[1], iu[0])] = flat 
     return M
+from collections import defaultdict
 
+def quaternion_to_euler_zyz(q): 
+    """
+    Convert a quaternion to Euler angles (Z-Y-Z convention).
+    """
+
+    # Extract the components of the quaternion
+    w, x, y, z = q.w, q.x, q.y, q.z
+    
+    # Calculate the Euler angles
+    phi = np.arctan2(2 * (w * z + x * y), 1 - 2 * (y**2 + z**2))
+    theta = np.arcsin(2 * (w * y - z * x))
+    psi = np.arctan2(2 * (w * x + y * z), 1 - 2 * (x**2 + y**2))
+    
+    return phi, theta, psi
+
+def quaternion_from_axis_angle(axis, angle):
+    half_angle = angle / 2
+    s = np.sin(half_angle)
+    c = np.cos(half_angle)
+    return np.quaternion(c, *(axis * s))
+
+def rotate_points(points, axis, angle):
+    """
+    Rotates points around a given axis by a specified angle.
+
+    Args:
+        points (np.ndarray): shape (N, 3)
+        axis (np.ndarray): rotation axis
+        angle (float): rotation angle in radians
+
+    Returns:
+        np.ndarray: rotated points
+    """
+    q = np.quaternion(np.cos(angle / 2), *(axis * np.sin(angle / 2)))
+    q_conjugate = q.conjugate()
+    rotated_points = []
+    for point in points:
+        p = np.quaternion(0, *point)
+        rotated_point = q * p * q_conjugate
+        rotated_points.append(rotated_point.imag)
+    return np.array(rotated_points)
+
+
+def rotate_M(mol, axis, angle, M, maxL=4, return_numpy=True):
+    """
+    Rotate a Block Matrix M using the Wigner-D matrices for the given axis and angle.
+    The rotation is applied to the blocks of M according to their angular momentum l.
+    mol: PySCF Mole object
+    axis: rotation axis as a 3D vector (numpy array)
+    angle: rotation angle in radians
+    M: BlockMatrix instance to be rotated
+    maxL: maximum angular momentum to consider (default is 4 for s, p, d, f)
+    """
+    if not isinstance(M, BlockMatrix):
+        try:
+            M = BlockMatrix(mol, Matrix=M)
+        except: 
+            raise TypeError("M must be a BlockMatrix instance")
+    
+    l_map = {'s': 0, 'p': 1, 'd': 2, 'f': 3, 'g': 4} # we hopefully don't need higher than g
+    ao_lbls = mol.ao_labels(fmt=False, base=0)
+    shells = defaultdict(list)
+    for mu, (iatom, _, shell_name, _) in enumerate(ao_lbls):
+        shells[(iatom, shell_name)].append(mu)
+
+    
+    # Unit‐quaternion for the axis‐angle rotation - try out euler to use pyscf's methods to stay consistent
+    alpha, beta, gamma = quaternion_to_euler_zyz(quaternion_from_axis_angle(axis, angle))
+    Dls = {l: Dmatrix(l, alpha, beta, gamma, reorder_p=True) for l in range(maxL)} 
+
+    blocks_orig = M.blocks
+    outM = M.copy()
+    blocks_out = outM.blocks
+    for key, block in blocks_orig.items(): # perform transformations block by block in sub-blocks (according to l)
+        rows, cols = np.array(block.ls[0]), np.array(block.ls[1]) # l's of the rows and columns
+        A = np.array(block.numpy, dtype=float)
+
+        subblocks = {}
+        for li in np.unique(rows):        # e.g. 0 then 1
+            row_idx = np.where(rows == li)[0]
+            for lj in np.unique(cols):    # e.g. 0 then 1
+                if lj[-1] == 's' and li[-1] == 's': # skip s overlaps - no transformation
+                    continue
+                col_idx = np.where(cols == lj)[0]
+                # this picks out the (li,lj) sub‐block
+                sub = A[np.ix_(row_idx, col_idx)]
+                subblocks[(li, lj)] = (row_idx, col_idx, sub)
+        # transform and write back
+        for (li,lj), (row_idx, col_idx, sub) in subblocks.items():
+            # sanity check: len(idxs) should == 2l+1
+            li, lj = l_map[li[-1]], l_map[lj[-1]]   # '2p'[-1] → 'p' → 1
+            if len(row_idx) != 2*li+1 or len(col_idx) != 2*lj+1:
+                raise ValueError(f"Expected {2*li+1} AOs for shell {shell_name}, got {len(row_idx)}")
+            # insert back into block
+            A[np.ix_(row_idx, col_idx)] = Dls[li] @ sub @ Dls[lj].T
+        # overwrite the block with the transformed one
+        blocks_out[key]._replace(A)
+    # resymmetrize the matrix
+    i_u, j_u = np.triu_indices_from(outM.Matrix, k=1)
+    outM.Matrix[j_u, i_u] = outM.Matrix[i_u, j_u]
+    if return_numpy:
+        return outM.Matrix
+    return outM
+
+
+def rotated_xyz_content(xyz_source, new_coords): 
+    """Returns a list of xyz file lines with the coordinates of xyz_source rotated to new_coords."""
+    with open(xyz_source, 'r') as f:
+        lines = f.readlines()
+    xyz_source_nr_atoms = int(lines[0].strip())
+    if len(new_coords) != xyz_source_nr_atoms:
+        raise ValueError(f"Number of atoms in new_coords ({len(new_coords)}) does not match xyz_source ({xyz_source_nr_atoms})")
+    for i, line in enumerate(lines[2:2+xyz_source_nr_atoms]):
+        parts = line.split("\t")
+        if len(parts) < 4:
+            raise ValueError(f"Line {i+3} in xyz file does not have enough parts: {line}")
+        parts[1:4] = new_coords[i]
+        lines[i+2] = '\t'.join(map(str, parts))
+        lines[i+2] += '\n' if not lines[i+2].endswith('\n') else ''
+    return lines
 
 def plot_mat_comp(reference, prediction, reshape=False, title="Fock Matrix Comparison", ref_title="Reference", pred_title="Prediction", vmax=1.5, labels1=None, labels2=None):
     import matplotlib.pyplot as plt

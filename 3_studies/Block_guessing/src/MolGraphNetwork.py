@@ -13,7 +13,7 @@ from torch_geometric.loader import DataLoader
 from collections import defaultdict
 from torch_scatter import scatter_add #! maybe use other aggregation functions later on
 
-from utils import dprint, set_verbose, density_fock_overlap, unflatten_triang
+from utils import dprint, set_verbose, density_fock_overlap, unflatten_triang, rotate_points, rotate_M, rotated_xyz_content
 
 from encoder import EncoderDecoderFactory
 
@@ -39,6 +39,7 @@ class MolGraphNetwork(torch.nn.Module):
                  edge_threshold_type="atom_dist",
                  edge_threshold_val=3, # Angrom for "atom_dist", or dimensionless for "max" or "mean" 
                  target="fock",
+                 data_aug_factor=1, # 1==no augmentation
                  **kwargs
                  ):
         super().__init__()
@@ -54,6 +55,7 @@ class MolGraphNetwork(torch.nn.Module):
         assert edge_threshold_val > 0, "edge_threshold must be a positive value."
         assert target in ["fock", "density"], "target must be either 'fock' or 'density'."
         self.target = target
+        self.data_aug_factor = data_aug_factor 
 
         assert isinstance(train_val_test_ratio, (list, tuple)) and len(train_val_test_ratio) == 3, "train_val_test_ratio must be a list or tuple of three values (train, val, test)."
         assert sum(train_val_test_ratio) == 1.0, "train_val_test_ratio must sum to 1.0."
@@ -134,18 +136,39 @@ class MolGraphNetwork(torch.nn.Module):
         for overlap, target, coords, xyz_file in tqdm(zip(overlap_in, target_in, coords_in, self.xyz_files), desc="Creating graphs"):
             mol = load(xyz_file, backend=self.backend, basis=self.basis).native
             self.molgraphs.append(self.make_graph(overlap, target, coords, mol))
-            
+        
+        # augment training set! #
+        n_aug = 0
+        if self.data_aug_factor > 1:
+            original_length = len(self.molgraphs)
+            aug_graphs, aug_target_in, aug_overlap_in, aug_infos = [], [], [], []
+            n_aug = int(self.train_ratio * len(self.molgraphs) * (self.data_aug_factor - 1))
+            dprint(1, f"Augmenting training set by factor {self.data_aug_factor} -> {n_aug} additional training samples.")
+            for _ in tqdm(range(int(n_aug)), desc="Augmenting data"):
+                idx = np.random.randint(0, original_length)
+                overlap, target, coords, xyz_file = overlap_in[idx], target_in[idx], coords_in[idx], self.xyz_files[idx]
+                aug_graph, aug_overlap, aug_target, aug_info = self.aug_data(overlap, target, coords, xyz_file)
+                aug_graphs.append(aug_graph)
+                aug_overlap_in.append(aug_overlap)
+                aug_target_in.append(aug_target)
+                aug_infos.append(aug_info)  
+            self.molgraphs.extend(aug_graphs)
+            overlap_in.extend(aug_overlap_in)
+            target_in.extend(aug_target_in)
+            self.xyz_files.extend(aug_infos)  # augmentation info instead of filenames (this includes filenames)
+
         # Split into train and test sets
         np.random.seed(seed)
         shuffled_indices = np.random.permutation(len(self.molgraphs))
         total_samples = len(self.molgraphs)
-        train_size = int(total_samples * self.train_ratio)
-        val_size = int(total_samples * self.val_ratio)
-        test_size = total_samples - train_size - val_size
+        total_samples_no_aug = total_samples - n_aug
+        train_size = int(total_samples_no_aug * self.train_ratio + n_aug)
+        val_size = int(total_samples_no_aug * self.val_ratio)
+        test_size = int(total_samples_no_aug * self.test_ratio)
         
-        train_indices = shuffled_indices[:train_size]
-        val_indices = shuffled_indices[train_size:train_size + val_size]
-        test_indices = shuffled_indices[train_size + val_size:]
+        test_indices = shuffled_indices[:test_size]
+        val_indices = shuffled_indices[test_size:test_size + val_size]
+        train_indices = shuffled_indices[test_size + val_size:] #! use rest for training (this way we include all samples from augmented data without inserting in the middle of a list)
 
         self.train_graphs = [self.molgraphs[i] for i in train_indices]
         self.val_graphs = [self.molgraphs[i] for i in val_indices]
@@ -159,7 +182,10 @@ class MolGraphNetwork(torch.nn.Module):
         self.files = {"train": [self.xyz_files[i] for i in train_indices],
                       "val": [self.xyz_files[i] for i in val_indices],
                       "test": [self.xyz_files[i] for i in test_indices]}
-        dprint(1, f"Total samples: {total_samples}, Train: {train_size}, Val: {val_size}, Test: {test_size}")
+        if self.data_aug_factor > 1:
+            dprint(1, f"Total samples: {total_samples}, Train: {train_size} (with {n_aug} / {train_size} augmented samples), Val: {val_size}, Test: {test_size}")
+        else:
+            dprint(1, f"Total samples: {total_samples}, Train: {train_size}, Val: {val_size}, Test: {test_size}")
 
         # Normalize 
         self.compute_normalization_factors()
@@ -188,6 +214,21 @@ class MolGraphNetwork(torch.nn.Module):
         meta_info = self.setup_model()
         dprint(1, f"---\nModel setup (encoders / decoders message net) complete!")
         dprint(2, f"Total encoders / decoders / updaters: {meta_info['total']}, Node: {meta_info['node']} ({self.atom_types} - atom types) * 3 (enc, dec, update), Edge: {meta_info['edge']} ({self.overlap_types} - overlap types) * 2 (enc, dec).")
+
+    def aug_data(self, overlap, target, coords, xyz_file): 
+        mol = load(xyz_file, backend=Backend.PY, basis=self.basis).native
+        rand_axis = np.random.normal(size=(3,))
+        rand_axis /= np.linalg.norm(rand_axis)
+        rand_angle = np.random.uniform(0, 2 * np.pi)
+        rotated_overlap = rotate_M(mol, rand_axis, rand_angle, overlap)
+        rotated_target = rotate_M(mol, rand_axis, rand_angle, target)
+        rotated_coords = rotate_points(coords, rand_axis, rand_angle)
+        tmp_coords_files = "/tmp/aug_coords.xyz"
+        with open(tmp_coords_files, 'w') as f:
+            f.writelines(rotated_xyz_content(xyz_file, rotated_coords))
+        rotated_mol = load(tmp_coords_files, backend=Backend.PY, basis=self.basis).native
+        aug_graph = self.make_graph(rotated_overlap, rotated_target, rotated_coords, rotated_mol)
+        return aug_graph, rotated_overlap, rotated_target, (xyz_file, rand_axis, rand_angle)  
 
     def manual_collate(self, batch):
         """Custom collate function to handle different sizes of center and edge blocks."""
@@ -904,6 +945,6 @@ class MolGraphNetwork(torch.nn.Module):
 if __name__ == "__main__": 
     BASIS_PATH = "scripts/6-31g_2df_p_custom_nwchem.gbs"
     GEOMETRY_Source = "datasets/QM9/xyz_c7h10o2_sorted"
-    MGNN = MolGraphNetwork(xyz_source=GEOMETRY_Source, backend=Backend.PY, basis=BASIS_PATH, batch_size=2)
+    MGNN = MolGraphNetwork(xyz_source=GEOMETRY_Source, backend=Backend.PY, basis=BASIS_PATH, batch_size=2, data_aug_factor=3.14)
     MGNN.load_data(max_samples=10, 
                    cache_meta={"method":"dft", "basis":None, "functional": "b3lypg", "guess": "minao", "backend": "pyscf", "cache": "datasets/QM9/out/c7h10o2_b3lypg_6-31G(2df,p)/pyscf"})
