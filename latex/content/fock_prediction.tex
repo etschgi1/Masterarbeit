@@ -4,7 +4,9 @@
 SCF methods by nature initially need a density matrix to start off their iterative calculations. Independent of the way the initial guess is chosen the computational effort of this step should be negligible compared to the actual SCF iterations. 
 \TODO{Add more details about the Fock matrix prediction - Reasoning for the choice.}
 
-As explained in \autoref{sec:background} (\TODO{Background SCF}) the density matrix $P$ is calculated from the coefficient matrix $C$ which is obtained from the eigenvalue problem of the Fock matrix $F$:
+\section{Introduction}
+\label{sec:Fock_mathcalrix_prediction_intro}
+As explained in \autoref{subsec:background_hf_computational} the density matrix $P$ is calculated from the coefficient matrix $C$ which is obtained from the eigenvalue problem of the Fock matrix $F$:
 \begin{equation}
     F(P)\,C = SC\varepsilon \rightarrow P = 2\,\sum_{i}^{n_{occ}} C_{\mu i}\,C^*_{\nu i}\,,%2CC^T
 \end{equation}
@@ -35,15 +37,15 @@ Effectively, one performs part of the SCF cycle here to obtain the density matri
         \node[above=2pt of img3.north, anchor=south, font=\small, xshift=10pt] {Density};
         
         % Pfeil 1: ML model
-        \draw[->, thick] (4.7,2.4) -- node[above, align=center, font=\tiny]{ML\\model} (5.2,2.4);
+        \draw[->, thick] (4.3,2.4) -- node[above, align=center, font=\tiny]{ML\\model} (5.2,2.4);
 
-        \draw[->, thick] (9.8,2.4) -- node[above, font=\tiny, yshift=1pt]{$P{=}2CC^{\mathrm{T}}$} (10.3,2.4);
+        \draw[->, thick] (9.4,2.4) -- node[above, font=\tiny, yshift=1pt]{$P{=}2CC^{\mathrm{T}}$} (10.3,2.4);
     \end{tikzpicture}
     \caption[Schematic overview data flow]{Schematic overview of the data flow (using \ch{CH4}): overlap matrix to Fock matrix via ML model prediction, and construction of the density matrix from the Fock matrix.}
     \label{fig:method_data_flow}
 \end{figure}
 
-The schematic workflow of generating a density matrix from the overlap matrix is shown in \autoref{fig:method_data_flow}. While the overlap and density might look very similar and one might think that predicting the density matrix directly from the overlap matrix would be easier. However, learning the Fock matrix tends to involve fewer strict physical constraints. A Fock matrix primarily needs to be Hermitian, while a density matrix must be strictly positive semidefinite by construction, as well as normalized to the correct number of electrons. That makes direct density matrix learning more challenging, whereas learning the Fock matrix and then obtaining the density through the diagonalization will most likely yield better results.\TODO{Reference?}\\
+The schematic workflow of generating a density matrix from the overlap matrix is shown in \autoref{fig:method_data_flow}. While the overlap and density might look very similar and one might think that predicting the density matrix directly from the overlap matrix would be easier. However, learning the Fock matrix tends to involve fewer strict physical constraints. A Fock matrix primarily needs to be Hermitian, while a density matrix must be strictly positive semidefinite by construction, as well as normalized to the correct number of electrons. That makes direct density matrix learning more challenging, whereas learning the Fock matrix and then obtaining the density through the diagonalization will most likely yield better results. We shall investigate this hypothesis in the following experiments.\\
 
 Additionally, the reconstruction from Fock to density inflates residual errors of the computed Fock matrix to the ground truth because the density is a self-consitent eigenproblem in $F$ and $S$. Errors in the density should ultimately be small enough to not affect the iterations significantly. In practice, some iterations (2-5) are always needed, even if one tries to run the calculation with a guessed density constructed from the converged $F$ \& $S$ matrices.\\
 
@@ -62,7 +64,8 @@ Due to the symmetry of the matrices we can discard nearly half of the elements a
 \end{figure}
 
 
-\textbf{Ridge Regressor model}\\ % updated with new sorted dataset
+\section{Ridge Regressor model} % updated with new sorted dataset
+\label{sec:ridge_regressor_model}
 The Ridge Regressor (RR) is setup with a typical $80 / 20$ train/test split. Overlap (input) as well as Fock (output) matrices are flattend and Overlap (input) is additionally rescaled using the \textsc{scikit-learn}'s default Standard Scaler. \parencite{ref:sk-learn} Using a 5-fold cross validation the model, a Multi-Ouput-Regressor, is trained \footnote{also using \textsc{scikit-learn}'s \textsc{RidgeCV} and \textsc{MultiOutputRegressor} classes} with 10 equally $\log_{10}$-spaced $L^2$-regularization parameter $\alpha$ values ranging from $10^{-2}$ to $10^{3}$. Subsequently, the model is retrained with the arithmetic mean of the best performing $\alpha$ values ($\alpha_{\text{mean}} \approx 34$). This averaging leads to lower overfitting and a slightly lower RMSE in the testset. %! Note the averaging actually leads to a lower RMSE in test set compared to non-averaging the Multiregressor Model!  test RMSE 0.03231 vs. 0.03228 (averaging)
 For the Fock matrix prediction the model yields a RMSE of $0.0057$ on the training set and $0.032$ on the test set which indicates overfitting of the model. We obtain the results in \autoref{tab:ridge_metrics} for the model and various guessing schemes implemented in \textsc{PySCF} (further guessing scheme implementation details can be found in \autoref{sec:pyscf_initial_guessing_methods}).
 
@@ -101,7 +104,8 @@ Comparing the normalized difference to the reference density for the 102 test sa
 All three guessing schemes have spots on the main diagonal of the density matrix where they are likely to differ from the reference solution. Interestingly, a Mulliken population analysis (see \TODO{Background}) \parencite{ref:Mulliken_population_analysis} yields a mean value of $31.766$ the test set prediction for \texttt{minao} while \texttt{vsap} yield the expected $32$ (only $\alpha$-electrons). A small error in the initial guess doesn't slow down convergence, since the self-consistent cycle corrects it right away. Comparing \texttt{minao} and \texttt{vsap} with our Ridge Model the later fares worse on the main diagonal, especially for p-Orbitals. While \texttt{minao} exhibits more pronounced off-diagonal noise in comparision with \texttt{vsap}, this does not seem to affect convergence speed. At least for this small basisset it seems that errors in the off-diagonal do not hinder fast convergence.\\
 % From that we might conclude that a good guess should be close to the reference density especially on the main diagonal, but not necessarily in the off-diagonal elements. We shall continue to investigate this in the next section.
 
-\textbf{Kernel Ridge Regression}\\
+\section{Kernel Ridge Regression}
+\label{sec:kernel_ridge_regression}
 Our baseline Ridge Regression (RR) model already introduced $L^2$-regularization handling collinearity which is doomed to happen in our dataset. However, it only models linear relationships between our input and output features. Kernel Ridge Regression (KRR) extends this by using kernel functions to generate a mapping from the input space via a higher dimensional feature space to the output space. This allows nonlinear relationships to be learned. \\
 Using the same train/test split as before we fit a KRR model with three different kernels: RBF, polynomial of degree 2 and polynomial of degree 3. 
 Rahter than averaging per-target $\alpha$ values (like in the RidgeCV above), we use a joint BayesSearch with 5-fold cross validation and 30 iterations\footnote{Hyperparameters see \autoref{tab:kernel_ridge_hyperparams}} to obtain the results in \autoref{tab:kernel_ridge_metrics}.
@@ -147,7 +151,8 @@ The Hyperparameters found by the BayesSearch are given in \autoref{tab:kernel_ri
 \TODO{Interpretation of the results}\\
 
 
-\textbf{Further trials}\\
+\section{Further trials}
+\label{sec:further_trials}
 Previously we tried to learn a mapping from overlap to Fock matrix soley via machine learning means. We have established that the quality for these guesses even on the minimal STO-3G basis is not on par with the established guessing schemes.\\
 Predicting the main diagonal for a given system is an easier target given the fact that the model predicts $N$ features from the $N^2$ input features. One established way of constructing the off diagonal elements is the generalized Wolfsberg-Helmholtz (GWH) construction \parencite{ref:gwh_wolfsberg1952spectra} (see \TODO{Background - guessing schemes}).
 Utilizing this construction on our dataset we obtain comparable results to our base Ridge regression model in terms of iterations till convergence. \\
@@ -184,4 +189,4 @@ Changing the basis set to a larger 6-31G one, we see the limitations of our init
 \label{sec:blockwise_guessing}
 \TODO{Guess main diagonal and then construct or guess off-diagonal elements. --> doesn't really work!}
 
-\TODO{Apply to larger basis sets.}
+\TODO{Maybe do some blockwise guessing experiments later down the road!}

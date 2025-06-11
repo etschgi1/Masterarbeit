@@ -147,6 +147,10 @@ Initially we also calculate the core Hamiltonian $H_{\mu\nu}^\text{core}$ and th
 
 Computationally, the calculation of the two-electron integrals $G_{\mu\nu}$ is the most expensive step which scales with the number of basis functions as $\bigO{n^4}$. Given this fact, a small enough basis set which still captures the essence of the physical system should be chosen and the number of iterations shall be kept to a minimum by a good initial guess. Keeping our approximation of the spatial orbitals via \autoref{eq:psi_approximation} in mind, we see that better approximations of the systems wavefunction and energy can be achieved with larger and larger basis sets. Given the drawback of increased computational cost (mostly in step 1 of the SCF algorithm) a reduction of iterations is even more crucial for larger systems and larger basis sets.
 
+\subsection{Derived quantities}
+\label{subsec:background_hf_derived_quantities}
+\TODO{Discuss Mulliken population analysis, maybe more...}
+
 \subsection{Basis sets}
 \label{subsec:background_hf_basis_sets}
 For computational treatment our abstract basis functions $\phi_\nu(\mathbf{r})$ need to manifest in a concrete form. 

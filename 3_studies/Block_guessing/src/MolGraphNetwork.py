@@ -796,7 +796,7 @@ class MolGraphNetwork(torch.nn.Module):
             self.edge_norm_target[key] = (np.mean(T_edge_vals[key]), max(np.std(T_edge_vals[key]), zero_std_val))
         return
     
-    def train_model(self, num_epochs=5, lr=1e-3, weight_decay=1e-5, device=None, model_save_path=None, grace_epochs=10):
+    def train_model(self, num_epochs=5, lr=1e-3, weight_decay=1e-5, device=None, model_save_path=None, grace_epochs=3):
         import torch.nn.functional as F
         from tqdm import tqdm
         

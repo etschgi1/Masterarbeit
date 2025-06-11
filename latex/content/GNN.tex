@@ -1,20 +1,22 @@
 \chapter{A GNN approach to the problem}
 \label{chap:gnn}
-
-\TODO{
-    \begin{itemize}
-        \item Design - Blocks and Subblocks \& abstraction
-        \item Data prep - Data augmentation (Wigner D-Matrices etc. )
-        \item GNN Design
-        \item GNN Training + Benchmarking 
-    \end{itemize}
-}
-
+So far we have experimented with various models trying to predict the Fock matrix as a whole. However, as has been seen in \autoref{sec:further_trials} this approach, which works on minimal basis sets, is not feasible for larger basis sets such as the 6-31G basis set. Recent advances using regression models have largely focused on separate models for each molecular species, which limits their applicability to constitutional isomers we are interested in. \parencite{Hazra2024,Shao2023}
+We shall investigate the applicability of Graph Neural Networks (GNNs) to the problem of predicting the Fock or the density matrix. They have shown promising results in the field of quantum chemistry, especially for predicting molecular properties and structures. \parencite{schnet2018} \TODO{maybe other citation + intro round up} \\
 \section{Input \& Output Matrices}
+\TODO{Finish description of input / output matrices}
 \label{sec:gnn_input_output_matrices}
-\section{Data Augmentation}
+Generally the input and the output of neural networks is fixed. We thus need to find a specific way to embed our input (overlap matrix) and output (Fock or density matrix) into a fixed structure. Given the nature of our problem, we can simply split our matrix representation into blocks representing the different atom sorts and their respective combinations. This yields three different types of blocks: 
+\begin{itemize}
+    \item \textbf{Self-overlap blocks:} These blocks contain only orbitals of the same atom type, e.g. $\text{\ch{C}}_1$ or $\text{\ch{H}}_2$. The self-overlap blocks are diagonal blocks of the input and output matrices.
+    \item \textbf{Homo-blocks:} These blocks contain only orbitals of the same atom type, e.g. $\text{\ch{H}}_2 - \text{\ch{H}}_3$.
+    \item \textbf{Hetero-blocks:} These blocks contain overlaps between different atom sorts, e.g. $\text{\ch{C}}_1 - \text{\ch{H}}_2$.
+\end{itemize}
+\TODO{Picture with different areas in our matrices}
+\section{Preprocessing}
+\label{sec:gnn_preproc}
+\subsection{Data Augmentation}
 \label{subsec:gnn_data_augmentation}
-Our input (overlap) as well as our output (Fock matrix) are quantities which are not generally invariant under rotations of our molecular system. In essence this means that we must find a way to learn differently rotated molecules and produce their respective Fock matrices to later deduce our initial density. While initially the idea of making the input invariant under rotation by using a predetermined standard orientation to learn the problem was considered, problems arise with this approach. Most prominently, defining a standard orientation for isomers / isomer-parts (such as \ch{C7H10O2} or submolecules thereof) is far from trivial. Even if such a standard orientation is defined, one has to consider an additional pre- and post-processing step to rotate the input into the standard orientation and the output back to the original orientation. \\
+Our input (overlap) as well as our output (Fock / density matrix) are quantities which are not generally invariant under rotations of our molecular system. In essence this means that we must find a way to learn differently rotated molecules and produce their respective Fock / density matrices to later deduce our initial density. While initially the idea of making the input invariant under rotation by using a predetermined standard orientation to learn the problem was considered, problems arise with this approach. Most prominently, defining a standard orientation for isomers / isomer-parts (such as \ch{C7H10O2} or submolecules thereof) is far from trivial. Even if such a standard orientation is defined, one has to consider an additional pre- and post-processing step to rotate the input into the standard orientation and the output back to the original orientation. \\
 Contrary to this, the model can learn differently rotated inputs to generate the corresponding outputs. This is achieved by augmenting the dataset with different rotations of the same molecules / submolecules. Rotating the input coordinates using a rotation matrix $R$ is in principle rather straightforward. However, the corresponding overlap, density and Fock matrices also have to be transformed accordingly or recalculated. The later is computationally not feasible, hence we use the corresponding Wigner D-matrices to transform input and output matrices. 
 The Wigner D-matrix is a unitary matrix with $2L + 1$ rows and columns, where $L$ is the angular momentum. For a given rotation $R$ the Matrix elements of overlap, density and Fock matrix transform as follows:
 \begin{equation}
@@ -26,6 +28,11 @@ Naturally the transformation only acts on spatial orbitals with no rotational sy
 Practically, the data is augmented by sampling a random rotation axis (TODO: constraints of this axis) and a random rotation angle $\theta \in [0, 2\pi]$. Given this axis and angle, the corresponding transformations are performed to the overlap, density and Fock matrices to obtain our augmented samples. 
 Due to the grid spacing in DFT calculations small deviations ($\approx 0,1 \unit{\milli\hartree}$) between the transformed matrices and newley calculated ones occur.
 %! Note that translating the molecule should change absolutely nothing about the Overlap or Fock matrix. 
+
+\subsection{Normalization \& data split}
+\label{subsec:gnn_normalization}
+
+\
 
 \section{GNN Design}
 \label{sec:gnn_design}

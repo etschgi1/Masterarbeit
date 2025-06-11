@@ -2380,17 +2380,20 @@
     <bcf:citekey order="18" intorder="1">ref:article1_qm9</bcf:citekey>
     <bcf:citekey order="19" intorder="1">ref:article1_qm9</bcf:citekey>
     <bcf:citekey order="20" intorder="1">ref:gwh_wolfsberg1952spectra</bcf:citekey>
-    <bcf:citekey order="21" intorder="1">ref:pyscf</bcf:citekey>
-    <bcf:citekey order="22" intorder="1">ref:pyscf_user_guide</bcf:citekey>
-    <bcf:citekey order="23" intorder="1">ref:minao_sad1</bcf:citekey>
-    <bcf:citekey order="23" intorder="2">ref:minao_sad2</bcf:citekey>
-    <bcf:citekey order="24" intorder="1">ref:Lehtola2019</bcf:citekey>
+    <bcf:citekey order="21" intorder="1">Hazra2024</bcf:citekey>
+    <bcf:citekey order="21" intorder="2">Shao2023</bcf:citekey>
+    <bcf:citekey order="22" intorder="1">schnet2018</bcf:citekey>
+    <bcf:citekey order="23" intorder="1">ref:pyscf</bcf:citekey>
+    <bcf:citekey order="24" intorder="1">ref:pyscf_user_guide</bcf:citekey>
     <bcf:citekey order="25" intorder="1">ref:minao_sad1</bcf:citekey>
     <bcf:citekey order="25" intorder="2">ref:minao_sad2</bcf:citekey>
-    <bcf:citekey order="26" intorder="1">ref:lethola_fully_numerical_atomic_potentials</bcf:citekey>
-    <bcf:citekey order="27" intorder="1">ref:Lehtola2019</bcf:citekey>
-    <bcf:citekey order="28" intorder="1">ref:Lehtola2019</bcf:citekey>
-    <bcf:citekey order="29" intorder="1">ref:lethola_fully_numerical_atomic_potentials</bcf:citekey>
+    <bcf:citekey order="26" intorder="1">ref:Lehtola2019</bcf:citekey>
+    <bcf:citekey order="27" intorder="1">ref:minao_sad1</bcf:citekey>
+    <bcf:citekey order="27" intorder="2">ref:minao_sad2</bcf:citekey>
+    <bcf:citekey order="28" intorder="1">ref:lethola_fully_numerical_atomic_potentials</bcf:citekey>
+    <bcf:citekey order="29" intorder="1">ref:Lehtola2019</bcf:citekey>
+    <bcf:citekey order="30" intorder="1">ref:Lehtola2019</bcf:citekey>
+    <bcf:citekey order="31" intorder="1">ref:lethola_fully_numerical_atomic_potentials</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="none">
