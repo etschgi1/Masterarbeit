@@ -8,6 +8,7 @@ SCF methods by nature initially need a density matrix to start off their iterati
 \label{sec:Fock_mathcalrix_prediction_intro}
 As explained in \autoref{subsec:background_hf_computational} the density matrix $P$ is calculated from the coefficient matrix $C$ which is obtained from the eigenvalue problem of the Fock matrix $F$:
 \begin{equation}
+    \label{eq:density_reconstruction_from_fock}
     F(P)\,C = SC\varepsilon \rightarrow P = 2\,\sum_{i}^{n_{occ}} C_{\mu i}\,C^*_{\nu i}\,,%2CC^T
 \end{equation}
 Effectively, one performs part of the SCF cycle here to obtain the density matrix, which ideally should be close to the final density matrix. This step takes $\bigO{N^3}$ time, which is assymtotically faster than the $\bigO{N^4}$ time of the SCF cycle. 
