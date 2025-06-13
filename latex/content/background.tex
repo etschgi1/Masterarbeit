@@ -45,6 +45,7 @@ Using this expansion we reduce the problem to the determination of the coefficie
 %Energy functional
 A slater determinants is one simple way of describing the state of a system as a linear combination of basis functions. From that we can derive the energy of the given systems state $E$ using: 
 \begin{equation}
+    \label{eq:elec_energy}
     E = \bra{\Psi} H \ket{\Psi}
 \end{equation}
 For our considerations we will be interested in the ground state of the system. This means we need to find the minimum of our energy functional $E[\Psi]$ and it's corresponding slater determinant $\ket{\Psi}$ which marks our approximation to the ground state wavefunction. This is done via the variational principle which yields an eigenvalue problem: 
@@ -149,8 +150,25 @@ Computationally, the calculation of the two-electron integrals $G_{\mu\nu}$ is t
 
 \subsection{Derived quantities}
 \label{subsec:background_hf_derived_quantities}
-\TODO{Discuss Mulliken population analysis, maybe more...}
+Several quantities can be derived from the solution of the Hartree-Fock equations. As eluded to in \autoref{eq:hf_eigenval_equation} the eigenvalues of $F$ are the orbital energies $\varepsilon_i$. This relation is exact if $F$ is a hermitian operator, which only happends on self-consistency of the equation. Our HF-approximation will thus yield an approximation of the orbital energies for a limited number of states (depending on the size of the basis set). The lowest $\nicefrac{n_\text{elec}}{2}$ eigenvalues correspond to the occupied orbitals, while the rest are so called virtual orbitals \footnote{We still assume closed shell systems with equal number of spin up and spin down electrons.}. One might be tempted to simply sum over the occupied orbital energies to obtain the total energy of the system. However, this is leads to a double counting of the energy given by the exchange interaction for electron pairs. Nevertheless, the orbital energies can still be used to estimate ionisation energies in a frozen shell model called Koopmans' theorem \parencite{ref:koopmans1934}. Removing an electron from an occupied orbital $\chi_i$ will lead to an increase in energy of $\varepsilon_i$.\\
 
+The total energy of the system's ground state of our closed shell system can also be derived using $F$ by inserting our Hamiltonian operator into \autoref{eq:elec_energy}:
+\begin{subequations}
+\begin{align}
+    E_\text{HF} &= \bra{\Psi} H \ket{\Psi} = 2\sum_{i=1}^{N/2} \bra{\chi_i} h(i) \ket{\chi_i}
+    + \frac{1}{2}\sum_{i=1}^{N/2}\sum_{j=1}^{N/2} \left[ 2 J_j(i) - K_j(i) \right]\\
+    E_\text{HF} &= \sum_{i=1}^{N/2}\left[ h(i) + \varepsilon_i\right] \text{  with  } \varepsilon_i = F_i =  h(i) + \sum_{j}^{N/2} \left[ 2 J_j(i) - K_j(i) \right]\\
+    E_\text{HF} &= \frac{1}{2} \sum_{\nu, \mu} \mathbf{P}_{\mu \nu} \left[ H_{\mu \nu}^\text{core} + F_{\mu \nu} \right] = \frac{1}{2} \text{Tr} \left( \mathbf{P} \left[ H^\text{core} + F \right] \right)
+\end{align}
+\end{subequations}
+To get the total energy of the system one usually adds the nuclear repulsion energy $E_\text{nuc} = \sum_{A<B} \frac{Z_A Z_B}{|\mathbf{R}_A - \mathbf{R}_B|}$ to the electronic energy $E_\text{HF}$, yielding the total energy of the system.\\
+
+Additionally of interest is the population of electrons on a given atom from which partial charges can be derived. Using the fact that the density matrix represents spatial orbitals in the atom centered basis set, we can interpret $\mathbf{(PS)}_{\mu \mu}$ as the population of electrons on orbital $\mu$. This leads to the partial charge for an atom $A$ with on-atom centered basis function indices $\mu$:
+\begin{equation}
+    \
+    q_A = Z_A - \sum_{\mu \in A} \mathbf{(PS)}_{\mu \mu}
+\end{equation}
+The approach to population and charge analysis refers to the so called Mulliken population analysis \parencite{ref:mulliken1955}. 
 \subsection{Basis sets}
 \label{subsec:background_hf_basis_sets}
 For computational treatment our abstract basis functions $\phi_\nu(\mathbf{r})$ need to manifest in a concrete form. 
