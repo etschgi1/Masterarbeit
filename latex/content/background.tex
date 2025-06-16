@@ -168,18 +168,42 @@ Additionally of interest is the population of electrons on a given atom from whi
     \
     q_A = Z_A - \sum_{\mu \in A} \mathbf{(PS)}_{\mu \mu}
 \end{equation}
-The approach to population and charge analysis refers to the so called Mulliken population analysis \parencite{ref:mulliken1955}. 
+The approach to population and charge analysis refers to the so called Mulliken population analysis \parencite{ref:mulliken1955electronic}. 
 \subsection{Basis sets}
 \label{subsec:background_hf_basis_sets}
 For computational treatment our abstract basis functions $\phi_\nu(\mathbf{r})$ need to manifest in a concrete form. 
-\TODO{...}
+Motivated by the analytical solution of the Hydrogen atom one can introduce the so called Slater-type orbitals (STOs) using an exponential radial term and spherical harmonics\footnote{for sake of clarity the spherical harmonics term is written with $\Omega$ instead of the to not confuse the functionally dependent $\phi$ with the basis function}: 
+\begin{equation}
+    \label{eq:slater_orbital}
+    \phi_{n, l, m}^{\text{STO}}(r, \Omega, \zeta) = N Y_{l,m}(\Omega) r^{n-1} e^{\zeta r}
+\end{equation} 
+Computationally, the integrals which occur by using linear combinations of STOs are expensive to calculate. \\
+
+\textbf{Gaussian-Type Orbitals (GTOs)}\\
+Fortunately, a very good approximation of STOs can be achieved by combining several Gaussian-type orbitals (GTOs). This combination, called a contraction of GTOs (usually refered to as CGF), only differs in the changed exponential term from the STOs. The GTOs are defined as:
+\begin{equation}
+    \label{eq:gaussian_orbital}
+    \phi_{n, l, m}^{\text{GTO}}(r, \Omega, \zeta) = N Y_{l,m}(\Omega) r^{n-1} e^{-\zeta r^2}
+\end{equation}
+With each STO modelled by a CGF as: 
+\begin{equation}
+    \phi_{n, l, m}^{\text{CGF}}(r, \Omega) = \sum_{i=1}^N c_i \phi_{n, l, m}^{\text{GTO}_i}(r, \Omega, \zeta_i)
+\end{equation}
+The contraction coefficients $c_i$ and the exponents $\zeta_i$ are chosen such that the CGF of a STO-nG basis set approximates the STOs as closely as possible. Common STO-nG basis sets include STO-3G, STO-6-31G or STO-6-31G(2df,p). \\
+The nomencalture of these Pople type basis sets \parencite{ref:pople_basis} denotes the number of GTOs used in the contraction. While STO-3G uses three GTOs for each orbital, STO-6-31G uses six GTOs for the inner shell and two functions with three and one GTO respectively for the outer shell. Basis sets using more then one contracted function (31 in 6-31G) are so called double-zeta basis sets; in this particular case a split-valence double zeta basis set because the core orbitals (6 in 6-31G) are modeled with only one contraction. The notation in parentheses denotes additional functions, e.g. STO-6-31G(2df,p) uses two additional d-functions and one f-functions on heavy atoms (\ch{C}, \ch{O}, \ch{N} \& \ch{F}). \\
+
+\textbf{Segmented Contraction}\\
+Generally the GTOs used in the contraction of Pople type basis sets are not reused and thus of the segmented contraction type. In contrast, general contraction type basis sets (such as cc-pVXZ \parencite{ref:cc-pVXZ}) reuse some or all primitives in multiple contractions. The later can be converted to a computationally more efficient segmented form which retains the initial accuracy. One such modern segmented basis family optimized for density functional theory are the pcseg-n basis sets. \parencite{ref:Jensen2014pcs}\\
+
+\textbf{Accuracy \& Hatree Limit}\\
+Expanding the spatial orbitals using basis functions introduces an error in the electron density distribution and subsequently the converged Energy $E_{HF}$. Given the limitation of a longer runtime--scaling with $\bigO{N^4}$ in the number of basis functions--the accuracy can be refined using a larger and more complete basis set. The so called Hartree limit constitutes the lowest energy asymptotically (theoretically) attainable by any HF-calculation. It can be estimated by the shrinking differences of energies given larger basis-sets. \parencite{ref:Jensen2005hf} Yet, it still lacks so called correlation energy of electrons and thus is makes bonds appear weaker. We will discuss methods which build or improve on Hartree Fock next. 
 
 \subsection{Density Functional Theory (DFT)}
 \label{subsec:background_dft}
 
 \subsection{Post-Hartree-Fock Methods}
 \label{subsec:background_post_hf}
-
+\TODO{Correlation energy (ref to Accuracy and Hartree Limit in Basis sets? )}
 \section{Machine Learning}
 \label{sec:background_ml}
 %! Intor to ML & Statistical Learning. 
