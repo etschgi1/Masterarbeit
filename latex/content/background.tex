@@ -200,15 +200,24 @@ Expanding the spatial orbitals using basis functions introduces an error in the 
 
 \subsection{Post-Hartree-Fock Methods}
 \label{subsec:background_post_hf}
-\TODO{Correlation energy (ref to Accuracy and Hartree Limit in Basis sets? )}
-\TODO{MP2 correction}
+HF theory provides a solid foundation to solve the many-electron problem and is usually used as the starting point for more refined techniques. These are generally bundeled under the umbrella term post-Hartree-Fock methods.\\
+
+\textbf{Configuration Interaction (CI)}\\
+Configuration Interaction (CI) improves upon the Hartree-Fock approximation by expressing the many-electron wavefunction as a linear combination of multiple Slater determinants, including excited configurations. While HF provides the best single-determinant approximation to the ground state, it neglects electron correlation. CI systematically includes this by mixing determinants generated from excitations out of the HF reference, thus recovering the missing correlation energy. Combinatorially for a system with $2k$ spin orbitals and $n_e$ electrons, the number of possible determinants grows as $\binom{2k}{n_e}$ which makes CI calculations using all possible determinants, called full CI, intractable for all but the smallest molecular systems. One usually limits the number of determinants by calculating only with single and double excitations (CISD) given a time complexity of $\bigO{N^6}$.\\
+
+\textbf{Coupled Cluster (CC)}\\
+Coupled Cluster (CC) theory uses an exponential ansatz of the form $\ket{\Psi} = e^T \ket{\phi_0}$, where $T$ is a cluster operator typically truncated to single and double excitations: $T = T_1 + T_2$. Although only low-rank excitation operators are included, the exponential generates higher excitations implicitly. CCSD (Coupled Cluster Singles and Doubles) is the most common variant and scales as $\mathcal{O}(N^6)$ in computational cost. Extensions like CCSD(T), which include perturbative triples, increase the scaling to $\mathcal{O}(N^7)$.
+
+\textbf{Møller-Plesset Perturbation Theory (MP)}\\
+Møller-Plesset Perturbation Theory (MP) partitions the total energy into a zeroth-order Hartree-Fock contribution, with the Fock operator as $H_0$, and perturbative corrections based on the difference $H - H_0$. Since the first-order correction vanishes, the second-order term (MP2) provides the leading contribution and captures part of the electron correlation. Time complexity wise MP2 scales as $\mathcal{O}(N^5)$. 
+
 \subsection{Density Functional Theory (DFT)}
 \label{subsec:background_dft}
 Density funcitonal theory (DFT) takes an alternative approach to the many-electron problem. It uses a system of non-interacting electrons to approximate the actual interacting electron system. The formulation based on the Hohenberg-Kohn theorems \parencite{ref:hohenberg_kohn1964} states that the ground state energy of a many-electron system is a functional of the electron density $\rho(\mathbf{r})$. Contrary to HF-theory this functional $G[n] = T[n] + E_{\text{ex + corr}}[n]$ encompasses kinetic energy as well as both exchange and correlation energy. \parencite{ref:kohn_sham_1965}\\
 While the exact functional cannot be attained, with the expection of free-electron gas, functionals can be constructed via fitting methods to experimental data or higher level methods. Given the functional one solves for the atomic orbitals in an analogous way by minimizing the energy under the constraint of orthogonal orbitals in an iterarative self-consistent way. In practice one usually combines multiple different sources such as fittet functionals, corrections and exact exchange contributions from HF into one functional form. Coefficients for the linear combinations are fittet and can often be altered in quantum physics packages. 
 Common choices of DFT functionals are grouped by level of accuracy on Jacob's Ladder include:
 
-\begin{itemize}
+\begin{enumerate}
     \item \textbf{LDA (Local Density Approximation)}\\
     Assumes that the exchange-correlation energy depends only on the local electron density, as in a uniform electron gas\\
     \textit{Example:} SVWN (Slater exchange + VWN correlation) \parencite{ref:slater1951, ref:vwn1980}
@@ -228,8 +237,8 @@ Common choices of DFT functionals are grouped by level of accuracy on Jacob's La
     \item \textbf{Double Hybrids}\\
     Adds second-order perturbation theory (like MP2) to hybrid functionals; uses occupied and unoccupied orbitals.\\
     \textit{Example:} B2PLYP (Becke2 + LYP + MP2 correction) \parencite{ref:grimme2006}
-\end{itemize}
-
+\end{enumerate}
+DFT accuracy is limited by the choice of functional. Standard Kohn-Sham DFT is bound by a $\bigO{N^3}$ scaling (1-3) with the number of basis functions. In practive commonly used functionals on rung 4 or 5 of Jacob's ladder are bound by a $\bigO{N^4}$-$\bigO{N^6}$ scaling due to the need to calculate exchange-correlation integrals or MP2 corrections.
 
 
 \section{Machine Learning}
