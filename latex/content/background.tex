@@ -246,18 +246,77 @@ DFT accuracy is limited by the choice of functional. Standard Kohn-Sham DFT is b
 Machine Learning (ML) constitutes a rich subfield of computer science that aims to develop algorithms capable of inferring patterns from data and making predictions without being explicitly programmed with deterministic instructions. \\
 The history of ML closly coincides with the development of computers. In the 1950s Arthur Lee Samuel coined the term "machine learning" while programming a computer to play checkers, eventually beating the 4th ranked player in the US at the time. \parencite{ref:knuth1989comments} Since it's humble beginnings, ML has influenced many scientific fields as well as everyday life.\\
 
-In the following we will give an overview of the most important concepts in ML with special emphasis on techniques used in this thesis. The books written by Bishop \parencite{ref:bishop2006pattern} and \parencite{ref:goodfellow2016deep} provide a more in-depth treatment of the various subjects.
-\subsection{General concepts}
+In the following we will give an overview of the most important concepts in ML with special emphasis on techniques used in this thesis. The books written by Bishop \parencite{ref:bishop2006pattern} and \parencite{ref:goodfellow2016deep} provide a more in-depth treatment of various subjects and constitute the basis for the following introduction.
+\subsection{Classification \& General Remarks}
 \label{subsec:background_ml_general_concepts}
 Machine learning itself is a subfield of artificial intelligence (AI), which is the broader field of creating machines that can perform tasks that would normally require human level intelligence. \\
 Central to ML is the concept of learning from data. This means that we need to define data given as input to predict a target output. Most broadly speaking, we can either predict a discrete class label (classification) or a continuous value (regression) given our input data. Our focus will be on the later task of finding a continuous value (Fock / density matrix entries) given another set of continuous values (atomic coordinates, overlap matrix elements, \dots). \\
+Another way to categorize machine learning models is into supervised, unsupervised, and reinforcement types. Supervised models learn a function that maps input data to labeled target values. Unsupervised models, on the other hand, seek patterns or structure in unlabeled data. Reinforcement learning refers to models that learn a policy through interaction with an environment by maximizing a reward signal over time.\\
+
+For the purpose of this thesis we will focus on supervised models applied to our regression task. For consistency in the following sections we will introduce the general notation for our model: 
+\begin{equation}
+    \label{eq:general_ML_model_formula}
+    \mathbf{y} = f(\mathbf{x}) + \Delta
+\end{equation}
+with the input vector $\mathbf{x} = (x_1, x_2, \dots)$ and the target or output vector $\mathbf{y} = (y_1, y_2, \dots)$ which is not necessarily of the same size as the input. The model $f$ represents the learned mapping from $\mathbf{x}$ to $\mathbf{y}$ with a certain 
+error $\Delta$\footnote{This error includes both reducible components—such as discretization error, which can be minimized by refining the DFT grid—and irreducible components, which stem from fundamental uncertainty in quantum mechanical systems.}. 
+
+
 \TODO{Supervised vs. unsupervised learning, reinforcement (?) propably not needed, Bias-Variance Trade-off (under/overfitting), Model Complexity \& Generalization - overfitting + need for validation crossref / test sets, Hyperparameter tuning, Feature representation}  
-\subsection{Model Types}
-\label{subsec:background_ml_model_types}
-\TODO{discuss model types relevant to thesis, e.g. linear regression + regularization by RR / KRR, neural networks, GNNs, activation etc.}\\
 \subsection{Loss Functions}
 \label{subsec:background_loss_function}
 \TODO{also discuss f-score!!! - let's see if really needed}
+\subsection{Regression Models}
+\label{subsec:background_ml_model_types}
+Regression models try to establish the mapping in \autoref{eq:general_ML_model_formula} directly by modeling the mapping using a linear combination of terms. The most simple form, a linear regression in the multivariat multi-target case is given by: 
+\begin{equation}
+    \label{eq:linear_regression_formula}
+    \begin{aligned}
+        y_m &= w_{0, m} + \sum_{i=1}^d w_{i,m} \, x_i \quad \text{for } m = 1, \dots, k\\
+        \mathbf{y} &= \mathbf{W^\top} \mathbf{x} \quad \text{in matrix form}
+    \end{aligned}
+\end{equation}
+Here $w_{i,m}$ denotes the coefficients, also called weights in ML, to create a relation between feature $x_i$ and target $y_m$. The zeroth weight, a linear offset, is named bias and is commonly introduced into the matrix notation by prepending a one in the input vector $\mathbf{x}$. Note that have dropped the $\Delta$ term for compactness. The weights are chosen in a way to reduce the sum of squared errors, a procedure known as least squares (LS) fitting: 
+\begin{equation}
+    \label{eq:least_squares_error}
+    \text{Loss}_\text{LS}(\mathbf{W}) = \sum_{n=1}^{N}\|\mathbf{y}^{(n)} - \mathbf{W^\top} \mathbf{x}^{(n)}\|_2^2
+\end{equation}
+Weights can be seen to represent the influence of a given feature $x_i$ on the target $y_m$. While least squares fitting these weights gurantees the minimization of the prediction error on the data the model was trained on, nothing can be said for unseen new data. especially for high dimensional data where there might be correlations between input features this model is prone to overfit. Such cases happen if the model is to flexible and captures noise in the data instead of actual patterns. To combat this issue we will introduce regularization into our problem.\\
+
+\textbf{Regularization - Ridge Regression}\\
+There are multiple ways of introducing a regularization in order to keep weights small and limit overfitting of data. One simple way is to add a penalty term dependent on the size of the weight: 
+\begin{equation}
+    \label{eq:regularized_least_squares_error}
+    \text{Loss}_\text{Ridge}(\mathbf{W}) = \sum_{n=1}^{N}\|\mathbf{y}^{(n)} - \mathbf{W^\top} \mathbf{x}^{(n)}\|_2^2 + \lambda \|\mathbf{W}\|_2^2
+\end{equation}
+This loss function is used in Ridge Regression (RR) and penalizes large weights by adding a term proportional to the squared $L_2$ norm of the weights $\|\mathbf{W}\|_2^2$. Another common regularization technique is to use the $L_1$ norm of the weights without squaring them, which leads to Lasso Regression (LR). 
+
+\textbf{Kernel Ridge Regression}\\ %%https://www.sciencedirect.com/topics/computer-science/kernel-ridge-regression
+Instead of a fixed weight matrix, Kernel Ridge Regression (KRR) uses a kernel function $k(\mathbf{x}, \mathbf{x}')$ to build the Gram matrix $\mathbf{K}_{ij} = k(\mathbf{x}^{(i)}, \mathbf{x}^{(j)})$. The dual coefficient matrix $\mathbf{A}$ is learned by minimizing
+
+\begin{equation}
+\label{eq:kernel_ridge_loss}
+\mathrm{Loss}_{\mathrm{KRR}}(\mathbf{A})
+= \|\mathbf{Y} - \mathbf{K}\mathbf{A}\|_F^2 + \lambda\,\mathrm{Tr}(\mathbf{A}^\top \mathbf{K}\mathbf{A}).
+\end{equation}
+
+We get $\mathbf{A} = (\mathbf{K} + \lambda \mathbf{I})^{-1} \mathbf{Y}$ which is used in predicting the target for a new input $\mathbf{x}^*$, via the similarity vector $\mathbf{k}(\mathbf{x}^*) = [\,k(\mathbf{x}^*,\mathbf{x}^{(1)}),\dots,k(\mathbf{x}^*,\mathbf{x}^{(N)})\,]^\top$ by:
+
+\begin{equation}
+\label{eq:kernel_ridge_predict}
+f(\mathbf{x}^*) = \mathbf{k}(\mathbf{x}^*)^\top \mathbf{A}.
+\end{equation}
+
+KRR thus extends ridge regression in a non-parametric way, with the regularization term $\lambda \mathbf{I}$ ensuring that $(\mathbf{K} + \lambda \mathbf{I})$ is invertible and numerically stable, while enabling the model to capture complex, nonlinear patterns at a computational cost of $\mathcal{O}(N^3)$.
+
+
+\subsection{Multi Level Perceptron (MLP)}
+\label{subsec:background_mlp}
+\TODO{discuss model types relevant to thesis, e.g. linear regression + regularization by RR / KRR, neural networks, GNNs, activation etc.}\\
+
+\subsection{Graph Neural Network (GNN)}
+\label{subsec:background_gnn}
+
 
 \section{QM9 dataset \parencite{ref:data_qm9}}
 \label{sec:qm9}
