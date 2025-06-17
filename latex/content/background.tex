@@ -1,10 +1,10 @@
 \chapter{Background}
 \label{sec:background}
-This chapter provides an overview of the theoretical background of the methods used in this thesis. While the focus of this thesis is the application of machine learning methods in the quantum chemistry context, a basic introduction to compuatational quantum chemistry methods, namely self consistent field (SCF) methods, is provided. 
+This chapter provides an overview of the theoretical background used in this thesis. While the focus of this thesis is the application of machine learning methods in the quantum chemistry context, a basic introduction to compuatational quantum chemistry methods, namely self consistent field (SCF) methods, is provided. 
 
 \section{Self Consistent Field (SCF) Theory}
 \label{sec:background_scf}
-Quantum chemistry has its roots far before the advent of the computer age. Based on the original theories on quantum mechanics formulated by Schrödinger and Heisenberg, the interest in the accurate description of matter via this new theory was sparked. After the introduction of the wave function by Schrödinger almost century ago Max Born's statistical interpretation enabled a direct calculation of the electrons density. \parencite{ref:schroedinger_1926undulatory} Already a year later Hartree coined a self consistent method to solve the many-electron problem utilizing a mean-field approach. Slater and Fock independently adapted the method by adding the exchange term and consistency with the Pauli exclusion principle. This method was later named Hartree-Fock (HF) method. \parencite{ref:Hartree_1928,ref:slater1930note,ref:fock1930naherungsmethode}. From that point on many advancements have been made in this field. Most prominently density functional therory (DFT), coupled cluster methods (CC), and perturbation theory (MP2) have been developed. Yet the theory behind the HF method is still the basis for many of these methods.
+Quantum chemistry has its roots far before the advent of the computer age. Based on the original theories on quantum mechanics formulated by Schrödinger and Heisenberg, the interest in the accurate description of matter via this new theory was sparked. After the introduction of the wave function by Schrödinger almost century ago Max Born's statistical interpretation enabled a direct calculation of the electrons density. \parencite{ref:schroedinger_1926undulatory} Already a year later Hartree coined a self consistent method to solve the many-electron problem utilizing a mean-field approach. Slater and Fock independently adapted the method by adding the exchange term and consistency with the Pauli exclusion principle. This method was later named Hartree-Fock (HF) method. \parencite{ref:Hartree_1928,ref:slater1930note,ref:fock1930naherungsmethode}. From that point on many advancements have been made in this field. Most prominently density functional therory (DFT), coupled cluster methods (CC), and perturbation theory (MP2) have been developed. Yet the theory behind the HF method is still the basis for nearly all of these methods.
 
 The following introductry overview of the Hartree-Fock method is largely based on the book by Szabo and Ostlund \parencite{ref:szabo_ostlund}. 
 
@@ -243,10 +243,21 @@ DFT accuracy is limited by the choice of functional. Standard Kohn-Sham DFT is b
 
 \section{Machine Learning}
 \label{sec:background_ml}
-%! Intor to ML & Statistical Learning. 
-\subsection{Cost Functions}
-\label{subsec:background_cost_function}
-\TODO{also discuss f-score!!!}
+Machine Learning (ML) constitutes a rich subfield of computer science that aims to develop algorithms capable of inferring patterns from data and making predictions without being explicitly programmed with deterministic instructions. \\
+The history of ML closly coincides with the development of computers. In the 1950s Arthur Lee Samuel coined the term "machine learning" while programming a computer to play checkers, eventually beating the 4th ranked player in the US at the time. \parencite{ref:knuth1989comments} Since it's humble beginnings, ML has influenced many scientific fields as well as everyday life.\\
+
+In the following we will give an overview of the most important concepts in ML with special emphasis on techniques used in this thesis. The books written by Bishop \parencite{ref:bishop2006pattern} and \parencite{ref:goodfellow2016deep} provide a more in-depth treatment of the various subjects.
+\subsection{General concepts}
+\label{subsec:background_ml_general_concepts}
+Machine learning itself is a subfield of artificial intelligence (AI), which is the broader field of creating machines that can perform tasks that would normally require human level intelligence. \\
+Central to ML is the concept of learning from data. This means that we need to define data given as input to predict a target output. Most broadly speaking, we can either predict a discrete class label (classification) or a continuous value (regression) given our input data. Our focus will be on the later task of finding a continuous value (Fock / density matrix entries) given another set of continuous values (atomic coordinates, overlap matrix elements, \dots). \\
+\TODO{Supervised vs. unsupervised learning, reinforcement (?) propably not needed, Bias-Variance Trade-off (under/overfitting), Model Complexity \& Generalization - overfitting + need for validation crossref / test sets, Hyperparameter tuning, Feature representation}  
+\subsection{Model Types}
+\label{subsec:background_ml_model_types}
+\TODO{discuss model types relevant to thesis, e.g. linear regression + regularization by RR / KRR, neural networks, GNNs, activation etc.}\\
+\subsection{Loss Functions}
+\label{subsec:background_loss_function}
+\TODO{also discuss f-score!!! - let's see if really needed}
 
 \section{QM9 dataset \parencite{ref:data_qm9}}
 \label{sec:qm9}
