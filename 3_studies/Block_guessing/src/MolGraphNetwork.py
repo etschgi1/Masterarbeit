@@ -1,7 +1,6 @@
 import os, copy
 from typing import List
 from itertools import chain
-from rdkit.Chem import rdmolfiles
 from scf_guess_tools import Backend, load
 import sys
 import numpy as np
