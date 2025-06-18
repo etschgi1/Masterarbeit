@@ -5,7 +5,6 @@ from itertools import combinations_with_replacement
 import os
 import matplotlib.pyplot as plt
 import pyscf
-from rdkit import Chem
 from copy import deepcopy
 
 example_mol_path = "../../datasets/QM9/xyz_c5h4n2o2/dsgdb9nsd_022700.xyz"
