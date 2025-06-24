@@ -195,9 +195,16 @@ The nomencalture of these Pople type basis sets \parencite{ref:pople_basis} deno
 \textbf{Segmented Contraction}\\
 Generally the GTOs used in the contraction of Pople type basis sets are not reused and thus of the segmented contraction type. In contrast, general contraction type basis sets (such as cc-pVXZ \parencite{ref:cc-pVXZ}) reuse some or all primitives in multiple contractions. The later can be converted to a computationally more efficient segmented form which retains the initial accuracy. One such modern segmented basis family optimized for density functional theory are the pcseg-n basis sets. \parencite{ref:Jensen2014pcs}\\
 
-\textbf{Accuracy \& Hatree Limit}\\
+\textbf{Accuracy \& Hartree Limit}\\
 Expanding the spatial orbitals using basis functions introduces an error in the electron density distribution and subsequently the converged Energy $E_{HF}$. Given the limitation of a longer runtime--scaling with $\bigO{N^4}$ in the number of basis functions--the accuracy can be refined using a larger and more complete basis set. The so called Hartree limit constitutes the lowest energy asymptotically (theoretically) attainable by any HF-calculation. It can be estimated by the shrinking differences of energies given larger basis-sets. \parencite{ref:Jensen2005hf} Yet, it still lacks so called correlation energy of electrons and thus is makes bonds appear weaker. We will discuss methods which build or improve on Hartree Fock next. 
 
+\subsection{Guessing schemes}
+\label{subsec:background_hf_guessing}
+As eluded to earlier, our algorithm needs an initial density matrix $\mathbf{P}$ to start the SCF iteration. Over the years various schemes have been developed and inmplemented in quantum chemistry packages. It is instructive to introduce two commonly used schemes here. For sake of brevity details regarding initial guess strategies in PySCF can be found in \autoref{sec:appendix}.\\
+
+\textbf{Superposition of Atomic Densities (SAD / MINAO)}\\
+
+\textbf{Generalized Wolfsberg-Helmholtz}\\
 \subsection{Post-Hartree-Fock Methods}
 \label{subsec:background_post_hf}
 HF theory provides a solid foundation to solve the many-electron problem and is usually used as the starting point for more refined techniques. These are generally bundeled under the umbrella term post-Hartree-Fock methods.\\

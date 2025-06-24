@@ -1,8 +1,9 @@
 \chapter{Fock Matrix prediction}
 \label{chap:fock_matrix_predictions}
 
-SCF methods by nature initially need a density matrix to start off their iterative calculations. Independent of the way the initial guess is chosen the computational effort of this step should be negligible compared to the actual SCF iterations. 
-\TODO{Add more details about the Fock matrix prediction - Reasoning for the choice.}
+SCF methods by nature initially need a density matrix to start off their iterative calculations. Independent of the way the initial guess is chosen the computational effort of this step should be negligible compared to the actual SCF iterations.\\
+As a first step we will introduce a method by which the density matrix is constructed from the Fock matrix. The later is the target for various regression models which will be introduced in the subsequent sections.
+
 
 \section{Introduction}
 \label{sec:Fock_mathcalrix_prediction_intro}
@@ -149,7 +150,9 @@ The Hyperparameters found by the BayesSearch are given in \autoref{tab:kernel_ri
         \bottomrule
     \end{tabular}
 \end{table}
-\TODO{Interpretation of the results}\\
+
+While RBF and quadratic kernels yield nearly comparable results, with the exception of inference speed, the cubic kernel performs significantly worse. The underperformance of the cubic kernel is to be explained by the fact that the Bayes search gave a relatively high $\alpha$ value of $0.05$ which leads to a strong regularization of the model making it less flexible. Even with lower regularization the cubic kernel, as well as the other two kernels, does not yield comparable performance to the \texttt{minao} guessing scheme. Interestingly, our models yield a significantly higher F-score (exception: cubic kernel) compared to \texttt{minao} but take more iterations to converge. This pattern which we have seen before with the Ridge regression model emerges again. This and the inefficient scaling of KRR with the number of samples leads us to explore different approaches in the next section.\\ 
+
 
 
 \section{Further trials}
@@ -157,9 +160,8 @@ The Hyperparameters found by the BayesSearch are given in \autoref{tab:kernel_ri
 Previously we tried to learn a mapping from overlap to Fock matrix soley via machine learning means. We have established that the quality for these guesses even on the minimal STO-3G basis is not on par with the established guessing schemes.\\
 Predicting the main diagonal for a given system is an easier target given the fact that the model predicts $N$ features from the $N^2$ input features. One established way of constructing the off diagonal elements is the generalized Wolfsberg-Helmholtz (GWH) construction \parencite{ref:gwh_wolfsberg1952spectra} (see \TODO{Background - guessing schemes}).
 Utilizing this construction on our dataset we obtain comparable results to our base Ridge regression model in terms of iterations till convergence. \\
-Changing the basis set to a larger 6-31G one, we see the limitations of our initial approach. Instead of roughly $\nicefrac{49^2}{2}$ features we now have $\nicefrac{254^2}{2}$ which is a lot more than the 1225 features we had before. Only predicting the main diagonal as explained above makes it computationally feasible within the constraints of this thesis. Yet, the reconstruction of off-diagonal elements in $F$ and the subsequent construction of $D$ breaks down for larger systems. One shot full matrix density predictions are thus not feasible and another approach needs to be explored.\\ 
+Changing the basis set to a larger 6-31G one, we see the limitations of our initial approach. Instead of roughly $\nicefrac{49^2}{2}$ features we now have $\nicefrac{254^2}{2}$, a nearly 27-fold increase in the number of features. Only predicting the main diagonal as explained above makes it computationally feasible within the constraints of this thesis. 
 
---- 
 \begin{table}[h]
     \centering
     \caption{\TODO{\dots results from GWH\_interp with diagonal fitting} /}
@@ -184,10 +186,4 @@ Changing the basis set to a larger 6-31G one, we see the limitations of our init
     }
 \end{table}
 
-
-
-\section{Building guesses block-by-block}
-\label{sec:blockwise_guessing}
-\TODO{Guess main diagonal and then construct or guess off-diagonal elements. --> doesn't really work!}
-
-\TODO{Maybe do some blockwise guessing experiments later down the road!}
+Yet, the reconstruction of off-diagonal elements in $F$ and the subsequent construction of $D$ breaks down for larger systems. One shot full matrix density predictions are thus not feasible and another approach needs to be explored.\\ 
