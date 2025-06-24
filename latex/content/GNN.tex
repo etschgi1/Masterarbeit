@@ -65,8 +65,17 @@ Such a split preserves the integrity of the validation and test phases and allow
 \TODO{Nice representation of orbitals on mols - maybe PyMol plot + some overlap matrix blocks}
 \section{Training}
 \label{sec:gnn_training}
-\TODO{better text}
-We initially train a model without data augmentation and only on a small subset of our QM9 C7H10O2 molecules (500 atoms simulated with B3LYPG \& pcseg-1) with a 80/10/10 split (train/val/test). 
+
+The GNN will be trained using various hyperparameters and configurations in the following. All runs will be tested on QM9 \ch{C7H10O2} molecules which were simulated as reference using the B3LYP functional and the 6-31G(2df,p) basis set. If not stated otherwise, the train / validation / test split is set to 80\% / 10\% / 10\%.\\
+
+\subsection{Initial Training}
+\label{subsec:gnn_initial_training}
+To gauge the performance of the GNN on our problem, we will start with a sample using 500 molecules (400 / 50 / 50 for train / validation / test) randomly sampled from the 6095 isomers of \ch{C7H10O2}. 
+
+Average iterations own: 11.42 +- 0.77, minao 11.00 +- 0.56
+
+\TODO{}
+
 Meta: 
 \begin{verbatim}
 batch_size=16,
@@ -88,6 +97,6 @@ using standards from c2ec04be68ae09bec80153fabaace85234ad1a5e elsewhere!
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{../fig/gnn/mgnn_pcseg1_simple_loss.pdf}
-    \caption[GNN initial training Loss]{\TODO{...}}
+    \caption[GNN initial training Loss]{\TODO{THIS IS A PLACEHOLDER!}}
     \label{fig:gnn_initial_training_loss}
 \end{figure}

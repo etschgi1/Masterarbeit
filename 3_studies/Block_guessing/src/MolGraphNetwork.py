@@ -136,15 +136,28 @@ class MolGraphNetwork(torch.nn.Module):
             mol = load(xyz_file, backend=self.backend, basis=self.basis).native
             self.molgraphs.append(self.make_graph(overlap, target, coords, mol))
         
+
+        # Split into train and test sets
+        np.random.seed(seed)
+        shuffled_indices = np.random.permutation(len(self.molgraphs))
+        total_samples = len(self.molgraphs)
+        train_size = int(total_samples * self.train_ratio)
+        val_size = int(total_samples * self.val_ratio)
+        test_size = int(total_samples * self.test_ratio)
+        
+        test_indices = shuffled_indices[:test_size]
+        val_indices = shuffled_indices[test_size:test_size + val_size]
+        train_indices = shuffled_indices[test_size + val_size:] #! use rest for training (this way we include all samples from augmented data without inserting in the middle of a list)
+
         # augment training set! #
         n_aug = 0
         if self.data_aug_factor > 1:
-            original_length = len(self.molgraphs)
+            train_length = len(train_indices)
+            n_aug = int(self.data_aug_factor * train_length - train_length)
             aug_graphs, aug_target_in, aug_overlap_in, aug_infos = [], [], [], []
-            n_aug = int(self.train_ratio * len(self.molgraphs) * (self.data_aug_factor - 1))
-            dprint(1, f"Augmenting training set by factor {self.data_aug_factor} -> {n_aug} additional training samples.")
+            dprint(1, f"Augmenting training set using factor {self.data_aug_factor} -> {n_aug} additional training samples.")
             for _ in tqdm(range(int(n_aug)), desc="Augmenting data"):
-                idx = np.random.randint(0, original_length)
+                idx = np.random.choice(train_indices) #! only augment training data
                 overlap, target, coords, xyz_file = overlap_in[idx], target_in[idx], coords_in[idx], self.xyz_files[idx]
                 aug_graph, aug_overlap, aug_target, aug_info = self.aug_data(overlap, target, coords, xyz_file)
                 aug_graphs.append(aug_graph)
@@ -154,20 +167,8 @@ class MolGraphNetwork(torch.nn.Module):
             self.molgraphs.extend(aug_graphs)
             overlap_in.extend(aug_overlap_in)
             target_in.extend(aug_target_in)
+            train_indices = np.append(train_indices, np.arange(len(self.molgraphs) - n_aug, len(self.molgraphs)))  # Append negative indices for augmented data
             self.xyz_files.extend(aug_infos)  # augmentation info instead of filenames (this includes filenames)
-
-        # Split into train and test sets
-        np.random.seed(seed)
-        shuffled_indices = np.random.permutation(len(self.molgraphs))
-        total_samples = len(self.molgraphs)
-        total_samples_no_aug = total_samples - n_aug
-        train_size = int(total_samples_no_aug * self.train_ratio + n_aug)
-        val_size = int(total_samples_no_aug * self.val_ratio)
-        test_size = int(total_samples_no_aug * self.test_ratio)
-        
-        test_indices = shuffled_indices[:test_size]
-        val_indices = shuffled_indices[test_size:test_size + val_size]
-        train_indices = shuffled_indices[test_size + val_size:] #! use rest for training (this way we include all samples from augmented data without inserting in the middle of a list)
 
         self.train_graphs = [self.molgraphs[i] for i in train_indices]
         self.val_graphs = [self.molgraphs[i] for i in val_indices]
@@ -275,7 +276,7 @@ class MolGraphNetwork(torch.nn.Module):
 
     def rebuild_matrix(self, pred_center_blocks, pred_edge_blocks, ao_slices, edge_ao_slices):
         N = sum(end-start for _, _, start, end in ao_slices)  
-        out = np.zeros((N, N), dtype=np.float32)  
+        out = np.zeros((N, N), dtype=np.float64)  
         # place center blocks
         for i, (_, _, start, end) in enumerate(ao_slices):
             flat_center_block = pred_center_blocks[i]
