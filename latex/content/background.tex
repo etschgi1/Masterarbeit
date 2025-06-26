@@ -126,6 +126,7 @@ Ultimately, we are interested in the electron density distribution $\rho(\mathbf
 Here we have used \autoref{eq:psi_approximation} to express the spatial orbitals in terms of the basis functions\footnote{We still need to multiply by two in order to account for spin up and spin down} and defined the density matrix $\mathbf{P}$.\\
 As we have seen earlier, the Fock operator $F$ and thus the Fock matrix $\mathbf{F}$ depend on the expansion coefficients $\mathbf{C}$ and thus the Fock matrix also depends on the density matrix $\mathbf{F(P)}$. If we insert \autoref{eq:fock_operator_spatial} into \autoref{eq:roothaan_mat_F} and write out Coulomb and exchange terms we have: 
 \begin{align}
+    \label{eq:fock_full_eq_coul_ex}
         F_{\mu \nu} &= \underbrace{\int d\mathbf{r}_1\, \phi_\mu^*(\mathbf{r}_1)\, h(\mathbf{r}_1)\, \phi_\nu(\mathbf{r}_1) \nonumber}_{H_{\mu\nu}^\text{core}} \\
         &\quad + \sum_{\lambda \sigma} \mathbf{P}_{\lambda \sigma} \Bigg[
             \underbrace{\iint  d\mathbf{r}_1 d\mathbf{r}_2\, \phi_\mu^*(\mathbf{r}_1) \phi_\nu(\mathbf{r}_1) r_{12}^{-1} \phi_\sigma^*(\mathbf{r}_2) \phi_\lambda(\mathbf{r}_2) \nonumber}_{\text{Coulomb-term}} \\
@@ -203,8 +204,15 @@ Expanding the spatial orbitals using basis functions introduces an error in the 
 As eluded to earlier, our algorithm needs an initial density matrix $\mathbf{P}$ to start the SCF iteration. Over the years various schemes have been developed and inmplemented in quantum chemistry packages. It is instructive to introduce two commonly used schemes here. For sake of brevity details regarding initial guess strategies in PySCF can be found in \autoref{sec:appendix}.\\
 
 \textbf{Superposition of Atomic Densities (SAD / MINAO)}\\
+This scheme builds on atomic HF-calculations which are performed for each atom type. With very little overhead these calculations yield initial atomic densities, usually calculated in a minimal atomic basis, which are expanded into the molecular basis and used to build an initial block diagonal density matrix. After calculating the Fock matrix from this density one diagonalizes it to obtain the molecular orbitals. Although the initial density matrix is strictly block-diagonal, diagonalizing the Fock matrix naturally mixes atomic orbitals and generates the off-block elements. \parencite{ref:sad_guess}\\
 
-\textbf{Generalized Wolfsberg-Helmholtz}\\
+\textbf{Generalized Wolfsberg-Helmholtz (GWH)}\\
+A semiempirical ansatz is given by the generalized Wolfsberg-Helmholtz method. It approximates the off-diagonal elements of the core Hamiltonian using: 
+\begin{equation}
+    \label{eq:gwh}
+    F_{ij} \approx H^{\text{core}}_{ij} = \frac{K}{2}(H^{\text{core}}_{ii} + H^{\text{core}}_{jj})S_{ij}
+\end{equation}
+where $K$ is a constant usually set to $1.75$. From \autoref{eq:fock_full_eq_coul_ex} it is immediately evident that this approximation completely omits Coulomb and exchange terms, reducing the Fock matrix to core-Hamiltonian integrals evaluated with the same orbitals on both sides. \parencite{ref:gwh_wolfsberg1952spectra, ref:Lehtola2019}
 \subsection{Post-Hartree-Fock Methods}
 \label{subsec:background_post_hf}
 HF theory provides a solid foundation to solve the many-electron problem and is usually used as the starting point for more refined techniques. These are generally bundeled under the umbrella term post-Hartree-Fock methods.\\

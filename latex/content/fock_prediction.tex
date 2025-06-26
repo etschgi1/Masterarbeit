@@ -116,20 +116,22 @@ Rahter than averaging per-target $\alpha$ values (like in the RidgeCV above), we
     \centering
     \caption{Comparison of different Kernel Ridge regression (KRR) guessing schemes for 102 (20\%) test samples from the \ch{C5H4N2O2} subset from QM9 \parencite{ref:article1_qm9}. The F-score is calculated using the Fock matrix prediction from the Kernel-Ridge regression model and the \texttt{minao} guess. The number of iterations until convergence is shown as well as the percentage samples not converging within 50 iterations and the inference time as a factor of the inference time of the minao guess.}
     \label{tab:kernel_ridge_metrics}
-    \begin{tabular}{l
-                    S[table-format=1.2(2)]
-                    S[table-format=1.3(3)]
-                    S[table-format=1.2(2)]
-                    S[table-format=1.3(3)]}
-        \toprule
-        \textbf{Method} & \texttt{KRR RBF} & \texttt{KRR quadratic poly} & \texttt{KRR cubic poly} & \texttt{minao} \\
-        \midrule
-        F-score / 1         & 94 \pm 4 & 94 \pm 4 & 53 \pm 1.5 & 0.899 \pm 0.002 \\
-        Iterations / 1      & 14 \pm 3 & 14 \pm 3 & 20 \pm 5 & 11.7 \pm 1.0 \\
-        Inference-speed / 1 & 30 & 20 & 19 & 1.0\\ %! This is obciously very amousing in terms of uncertainty (therefore no uncertainty here)
-        Not-Converged / \%  & 4 & 4 & 12 & 0\\
-        \bottomrule
-    \end{tabular}
+    \resizebox{\textwidth}{!}{
+        \begin{tabular}{l
+                        S[table-format=1.2(2)]
+                        S[table-format=1.3(3)]
+                        S[table-format=1.2(2)]
+                        S[table-format=1.3(3)]}
+            \toprule
+            \textbf{Method} & \texttt{KRR RBF} & \texttt{KRR quadratic poly} & \texttt{KRR cubic poly} & \texttt{minao} \\
+            \midrule
+            F-score / 1         & 94 \pm 4 & 94 \pm 4 & 53 \pm 1.5 & 0.899 \pm 0.002 \\
+            Iterations / 1      & 14 \pm 3 & 14 \pm 3 & 20 \pm 5 & 11.7 \pm 1.0 \\
+            Inference-speed / 1 & 30 & 20 & 19 & 1.0\\ %! This is obciously very amousing in terms of uncertainty (therefore no uncertainty here)
+            Not-Converged / \%  & 4 & 4 & 12 & 0\\
+            \bottomrule
+        \end{tabular}
+    }
 \end{table}
 The Hyperparameters found by the BayesSearch are given in \autoref{tab:kernel_ridge_hyperparams}.
 
@@ -155,12 +157,14 @@ While RBF and quadratic kernels yield nearly comparable results, with the except
 
 
 
-\section{Further trials}
-\label{sec:further_trials}
+\section{Further trials using MLP}
+\label{sec:further_trials_mlp}
 Previously we tried to learn a mapping from overlap to Fock matrix soley via machine learning means. We have established that the quality for these guesses even on the minimal STO-3G basis is not on par with the established guessing schemes.\\
-Predicting the main diagonal for a given system is an easier target given the fact that the model predicts $N$ features from the $N^2$ input features. One established way of constructing the off diagonal elements is the generalized Wolfsberg-Helmholtz (GWH) construction \parencite{ref:gwh_wolfsberg1952spectra} (see \TODO{Background - guessing schemes}).
+Predicting the main diagonal for a given system is an easier target given the fact that the model predicts $N$ features from the $N^2$ input features. One established way of constructing the off diagonal elements is the generalized Wolfsberg-Helmholtz (GWH) construction \parencite{ref:gwh_wolfsberg1952spectra} (see \autoref{eq:gwh}).
 Utilizing this construction on our dataset we obtain comparable results to our base Ridge regression model in terms of iterations till convergence. \\
-Changing the basis set to a larger 6-31G one, we see the limitations of our initial approach. Instead of roughly $\nicefrac{49^2}{2}$ features we now have $\nicefrac{254^2}{2}$, a nearly 27-fold increase in the number of features. Only predicting the main diagonal as explained above makes it computationally feasible within the constraints of this thesis. 
+Changing the basis set to a larger 6-31G one, we see the limitations of our initial approach. Instead of roughly $\nicefrac{49^2}{2}$ features we now have $\nicefrac{254^2}{2}$, a nearly 27-fold increase in the number of features. Only predicting the main diagonal as explained above makes it computationally feasible within the constraints of this thesis. Furthermore, we will move to an isomer offering more samples for training, namely the \ch{C7H10O2} structural isomers (this group will also be used to benchmark the GNN in \autoref{chap:gnn}).\\
+
+\textbf{MLP Network Design}\\
 
 \begin{table}[h]
     \centering
