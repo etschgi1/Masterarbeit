@@ -2401,24 +2401,29 @@
     <bcf:citekey order="36" intorder="1">ref:article1_qm9</bcf:citekey>
     <bcf:citekey order="37" intorder="1">ref:article1_qm9</bcf:citekey>
     <bcf:citekey order="38" intorder="1">ref:gwh_wolfsberg1952spectra</bcf:citekey>
-    <bcf:citekey order="39" intorder="1">ref:Hazra2024</bcf:citekey>
-    <bcf:citekey order="39" intorder="2">ref:Shao2023</bcf:citekey>
-    <bcf:citekey order="40" intorder="1">ref:schnet2018</bcf:citekey>
-    <bcf:citekey order="41" intorder="1">ref:PyTorchGeometric</bcf:citekey>
-    <bcf:citekey order="41" intorder="2">ref:PyTorch_geom_paper</bcf:citekey>
-    <bcf:citekey order="42" intorder="1">ref:PyTorchGeometric</bcf:citekey>
-    <bcf:citekey order="42" intorder="2">ref:PyTorch_geom_paper</bcf:citekey>
-    <bcf:citekey order="43" intorder="1">ref:pyscf</bcf:citekey>
-    <bcf:citekey order="44" intorder="1">ref:pyscf_user_guide</bcf:citekey>
-    <bcf:citekey order="45" intorder="1">ref:minao_sad1</bcf:citekey>
-    <bcf:citekey order="45" intorder="2">ref:minao_sad2</bcf:citekey>
-    <bcf:citekey order="46" intorder="1">ref:Lehtola2019</bcf:citekey>
-    <bcf:citekey order="47" intorder="1">ref:minao_sad1</bcf:citekey>
-    <bcf:citekey order="47" intorder="2">ref:minao_sad2</bcf:citekey>
-    <bcf:citekey order="48" intorder="1">ref:lethola_fully_numerical_atomic_potentials</bcf:citekey>
+    <bcf:citekey order="39" intorder="1">ref:tensorflow</bcf:citekey>
+    <bcf:citekey order="39" intorder="2">ref:keras</bcf:citekey>
+    <bcf:citekey order="39" intorder="3">ref:kerastuner</bcf:citekey>
+    <bcf:citekey order="40" intorder="1">ref:article1_qm9</bcf:citekey>
+    <bcf:citekey order="41" intorder="1">ref:article1_qm9</bcf:citekey>
+    <bcf:citekey order="42" intorder="1">ref:Hazra2024</bcf:citekey>
+    <bcf:citekey order="42" intorder="2">ref:Shao2023</bcf:citekey>
+    <bcf:citekey order="43" intorder="1">ref:schnet2018</bcf:citekey>
+    <bcf:citekey order="44" intorder="1">ref:PyTorchGeometric</bcf:citekey>
+    <bcf:citekey order="44" intorder="2">ref:PyTorch_geom_paper</bcf:citekey>
+    <bcf:citekey order="45" intorder="1">ref:PyTorchGeometric</bcf:citekey>
+    <bcf:citekey order="45" intorder="2">ref:PyTorch_geom_paper</bcf:citekey>
+    <bcf:citekey order="46" intorder="1">ref:pyscf</bcf:citekey>
+    <bcf:citekey order="47" intorder="1">ref:pyscf_user_guide</bcf:citekey>
+    <bcf:citekey order="48" intorder="1">ref:minao_sad1</bcf:citekey>
+    <bcf:citekey order="48" intorder="2">ref:minao_sad2</bcf:citekey>
     <bcf:citekey order="49" intorder="1">ref:Lehtola2019</bcf:citekey>
-    <bcf:citekey order="50" intorder="1">ref:Lehtola2019</bcf:citekey>
+    <bcf:citekey order="50" intorder="1">ref:minao_sad1</bcf:citekey>
+    <bcf:citekey order="50" intorder="2">ref:minao_sad2</bcf:citekey>
     <bcf:citekey order="51" intorder="1">ref:lethola_fully_numerical_atomic_potentials</bcf:citekey>
+    <bcf:citekey order="52" intorder="1">ref:Lehtola2019</bcf:citekey>
+    <bcf:citekey order="53" intorder="1">ref:Lehtola2019</bcf:citekey>
+    <bcf:citekey order="54" intorder="1">ref:lethola_fully_numerical_atomic_potentials</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="none">

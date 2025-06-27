@@ -73,7 +73,7 @@ For the Fock matrix prediction the model yields a RMSE of $0.0057$ on the traini
 
 \begin{table}[h]
     \centering
-    \caption{Comparison of different guessing schemes for 102 (20\%) test samples from the \ch{C5H4N2O2} subset from QM9 \parencite{ref:article1_qm9}. The average F-score is calculated on the testset using the Fock matrix prediction from the Ridge regression model and various guessing schemes implemented in \textsc{PySCF}. Furthermore averages are shown for the number of iterations until convergence and the inference time as a factor of the inference time of the minao guess. Not-converged reports the percentage of samples not converging within 50 iterations.}
+    \caption{Comparison of different guessing schemes for 102 (20\%) test samples from the \ch{C5H4N2O2} subset from QM9 \parencite{ref:article1_qm9}. The average F-score is calculated on the testset using the Fock matrix prediction from the Ridge regression model and various guessing schemes implemented in \textsc{PySCF}. Furthermore averages are shown for the number of iterations until convergence and the inference time as a factor of the inference time of the \texttt{minao} guess. Not-converged reports the percentage of samples not converging within 50 iterations.}
     \label{tab:ridge_metrics}
     \resizebox{\textwidth}{!}{
     \begin{tabular}{l
@@ -114,7 +114,7 @@ Rahter than averaging per-target $\alpha$ values (like in the RidgeCV above), we
 
 \begin{table}[h]
     \centering
-    \caption{Comparison of different Kernel Ridge regression (KRR) guessing schemes for 102 (20\%) test samples from the \ch{C5H4N2O2} subset from QM9 \parencite{ref:article1_qm9}. The F-score is calculated using the Fock matrix prediction from the Kernel-Ridge regression model and the \texttt{minao} guess. The number of iterations until convergence is shown as well as the percentage samples not converging within 50 iterations and the inference time as a factor of the inference time of the minao guess.}
+    \caption{Comparison of different Kernel Ridge regression (KRR) guessing schemes for 102 (20\%) test samples from the \ch{C5H4N2O2} subset from QM9 \parencite{ref:article1_qm9}. The F-score is calculated using the Fock matrix prediction from the Kernel-Ridge regression model and the \texttt{minao} guess. The number of iterations until convergence is shown as well as the percentage samples not converging within 50 iterations and the inference time as a factor of the inference time of the \texttt{minao} guess.}
     \label{tab:kernel_ridge_metrics}
     \resizebox{\textwidth}{!}{
         \begin{tabular}{l
@@ -162,32 +162,45 @@ While RBF and quadratic kernels yield nearly comparable results, with the except
 Previously we tried to learn a mapping from overlap to Fock matrix soley via machine learning means. We have established that the quality for these guesses even on the minimal STO-3G basis is not on par with the established guessing schemes.\\
 Predicting the main diagonal for a given system is an easier target given the fact that the model predicts $N$ features from the $N^2$ input features. One established way of constructing the off diagonal elements is the generalized Wolfsberg-Helmholtz (GWH) construction \parencite{ref:gwh_wolfsberg1952spectra} (see \autoref{eq:gwh}).
 Utilizing this construction on our dataset we obtain comparable results to our base Ridge regression model in terms of iterations till convergence. \\
-Changing the basis set to a larger 6-31G one, we see the limitations of our initial approach. Instead of roughly $\nicefrac{49^2}{2}$ features we now have $\nicefrac{254^2}{2}$, a nearly 27-fold increase in the number of features. Only predicting the main diagonal as explained above makes it computationally feasible within the constraints of this thesis. Furthermore, we will move to an isomer offering more samples for training, namely the \ch{C7H10O2} structural isomers (this group will also be used to benchmark the GNN in \autoref{chap:gnn}).\\
+Changing the basis set to a larger 6-31G(2df,p) one, we see the limitations of our initial approach. Instead of roughly $\nicefrac{49^2}{2}$ features we now have $\nicefrac{284^2}{2}$, a roughly 33-fold increase in the number of features. Furthermore, we will move to an isomer offering more samples for training, namely the 6095 \ch{C7H10O2} structural isomers (this set of isomers will also be used to benchmark the GNN in \autoref{chap:gnn}).\\
 
-\textbf{MLP Network Design}\\
+\textbf{MLP Network}\\
+We implement a MLP model which is trained to map the overlap matrix to the main diagonal of the converged Fock matrix from which density can be reconstructed via GWH. All samples are split into 80\% training, 10\% validation and 10\% test sets. Batch wise data loading was implemented to facilitate training on memory limited hardware. To gauge the performance of different configurations a hyperparametersearch was performed over the parameter in \autoref{tab:hyperparams_mlp}
 
 \begin{table}[h]
+    \caption{Hyperparameter \& Parameters of the MLP model. Model with best parameters marked bold.}
+    \label{tab:hyperparams_mlp}
     \centering
-    \caption{\TODO{\dots results from GWH\_interp with diagonal fitting} /}
-    \label{tab:NN_basic_metrics}
-    \resizebox{\textwidth}{!}{
-    \begin{tabular}{l
-                    S[table-format=1.2(2)]
-                    S[table-format=1.3(3)]
-                    S[table-format=1.2(2)]
-                    S[table-format=1.3(3)]
-                    S[table-format=1.3(3)]
-                    S[table-format=1.3(3)]}
+    \begin{tabular}{@{}ll@{}}
         \toprule
-        \textbf{Method} & \texttt{NN-GWH-model} & \texttt{minao} & \texttt{1e} & \texttt{atom} & \texttt{huckel} & \texttt{vsap} \\
+        \textbf{Hyperparameter}     & \textbf{Search Space}                  \\ 
         \midrule
-        F-score / 1 &  &  &  &  &  &  \\
-        Iterations / 1 & 15 \pm 4 & 11.7 \pm 1.0 & 23 \pm 4 & 11.4 \pm 0.8 & 22 \pm 6 & 12.8 \pm 1.1 \\
-        Not-Converged / \% & 4 & 0 &  32 & 0 & 28 & 0\\
-        Inference-speed / 1 & 1.2 \pm 1.2 & 1.0 &  0.18 \pm 0.15 & 1.7 \pm 1.4 & 2.0 \pm 1.0 & 8 \pm 5 \\
+        \texttt{layers / 1}          & $\{\textbf{1},\,2,\,3,\,4\}$                         \\
+        \texttt{neurons / 1}   & $\{256,\,512,\,\textbf{1024}\}$  separate for each layer    \\
+        \texttt{dropout rate / \%}   & $\{0,\,5,\,\textbf{10},\,15,\,20\}$ separate for each layer \\
+        \bottomrule
+        \textbf{Parameters}     & \textbf{Value}                  \\ 
+        \midrule
+        \texttt{layer type}          & dense                         \\
+        \texttt{activation}          & gelu                         \\
+        \texttt{batch normalization} & after each hidden dense layer \\
+        \texttt{batch size}          & 32 \\
+        \texttt{input dimension}     & 40470 \\
+        \texttt{output dimension}    & 284 \\
         \bottomrule
     \end{tabular}
-    }
 \end{table}
+
+\texttt{Tensorflow} was used as backend with \texttt{Keras} and the module \texttt{keras\_tuner} was used for hyperparameter optimization. \parencite{ref:tensorflow,ref:keras,ref:kerastuner}
+All models in the hyperparameter optimization where trained using the Adam optimizer with an exponential decay (rate $0.96$ every 100 batches). Using mean squared error as the optimization objective on the validation set, the Hyperband tuner selected a single-layer MLP with 1024 neurons and a 10\% dropout rate.\\
+Subsequently, this best model was retrained for 50 epochs and evaluated on the test set. Prediction performance (RMSE on testset) of $\num{0.1 \pm 0.014}$ compared to $\num{0.357 \pm 0.007}$ \texttt{minao}'s is good on the main diagonal. However, after reconstructing the full Fock matrix using \autoref{eq:gwh} the global prediction quality on the full matrix suffers drastically as seen in \autoref{fig:comparison_mlp_gwh_minao}. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../fig/c5h4n2o2/density_error_comparison.pdf}
+    \caption[Normalized difference of density guesses]{Normalized mean absolute difference of $\alpha$-electron density guesses to their converged density for \texttt{minao} \& \texttt{vsap} guess and the Ridge regression model evaluated on the testset: 102 (20\%) test samples from the \ch{C5H4N2O2} subset from QM9 \parencite{ref:article1_qm9}.}
+    \label{fig:comparison_mlp_gwh_minao}
+\end{figure}
+
 
 Yet, the reconstruction of off-diagonal elements in $F$ and the subsequent construction of $D$ breaks down for larger systems. One shot full matrix density predictions are thus not feasible and another approach needs to be explored.\\ 

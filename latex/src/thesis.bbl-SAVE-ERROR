@@ -1,0 +1,1739 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{none/global//global/global}
+    \entry{ref:schroedinger_1926undulatory}{article}{}
+      \name{author}{1}{}{%
+        {{hash=86b3e1b87463065d6da6ca558e6541b3}{%
+           family={Schrödinger},
+           familyi={S\bibinitperiod},
+           given={E.},
+           giveni={E\bibinitperiod}}}%
+      }
+      \strng{namehash}{86b3e1b87463065d6da6ca558e6541b3}
+      \strng{fullhash}{86b3e1b87463065d6da6ca558e6541b3}
+      \strng{bibnamehash}{86b3e1b87463065d6da6ca558e6541b3}
+      \strng{authorbibnamehash}{86b3e1b87463065d6da6ca558e6541b3}
+      \strng{authornamehash}{86b3e1b87463065d6da6ca558e6541b3}
+      \strng{authorfullhash}{86b3e1b87463065d6da6ca558e6541b3}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprinttype}{arXiv}
+      \field{journaltitle}{Physical Review}
+      \field{note}{Archived (PDF) on 17 December 2008}
+      \field{number}{6}
+      \field{title}{An Undulatory Theory of the Mechanics of Atoms and Molecules}
+      \field{volume}{28}
+      \field{year}{1926}
+      \field{pages}{1049\bibrangedash 1070}
+      \range{pages}{22}
+      \verb{doi}
+      \verb 10.1103/PhysRev.28.1049
+      \endverb
+    \endentry
+    \entry{ref:Hartree_1928}{article}{}
+      \name{author}{1}{}{%
+        {{hash=ef83d4dc8a30fe4456be4321cd8ad41b}{%
+           family={Hartree},
+           familyi={H\bibinitperiod},
+           given={D.\bibnamedelimi R.},
+           giveni={D\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
+      }
+      \strng{namehash}{ef83d4dc8a30fe4456be4321cd8ad41b}
+      \strng{fullhash}{ef83d4dc8a30fe4456be4321cd8ad41b}
+      \strng{bibnamehash}{ef83d4dc8a30fe4456be4321cd8ad41b}
+      \strng{authorbibnamehash}{ef83d4dc8a30fe4456be4321cd8ad41b}
+      \strng{authornamehash}{ef83d4dc8a30fe4456be4321cd8ad41b}
+      \strng{authorfullhash}{ef83d4dc8a30fe4456be4321cd8ad41b}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Mathematical Proceedings of the Cambridge Philosophical Society}
+      \field{number}{1}
+      \field{title}{The Wave Mechanics of an Atom with a Non-Coulomb Central Field. Part II. Some Results and Discussion}
+      \field{volume}{24}
+      \field{year}{1928}
+      \field{pages}{111\bibrangedash 132}
+      \range{pages}{22}
+      \verb{doi}
+      \verb 10.1017/S0305004100011920
+      \endverb
+    \endentry
+    \entry{ref:slater1930note}{article}{}
+      \name{author}{1}{}{%
+        {{hash=2680effb67f4c8cd7c73443f7af7dbe9}{%
+           family={Slater},
+           familyi={S\bibinitperiod},
+           given={J.\bibnamedelimi C.},
+           giveni={J\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+      }
+      \strng{namehash}{2680effb67f4c8cd7c73443f7af7dbe9}
+      \strng{fullhash}{2680effb67f4c8cd7c73443f7af7dbe9}
+      \strng{bibnamehash}{2680effb67f4c8cd7c73443f7af7dbe9}
+      \strng{authorbibnamehash}{2680effb67f4c8cd7c73443f7af7dbe9}
+      \strng{authornamehash}{2680effb67f4c8cd7c73443f7af7dbe9}
+      \strng{authorfullhash}{2680effb67f4c8cd7c73443f7af7dbe9}
+      \field{extraname}{1}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Physical Review}
+      \field{number}{2}
+      \field{title}{Note on Hartree's Method}
+      \field{volume}{35}
+      \field{year}{1930}
+      \field{pages}{210\bibrangedash 211}
+      \range{pages}{2}
+      \verb{doi}
+      \verb 10.1103/PhysRev.35.210
+      \endverb
+    \endentry
+    \entry{ref:fock1930naherungsmethode}{article}{}
+      \name{author}{1}{}{%
+        {{hash=09f4ce0c70d617227c2dc0df7d4e36e0}{%
+           family={Fock},
+           familyi={F\bibinitperiod},
+           given={V.\bibnamedelimi A.},
+           giveni={V\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+      }
+      \strng{namehash}{09f4ce0c70d617227c2dc0df7d4e36e0}
+      \strng{fullhash}{09f4ce0c70d617227c2dc0df7d4e36e0}
+      \strng{bibnamehash}{09f4ce0c70d617227c2dc0df7d4e36e0}
+      \strng{authorbibnamehash}{09f4ce0c70d617227c2dc0df7d4e36e0}
+      \strng{authornamehash}{09f4ce0c70d617227c2dc0df7d4e36e0}
+      \strng{authorfullhash}{09f4ce0c70d617227c2dc0df7d4e36e0}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Zeitschrift für Physik}
+      \field{title}{Näherungsmethode zur Lösung des quantenmechanischen Mehrkörperproblems}
+      \field{volume}{61}
+      \field{year}{1930}
+      \field{pages}{126\bibrangedash 148}
+      \range{pages}{23}
+      \verb{doi}
+      \verb 10.1007/BF01340294
+      \endverb
+    \endentry
+    \entry{ref:szabo_ostlund}{book}{}
+      \name{author}{2}{}{%
+        {{hash=dc52ed3315ff506a9d4fe6a0ab079ae2}{%
+           family={Szabo},
+           familyi={S\bibinitperiod},
+           given={Attila},
+           giveni={A\bibinitperiod}}}%
+        {{hash=977f18e68b981d3d80b363ccb7cbeab7}{%
+           family={Ostlund},
+           familyi={O\bibinitperiod},
+           given={Neil\bibnamedelima S.},
+           giveni={N\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Dover Publications}%
+      }
+      \strng{namehash}{7e4e963df06b39584349eaf439922455}
+      \strng{fullhash}{7e4e963df06b39584349eaf439922455}
+      \strng{bibnamehash}{7e4e963df06b39584349eaf439922455}
+      \strng{authorbibnamehash}{7e4e963df06b39584349eaf439922455}
+      \strng{authornamehash}{7e4e963df06b39584349eaf439922455}
+      \strng{authorfullhash}{7e4e963df06b39584349eaf439922455}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{Dover ed.}
+      \field{isbn}{9780486691862}
+      \field{title}{Modern Quantum Chemistry: Introduction to Advanced Electronic Structure Theory}
+      \field{year}{1996}
+    \endentry
+    \entry{ref:koopmans1934}{article}{}
+      \name{author}{1}{}{%
+        {{hash=3933ab1d7abb89b43fd4d3c88a4453ba}{%
+           family={Koopmans},
+           familyi={K\bibinitperiod},
+           given={Tjerk},
+           giveni={T\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {German}%
+      }
+      \strng{namehash}{3933ab1d7abb89b43fd4d3c88a4453ba}
+      \strng{fullhash}{3933ab1d7abb89b43fd4d3c88a4453ba}
+      \strng{bibnamehash}{3933ab1d7abb89b43fd4d3c88a4453ba}
+      \strng{authorbibnamehash}{3933ab1d7abb89b43fd4d3c88a4453ba}
+      \strng{authornamehash}{3933ab1d7abb89b43fd4d3c88a4453ba}
+      \strng{authorfullhash}{3933ab1d7abb89b43fd4d3c88a4453ba}
+      \field{sortinit}{8}
+      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Physica}
+      \field{title}{Über die Zuordnung von Wellenfunktionen und Eigenwerten zu den einzelnen Elektronen eines Atoms}
+      \field{volume}{1}
+      \field{year}{1934}
+      \field{pages}{104\bibrangedash 113}
+      \range{pages}{10}
+    \endentry
+    \entry{ref:mulliken1955electronic}{article}{}
+      \name{author}{1}{}{%
+        {{hash=3521fe904d43bf09dea279ce123210c6}{%
+           family={Mulliken},
+           familyi={M\bibinitperiod},
+           given={Robert\bibnamedelima S},
+           giveni={R\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {AIP}%
+      }
+      \strng{namehash}{3521fe904d43bf09dea279ce123210c6}
+      \strng{fullhash}{3521fe904d43bf09dea279ce123210c6}
+      \strng{bibnamehash}{3521fe904d43bf09dea279ce123210c6}
+      \strng{authorbibnamehash}{3521fe904d43bf09dea279ce123210c6}
+      \strng{authornamehash}{3521fe904d43bf09dea279ce123210c6}
+      \strng{authorfullhash}{3521fe904d43bf09dea279ce123210c6}
+      \field{extraname}{1}
+      \field{sortinit}{9}
+      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{The Journal of Chemical Physics}
+      \field{number}{10}
+      \field{title}{Electronic population analysis on LCAO--MO molecular wave functions. I}
+      \field{volume}{23}
+      \field{year}{1955}
+      \field{pages}{1833\bibrangedash 1840}
+      \range{pages}{8}
+      \verb{doi}
+      \verb 10.1063/1.1740588
+      \endverb
+    \endentry
+    \entry{ref:pople_basis}{article}{}
+      \name{author}{3}{}{%
+        {{hash=1b18c24246a62c23614e0771f5c3276f}{%
+           family={Hehre},
+           familyi={H\bibinitperiod},
+           given={W.\bibnamedelimi J.},
+           giveni={W\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=a2c53ad0097b83174aed56f07673d4c1}{%
+           family={Stewart},
+           familyi={S\bibinitperiod},
+           given={R.\bibnamedelimi F.},
+           giveni={R\bibinitperiod\bibinitdelim F\bibinitperiod}}}%
+        {{hash=a49269095f3ff1435e603bc8ef63983b}{%
+           family={Pople},
+           familyi={P\bibinitperiod},
+           given={J.\bibnamedelimi A.},
+           giveni={J\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+      }
+      \strng{namehash}{3ee84718606923325c524c7f3c39f8ac}
+      \strng{fullhash}{3ee84718606923325c524c7f3c39f8ac}
+      \strng{bibnamehash}{3ee84718606923325c524c7f3c39f8ac}
+      \strng{authorbibnamehash}{3ee84718606923325c524c7f3c39f8ac}
+      \strng{authornamehash}{3ee84718606923325c524c7f3c39f8ac}
+      \strng{authorfullhash}{3ee84718606923325c524c7f3c39f8ac}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Least-squares representations of Slater-type atomic orbitals as a sum of Gaussian-type orbitals are presented. These have the special feature that common Gaussian exponents are shared between Slater-type 2s and 2p functions. Use of these atomic orbitals in self-consistent molecular-orbital calculations is shown to lead to values of atomization energies, atomic populations, and electric dipole moments which converge rapidly (with increasing size of Gaussian expansion) to the values appropriate for pure Slater-type orbitals. The ζ exponents (or scale factors) for the atomic orbitals which are optimized for a number of molecules are also shown to be nearly independent of the number of Gaussian functions. A standard set of ζ values for use in molecular calculations is suggested on the basis of this study and is shown to be adequate for the calculation of total and atomization energies, but less appropriate for studies of charge distribution.}
+      \field{issn}{0021-9606}
+      \field{journaltitle}{The Journal of Chemical Physics}
+      \field{month}{09}
+      \field{number}{6}
+      \field{title}{Self-Consistent Molecular-Orbital Methods. I. Use of Gaussian Expansions of Slater-Type Atomic Orbitals}
+      \field{volume}{51}
+      \field{year}{1969}
+      \field{pages}{2657\bibrangedash 2664}
+      \range{pages}{8}
+      \verb{doi}
+      \verb 10.1063/1.1672392
+      \endverb
+      \verb{eprint}
+      \verb https://pubs.aip.org/aip/jcp/article-pdf/51/6/2657/18864378/2657\_1\_online.pdf
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1063/1.1672392
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1063/1.1672392
+      \endverb
+    \endentry
+    \entry{ref:cc-pVXZ}{article}{}
+      \name{author}{1}{}{%
+        {{hash=368ec2a0a522a94bd0ec8cf00f1c2139}{%
+           family={Dunning},
+           familyi={D\bibinitperiod},
+           given={Jr.},
+           giveni={J\bibinitperiod},
+           suffix={Thom\bibnamedelima H.},
+           suffixi={T\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+      }
+      \strng{namehash}{368ec2a0a522a94bd0ec8cf00f1c2139}
+      \strng{fullhash}{368ec2a0a522a94bd0ec8cf00f1c2139}
+      \strng{bibnamehash}{368ec2a0a522a94bd0ec8cf00f1c2139}
+      \strng{authorbibnamehash}{368ec2a0a522a94bd0ec8cf00f1c2139}
+      \strng{authornamehash}{368ec2a0a522a94bd0ec8cf00f1c2139}
+      \strng{authorfullhash}{368ec2a0a522a94bd0ec8cf00f1c2139}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{In the past, basis sets for use in correlated molecular calculations have largely been taken from single configuration calculations. Recently, Almlöf, Taylor, and co-workers have found that basis sets of natural orbitals derived from correlated atomic calculations (ANOs) provide an excellent description of molecular correlation effects. We report here a careful study of correlation effects in the oxygen atom, establishing that compact sets of primitive Gaussian functions effectively and efficiently describe correlation effects if the exponents of the functions are optimized in atomic correlated calculations, although the primitive (sp) functions for describing correlation effects can be taken from atomic Hartree-Fock calculations if the appropriate primitive set is used. Test calculations on oxygen-containing molecules indicate that these primitive basis sets describe molecular correlation effects as well as the ANO sets of Almlöf and Taylor. Guided by the calculations on oxygen, basis sets for use in correlated atomic and molecular calculations were developed for all of the first row atoms from boron through neon and for hydrogen. As in the oxygen atom calculations, it was found that the incremental energy lowerings due to the addition of correlating functions fall into distinct groups. This leads to the concept of correlation consistent basis sets, i.e., sets which include all functions in a given group as well as all functions in any higher groups. Correlation consistent sets are given for all of the atoms considered. The most accurate sets determined in this way, [5s4p3d2f1g], consistently yield 99\% of the correlation energy obtained with the corresponding ANO sets, even though the latter contains 50\% more primitive functions and twice as many primitive polarization functions. It is estimated that this set yields 94\%-97\% of the total (HF+1+2) correlation energy for the atoms neon through boron.}
+      \field{issn}{0021-9606}
+      \field{journaltitle}{The Journal of Chemical Physics}
+      \field{month}{01}
+      \field{number}{2}
+      \field{title}{Gaussian basis sets for use in correlated molecular calculations. I. The atoms boron through neon and hydrogen}
+      \field{volume}{90}
+      \field{year}{1989}
+      \field{pages}{1007\bibrangedash 1023}
+      \range{pages}{17}
+      \verb{doi}
+      \verb 10.1063/1.456153
+      \endverb
+      \verb{eprint}
+      \verb https://pubs.aip.org/aip/jcp/article-pdf/90/2/1007/18974738/1007\_1\_online.pdf
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1063/1.456153
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1063/1.456153
+      \endverb
+    \endentry
+    \entry{ref:Jensen2014pcs}{article}{}
+      \name{author}{1}{}{%
+        {{hash=07272f7b37bc95d4f9e9ac01efc83dcf}{%
+           family={Jensen},
+           familyi={J\bibinitperiod},
+           given={Frank},
+           giveni={F\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {American Chemical Society}%
+      }
+      \strng{namehash}{07272f7b37bc95d4f9e9ac01efc83dcf}
+      \strng{fullhash}{07272f7b37bc95d4f9e9ac01efc83dcf}
+      \strng{bibnamehash}{07272f7b37bc95d4f9e9ac01efc83dcf}
+      \strng{authorbibnamehash}{07272f7b37bc95d4f9e9ac01efc83dcf}
+      \strng{authornamehash}{07272f7b37bc95d4f9e9ac01efc83dcf}
+      \strng{authorfullhash}{07272f7b37bc95d4f9e9ac01efc83dcf}
+      \field{extraname}{1}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{1549-9618}
+      \field{journaltitle}{Journal of Chemical Theory and Computation}
+      \field{number}{3}
+      \field{title}{Unifying General and Segmented Contracted Basis Sets. Segmented Polarization Consistent Basis Sets}
+      \field{volume}{10}
+      \field{year}{2014}
+      \field{pages}{1074\bibrangedash 1085}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1021/ct401026a
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1021/ct401026a
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1021/ct401026a
+      \endverb
+    \endentry
+    \entry{ref:Jensen2005hf}{article}{}
+      \name{author}{1}{}{%
+        {{hash=07272f7b37bc95d4f9e9ac01efc83dcf}{%
+           family={Jensen},
+           familyi={J\bibinitperiod},
+           given={Frank},
+           giveni={F\bibinitperiod}}}%
+      }
+      \strng{namehash}{07272f7b37bc95d4f9e9ac01efc83dcf}
+      \strng{fullhash}{07272f7b37bc95d4f9e9ac01efc83dcf}
+      \strng{bibnamehash}{07272f7b37bc95d4f9e9ac01efc83dcf}
+      \strng{authorbibnamehash}{07272f7b37bc95d4f9e9ac01efc83dcf}
+      \strng{authornamehash}{07272f7b37bc95d4f9e9ac01efc83dcf}
+      \strng{authorfullhash}{07272f7b37bc95d4f9e9ac01efc83dcf}
+      \field{extraname}{2}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{1432-2234}
+      \field{journaltitle}{Theoretical Chemistry Accounts}
+      \field{number}{5}
+      \field{title}{Estimating the Hartree—Fock limit from finite basis set calculations}
+      \field{volume}{113}
+      \field{year}{2005}
+      \field{pages}{267\bibrangedash 273}
+      \range{pages}{7}
+      \verb{doi}
+      \verb 10.1007/s00214-005-0635-2
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1007/s00214-005-0635-2
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1007/s00214-005-0635-2
+      \endverb
+    \endentry
+    \entry{ref:sad_guess}{article}{}
+      \name{author}{4}{}{%
+        {{hash=4119617a8746b4f95a438ebee26391fe}{%
+           family={Van\bibnamedelima Lenthe},
+           familyi={V\bibinitperiod\bibinitdelim L\bibinitperiod},
+           given={J.\bibnamedelimi H.},
+           giveni={J\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+        {{hash=a139050b4100587db3762e667cf4ae6b}{%
+           family={Zwaans},
+           familyi={Z\bibinitperiod},
+           given={R.},
+           giveni={R\bibinitperiod}}}%
+        {{hash=1ea26f418594bb92255b147a14239b42}{%
+           family={Van\bibnamedelima Dam},
+           familyi={V\bibinitperiod\bibinitdelim D\bibinitperiod},
+           given={H.\bibnamedelimi J.\bibnamedelimi J.},
+           giveni={H\bibinitperiod\bibinitdelim J\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=023c02ae9cb0dfad3d8a70732c62d60a}{%
+           family={Guest},
+           familyi={G\bibinitperiod},
+           given={M.\bibnamedelimi F.},
+           giveni={M\bibinitperiod\bibinitdelim F\bibinitperiod}}}%
+      }
+      \strng{namehash}{b07f33069638ff9d5782a78006299123}
+      \strng{fullhash}{7e9f57bf40eea8c921a2b6045e942379}
+      \strng{bibnamehash}{b07f33069638ff9d5782a78006299123}
+      \strng{authorbibnamehash}{b07f33069638ff9d5782a78006299123}
+      \strng{authornamehash}{b07f33069638ff9d5782a78006299123}
+      \strng{authorfullhash}{7e9f57bf40eea8c921a2b6045e942379}
+      \field{extraname}{1}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Abstract We describe the procedure to start an SCF calculation of the general type from a sum of atomic electron densities, as implemented in GAMESS-UK. Although the procedure is well known for closed-shell calculations and was already suggested when the Direct SCF procedure was proposed, the general procedure is less obvious. For instance, there is no need to converge the corresponding closed-shell Hartree–Fock calculation when dealing with an open-shell species. We describe the various choices and illustrate them with test calculations, showing that the procedure is easier, and on average better, than starting from a converged minimal basis calculation and much better than using a bare nucleus Hamiltonian. © 2006 Wiley Periodicals, Inc. J Comput Chem 27: 926–932, 2006}
+      \field{journaltitle}{Journal of Computational Chemistry}
+      \field{number}{8}
+      \field{title}{Starting SCF calculations by superposition of atomic densities}
+      \field{volume}{27}
+      \field{year}{2006}
+      \field{pages}{926\bibrangedash 932}
+      \range{pages}{7}
+      \verb{doi}
+      \verb https://doi.org/10.1002/jcc.20393
+      \endverb
+      \verb{eprint}
+      \verb https://onlinelibrary.wiley.com/doi/pdf/10.1002/jcc.20393
+      \endverb
+      \verb{urlraw}
+      \verb https://onlinelibrary.wiley.com/doi/abs/10.1002/jcc.20393
+      \endverb
+      \verb{url}
+      \verb https://onlinelibrary.wiley.com/doi/abs/10.1002/jcc.20393
+      \endverb
+      \keyw{SCF calculations,atomic densities}
+    \endentry
+    \entry{ref:gwh_wolfsberg1952spectra}{article}{}
+      \name{author}{2}{}{%
+        {{hash=e1c67c965a846fcfdc7d95d002a37f9f}{%
+           family={Wolfsberg},
+           familyi={W\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=a140a3f60eecb78874cf9ae1041b7e20}{%
+           family={Helmholz},
+           familyi={H\bibinitperiod},
+           given={L.},
+           giveni={L\bibinitperiod}}}%
+      }
+      \strng{namehash}{0b18a11ce3fdf0d377181711d29a1a13}
+      \strng{fullhash}{0b18a11ce3fdf0d377181711d29a1a13}
+      \strng{bibnamehash}{0b18a11ce3fdf0d377181711d29a1a13}
+      \strng{authorbibnamehash}{0b18a11ce3fdf0d377181711d29a1a13}
+      \strng{authornamehash}{0b18a11ce3fdf0d377181711d29a1a13}
+      \strng{authorfullhash}{0b18a11ce3fdf0d377181711d29a1a13}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{The Journal of Chemical Physics}
+      \field{number}{5}
+      \field{title}{The Spectra and Electronic Structure of the Tetrahedral Ions MnO\textsubscript{4}\textsuperscript{--}, CrO\textsubscript{4}\textsuperscript{--}, and ClO\textsubscript{4}\textsuperscript{--}}
+      \field{volume}{20}
+      \field{year}{1952}
+      \field{pages}{837\bibrangedash 843}
+      \range{pages}{7}
+    \endentry
+    \entry{ref:Lehtola2019}{article}{}
+      \name{author}{1}{}{%
+        {{hash=9d22c08c2c5ed286d40e1b044bed9407}{%
+           family={Lehtola},
+           familyi={L\bibinitperiod},
+           given={Susi},
+           giveni={S\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {American Chemical Society (ACS)}%
+      }
+      \strng{namehash}{9d22c08c2c5ed286d40e1b044bed9407}
+      \strng{fullhash}{9d22c08c2c5ed286d40e1b044bed9407}
+      \strng{bibnamehash}{9d22c08c2c5ed286d40e1b044bed9407}
+      \strng{authorbibnamehash}{9d22c08c2c5ed286d40e1b044bed9407}
+      \strng{authornamehash}{9d22c08c2c5ed286d40e1b044bed9407}
+      \strng{authorfullhash}{9d22c08c2c5ed286d40e1b044bed9407}
+      \field{extraname}{1}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{day}{17}
+      \field{journaltitle}{Journal of Chemical Theory and Computation}
+      \field{month}{1}
+      \field{number}{3}
+      \field{title}{Assessment of Initial Guesses for Self-Consistent Field Calculations. Superposition of Atomic Potentials: Simple yet Efficient}
+      \field{volume}{15}
+      \field{year}{2019}
+      \field{dateera}{ce}
+      \field{pages}{1593\bibrangedash 1604}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1021/acs.jctc.8b01089
+      \endverb
+    \endentry
+    \entry{ref:hohenberg_kohn1964}{article}{}
+      \name{author}{2}{}{%
+        {{hash=40ea553b503fe0418f7f07689980cd95}{%
+           family={Hohenberg},
+           familyi={H\bibinitperiod},
+           given={P.},
+           giveni={P\bibinitperiod}}}%
+        {{hash=5d41414fe0631332e20a859e66a25627}{%
+           family={Kohn},
+           familyi={K\bibinitperiod},
+           given={W.},
+           giveni={W\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {American Physical Society}%
+      }
+      \strng{namehash}{7d5f8c830aae8dc4c996b32459939beb}
+      \strng{fullhash}{7d5f8c830aae8dc4c996b32459939beb}
+      \strng{bibnamehash}{7d5f8c830aae8dc4c996b32459939beb}
+      \strng{authorbibnamehash}{7d5f8c830aae8dc4c996b32459939beb}
+      \strng{authornamehash}{7d5f8c830aae8dc4c996b32459939beb}
+      \strng{authorfullhash}{7d5f8c830aae8dc4c996b32459939beb}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issue}{3B}
+      \field{journaltitle}{Phys. Rev.}
+      \field{month}{11}
+      \field{title}{Inhomogeneous Electron Gas}
+      \field{volume}{136}
+      \field{year}{1964}
+      \field{pages}{B864\bibrangedash B871}
+      \range{pages}{-1}
+      \verb{doi}
+      \verb 10.1103/PhysRev.136.B864
+      \endverb
+      \verb{urlraw}
+      \verb https://link.aps.org/doi/10.1103/PhysRev.136.B864
+      \endverb
+      \verb{url}
+      \verb https://link.aps.org/doi/10.1103/PhysRev.136.B864
+      \endverb
+    \endentry
+    \entry{ref:kohn_sham_1965}{article}{}
+      \name{author}{2}{}{%
+        {{hash=d2a8bde13282602825b96a25268a04f1}{%
+           family={Kohn},
+           familyi={K\bibinitperiod},
+           given={Walter},
+           giveni={W\bibinitperiod}}}%
+        {{hash=408fdc9dce7e09d891fdc02bb87d27d9}{%
+           family={Sham},
+           familyi={S\bibinitperiod},
+           given={L.\bibnamedelimi J.},
+           giveni={L\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+      }
+      \strng{namehash}{02ed6890d1c043d5991cd218691cf224}
+      \strng{fullhash}{02ed6890d1c043d5991cd218691cf224}
+      \strng{bibnamehash}{02ed6890d1c043d5991cd218691cf224}
+      \strng{authorbibnamehash}{02ed6890d1c043d5991cd218691cf224}
+      \strng{authornamehash}{02ed6890d1c043d5991cd218691cf224}
+      \strng{authorfullhash}{02ed6890d1c043d5991cd218691cf224}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{day}{15}
+      \field{journaltitle}{Physical Review}
+      \field{month}{11}
+      \field{number}{4A}
+      \field{title}{Self-Consistent Equations Including Exchange and Correlation Effects}
+      \field{volume}{140}
+      \field{year}{1965}
+      \field{dateera}{ce}
+      \field{pages}{A1133\bibrangedash A1138}
+      \range{pages}{-1}
+      \verb{doi}
+      \verb 10.1103/PhysRev.140.A1133
+      \endverb
+    \endentry
+    \entry{ref:slater1951}{article}{}
+      \name{author}{1}{}{%
+        {{hash=2680effb67f4c8cd7c73443f7af7dbe9}{%
+           family={Slater},
+           familyi={S\bibinitperiod},
+           given={J.\bibnamedelimi C.},
+           giveni={J\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+      }
+      \strng{namehash}{2680effb67f4c8cd7c73443f7af7dbe9}
+      \strng{fullhash}{2680effb67f4c8cd7c73443f7af7dbe9}
+      \strng{bibnamehash}{2680effb67f4c8cd7c73443f7af7dbe9}
+      \strng{authorbibnamehash}{2680effb67f4c8cd7c73443f7af7dbe9}
+      \strng{authornamehash}{2680effb67f4c8cd7c73443f7af7dbe9}
+      \strng{authorfullhash}{2680effb67f4c8cd7c73443f7af7dbe9}
+      \field{extraname}{2}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Phys. Rev.}
+      \field{title}{A Simplification of the Hartree-Fock Method}
+      \field{volume}{81}
+      \field{year}{1951}
+      \field{pages}{385\bibrangedash 390}
+      \range{pages}{6}
+      \verb{doi}
+      \verb 10.1103/PhysRev.81.385
+      \endverb
+    \endentry
+    \entry{ref:vwn1980}{article}{}
+      \name{author}{3}{}{%
+        {{hash=6e571469f8864ed09af8f16844492faa}{%
+           family={Vosko},
+           familyi={V\bibinitperiod},
+           given={S.\bibnamedelimi H.},
+           giveni={S\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+        {{hash=96557bf469ff3d14df6e3b6188709d55}{%
+           family={Wilk},
+           familyi={W\bibinitperiod},
+           given={L.},
+           giveni={L\bibinitperiod}}}%
+        {{hash=29f99d815ffc2162471c27c1694cd867}{%
+           family={Nusair},
+           familyi={N\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+      }
+      \strng{namehash}{0aa09577abd3fd57f9a9ff5466f25408}
+      \strng{fullhash}{0aa09577abd3fd57f9a9ff5466f25408}
+      \strng{bibnamehash}{0aa09577abd3fd57f9a9ff5466f25408}
+      \strng{authorbibnamehash}{0aa09577abd3fd57f9a9ff5466f25408}
+      \strng{authornamehash}{0aa09577abd3fd57f9a9ff5466f25408}
+      \strng{authorfullhash}{0aa09577abd3fd57f9a9ff5466f25408}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Canadian Journal of Physics}
+      \field{number}{8}
+      \field{title}{Accurate spin-dependent electron liquid correlation energies for local spin density calculations: a critical analysis}
+      \field{volume}{58}
+      \field{year}{1980}
+      \field{pages}{1200\bibrangedash 1211}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1139/p80-159
+      \endverb
+    \endentry
+    \entry{ref:perdew1996}{article}{}
+      \name{author}{3}{}{%
+        {{hash=49bd2640f858f16dfcddcc404b026f30}{%
+           family={Perdew},
+           familyi={P\bibinitperiod},
+           given={John\bibnamedelima P.},
+           giveni={J\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
+        {{hash=33a535778ce96cdd2d59799deeea173d}{%
+           family={Burke},
+           familyi={B\bibinitperiod},
+           given={Kieron},
+           giveni={K\bibinitperiod}}}%
+        {{hash=ccb694b80578a814211265eb307fdcde}{%
+           family={Ernzerhof},
+           familyi={E\bibinitperiod},
+           given={Matthias},
+           giveni={M\bibinitperiod}}}%
+      }
+      \strng{namehash}{29da3039da81061b60722fb2fe692310}
+      \strng{fullhash}{29da3039da81061b60722fb2fe692310}
+      \strng{bibnamehash}{29da3039da81061b60722fb2fe692310}
+      \strng{authorbibnamehash}{29da3039da81061b60722fb2fe692310}
+      \strng{authornamehash}{29da3039da81061b60722fb2fe692310}
+      \strng{authorfullhash}{29da3039da81061b60722fb2fe692310}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Physical Review Letters}
+      \field{number}{18}
+      \field{title}{Generalized Gradient Approximation Made Simple}
+      \field{volume}{77}
+      \field{year}{1996}
+      \field{pages}{3865\bibrangedash 3868}
+      \range{pages}{4}
+      \verb{doi}
+      \verb 10.1103/PhysRevLett.77.3865
+      \endverb
+    \endentry
+    \entry{ref:scan2015}{article}{}
+      \name{author}{3}{}{%
+        {{hash=a41e9944590c5acae5c314ea7c27e388}{%
+           family={Sun},
+           familyi={S\bibinitperiod},
+           given={Jianwei},
+           giveni={J\bibinitperiod}}}%
+        {{hash=4c3a81a7cf7c5ad3cd2a7d8a28d5376e}{%
+           family={Ruzsinszky},
+           familyi={R\bibinitperiod},
+           given={Adrienn},
+           giveni={A\bibinitperiod}}}%
+        {{hash=49bd2640f858f16dfcddcc404b026f30}{%
+           family={Perdew},
+           familyi={P\bibinitperiod},
+           given={John\bibnamedelima P.},
+           giveni={J\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
+      }
+      \strng{namehash}{6548fe4e129d7e99ae2a904b504c9df7}
+      \strng{fullhash}{6548fe4e129d7e99ae2a904b504c9df7}
+      \strng{bibnamehash}{6548fe4e129d7e99ae2a904b504c9df7}
+      \strng{authorbibnamehash}{6548fe4e129d7e99ae2a904b504c9df7}
+      \strng{authornamehash}{6548fe4e129d7e99ae2a904b504c9df7}
+      \strng{authorfullhash}{6548fe4e129d7e99ae2a904b504c9df7}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Physical Review Letters}
+      \field{number}{3}
+      \field{title}{Strongly Constrained and Appropriately Normed Semilocal Density Functional}
+      \field{volume}{115}
+      \field{year}{2015}
+      \field{pages}{036402}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1103/PhysRevLett.115.036402
+      \endverb
+    \endentry
+    \entry{ref:lee_yang_parr_1988}{article}{}
+      \name{author}{3}{}{%
+        {{hash=f9a8cd162e684caae3a0afa667f31b16}{%
+           family={Lee},
+           familyi={L\bibinitperiod},
+           given={Chong\bibnamedelima S.},
+           giveni={C\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+        {{hash=78e31d3d482cf462f797d4187a52d247}{%
+           family={Yang},
+           familyi={Y\bibinitperiod},
+           given={Weitao},
+           giveni={W\bibinitperiod}}}%
+        {{hash=49143cad713785a0a7c28caba150006c}{%
+           family={Parr},
+           familyi={P\bibinitperiod},
+           given={Robert\bibnamedelima G.},
+           giveni={R\bibinitperiod\bibinitdelim G\bibinitperiod}}}%
+      }
+      \strng{namehash}{fcbfae6835c580fd61256eecc455ed60}
+      \strng{fullhash}{fcbfae6835c580fd61256eecc455ed60}
+      \strng{bibnamehash}{fcbfae6835c580fd61256eecc455ed60}
+      \strng{authorbibnamehash}{fcbfae6835c580fd61256eecc455ed60}
+      \strng{authornamehash}{fcbfae6835c580fd61256eecc455ed60}
+      \strng{authorfullhash}{fcbfae6835c580fd61256eecc455ed60}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{day}{15}
+      \field{journaltitle}{Physical Review B}
+      \field{month}{1}
+      \field{number}{2}
+      \field{title}{Development of the Colle-Salvetti correlation-energy formula into a functional of the electron density}
+      \field{volume}{37}
+      \field{year}{1988}
+      \field{dateera}{ce}
+      \field{pages}{785\bibrangedash 789}
+      \range{pages}{5}
+      \verb{doi}
+      \verb 10.1103/PhysRevB.37.785
+      \endverb
+    \endentry
+    \entry{ref:becke_1993}{article}{}
+      \name{author}{1}{}{%
+        {{hash=f527507fc8054400b1e8bd22392330ae}{%
+           family={Becke},
+           familyi={B\bibinitperiod},
+           given={Axel\bibnamedelima D.},
+           giveni={A\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+      }
+      \strng{namehash}{f527507fc8054400b1e8bd22392330ae}
+      \strng{fullhash}{f527507fc8054400b1e8bd22392330ae}
+      \strng{bibnamehash}{f527507fc8054400b1e8bd22392330ae}
+      \strng{authorbibnamehash}{f527507fc8054400b1e8bd22392330ae}
+      \strng{authornamehash}{f527507fc8054400b1e8bd22392330ae}
+      \strng{authorfullhash}{f527507fc8054400b1e8bd22392330ae}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{day}{15}
+      \field{journaltitle}{The Journal of Chemical Physics}
+      \field{month}{4}
+      \field{number}{7}
+      \field{title}{Density-functional thermochemistry. {III}. The role of exact exchange}
+      \field{volume}{98}
+      \field{year}{1993}
+      \field{dateera}{ce}
+      \field{pages}{5648\bibrangedash 5652}
+      \range{pages}{5}
+      \verb{doi}
+      \verb 10.1063/1.464913
+      \endverb
+    \endentry
+    \entry{ref:grimme2006}{article}{}
+      \name{author}{1}{}{%
+        {{hash=3a2585af369dbd4150db746c63177b0c}{%
+           family={Grimme},
+           familyi={G\bibinitperiod},
+           given={Stefan},
+           giveni={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{3a2585af369dbd4150db746c63177b0c}
+      \strng{fullhash}{3a2585af369dbd4150db746c63177b0c}
+      \strng{bibnamehash}{3a2585af369dbd4150db746c63177b0c}
+      \strng{authorbibnamehash}{3a2585af369dbd4150db746c63177b0c}
+      \strng{authornamehash}{3a2585af369dbd4150db746c63177b0c}
+      \strng{authorfullhash}{3a2585af369dbd4150db746c63177b0c}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{The Journal of Chemical Physics}
+      \field{number}{3}
+      \field{title}{Semiempirical hybrid density functional with perturbative second-order correlation}
+      \field{volume}{124}
+      \field{year}{2006}
+      \field{pages}{034108}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1063/1.2148954
+      \endverb
+    \endentry
+    \entry{ref:knuth1989comments}{article}{}
+      \name{author}{5}{}{%
+        {{hash=ec08e6f01da5f3814f28a70c89c64656}{%
+           family={Knuth},
+           familyi={K\bibinitperiod},
+           given={Donald\bibnamedelima E.},
+           giveni={D\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+        {{hash=8db3db0ea7b6b59e2b13765f9726f7d7}{%
+           family={MacKay},
+           familyi={M\bibinitperiod},
+           given={Pierre},
+           giveni={P\bibinitperiod}}}%
+        {{hash=f76321ccd6d13fea50f79f499eae3630}{%
+           family={Rokicki},
+           familyi={R\bibinitperiod},
+           given={Tomas},
+           giveni={T\bibinitperiod}}}%
+        {{hash=bb37b699740da32a5bdbb27e07799cac}{%
+           family={Fuchs},
+           familyi={F\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod}}}%
+        {{hash=5d7c40b411afc1897f285950ef23c61e}{%
+           family={Richards},
+           familyi={R\bibinitperiod},
+           given={Paul},
+           giveni={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{bdb7650fb32d3ea7897427911d6d66f6}
+      \strng{fullhash}{e30533c406c268f231b4055bd5691cd2}
+      \strng{bibnamehash}{bdb7650fb32d3ea7897427911d6d66f6}
+      \strng{authorbibnamehash}{bdb7650fb32d3ea7897427911d6d66f6}
+      \strng{authornamehash}{bdb7650fb32d3ea7897427911d6d66f6}
+      \strng{authorfullhash}{e30533c406c268f231b4055bd5691cd2}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{TUGboat}
+      \field{number}{4}
+      \field{title}{Comments on ``Digital Typography''}
+      \field{volume}{11}
+      \field{year}{1990}
+      \field{pages}{512\bibrangedash 528}
+      \range{pages}{17}
+      \verb{urlraw}
+      \verb https://www.tug.org/TUGboat/tb11-4/tb30knut-samuel.pdf
+      \endverb
+      \verb{url}
+      \verb https://www.tug.org/TUGboat/tb11-4/tb30knut-samuel.pdf
+      \endverb
+    \endentry
+    \entry{ref:bishop2006pattern}{book}{}
+      \name{author}{1}{}{%
+        {{hash=9dfd0135a5e80aa6d81cea2c10fb7f73}{%
+           family={Bishop},
+           familyi={B\bibinitperiod},
+           given={Christopher\bibnamedelima M.},
+           giveni={C\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{9dfd0135a5e80aa6d81cea2c10fb7f73}
+      \strng{fullhash}{9dfd0135a5e80aa6d81cea2c10fb7f73}
+      \strng{bibnamehash}{9dfd0135a5e80aa6d81cea2c10fb7f73}
+      \strng{authorbibnamehash}{9dfd0135a5e80aa6d81cea2c10fb7f73}
+      \strng{authornamehash}{9dfd0135a5e80aa6d81cea2c10fb7f73}
+      \strng{authorfullhash}{9dfd0135a5e80aa6d81cea2c10fb7f73}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{978-0-387-31073-2}
+      \field{title}{Pattern Recognition and Machine Learning}
+      \field{year}{2006}
+    \endentry
+    \entry{ref:goodfellow2016deep}{book}{}
+      \name{author}{3}{}{%
+        {{hash=5d2585c11210cf1d4512e6e0a03ec315}{%
+           family={Goodfellow},
+           familyi={G\bibinitperiod},
+           given={Ian},
+           giveni={I\bibinitperiod}}}%
+        {{hash=40a8e4774982146adc2688546f54efb2}{%
+           family={Bengio},
+           familyi={B\bibinitperiod},
+           given={Yoshua},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=ccec1ccd2e1aa86960eb2e872c6b7020}{%
+           family={Courville},
+           familyi={C\bibinitperiod},
+           given={Aaron},
+           giveni={A\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {MIT Press}%
+      }
+      \strng{namehash}{3ae53fe582e8a815b118d26947eaa326}
+      \strng{fullhash}{3ae53fe582e8a815b118d26947eaa326}
+      \strng{bibnamehash}{3ae53fe582e8a815b118d26947eaa326}
+      \strng{authorbibnamehash}{3ae53fe582e8a815b118d26947eaa326}
+      \strng{authornamehash}{3ae53fe582e8a815b118d26947eaa326}
+      \strng{authorfullhash}{3ae53fe582e8a815b118d26947eaa326}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{978-0-262-03561-3}
+      \field{title}{Deep Learning}
+      \field{year}{2016}
+    \endentry
+    \entry{ref:data_qm9}{misc}{}
+      \name{author}{5}{}{%
+        {{hash=28322231a418243314954d2bce103a74}{%
+           family={Ramakrishnan},
+           familyi={R\bibinitperiod},
+           given={Raghunathan},
+           giveni={R\bibinitperiod}}}%
+        {{hash=876df6be92bb44962d47cbc599af6f8b}{%
+           family={Dral},
+           familyi={D\bibinitperiod}}}%
+        {{hash=c74b5187be4161a60f5ebe5c7749f8f5}{%
+           family={Pavlo},
+           familyi={P\bibinitperiod},
+           given={;},
+           giveni={;\bibinitperiod}}}%
+        {{hash=0eba1e8d9af2b92d47a642a803034003}{%
+           family={Rupp},
+           familyi={R\bibinitperiod},
+           given={Matthias},
+           giveni={M\bibinitperiod}}}%
+        {{hash=83f66fa7e825f4528c3ae0e6193652bd}{%
+           family={Anatole\bibnamedelimb Von\bibnamedelima Lilienfeld},
+           familyi={A\bibinitperiod\bibinitdelim V\bibinitperiod\bibinitdelim L\bibinitperiod},
+           given={O},
+           giveni={O\bibinitperiod}}}%
+      }
+      \strng{namehash}{82cedc5338bc73e9c2c023226ed97eab}
+      \strng{fullhash}{a0592c661f62dbbeb42f03827b11042c}
+      \strng{bibnamehash}{82cedc5338bc73e9c2c023226ed97eab}
+      \strng{authorbibnamehash}{82cedc5338bc73e9c2c023226ed97eab}
+      \strng{authornamehash}{82cedc5338bc73e9c2c023226ed97eab}
+      \strng{authorfullhash}{a0592c661f62dbbeb42f03827b11042c}
+      \field{extraname}{1}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Quantum chemistry structures and properties of 134 kilo molecules. figshare}
+      \field{year}{2014}
+      \field{dateera}{ce}
+      \verb{doi}
+      \verb 10.6084/m9.figshare.c.978904.v5
+      \endverb
+    \endentry
+    \entry{ref:article1_qm9}{article}{}
+      \name{author}{4}{}{%
+        {{hash=02cb8463f5550c5389288a4a6d88e8d1}{%
+           family={Ruddigkeit},
+           familyi={R\bibinitperiod},
+           given={Lars},
+           giveni={L\bibinitperiod}}}%
+        {{hash=c99842434ff698ec41b064f7ae94badf}{%
+           family={Van\bibnamedelima Deursen},
+           familyi={V\bibinitperiod\bibinitdelim D\bibinitperiod},
+           given={Ruud},
+           giveni={R\bibinitperiod}}}%
+        {{hash=1879988687cb3d08b044fa8997024458}{%
+           family={Blum},
+           familyi={B\bibinitperiod},
+           given={Lorenz},
+           giveni={L\bibinitperiod}}}%
+        {{hash=1d622479cd29b21e5e9e9f62c737898a}{%
+           family={Reymond},
+           familyi={R\bibinitperiod},
+           given={Jean-Louis},
+           giveni={J\bibinithyphendelim L\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {American Chemical Society (ACS)}%
+      }
+      \strng{namehash}{e4fe2ea47e2561e839b5fb0f7a55618c}
+      \strng{fullhash}{bc2fb35851a6f7d0730e0f5ee39d4ccd}
+      \strng{bibnamehash}{e4fe2ea47e2561e839b5fb0f7a55618c}
+      \strng{authorbibnamehash}{e4fe2ea47e2561e839b5fb0f7a55618c}
+      \strng{authornamehash}{e4fe2ea47e2561e839b5fb0f7a55618c}
+      \strng{authorfullhash}{bc2fb35851a6f7d0730e0f5ee39d4ccd}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{day}{1}
+      \field{journaltitle}{Journal of Chemical Information and Modeling}
+      \field{month}{11}
+      \field{number}{11}
+      \field{title}{Enumeration of 166 Billion Organic Small Molecules in the Chemical Universe Database GDB-17}
+      \field{volume}{52}
+      \field{year}{2012}
+      \field{dateera}{ce}
+      \field{pages}{2864\bibrangedash 2875}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1021/ci300415d
+      \endverb
+    \endentry
+    \entry{ref:article2_qm9}{article}{}
+      \name{author}{4}{}{%
+        {{hash=28322231a418243314954d2bce103a74}{%
+           family={Ramakrishnan},
+           familyi={R\bibinitperiod},
+           given={Raghunathan},
+           giveni={R\bibinitperiod}}}%
+        {{hash=dee5a555a2395a3ce2a877d73ddbe6be}{%
+           family={Dral},
+           familyi={D\bibinitperiod},
+           given={Pavlo\bibnamedelima O},
+           giveni={P\bibinitperiod\bibinitdelim O\bibinitperiod}}}%
+        {{hash=0eba1e8d9af2b92d47a642a803034003}{%
+           family={Rupp},
+           familyi={R\bibinitperiod},
+           given={Matthias},
+           giveni={M\bibinitperiod}}}%
+        {{hash=ca745b5acdf3d4bf19edcd7892ad563d}{%
+           family={Lilienfeld},
+           familyi={L\bibinitperiod},
+           given={O\bibnamedelima Anatole},
+           giveni={O\bibinitperiod\bibinitdelim A\bibinitperiod},
+           prefix={von},
+           prefixi={v\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Nature Publishing Group}%
+      }
+      \strng{namehash}{82cedc5338bc73e9c2c023226ed97eab}
+      \strng{fullhash}{c44c022ee3741cd58f3fc0408c591c7d}
+      \strng{bibnamehash}{82cedc5338bc73e9c2c023226ed97eab}
+      \strng{authorbibnamehash}{82cedc5338bc73e9c2c023226ed97eab}
+      \strng{authornamehash}{82cedc5338bc73e9c2c023226ed97eab}
+      \strng{authorfullhash}{c44c022ee3741cd58f3fc0408c591c7d}
+      \field{extraname}{2}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Scientific Data}
+      \field{title}{Quantum chemistry structures and properties of 134 kilo molecules}
+      \field{volume}{1}
+      \field{year}{2014}
+    \endentry
+    \entry{ref:pyscf}{article}{}
+      \name{author}{12}{}{%
+        {{hash=bf2f0fea67d22eff11c39fd7c77f9576}{%
+           family={Sun},
+           familyi={S\bibinitperiod},
+           given={Qiming},
+           giveni={Q\bibinitperiod}}}%
+        {{hash=c3feaf0f2be533ececca1a3dbde35096}{%
+           family={Berkelbach},
+           familyi={B\bibinitperiod},
+           given={Timothy\bibnamedelima C.},
+           giveni={T\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+        {{hash=00b6c15ec0c0a2d58580a113d994fc78}{%
+           family={Blunt},
+           familyi={B\bibinitperiod},
+           given={Nick\bibnamedelima S.},
+           giveni={N\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+        {{hash=8c7b2231792946b925014d762dcf665a}{%
+           family={Booth},
+           familyi={B\bibinitperiod},
+           given={George\bibnamedelima H.},
+           giveni={G\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+        {{hash=3a9d67501ea85d43b265fde76fbe089a}{%
+           family={Guo},
+           familyi={G\bibinitperiod},
+           given={Sheng},
+           giveni={S\bibinitperiod}}}%
+        {{hash=8eca32b3641a3a1cb575811e4667929b}{%
+           family={Li},
+           familyi={L\bibinitperiod},
+           given={Zhendong},
+           giveni={Z\bibinitperiod}}}%
+        {{hash=4314a8366b23c342bd6c41855b48f6d2}{%
+           family={Liu},
+           familyi={L\bibinitperiod},
+           given={Junzi},
+           giveni={J\bibinitperiod}}}%
+        {{hash=d9d94a0ba9dda30fa08df8c55d66cebc}{%
+           family={McClain},
+           familyi={M\bibinitperiod},
+           given={James\bibnamedelima D.},
+           giveni={J\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+        {{hash=a80907fe4952209721528cc27c1826b3}{%
+           family={Sayfutyarova},
+           familyi={S\bibinitperiod},
+           given={Elvira\bibnamedelima R.},
+           giveni={E\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
+        {{hash=027548649176a2d51c9ecb5e7bdd747e}{%
+           family={Sharma},
+           familyi={S\bibinitperiod},
+           given={Sandeep},
+           giveni={S\bibinitperiod}}}%
+        {{hash=9fc73182d7837cef25d9aa53a70c8a93}{%
+           family={Wouters},
+           familyi={W\bibinitperiod},
+           given={Sebastian},
+           giveni={S\bibinitperiod}}}%
+        {{hash=9fa3b07f3d74fe2c76629514daf4277d}{%
+           family={Chan},
+           familyi={C\bibinitperiod},
+           given={Garnet\bibnamedelima Kin-Lic},
+           giveni={G\bibinitperiod\bibinitdelim K\bibinithyphendelim L\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Wiley}%
+      }
+      \strng{namehash}{82e4bff563c82784b765c7573114c8af}
+      \strng{fullhash}{6caea117165d917b4674583804ece7b1}
+      \strng{bibnamehash}{82e4bff563c82784b765c7573114c8af}
+      \strng{authorbibnamehash}{82e4bff563c82784b765c7573114c8af}
+      \strng{authornamehash}{82e4bff563c82784b765c7573114c8af}
+      \strng{authorfullhash}{6caea117165d917b4674583804ece7b1}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{1759-0884}
+      \field{journaltitle}{WIREs Computational Molecular Science}
+      \field{month}{9}
+      \field{number}{1}
+      \field{title}{PySCF: the Python-based simulations of chemistry framework}
+      \field{volume}{8}
+      \field{year}{2017}
+      \field{dateera}{ce}
+      \verb{doi}
+      \verb 10.1002/wcms.1340
+      \endverb
+    \endentry
+    \entry{ref:rule_of_10}{article}{}
+      \name{author}{5}{}{%
+        {{hash=ef98c6c7e7e1f2dc9a5b42a00b399f19}{%
+           family={Peduzzi},
+           familyi={P\bibinitperiod},
+           given={Peter},
+           giveni={P\bibinitperiod}}}%
+        {{hash=aca799bd462dd07465216f1baf171ac4}{%
+           family={Concato},
+           familyi={C\bibinitperiod},
+           given={John},
+           giveni={J\bibinitperiod}}}%
+        {{hash=7cce7d8fb56d45dc7b402bd3c3d73929}{%
+           family={Kemper},
+           familyi={K\bibinitperiod},
+           given={Elizabeth},
+           giveni={E\bibinitperiod}}}%
+        {{hash=d123e6aa6d0090542969c7eaf17c3faf}{%
+           family={Holford},
+           familyi={H\bibinitperiod},
+           given={Theodore},
+           giveni={T\bibinitperiod}}}%
+        {{hash=d798926e55531e9e9374c1446ce2222b}{%
+           family={Feinstein},
+           familyi={F\bibinitperiod},
+           given={Alvan},
+           giveni={A\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Elsevier BV}%
+      }
+      \strng{namehash}{b400e9139be47d41d51c7ab94901302c}
+      \strng{fullhash}{37457b2f157b963e434b245ad5d28269}
+      \strng{bibnamehash}{b400e9139be47d41d51c7ab94901302c}
+      \strng{authorbibnamehash}{b400e9139be47d41d51c7ab94901302c}
+      \strng{authornamehash}{b400e9139be47d41d51c7ab94901302c}
+      \strng{authorfullhash}{37457b2f157b963e434b245ad5d28269}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Clinical Epidemiology}
+      \field{month}{12}
+      \field{number}{12}
+      \field{title}{A simulation study of the number of events per variable in logistic regression analysis}
+      \field{volume}{49}
+      \field{year}{1996}
+      \field{dateera}{ce}
+      \field{pages}{1373\bibrangedash 1379}
+      \range{pages}{7}
+      \verb{doi}
+      \verb 10.1016/s0895-4356(96)00236-3
+      \endverb
+    \endentry
+    \entry{ref:sk-learn}{article}{}
+      \name{author}{16}{}{%
+        {{hash=6e96fec0d63277626bb324bd28cdecb7}{%
+           family={Pedregosa},
+           familyi={P\bibinitperiod},
+           given={F.},
+           giveni={F\bibinitperiod}}}%
+        {{hash=b99c2df2144dc5ee09317a7833dea42d}{%
+           family={Varoquaux},
+           familyi={V\bibinitperiod},
+           given={G.},
+           giveni={G\bibinitperiod}}}%
+        {{hash=955f19cea89ae97bb7936078898e6255}{%
+           family={Gramfort},
+           familyi={G\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod}}}%
+        {{hash=2787869c9954c1d4e9891098995feb75}{%
+           family={Michel},
+           familyi={M\bibinitperiod},
+           given={V.},
+           giveni={V\bibinitperiod}}}%
+        {{hash=86d47ab9ca1a9dae108b4d4a0418c679}{%
+           family={Thirion},
+           familyi={T\bibinitperiod},
+           given={B.},
+           giveni={B\bibinitperiod}}}%
+        {{hash=d42f9e9cec95da1dad2232eac74982ab}{%
+           family={Grisel},
+           familyi={G\bibinitperiod},
+           given={O.},
+           giveni={O\bibinitperiod}}}%
+        {{hash=8bd8ef25258dd2311f92df23fe71ecf7}{%
+           family={Blondel},
+           familyi={B\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=a5ee41fa92b9e425806e1773853f1932}{%
+           family={Prettenhofer},
+           familyi={P\bibinitperiod},
+           given={P.},
+           giveni={P\bibinitperiod}}}%
+        {{hash=0c808557734e8929976d1f06f99c4ff2}{%
+           family={Weiss},
+           familyi={W\bibinitperiod},
+           given={R.},
+           giveni={R\bibinitperiod}}}%
+        {{hash=9662a6ea01596c6dd450817ccac81c4a}{%
+           family={Dubourg},
+           familyi={D\bibinitperiod},
+           given={V.},
+           giveni={V\bibinitperiod}}}%
+        {{hash=39e81a3e2193b954680a0ab847a0bb55}{%
+           family={Vanderplas},
+           familyi={V\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod}}}%
+        {{hash=14c4a498c032f77d0b83f86c710dd50e}{%
+           family={Passos},
+           familyi={P\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod}}}%
+        {{hash=dc075b18fb4710a1a37b258804c57efe}{%
+           family={Cournapeau},
+           familyi={C\bibinitperiod},
+           given={D.},
+           giveni={D\bibinitperiod}}}%
+        {{hash=67ec0e8add781665a43010c9559111e9}{%
+           family={Brucher},
+           familyi={B\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=dcb3918f09eb8785e6b212a907cc37cf}{%
+           family={Perrot},
+           familyi={P\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=ab20fcf381cd45daa82417c6fc595051}{%
+           family={Duchesnay},
+           familyi={D\bibinitperiod},
+           given={E.},
+           giveni={E\bibinitperiod}}}%
+      }
+      \strng{namehash}{3a097aa3ebf2b8c2acf988341dde9710}
+      \strng{fullhash}{7a67607c66e4af944b5f16461d6d0a87}
+      \strng{bibnamehash}{3a097aa3ebf2b8c2acf988341dde9710}
+      \strng{authorbibnamehash}{3a097aa3ebf2b8c2acf988341dde9710}
+      \strng{authornamehash}{3a097aa3ebf2b8c2acf988341dde9710}
+      \strng{authorfullhash}{7a67607c66e4af944b5f16461d6d0a87}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Machine Learning Research}
+      \field{title}{{Scikit-learn: Machine Learning in Python }}
+      \field{volume}{12}
+      \field{year}{2011}
+      \field{pages}{2825\bibrangedash 2830}
+      \range{pages}{6}
+    \endentry
+    \entry{ref:Mulliken_population_analysis}{article}{}
+      \name{author}{1}{}{%
+        {{hash=ab391dfd44b432ead5f55cb0df28070c}{%
+           family={Mulliken},
+           familyi={M\bibinitperiod},
+           given={R.\bibnamedelimi S.},
+           giveni={R\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+      }
+      \strng{namehash}{ab391dfd44b432ead5f55cb0df28070c}
+      \strng{fullhash}{ab391dfd44b432ead5f55cb0df28070c}
+      \strng{bibnamehash}{ab391dfd44b432ead5f55cb0df28070c}
+      \strng{authorbibnamehash}{ab391dfd44b432ead5f55cb0df28070c}
+      \strng{authornamehash}{ab391dfd44b432ead5f55cb0df28070c}
+      \strng{authorfullhash}{ab391dfd44b432ead5f55cb0df28070c}
+      \field{extraname}{2}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{0021-9606}
+      \field{journaltitle}{The Journal of Chemical Physics}
+      \field{month}{10}
+      \field{number}{10}
+      \field{title}{Electronic Population Analysis on LCAO-MO Molecular Wave Functions. I}
+      \field{volume}{23}
+      \field{year}{1955}
+      \field{pages}{1833\bibrangedash 1840}
+      \range{pages}{8}
+      \verb{doi}
+      \verb 10.1063/1.1740588
+      \endverb
+      \verb{eprint}
+      \verb https://pubs.aip.org/aip/jcp/article-pdf/23/10/1833/18807925/1833\_1\_online.pdf
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1063/1.1740588
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1063/1.1740588
+      \endverb
+    \endentry
+    \entry{ref:Hazra2024}{article}{}
+      \name{author}{3}{}{%
+        {{hash=be4bb394dba3ef3a9ddd85d41eb65389}{%
+           family={Hazra},
+           familyi={H\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+        {{hash=c38169d56c4bf7dcdf188d9aa752c7b9}{%
+           family={Patil},
+           familyi={P\bibinitperiod},
+           given={U.},
+           giveni={U\bibinitperiod}}}%
+        {{hash=689dd4d4d3ccbb4e02130f097d4387dc}{%
+           family={Sanvito},
+           familyi={S\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{278021aa20410028e4648cf93469c0c5}
+      \strng{fullhash}{278021aa20410028e4648cf93469c0c5}
+      \strng{bibnamehash}{278021aa20410028e4648cf93469c0c5}
+      \strng{authorbibnamehash}{278021aa20410028e4648cf93469c0c5}
+      \strng{authornamehash}{278021aa20410028e4648cf93469c0c5}
+      \strng{authorfullhash}{278021aa20410028e4648cf93469c0c5}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Chemical Theory and Computation}
+      \field{title}{Predicting the One-Particle Density Matrix with Machine Learning}
+      \field{volume}{20}
+      \field{year}{2024}
+      \field{pages}{4569\bibrangedash 4578}
+      \range{pages}{10}
+      \verb{doi}
+      \verb 10.1021/acs.jctc.4c00042
+      \endverb
+    \endentry
+    \entry{ref:Shao2023}{article}{}
+      \name{author}{4}{}{%
+        {{hash=1b00f22255209394fd0b67549f703e1d}{%
+           family={Shao},
+           familyi={S\bibinitperiod},
+           given={Xuecheng},
+           giveni={X\bibinitperiod}}}%
+        {{hash=c65685794e27abd3f135de833b7af9e5}{%
+           family={Paetow},
+           familyi={P\bibinitperiod},
+           given={Lukas},
+           giveni={L\bibinitperiod}}}%
+        {{hash=3dfd41d12a2896dd0ca93271e1d9e9cc}{%
+           family={Tuckerman},
+           familyi={T\bibinitperiod},
+           given={Mark\bibnamedelima E.},
+           giveni={M\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+        {{hash=5780533a3470b49e371d37a05db41de9}{%
+           family={Pavanello},
+           familyi={P\bibinitperiod},
+           given={Michele},
+           giveni={M\bibinitperiod}}}%
+      }
+      \strng{namehash}{2d3ff61117ef3f657b16d6070789673d}
+      \strng{fullhash}{85fa9fdf8247a76c044d4bedd7bb0590}
+      \strng{bibnamehash}{2d3ff61117ef3f657b16d6070789673d}
+      \strng{authorbibnamehash}{2d3ff61117ef3f657b16d6070789673d}
+      \strng{authornamehash}{2d3ff61117ef3f657b16d6070789673d}
+      \strng{authorfullhash}{85fa9fdf8247a76c044d4bedd7bb0590}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Nature Communications}
+      \field{title}{Machine learning electronic structure methods based on the one-electron reduced density matrix}
+      \field{volume}{14}
+      \field{year}{2023}
+      \field{pages}{6281}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1038/s41467-023-41953-9
+      \endverb
+    \endentry
+    \entry{ref:schnet2018}{article}{}
+      \name{author}{5}{}{%
+        {{hash=a3cf3e2cd14cc88957e1eba99fd90e06}{%
+           family={Schütt},
+           familyi={S\bibinitperiod},
+           given={Kristof},
+           giveni={K\bibinitperiod}}}%
+        {{hash=10584848cdc333dd73c52573471023cc}{%
+           family={Sauceda},
+           familyi={S\bibinitperiod},
+           given={Huziel\bibnamedelima E.},
+           giveni={H\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+        {{hash=4f5c2cc75d51e429ea87a7c49eff2c5d}{%
+           family={Kindermans},
+           familyi={K\bibinitperiod},
+           given={P.-J},
+           giveni={P\bibinithyphendelim J\bibinitperiod}}}%
+        {{hash=db63bbf352ab65add01c899e021bf8a0}{%
+           family={Tkatchenko},
+           familyi={T\bibinitperiod},
+           given={Alexandre},
+           giveni={A\bibinitperiod}}}%
+        {{hash=9f1b6144a45b1967e989e74552e37ada}{%
+           family={Müller},
+           familyi={M\bibinitperiod},
+           given={Klaus-Robert},
+           giveni={K\bibinithyphendelim R\bibinitperiod}}}%
+      }
+      \strng{namehash}{95d226595653ed8da4ee9d46180aacb7}
+      \strng{fullhash}{7c521cf550a09e821676b715fa4a0f18}
+      \strng{bibnamehash}{95d226595653ed8da4ee9d46180aacb7}
+      \strng{authorbibnamehash}{95d226595653ed8da4ee9d46180aacb7}
+      \strng{authornamehash}{95d226595653ed8da4ee9d46180aacb7}
+      \strng{authorfullhash}{7c521cf550a09e821676b715fa4a0f18}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{The Journal of Chemical Physics}
+      \field{month}{06}
+      \field{title}{SchNet - A deep learning architecture for molecules and materials}
+      \field{volume}{148}
+      \field{year}{2018}
+      \field{pages}{241722}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1063/1.5019779
+      \endverb
+    \endentry
+    \entry{ref:PyTorchGeometric}{software}{}
+      \name{author}{1}{}{%
+        {{hash=990035b1617d644b7bf42625aaebe517}{%
+           family={{PyTorch Geometric Development Team}},
+           familyi={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{990035b1617d644b7bf42625aaebe517}
+      \strng{fullhash}{990035b1617d644b7bf42625aaebe517}
+      \strng{bibnamehash}{990035b1617d644b7bf42625aaebe517}
+      \strng{authorbibnamehash}{990035b1617d644b7bf42625aaebe517}
+      \strng{authornamehash}{990035b1617d644b7bf42625aaebe517}
+      \strng{authorfullhash}{990035b1617d644b7bf42625aaebe517}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{{PyTorch Geometric}: Deep Learning on Graphs and Irregular Structures}
+      \field{version}{2.3.0}
+      \field{year}{2024}
+      \verb{urlraw}
+      \verb https://pytorch-geometric.readthedocs.io/
+      \endverb
+      \verb{url}
+      \verb https://pytorch-geometric.readthedocs.io/
+      \endverb
+    \endentry
+    \entry{ref:PyTorch_geom_paper}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{hash=2667edba6b12b863d4fc7ec3afba0ede}{%
+           family={Fey},
+           familyi={F\bibinitperiod},
+           given={Matthias},
+           giveni={M\bibinitperiod}}}%
+        {{hash=800b76abbd2eeaa089495a24cf30cb14}{%
+           family={Lenssen},
+           familyi={L\bibinitperiod},
+           given={Jan\bibnamedelima E.},
+           giveni={J\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+      }
+      \strng{namehash}{4b5026928d4b187d2dfe9422a256bec9}
+      \strng{fullhash}{4b5026928d4b187d2dfe9422a256bec9}
+      \strng{bibnamehash}{4b5026928d4b187d2dfe9422a256bec9}
+      \strng{authorbibnamehash}{4b5026928d4b187d2dfe9422a256bec9}
+      \strng{authornamehash}{4b5026928d4b187d2dfe9422a256bec9}
+      \strng{authorfullhash}{4b5026928d4b187d2dfe9422a256bec9}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{ICLR Workshop on Representation Learning on Graphs and Manifolds}
+      \field{title}{Fast Graph Representation Learning with PyTorch Geometric}
+      \field{year}{2019}
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/1903.02428
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/1903.02428
+      \endverb
+    \endentry
+    \entry{ref:pyscf_user_guide}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=a48adb747c1d47e80464b6c1fa69dcbb}{%
+           family={Developers},
+           familyi={D\bibinitperiod},
+           given={PySCF},
+           giveni={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{a48adb747c1d47e80464b6c1fa69dcbb}
+      \strng{fullhash}{a48adb747c1d47e80464b6c1fa69dcbb}
+      \strng{bibnamehash}{a48adb747c1d47e80464b6c1fa69dcbb}
+      \strng{authorbibnamehash}{a48adb747c1d47e80464b6c1fa69dcbb}
+      \strng{authornamehash}{a48adb747c1d47e80464b6c1fa69dcbb}
+      \strng{authorfullhash}{a48adb747c1d47e80464b6c1fa69dcbb}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{PySCF User Guide}
+      \field{note}{Accessed: 2025-04-09}
+      \field{title}{Self-consistent field (SCF) methods}
+      \field{year}{2025}
+      \verb{urlraw}
+      \verb https://pyscf.org/user/scf.html
+      \endverb
+      \verb{url}
+      \verb https://pyscf.org/user/scf.html
+      \endverb
+    \endentry
+    \entry{ref:minao_sad1}{article}{}
+      \name{author}{4}{}{%
+        {{hash=4fd63af22153a7b7746c716257ca590b}{%
+           family={Van\bibnamedelima Lenthe},
+           familyi={V\bibinitperiod\bibinitdelim L\bibinitperiod},
+           given={J},
+           giveni={J\bibinitperiod}}}%
+        {{hash=a139050b4100587db3762e667cf4ae6b}{%
+           family={Zwaans},
+           familyi={Z\bibinitperiod},
+           given={R},
+           giveni={R\bibinitperiod}}}%
+        {{hash=796fa68f322bf0bfa0212b6501631c34}{%
+           family={Van\bibnamedelima Dam},
+           familyi={V\bibinitperiod\bibinitdelim D\bibinitperiod},
+           given={H},
+           giveni={H\bibinitperiod}}}%
+        {{hash=9d48976d5ae1aaa1e3a2193f94ea8378}{%
+           family={Guest},
+           familyi={G\bibinitperiod},
+           given={M},
+           giveni={M\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Wiley}%
+      }
+      \strng{namehash}{3d1e375d42a31747695b3bd0386da818}
+      \strng{fullhash}{47240aceb6ac03b9883fee2f126a1719}
+      \strng{bibnamehash}{3d1e375d42a31747695b3bd0386da818}
+      \strng{authorbibnamehash}{3d1e375d42a31747695b3bd0386da818}
+      \strng{authornamehash}{3d1e375d42a31747695b3bd0386da818}
+      \strng{authorfullhash}{47240aceb6ac03b9883fee2f126a1719}
+      \field{extraname}{2}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{day}{23}
+      \field{journaltitle}{Journal of Computational Chemistry}
+      \field{month}{3}
+      \field{number}{8}
+      \field{title}{Starting SCF calculations by superposition of atomic densities}
+      \field{volume}{27}
+      \field{year}{2006}
+      \field{dateera}{ce}
+      \field{pages}{926\bibrangedash 932}
+      \range{pages}{7}
+      \verb{doi}
+      \verb 10.1002/jcc.20393
+      \endverb
+    \endentry
+    \entry{ref:minao_sad2}{article}{}
+      \name{author}{3}{}{%
+        {{hash=3882d1a8d8e39904d836f94e5651b830}{%
+           family={Almlöf},
+           familyi={A\bibinitperiod},
+           given={J},
+           giveni={J\bibinitperiod}}}%
+        {{hash=69362b121c7c28a14274611bffda76f4}{%
+           family={Faegri},
+           familyi={F\bibinitperiod},
+           given={K},
+           giveni={K\bibinitperiod}}}%
+        {{hash=c0cae37eed2d516891a7db06ae1652a1}{%
+           family={Korsell},
+           familyi={K\bibinitperiod},
+           given={K},
+           giveni={K\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Wiley}%
+      }
+      \strng{namehash}{a144b29baf164e3d33f3f27101844d58}
+      \strng{fullhash}{a144b29baf164e3d33f3f27101844d58}
+      \strng{bibnamehash}{a144b29baf164e3d33f3f27101844d58}
+      \strng{authorbibnamehash}{a144b29baf164e3d33f3f27101844d58}
+      \strng{authornamehash}{a144b29baf164e3d33f3f27101844d58}
+      \strng{authorfullhash}{a144b29baf164e3d33f3f27101844d58}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Computational Chemistry}
+      \field{month}{9}
+      \field{number}{3}
+      \field{title}{Principles for a direct SCF approach to LICAO-MO ab-initio calculations}
+      \field{volume}{3}
+      \field{year}{1982}
+      \field{dateera}{ce}
+      \field{pages}{385\bibrangedash 399}
+      \range{pages}{15}
+      \verb{doi}
+      \verb 10.1002/jcc.540030314
+      \endverb
+    \endentry
+    \entry{ref:lethola_fully_numerical_atomic_potentials}{article}{}
+      \name{author}{1}{}{%
+        {{hash=9d22c08c2c5ed286d40e1b044bed9407}{%
+           family={Lehtola},
+           familyi={L\bibinitperiod},
+           given={Susi},
+           giveni={S\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {American Physical Society (APS)}%
+      }
+      \strng{namehash}{9d22c08c2c5ed286d40e1b044bed9407}
+      \strng{fullhash}{9d22c08c2c5ed286d40e1b044bed9407}
+      \strng{bibnamehash}{9d22c08c2c5ed286d40e1b044bed9407}
+      \strng{authorbibnamehash}{9d22c08c2c5ed286d40e1b044bed9407}
+      \strng{authornamehash}{9d22c08c2c5ed286d40e1b044bed9407}
+      \strng{authorfullhash}{9d22c08c2c5ed286d40e1b044bed9407}
+      \field{extraname}{2}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{day}{28}
+      \field{journaltitle}{Physical Review A}
+      \field{month}{1}
+      \field{number}{1}
+      \field{title}{Fully numerical calculations on atoms with fractional occupations and range-separated exchange functionals}
+      \field{volume}{101}
+      \field{year}{2020}
+      \field{dateera}{ce}
+      \verb{doi}
+      \verb 10.1103/physreva.101.012516
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
