@@ -1,11 +1,10 @@
 \chapter{A GNN approach to the problem}
 \label{chap:gnn}
-So far we have experimented with various models trying to predict the Fock matrix as a whole. However, as has been seen in \autoref{sec:further_trials} this approach, which works on minimal basis sets, is not feasible for larger basis sets such as the 6-31G basis set. Recent advances using regression models have largely focused on separate models for each molecular species, which limits their applicability to constitutional isomers we are interested in. \parencite{ref:Hazra2024,ref:Shao2023}
-We shall investigate the applicability of Graph Neural Networks (GNNs) to the problem of predicting the Fock or the density matrix. They have shown promising results in the field of quantum chemistry, especially for predicting molecular properties and structures. \parencite{ref:schnet2018} \TODO{maybe other citation + intro round up} \\
+So far we have experimented with various models trying to predict the Fock matrix as a whole. However, as has been seen in \autoref{chap:fock_matrix_predictions} this approach, which works on minimal basis sets, is not feasible for larger basis sets such as the 6-31G basis set. Recent advances using regression models have largely focused on separate models for each molecular species, which limits their applicability to constitutional isomers we are interested in. \parencite{ref:Hazra2024,ref:Shao2023}
+We shall investigate the applicability of Graph Neural Networks (GNNs) to the problem of predicting the Fock or the density matrix. They have shown promising results in the field of quantum chemistry, especially for predicting molecular properties and structures. \parencite{ref:schnet2018}\\
 
 The implementation of the GNN in this chapter is based on the \texttt{pytorch-geometric} framework \parencite{ref:PyTorchGeometric, ref:PyTorch_geom_paper}. 
 \section{Input \& Output Matrices}
-\TODO{Finish description of input / output matrices}
 \label{sec:gnn_input_output_matrices}
 Generally the input and the output of neural networks is fixed. We thus need to find a specific way to embed our input (overlap matrix) and output (Fock or density matrix) into a fixed structure. Given the nature of our problem, we can simply split our matrix representation into blocks representing the different atom sorts and their respective combinations. This yields three different types of blocks: 
 \begin{itemize}
