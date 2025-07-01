@@ -27,27 +27,24 @@ class MolGraphNetwork(torch.nn.Module):
     """A class to controll the GNN for density matrix prediction."""
 
     def __init__(self, 
-                 xyz_source,
+                 dataset,
                  basis, 
                  max_block_dim=26,
                  hidden_dim=256,
                  batch_size=32,
-                 train_val_test_ratio = (0.8, 0.1, 0.1), # train, val, test
                  message_passing_steps=2, # Number of message passing steps
                  backend=Backend.PY,
                  edge_threshold_type="atom_dist",
                  edge_threshold_val=3, # Angrom for "atom_dist", or dimensionless for "max" or "mean" 
-                 target="fock",
+                 target="density", # "fock" or "density"
                  data_aug_factor=1, # 1==no augmentation
                  **kwargs
                  ):
         super().__init__()
 
-        self.xyz_source = xyz_source
-        self.xyz_files = [os.path.join(xyz_source, f) for f in os.listdir(xyz_source) if f.endswith('.xyz')]
+        self.dataset = dataset
         self.backend = backend
         self.basis = basis
-        self.molgraphs = []
         self.edge_threshold_type = edge_threshold_type  # Can be "max" or "mean" to determine the threshold for edges
         assert edge_threshold_type in ["atom_dist", "max", "mean", "fro"], "edge_threshold_type must be 'max' or 'mean'."
         self.edge_threshold = edge_threshold_val  # Default threshold for edge creation
@@ -56,11 +53,6 @@ class MolGraphNetwork(torch.nn.Module):
         self.target = target
         self.data_aug_factor = data_aug_factor 
 
-        assert isinstance(train_val_test_ratio, (list, tuple)) and len(train_val_test_ratio) == 3, "train_val_test_ratio must be a list or tuple of three values (train, val, test)."
-        assert sum(train_val_test_ratio) == 1.0, "train_val_test_ratio must sum to 1.0."
-        self.train_ratio = train_val_test_ratio[0]
-        self.val_ratio = train_val_test_ratio[1]
-        self.test_ratio = train_val_test_ratio[2]
         # Instantiated in load_data
         self.train_loader = None
         self.val_loader = None
@@ -93,95 +85,91 @@ class MolGraphNetwork(torch.nn.Module):
             set_verbose(self.verbose_level)
 
 
-    def load_data(self, seed=42, max_samples=10, cache_meta={"method":"dft", "basis":None, "functional": "b3lypg", "guess": "minao", "backend": "pyscf", "cache": "../../../datasets/QM9/out/c7h10o2_b3lypg_6-31G(2df,p)/pyscf"}):
+    def load_data(self, seed=42, cache_meta={"method":"dft", "basis":None, "functional": "b3lypg", "guess": "minao", "backend": "pyscf", "cache": "../../../datasets/QM9/out/c7h10o2_b3lypg_6-31G(2df,p)/pyscf"}):
         """Load data from source directory split into train and test sets and create normalized BlockMatrices."""
         self.molgraphs = [] #reset in case this is called again later!
-        dprint(1, f"Loading {len(self.xyz_files)} files from {self.xyz_source}...")
-        focks_in, dens_in, overlap_in, coords_in = [], [], [], []
+        dprint(1, f"Loading {self.dataset.size} files from {self.dataset.name}...")
         
-        if max_samples is not None and max_samples < len(self.xyz_files):
-            dprint(1, f"Limiting to {max_samples} samples out of {len(self.xyz_files)} total files.")
-            self.xyz_files = self.xyz_files[:max_samples]  # Limit to max_samples if specified - don't care about bad ones meaning we will sample fewer if some are bad!
-        assert os.path.exists(cache_meta["cache"]), f"Cache path {cache_meta['cache']} does not exist. Please create it first."
-        for xyz_file in tqdm(self.xyz_files, desc="Loading files"):
-            mol_name = os.path.basename(xyz_file).strip()
-            # dprint(f"Using: {xyz_file}, {mol_name}, {cache_meta}")
-            cached_ret = density_fock_overlap(filepath=xyz_file,
-                                              filename = mol_name,
-                                              method = cache_meta["method"],
-                                              basis = None,
-                                              functional = cache_meta["functional"],
-                                              guess = cache_meta["guess"],
-                                              backend = cache_meta["backend"],
-                                              cache = cache_meta["cache"])
-            
-            if any([r == None for r in cached_ret]): 
-                dprint(1, f"File {mol_name} bad - skipping")
-                continue
-            dens_in.append(cached_ret[0].numpy)
-            focks_in.append(cached_ret[1].numpy)
-            overlap_in.append(cached_ret[2].numpy)
-            with open(xyz_file, 'r') as f:
-                lines = f.readlines()
-                coords = [list(map(float, line.split()[1:4])) for line in lines[2:-3]]
-                assert len(coords) == int(lines[0]), f"Number of coordinates {len(coords)} does not match number of atoms {int(lines[0])} in file {xyz_file}"
-                coords_in.append(coords)
-        
-        if self.target == "fock":
-            target_in = focks_in
-        elif self.target == "density":
-            target_in = dens_in
-        # gather graphs! 
-        for overlap, target, coords, xyz_file in tqdm(zip(overlap_in, target_in, coords_in, self.xyz_files), desc="Creating graphs"):
-            mol = load(xyz_file, backend=self.backend, basis=self.basis).native
-            self.molgraphs.append(self.make_graph(overlap, target, coords, mol))
-        
+        xyz_root = self.dataset.xyz
+        def load_set(set_name: str): 
+            focks_in, dens_in, overlap_in, coords_in, files_in = [], [], [], [], []
+            set_keys = self.dataset.train_keys if set_name == "train" else self.dataset.val_keys[:len(self.dataset.val_keys)//2] if set_name == "val" else self.dataset.val_keys[len(self.dataset.val_keys)//2:]
+            dprint(2, f"Loading {len(set_keys)} files for {set_name} set from {xyz_root}...")
+            for key in set_keys:
+                result = self.dataset.solution(key)
+                dens_in.append(result.density)
+                focks_in.append(result.fock)
+                overlap_in.append(result.overlap)
+                xyz_file = os.path.join(xyz_root, self.dataset.names[key] + ".xyz")
 
-        # Split into train and test sets
-        np.random.seed(seed)
-        shuffled_indices = np.random.permutation(len(self.molgraphs))
-        total_samples = len(self.molgraphs)
-        train_size = int(total_samples * self.train_ratio)
-        val_size = int(total_samples * self.val_ratio)
-        test_size = int(total_samples * self.test_ratio)
-        
-        test_indices = shuffled_indices[:test_size]
-        val_indices = shuffled_indices[test_size:test_size + val_size]
-        train_indices = shuffled_indices[test_size + val_size:] #! use rest for training (this way we include all samples from augmented data without inserting in the middle of a list)
+                with open(xyz_file, 'r') as f:
+                    lines = f.readlines()
+                    coords = [list(map(float, line.split()[1:4])) for line in lines[2:-3]]
+                    assert len(coords) == int(lines[0]), f"Number of coordinates {len(coords)} does not match number of atoms {int(lines[0])} in file {xyz_file}"
+                    coords_in.append(coords)
+                    files_in.append(xyz_file)
+            if self.target == "fock":
+                return focks_in, overlap_in, coords_in, files_in
+            elif self.target == "density":
+                return dens_in, overlap_in, coords_in, files_in
+            else:
+                raise ValueError(f"Unknown target {self.target}. Must be 'fock' or 'density'.")
 
-        # augment training set! #
+        train_data = load_set("train")
+        val_data = load_set("val")
+        test_data = load_set("test")
+        train_size = len(train_data[0])
+        val_size = len(val_data[0])
+        test_size = len(test_data[0])
+
+        #! gather train graphs + augment data if needed
+        self.train_graphs = [] 
+        for key, target, overlap, coords, xyz_file in tqdm(zip(self.dataset.train_keys, *train_data), desc="Creating training graphs"):
+            mol = self.dataset.molecule(key)
+            self.train_graphs.append(self.make_graph(overlap, target, coords, mol))
         n_aug = 0
         if self.data_aug_factor > 1:
-            train_length = len(train_indices)
-            n_aug = int(self.data_aug_factor * train_length - train_length)
-            aug_graphs, aug_target_in, aug_overlap_in, aug_infos = [], [], [], []
+            target_in, overlap_in, coords_in, files_in = train_data
+            n_aug = int(self.data_aug_factor * train_size - train_size)
+            aug_graphs, aug_target_in, aug_overlap_in, aug_infos, aug_coords = [], [], [], [], []
             dprint(1, f"Augmenting training set using factor {self.data_aug_factor} -> {n_aug} additional training samples.")
             for _ in tqdm(range(int(n_aug)), desc="Augmenting data"):
-                idx = np.random.choice(train_indices) #! only augment training data
-                overlap, target, coords, xyz_file = overlap_in[idx], target_in[idx], coords_in[idx], self.xyz_files[idx]
+                idx = np.random.choice(range(len(train_data))) #! only augment training data
+                overlap, target, coords, xyz_file = overlap_in[idx], target_in[idx], coords_in[idx], files_in[idx]
                 aug_graph, aug_overlap, aug_target, aug_info = self.aug_data(overlap, target, coords, xyz_file)
                 aug_graphs.append(aug_graph)
                 aug_overlap_in.append(aug_overlap)
                 aug_target_in.append(aug_target)
                 aug_infos.append(aug_info)  
-            self.molgraphs.extend(aug_graphs)
+                aug_coords.append(coords)  # keep the coordinates for the augmented data
+            self.train_graphs.extend(aug_graphs)
             overlap_in.extend(aug_overlap_in)
             target_in.extend(aug_target_in)
-            train_indices = np.append(train_indices, np.arange(len(self.molgraphs) - n_aug, len(self.molgraphs)))  # Append negative indices for augmented data
-            self.xyz_files.extend(aug_infos)  # augmentation info instead of filenames (this includes filenames)
+            coords_in.extend(aug_coords) # same as non-augmented!
+            files_in.extend(aug_infos)  # augmentation info instead of filenames (this includes filenames)
+        total_samples = len(train_data[0]) + len(val_data[0]) + len(test_data[0]) + n_aug
 
-        self.train_graphs = [self.molgraphs[i] for i in train_indices]
-        self.val_graphs = [self.molgraphs[i] for i in val_indices]
-        self.test_graphs = [self.molgraphs[i] for i in test_indices]
-        self.test_ground_truth = [target_in[i] for i in test_indices]  
-        self.val_ground_truth = [target_in[i] for i in val_indices]
-        self.train_ground_truth = [target_in[i] for i in train_indices]
-        self.test_ovlp_mat = [overlap_in[i] for i in test_indices]
-        self.val_ovlp_mat = [overlap_in[i] for i in val_indices]
-        self.train_ovlp_mat = [overlap_in[i] for i in train_indices]
-        self.files = {"train": [self.xyz_files[i] for i in train_indices],
-                      "val": [self.xyz_files[i] for i in val_indices],
-                      "test": [self.xyz_files[i] for i in test_indices]}
+        # validation and test data
+        self.val_graphs = []
+        self.test_graphs = []
+        for key, target, overlap, coords, xyz_file in tqdm(zip(self.dataset.val_keys[:len(self.dataset.val_keys)//2], *val_data), desc="Creating validation graphs"):
+            mol = self.dataset.molecule(key)
+            self.val_graphs.append(self.make_graph(overlap, target, coords, mol))
+        for key, target, overlap, coords, xyz_file in tqdm(zip(self.dataset.val_keys[len(self.dataset.val_keys)//2:], *test_data), desc="Creating test graphs"):
+            mol = self.dataset.molecule(key)
+            self.test_graphs.append(self.make_graph(overlap, target, coords, mol))
+
+       
+        self.test_ground_truth = [target for target in test_data[0]]  
+        self.val_ground_truth = [target for target in val_data[0]]
+        self.train_ground_truth = [target for target in train_data[0]] 
+        self.test_ovlp_mat = [overlap for overlap in test_data[1]]
+        self.val_ovlp_mat = [overlap for overlap in val_data[1]]
+        self.train_ovlp_mat = [overlap for overlap in train_data[1]]
+        self.files = {"train": [xyz_f for xyz_f in train_data[3]],
+                      "val": [xyz_f for xyz_f in val_data[3]],
+                      "test": [xyz_f for xyz_f in test_data[3]]}
+        
         if self.data_aug_factor > 1:
             dprint(1, f"Total samples: {total_samples}, Train: {train_size} (with {n_aug} / {train_size} augmented samples), Val: {val_size}, Test: {test_size}")
         else:
@@ -280,9 +268,9 @@ class MolGraphNetwork(torch.nn.Module):
         # place center blocks
         for i, (_, _, start, end) in enumerate(ao_slices):
             flat_center_block = pred_center_blocks[i]
-            out[start:end, start:end] = unflatten_triang(flat_center_block.numpy(), end - start)
+            out[start:end, start:end] = unflatten_triang(flat_center_block.cpu().numpy(), end - start)
         for i, ((start_i, end_i), (start_j, end_j)) in enumerate(edge_ao_slices):
-            flat_edge_block = pred_edge_blocks[2*i] #! OC we have to index every second because we doubled the edges (directed edges - see make_graph) but not the indices! 
+            flat_edge_block = pred_edge_blocks[2*i].cpu() #! OC we have to index every second because we doubled the edges (directed edges - see make_graph) but not the indices! 
             block = flat_edge_block.reshape(end_i - start_i, end_j - start_j)  
             out[start_i:end_i, start_j:end_j] = block
             out[start_j:end_j, start_i:end_i] = block.T
@@ -874,7 +862,7 @@ class MolGraphNetwork(torch.nn.Module):
                 scheduler.step(avg_val_loss)
                 history["lr"].append(optimizer.param_groups[0]['lr'])
         except KeyboardInterrupt:
-            print("Training interrupted by user. Benchmark...")
+            print("Training interrupted by user. Benchmark model...")
 
         
 
@@ -901,9 +889,6 @@ class MolGraphNetwork(torch.nn.Module):
         with open(hist_path, "wb") as f: 
             pickle.dump(history, f)
         print(f"Test  Loss: {avg_test_loss:.6f}")
-        # already saved above!
-        # if model_save_path is not None:
-        #     self.save_model_checkpoint(model_save_path, epoch, optimizer)
 
     def save_model(self, path):
         """Save the model to the specified path."""
