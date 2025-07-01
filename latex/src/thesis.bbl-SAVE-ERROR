@@ -33,8 +33,8 @@
       \strng{authorbibnamehash}{86b3e1b87463065d6da6ca558e6541b3}
       \strng{authornamehash}{86b3e1b87463065d6da6ca558e6541b3}
       \strng{authorfullhash}{86b3e1b87463065d6da6ca558e6541b3}
-      \field{sortinit}{5}
-      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{eprinttype}{arXiv}
@@ -64,8 +64,8 @@
       \strng{authorbibnamehash}{ef83d4dc8a30fe4456be4321cd8ad41b}
       \strng{authornamehash}{ef83d4dc8a30fe4456be4321cd8ad41b}
       \strng{authorfullhash}{ef83d4dc8a30fe4456be4321cd8ad41b}
-      \field{sortinit}{6}
-      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Mathematical Proceedings of the Cambridge Philosophical Society}
@@ -94,8 +94,8 @@
       \strng{authornamehash}{2680effb67f4c8cd7c73443f7af7dbe9}
       \strng{authorfullhash}{2680effb67f4c8cd7c73443f7af7dbe9}
       \field{extraname}{1}
-      \field{sortinit}{6}
-      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Physical Review}
@@ -123,8 +123,8 @@
       \strng{authorbibnamehash}{09f4ce0c70d617227c2dc0df7d4e36e0}
       \strng{authornamehash}{09f4ce0c70d617227c2dc0df7d4e36e0}
       \strng{authorfullhash}{09f4ce0c70d617227c2dc0df7d4e36e0}
-      \field{sortinit}{6}
-      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Zeitschrift für Physik}
@@ -159,14 +159,137 @@
       \strng{authorbibnamehash}{7e4e963df06b39584349eaf439922455}
       \strng{authornamehash}{7e4e963df06b39584349eaf439922455}
       \strng{authorfullhash}{7e4e963df06b39584349eaf439922455}
-      \field{sortinit}{7}
-      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{edition}{Dover ed.}
       \field{isbn}{9780486691862}
       \field{title}{Modern Quantum Chemistry: Introduction to Advanced Electronic Structure Theory}
       \field{year}{1996}
+    \endentry
+    \entry{ref:sad_guess}{article}{}
+      \name{author}{4}{}{%
+        {{hash=4119617a8746b4f95a438ebee26391fe}{%
+           family={Van\bibnamedelima Lenthe},
+           familyi={V\bibinitperiod\bibinitdelim L\bibinitperiod},
+           given={J.\bibnamedelimi H.},
+           giveni={J\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+        {{hash=a139050b4100587db3762e667cf4ae6b}{%
+           family={Zwaans},
+           familyi={Z\bibinitperiod},
+           given={R.},
+           giveni={R\bibinitperiod}}}%
+        {{hash=1ea26f418594bb92255b147a14239b42}{%
+           family={Van\bibnamedelima Dam},
+           familyi={V\bibinitperiod\bibinitdelim D\bibinitperiod},
+           given={H.\bibnamedelimi J.\bibnamedelimi J.},
+           giveni={H\bibinitperiod\bibinitdelim J\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=023c02ae9cb0dfad3d8a70732c62d60a}{%
+           family={Guest},
+           familyi={G\bibinitperiod},
+           given={M.\bibnamedelimi F.},
+           giveni={M\bibinitperiod\bibinitdelim F\bibinitperiod}}}%
+      }
+      \strng{namehash}{b07f33069638ff9d5782a78006299123}
+      \strng{fullhash}{7e9f57bf40eea8c921a2b6045e942379}
+      \strng{bibnamehash}{b07f33069638ff9d5782a78006299123}
+      \strng{authorbibnamehash}{b07f33069638ff9d5782a78006299123}
+      \strng{authornamehash}{b07f33069638ff9d5782a78006299123}
+      \strng{authorfullhash}{7e9f57bf40eea8c921a2b6045e942379}
+      \field{extraname}{1}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Abstract We describe the procedure to start an SCF calculation of the general type from a sum of atomic electron densities, as implemented in GAMESS-UK. Although the procedure is well known for closed-shell calculations and was already suggested when the Direct SCF procedure was proposed, the general procedure is less obvious. For instance, there is no need to converge the corresponding closed-shell Hartree–Fock calculation when dealing with an open-shell species. We describe the various choices and illustrate them with test calculations, showing that the procedure is easier, and on average better, than starting from a converged minimal basis calculation and much better than using a bare nucleus Hamiltonian. © 2006 Wiley Periodicals, Inc. J Comput Chem 27: 926–932, 2006}
+      \field{journaltitle}{Journal of Computational Chemistry}
+      \field{number}{8}
+      \field{title}{Starting SCF calculations by superposition of atomic densities}
+      \field{volume}{27}
+      \field{year}{2006}
+      \field{pages}{926\bibrangedash 932}
+      \range{pages}{7}
+      \verb{doi}
+      \verb https://doi.org/10.1002/jcc.20393
+      \endverb
+      \verb{eprint}
+      \verb https://onlinelibrary.wiley.com/doi/pdf/10.1002/jcc.20393
+      \endverb
+      \verb{urlraw}
+      \verb https://onlinelibrary.wiley.com/doi/abs/10.1002/jcc.20393
+      \endverb
+      \verb{url}
+      \verb https://onlinelibrary.wiley.com/doi/abs/10.1002/jcc.20393
+      \endverb
+      \keyw{SCF calculations,atomic densities}
+    \endentry
+    \entry{ref:gwh_wolfsberg1952spectra}{article}{}
+      \name{author}{2}{}{%
+        {{hash=e1c67c965a846fcfdc7d95d002a37f9f}{%
+           family={Wolfsberg},
+           familyi={W\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=a140a3f60eecb78874cf9ae1041b7e20}{%
+           family={Helmholz},
+           familyi={H\bibinitperiod},
+           given={L.},
+           giveni={L\bibinitperiod}}}%
+      }
+      \strng{namehash}{0b18a11ce3fdf0d377181711d29a1a13}
+      \strng{fullhash}{0b18a11ce3fdf0d377181711d29a1a13}
+      \strng{bibnamehash}{0b18a11ce3fdf0d377181711d29a1a13}
+      \strng{authorbibnamehash}{0b18a11ce3fdf0d377181711d29a1a13}
+      \strng{authornamehash}{0b18a11ce3fdf0d377181711d29a1a13}
+      \strng{authorfullhash}{0b18a11ce3fdf0d377181711d29a1a13}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{The Journal of Chemical Physics}
+      \field{number}{5}
+      \field{title}{The Spectra and Electronic Structure of the Tetrahedral Ions MnO\textsubscript{4}\textsuperscript{--}, CrO\textsubscript{4}\textsuperscript{--}, and ClO\textsubscript{4}\textsuperscript{--}}
+      \field{volume}{20}
+      \field{year}{1952}
+      \field{pages}{837\bibrangedash 843}
+      \range{pages}{7}
+    \endentry
+    \entry{ref:Lehtola2019}{article}{}
+      \name{author}{1}{}{%
+        {{hash=9d22c08c2c5ed286d40e1b044bed9407}{%
+           family={Lehtola},
+           familyi={L\bibinitperiod},
+           given={Susi},
+           giveni={S\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {American Chemical Society (ACS)}%
+      }
+      \strng{namehash}{9d22c08c2c5ed286d40e1b044bed9407}
+      \strng{fullhash}{9d22c08c2c5ed286d40e1b044bed9407}
+      \strng{bibnamehash}{9d22c08c2c5ed286d40e1b044bed9407}
+      \strng{authorbibnamehash}{9d22c08c2c5ed286d40e1b044bed9407}
+      \strng{authornamehash}{9d22c08c2c5ed286d40e1b044bed9407}
+      \strng{authorfullhash}{9d22c08c2c5ed286d40e1b044bed9407}
+      \field{extraname}{1}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{day}{17}
+      \field{journaltitle}{Journal of Chemical Theory and Computation}
+      \field{month}{1}
+      \field{number}{3}
+      \field{title}{Assessment of Initial Guesses for Self-Consistent Field Calculations. Superposition of Atomic Potentials: Simple yet Efficient}
+      \field{volume}{15}
+      \field{year}{2019}
+      \field{dateera}{ce}
+      \field{pages}{1593\bibrangedash 1604}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1021/acs.jctc.8b01089
+      \endverb
     \endentry
     \entry{ref:koopmans1934}{article}{}
       \name{author}{1}{}{%
@@ -400,129 +523,6 @@
       \verb https://doi.org/10.1007/s00214-005-0635-2
       \endverb
     \endentry
-    \entry{ref:sad_guess}{article}{}
-      \name{author}{4}{}{%
-        {{hash=4119617a8746b4f95a438ebee26391fe}{%
-           family={Van\bibnamedelima Lenthe},
-           familyi={V\bibinitperiod\bibinitdelim L\bibinitperiod},
-           given={J.\bibnamedelimi H.},
-           giveni={J\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
-        {{hash=a139050b4100587db3762e667cf4ae6b}{%
-           family={Zwaans},
-           familyi={Z\bibinitperiod},
-           given={R.},
-           giveni={R\bibinitperiod}}}%
-        {{hash=1ea26f418594bb92255b147a14239b42}{%
-           family={Van\bibnamedelima Dam},
-           familyi={V\bibinitperiod\bibinitdelim D\bibinitperiod},
-           given={H.\bibnamedelimi J.\bibnamedelimi J.},
-           giveni={H\bibinitperiod\bibinitdelim J\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
-        {{hash=023c02ae9cb0dfad3d8a70732c62d60a}{%
-           family={Guest},
-           familyi={G\bibinitperiod},
-           given={M.\bibnamedelimi F.},
-           giveni={M\bibinitperiod\bibinitdelim F\bibinitperiod}}}%
-      }
-      \strng{namehash}{b07f33069638ff9d5782a78006299123}
-      \strng{fullhash}{7e9f57bf40eea8c921a2b6045e942379}
-      \strng{bibnamehash}{b07f33069638ff9d5782a78006299123}
-      \strng{authorbibnamehash}{b07f33069638ff9d5782a78006299123}
-      \strng{authornamehash}{b07f33069638ff9d5782a78006299123}
-      \strng{authorfullhash}{7e9f57bf40eea8c921a2b6045e942379}
-      \field{extraname}{1}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{abstract}{Abstract We describe the procedure to start an SCF calculation of the general type from a sum of atomic electron densities, as implemented in GAMESS-UK. Although the procedure is well known for closed-shell calculations and was already suggested when the Direct SCF procedure was proposed, the general procedure is less obvious. For instance, there is no need to converge the corresponding closed-shell Hartree–Fock calculation when dealing with an open-shell species. We describe the various choices and illustrate them with test calculations, showing that the procedure is easier, and on average better, than starting from a converged minimal basis calculation and much better than using a bare nucleus Hamiltonian. © 2006 Wiley Periodicals, Inc. J Comput Chem 27: 926–932, 2006}
-      \field{journaltitle}{Journal of Computational Chemistry}
-      \field{number}{8}
-      \field{title}{Starting SCF calculations by superposition of atomic densities}
-      \field{volume}{27}
-      \field{year}{2006}
-      \field{pages}{926\bibrangedash 932}
-      \range{pages}{7}
-      \verb{doi}
-      \verb https://doi.org/10.1002/jcc.20393
-      \endverb
-      \verb{eprint}
-      \verb https://onlinelibrary.wiley.com/doi/pdf/10.1002/jcc.20393
-      \endverb
-      \verb{urlraw}
-      \verb https://onlinelibrary.wiley.com/doi/abs/10.1002/jcc.20393
-      \endverb
-      \verb{url}
-      \verb https://onlinelibrary.wiley.com/doi/abs/10.1002/jcc.20393
-      \endverb
-      \keyw{SCF calculations,atomic densities}
-    \endentry
-    \entry{ref:gwh_wolfsberg1952spectra}{article}{}
-      \name{author}{2}{}{%
-        {{hash=e1c67c965a846fcfdc7d95d002a37f9f}{%
-           family={Wolfsberg},
-           familyi={W\bibinitperiod},
-           given={M.},
-           giveni={M\bibinitperiod}}}%
-        {{hash=a140a3f60eecb78874cf9ae1041b7e20}{%
-           family={Helmholz},
-           familyi={H\bibinitperiod},
-           given={L.},
-           giveni={L\bibinitperiod}}}%
-      }
-      \strng{namehash}{0b18a11ce3fdf0d377181711d29a1a13}
-      \strng{fullhash}{0b18a11ce3fdf0d377181711d29a1a13}
-      \strng{bibnamehash}{0b18a11ce3fdf0d377181711d29a1a13}
-      \strng{authorbibnamehash}{0b18a11ce3fdf0d377181711d29a1a13}
-      \strng{authornamehash}{0b18a11ce3fdf0d377181711d29a1a13}
-      \strng{authorfullhash}{0b18a11ce3fdf0d377181711d29a1a13}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{journaltitle}{The Journal of Chemical Physics}
-      \field{number}{5}
-      \field{title}{The Spectra and Electronic Structure of the Tetrahedral Ions MnO\textsubscript{4}\textsuperscript{--}, CrO\textsubscript{4}\textsuperscript{--}, and ClO\textsubscript{4}\textsuperscript{--}}
-      \field{volume}{20}
-      \field{year}{1952}
-      \field{pages}{837\bibrangedash 843}
-      \range{pages}{7}
-    \endentry
-    \entry{ref:Lehtola2019}{article}{}
-      \name{author}{1}{}{%
-        {{hash=9d22c08c2c5ed286d40e1b044bed9407}{%
-           family={Lehtola},
-           familyi={L\bibinitperiod},
-           given={Susi},
-           giveni={S\bibinitperiod}}}%
-      }
-      \list{publisher}{1}{%
-        {American Chemical Society (ACS)}%
-      }
-      \strng{namehash}{9d22c08c2c5ed286d40e1b044bed9407}
-      \strng{fullhash}{9d22c08c2c5ed286d40e1b044bed9407}
-      \strng{bibnamehash}{9d22c08c2c5ed286d40e1b044bed9407}
-      \strng{authorbibnamehash}{9d22c08c2c5ed286d40e1b044bed9407}
-      \strng{authornamehash}{9d22c08c2c5ed286d40e1b044bed9407}
-      \strng{authorfullhash}{9d22c08c2c5ed286d40e1b044bed9407}
-      \field{extraname}{1}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{day}{17}
-      \field{journaltitle}{Journal of Chemical Theory and Computation}
-      \field{month}{1}
-      \field{number}{3}
-      \field{title}{Assessment of Initial Guesses for Self-Consistent Field Calculations. Superposition of Atomic Potentials: Simple yet Efficient}
-      \field{volume}{15}
-      \field{year}{2019}
-      \field{dateera}{ce}
-      \field{pages}{1593\bibrangedash 1604}
-      \range{pages}{12}
-      \verb{doi}
-      \verb 10.1021/acs.jctc.8b01089
-      \endverb
-    \endentry
     \entry{ref:hohenberg_kohn1964}{article}{}
       \name{author}{2}{}{%
         {{hash=40ea553b503fe0418f7f07689980cd95}{%
@@ -735,8 +735,8 @@
       \strng{authorbibnamehash}{6548fe4e129d7e99ae2a904b504c9df7}
       \strng{authornamehash}{6548fe4e129d7e99ae2a904b504c9df7}
       \strng{authorfullhash}{6548fe4e129d7e99ae2a904b504c9df7}
-      \field{sortinit}{2}
-      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Physical Review Letters}
@@ -774,8 +774,8 @@
       \strng{authorbibnamehash}{fcbfae6835c580fd61256eecc455ed60}
       \strng{authornamehash}{fcbfae6835c580fd61256eecc455ed60}
       \strng{authorfullhash}{fcbfae6835c580fd61256eecc455ed60}
-      \field{sortinit}{2}
-      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{day}{15}
@@ -806,8 +806,8 @@
       \strng{authorbibnamehash}{f527507fc8054400b1e8bd22392330ae}
       \strng{authornamehash}{f527507fc8054400b1e8bd22392330ae}
       \strng{authorfullhash}{f527507fc8054400b1e8bd22392330ae}
-      \field{sortinit}{2}
-      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{day}{15}
@@ -1334,8 +1334,8 @@
       \strng{authorbibnamehash}{3a097aa3ebf2b8c2acf988341dde9710}
       \strng{authornamehash}{3a097aa3ebf2b8c2acf988341dde9710}
       \strng{authorfullhash}{7a67607c66e4af944b5f16461d6d0a87}
-      \field{sortinit}{3}
-      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Journal of Machine Learning Research}
@@ -1630,8 +1630,8 @@
       \strng{authorbibnamehash}{278021aa20410028e4648cf93469c0c5}
       \strng{authornamehash}{278021aa20410028e4648cf93469c0c5}
       \strng{authorfullhash}{278021aa20410028e4648cf93469c0c5}
-      \field{sortinit}{4}
-      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Journal of Chemical Theory and Computation}
@@ -1673,8 +1673,8 @@
       \strng{authorbibnamehash}{2d3ff61117ef3f657b16d6070789673d}
       \strng{authornamehash}{2d3ff61117ef3f657b16d6070789673d}
       \strng{authorfullhash}{85fa9fdf8247a76c044d4bedd7bb0590}
-      \field{sortinit}{4}
-      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Nature Communications}
@@ -1721,8 +1721,8 @@
       \strng{authorbibnamehash}{95d226595653ed8da4ee9d46180aacb7}
       \strng{authornamehash}{95d226595653ed8da4ee9d46180aacb7}
       \strng{authorfullhash}{7c521cf550a09e821676b715fa4a0f18}
-      \field{sortinit}{4}
-      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{The Journal of Chemical Physics}

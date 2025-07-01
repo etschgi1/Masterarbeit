@@ -1,0 +1,3 @@
+[submodule "scf_guess_datasets"]
+	path = scf_guess_datasets
+	url = git@github.com:hauser-group/scf_guess_datasets.git
