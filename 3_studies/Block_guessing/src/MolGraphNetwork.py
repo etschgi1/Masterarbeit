@@ -280,7 +280,7 @@ class MolGraphNetwork(torch.nn.Module):
         # place center blocks
         for i, (_, _, start, end) in enumerate(ao_slices):
             flat_center_block = pred_center_blocks[i]
-            out[start:end, start:end] = unflatten_triang(flat_center_block.numpy(), end - start)
+            out[start:end, start:end] = unflatten_triang(flat_center_block.cpu().numpy(), end - start)
         for i, ((start_i, end_i), (start_j, end_j)) in enumerate(edge_ao_slices):
             flat_edge_block = pred_edge_blocks[2*i] #! OC we have to index every second because we doubled the edges (directed edges - see make_graph) but not the indices! 
             block = flat_edge_block.reshape(end_i - start_i, end_j - start_j)  
