@@ -54,13 +54,18 @@ It should be noted that the inclusion of data augmentation samples does not chan
 
 The dataset is ultimately split into training, validation, and test sets, typically following a ratio of 80\% / 10\% / 10\%, where 100\% refers to the number of original (non-augmented) samples.
 
-When applying a data augmentation factor of $1.5$, meaning that 50\% more samples are generated synthetically, the training set is extended to contain 120\% of the original data, while the validation and test sets remain unchanged at 10\% each. This ensures that evaluation is performed exclusively on the original, unaltered data and avoids any data leakage through augmented samples.
+When applying a data augmentation factor of $1.5$, meaning that 50\% more samples are generated synthetically, the training set is extended to contain 120\% of the original data, while the validation and test sets remain unchanged at 10\% each. This ensures that evaluation is performed exclusively on the original, unaltered data and avoids any data leakage through augmented samples. To ensure comparability of benchmarks in \autoref{chap:application} the \texttt{scf\_guess\_datasets} package was used to obtain samples \parencite{ref:milacher_scf_guess_datasets}.
 
 \section{GNN Design}
 \label{sec:gnn_design}
+The basic design of the GNN is given by 
 
-\TODO{}
-
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../fig/gnn/GNN_design.pdf}
+    \caption[GNN design]{GNN design}
+    \label{fig:gnn_design}
+\end{figure}
 
 % \TODO{Nice representation of orbitals on mols - maybe PyMol plot + some overlap matrix blocks}
 \section{Training}
