@@ -1795,6 +1795,35 @@
       \verb https://arxiv.org/abs/1903.02428
       \endverb
     \endentry
+    \entry{ref:milacher_scf_guess_datasets}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=0d678e72b7f920491fb63cd8171d18a8}{%
+           family={Milacher},
+           familyi={M\bibinitperiod},
+           given={Dominik},
+           giveni={D\bibinitperiod}}}%
+      }
+      \strng{namehash}{0d678e72b7f920491fb63cd8171d18a8}
+      \strng{fullhash}{0d678e72b7f920491fb63cd8171d18a8}
+      \strng{bibnamehash}{0d678e72b7f920491fb63cd8171d18a8}
+      \strng{authorbibnamehash}{0d678e72b7f920491fb63cd8171d18a8}
+      \strng{authornamehash}{0d678e72b7f920491fb63cd8171d18a8}
+      \strng{authorfullhash}{0d678e72b7f920491fb63cd8171d18a8}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://github.com/hauser-group/scf_guess_datasets}}
+      \field{note}{Accessed: 2025-06-27}
+      \field{title}{scf\_guess\_datasets}
+      \field{year}{2024}
+      \verb{urlraw}
+      \verb https://github.com/hauser-group/scf_guess_datasets
+      \endverb
+      \verb{url}
+      \verb https://github.com/hauser-group/scf_guess_datasets
+      \endverb
+    \endentry
     \entry{ref:pyscf_user_guide}{misc}{}
       \name{author}{1}{}{%
         {{hash=a48adb747c1d47e80464b6c1fa69dcbb}{%

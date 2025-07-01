@@ -67,7 +67,7 @@ class EncoderDecoderFactory(torch.nn.Module):
             for sym in atom_types
         })
 
-        # 3) CENTER DECODERS (hidden → flattened center-block)
+        # 3) NODE DECODERS (hidden → flattened center-block)
         self.center_decoders = torch.nn.ModuleDict({
             sym: torch.nn.Linear(hidden_dim, self.center_sizes[sym])
             for sym in atom_types
