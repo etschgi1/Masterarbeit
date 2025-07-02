@@ -780,7 +780,13 @@ class MolGraphNetwork(torch.nn.Module):
             self.edge_norm_target[key] = (np.mean(T_edge_vals[key]), max(np.std(T_edge_vals[key]), zero_std_val))
         return
     
-    def train_model(self, num_epochs=5, lr=1e-3, weight_decay=1e-5, device=None, model_save_path=None, grace_epochs=3):
+    def train_model(self, num_epochs=5, lr=1e-3, weight_decay=1e-5, device=None, model_save_path=None, grace_epochs=3, 
+                    lr_args={"mode":"min",
+                             "factor": 0.5,
+                             "patience": 3,
+                             "threshold": 1e-3,
+                             "cooldown": 2, 
+                             "min_lr" : 1e-6}):
         import torch.nn.functional as F
         from tqdm import tqdm
         
@@ -788,11 +794,14 @@ class MolGraphNetwork(torch.nn.Module):
             device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.to(device)
         optimizer = torch.optim.AdamW(self.parameters(), lr=lr, weight_decay=weight_decay)
+        
         scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer,
-                                                               mode='min',
-                                                               factor=0.5,
-                                                               patience=5,
-                                                               min_lr=1e-6)
+                                                               mode= lr_args["mode"],
+                                                               factor= lr_args["factor"],
+                                                               patience= lr_args["patience"],
+                                                               threshold= lr_args["threshold"],
+                                                               cooldown= lr_args["cooldown"],
+                                                               min_lr= lr_args["min_lr"])
         history = {
             "train_loss": [],
             "val_loss":[],

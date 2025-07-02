@@ -17,7 +17,7 @@ rcParams.update({
     "lines.linewidth": 2,
     "lines.markersize": 6,
     "axes.prop_cycle": plt.cycler(color=[
-        "#e4154b", "#A5A5A5", "#1f77b4", "#ff7f0e", "#2ca02c", "#d62728",
+        "#e4154b", "#A5A5A5", "#007FFF", "#00D1A4", "#203746", "#d62728",
         "#9467bd", "#8c564b", "#e377c2", "#7f7f7f",
         "#bcbd22", "#17becf"
     ])
