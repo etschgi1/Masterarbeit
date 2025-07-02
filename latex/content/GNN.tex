@@ -56,23 +56,38 @@ The dataset is ultimately split into training, validation, and test sets, typica
 
 When applying a data augmentation factor of $1.5$, meaning that 50\% more samples are generated synthetically, the training set is extended to contain 120\% of the original data, while the validation and test sets remain unchanged at 10\% each. This ensures that evaluation is performed exclusively on the original, unaltered data and avoids any data leakage through augmented samples. To ensure comparability of benchmarks in \autoref{chap:application} the \texttt{scf\_guess\_datasets} package was used to obtain samples \parencite{ref:milacher_scf_guess_datasets}.
 
-\section{GNN Design}
+\section{ML pipeline \& GNN Design}
 \label{sec:gnn_design}
-The basic design of the GNN is given by 
+The GNN's pipeline is designed to take coordinates from xyz-files embed them into a graph form to facilitate training and to eventually obtain the full density matrix. A schematic overview of the pipeline is given in \autoref{fig:gnn_pipeline_design}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{../fig/gnn/GNN_design.pdf}
-    \caption[GNN design]{GNN design}
-    \label{fig:gnn_design}
+    \caption[GNN pipeline design]{Overview of the GNN pipeline: training data is augmented, converted to graphs, normalized, and passed through a message-passing GNN. Predicted submatrices are denormalized and combined to reconstruct the full density matrix. \ch{H2O} overlap matrix is shown with exemplary embedding vectors for the STO-3G basis set.}
+    \label{fig:gnn_pipeline_design}
 \end{figure}
 
-% \TODO{Nice representation of orbitals on mols - maybe PyMol plot + some overlap matrix blocks}
+\textbf{Encoders}\\
+To obtain a common input dimension our differently sized blocks are encoded separately. Programmatically, this is enabled by a factory class that creates the required encoders for the different block types and sizes on the fly. Given the \ch{H2O} example in \autoref{fig:schematic_gnn_blocks}, we obtain two encoders for the self-blocks, one for \ch{O}: $\texttt{Enc}^{8}_{node}$ and one for \ch{H}: $\texttt{Enc}^{1}_{node}$. In our example we used a cutoff of $\SI{1}{\angstrom}$ for the edge formation, which yields one edge encoder type for the \ch{O}-\ch{H} bonds: $\texttt{Enc}^{8\,1}_{edge}$. Due to the arguably small cutoff distance, in practice this will be set to higher values to capture interactions between orbitals of higher angular momentum with longer radial extension, there is no \ch{H}-\ch{H} edge encoder. \\
+Node and edge encoders alike are implemented as a 2-layer network with a GeLU-activation between the layers. The first layer maps the input matrix to a fixed hidden dimension\footnote{For edge encoders, the interatomic distance is appended as an additional input feature.}, while the second layer maps from hidden dimension to hidden dimension. 
+
+\textbf{Message Net (Message Passing)}\\
+The Message Net is a simple feed forward network with a given linear layer depth GeLU activation and optional dropout, both fixed at initialization. It is designed to map an input of $3 \times$ the hidden dimension, which includes the node embeddings and the edge embedding of two connected nodes to a one hidden dimension output. This happens for each source-target node connection in our graph, in our example we `pass a message' from \ch{O} to \ch{H} and vice versa. Messages are only passed between nodes that are connected by an edge and never from one node to itself (i.e. there are no self-loops in our design). All incoming messages are summed over per target node, for our example \ch{O} receives two messages from the \ch{H} atoms and they receive one each from \ch{O}. A concatenation of the aggregated result and the node embedding is fed into a node updater network which maps from twice the hidden dimension via a linear layer, GeLU activation and another linear layer back to the hidden dimension. When all node updates are completed one round of message passing is finished. Multiple rounds of message passing are performed to enable information travel between more distant non-directly connected nodes.\\
+Parameters mentioned above, such as the hidden dimension, number of message passing steps, dropout, etc. are all hyperparameters that will be tuned during training. 
+
+\textbf{Decoder}\\
+Decoders are effectively reversing the transformation of the encoders to obtain the original dimensions of the matrix blocks and preferably result in accurate target predictions. Node decoders, like $\texttt{Dec}^{8}_{node}$ or  $\texttt{Dec}^{1}_{node}$, map back to the upper triangular matrix of self-blocks, while edge decoders, such as $\texttt{Dec}^{8\,1}_{edge}$, to the full interaction matrix. Both use one linear layer mapping directly from the hidden dimension to the respective output dimension. \\
+
+The raw output of the GNN needs to be inversely normalized to yield meaningful predictions. Ultimately, the full matrix is rebuild from self-blocks and interaction blocks by reversion the block splitting procedure described in \autoref{sec:gnn_input_output_matrices}. If the target is the Fock matrix, the reconstruction of the density matrix using \autoref{eq:density_reconstruction_from_fock} is performed as a post-processing step.
+
+
+
+
 \section{Training}
 \label{sec:gnn_training}
 
 The GNN will be trained using various hyperparameters and configurations in the following. All runs will be tested on QM9 \ch{C7H10O2} molecules which were simulated as reference using the B3LYP functional and the 6-31G(2df,p) basis set. If not stated otherwise, the train / validation / test split is set to 80\% / 10\% / 10\%.\\
-\TODO{}
+\TODO{Loss function}
 
 \subsection{Initial Training}
 \label{subsec:gnn_initial_training}

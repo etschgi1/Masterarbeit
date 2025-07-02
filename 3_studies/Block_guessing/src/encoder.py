@@ -37,7 +37,7 @@ class EncoderDecoderFactory(torch.nn.Module):
             center_sizes: dict giving the sizes of the center for a given atom type
             edge_sizes: dict giving the sizes of the edge for a given edge_type
             message_layers: number of layers in the message net (default=3)
-            message_dropout: dropout probability in the message net (default=0.1)
+            message_dropout: dropout probability in the message net (default=0.1) - can also be list of floats for each layer
         """
         
         super().__init__()
@@ -107,11 +107,4 @@ class EncoderDecoderFactory(torch.nn.Module):
         return [f"{a}_{b}" for a, b in pairs]
 
     def forward(self, *args, **kwargs):
-        """
-        This class is not meant to be called directly in forward. Instead,
-        instantiate it and then use its attributes:
-          - factory.node_encoders[sym]
-          - factory.edge_encoders[pair_key]
-          - etc.
-        """
         raise NotImplementedError("Use factory.node_encoders[...] etc., not forward().")
