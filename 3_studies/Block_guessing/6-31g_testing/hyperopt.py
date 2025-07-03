@@ -1,22 +1,33 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from ray import tune, air
+import ray 
+from ray import tune
+from ray.tune import RunConfig
 from ray.tune.schedulers import ASHAScheduler
 import questionary
-import importlib
+import importlib, json
+from scf_guess_datasets import Qm9Isomeres
+
 from datetime import datetime
 import sys, os
 import numpy as np
 
-sys.path.append('../src/')
+sys.path.append('../../')
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
-from MolGraphNetwork import MolGraphNetwork
+from mgnn.MolGraphNetwork import MolGraphNetwork
 from scf_guess_tools import Backend
 
+from utils import find_repo_root
+PROJECT_ROOT = find_repo_root()
+print(f"Project root found at: {PROJECT_ROOT}")
+NUM_CPU = os.cpu_count()//16 or 1  # Fallback to 1 if os.cpu_count() returns None
+NUM_GPU = 1 if torch.cuda.is_available() else 0
+print(f"Using {NUM_CPU} CPUs and {NUM_GPU} GPUs for Ray Tune")
 
-
-def train_model(config, dataset, basis):
+def hyperopt_train(config, dataset, basis):
+    import sys
+    sys.path.append(os.path.join(PROJECT_ROOT, "src"))
     MGNN = MolGraphNetwork(dataset=dataset,
                            basis=basis,
                            backend=Backend.PY,
@@ -28,7 +39,8 @@ def train_model(config, dataset, basis):
                             message_net_dropout=config["message_net_dropout"],
                             data_aug_factor=config["data_aug_factor"],
                             target="density",
-                            verbose_level=1)
+                            verbose_level=1,
+                            no_progress_bar=True)
     MGNN.load_data()
     MGNN.train_model(num_epochs=config["num_epochs"],
                     lr=config["lr"],
@@ -40,40 +52,66 @@ def train_model(config, dataset, basis):
                              "threshold": config["lr_threshold"],
                              "cooldown": config["lr_cooldown"],
                              "min_lr" : config["lr_min"]},
-                    report_fn=tune.report if tune.is_session_enabled() else None)
+                    report_fn=tune.report)
     
 
 def runhypertune(config_file):
-    dataset = None # TODO
-    basis = None # TODO
+    dataset = Qm9Isomeres("/home/dmilacher/datasets/data", size = 500, split_ratio=0.8)
+    basis = BASIS_PATH
     config_module = importlib.import_module(f"tune_config.{config_file.replace('.py', '')}")
     search_space = config_module.search_space
-    tuner = tune.Tuner(
-        tune.with_parameters(train_model, dataset=dataset, basis=basis),
+    disc_comb, disc_params = count_discrete_combinations(search_space)
+    print(f"Total discrete combinations: {disc_comb}, Discrete parameters: {disc_params}")
+    num_samples = disc_comb * 2
+    print(f"Number of samples to try: {num_samples}")
+    if input("Start Ray Tune with the above configuration? (y/n): ").strip().lower() != 'y':
+        print("Aborting Ray Tune run.")
+        return
+    tuner = tune.Tuner(tune.with_resources(
+        tune.with_parameters(hyperopt_train, dataset=dataset, basis=basis),
+        resources={"cpu": NUM_CPU, "gpu": NUM_GPU/2} 
+        ),
         param_space=search_space,
         tune_config=tune.TuneConfig(
-            num_samples=10,  # Number of hyperparameter samples to try
+            num_samples=num_samples,  # Number of hyperparameter samples to try
             metric="loss",  # Metric to optimize
             mode="min",  # Minimize the metric
             scheduler=ASHAScheduler(
                 time_attr="training_iteration",
-                metric="loss",
-                mode="min",
-                max_t=30,  # Maximum number of training iterations
+                max_t=50,  # Maximum number of training iterations
                 grace_period=5,  # Initial iterations to run before starting to evaluate
                 reduction_factor=3, # prune factor
             )
         ),
-        run_config=air.RunConfig( 
+        run_config=RunConfig( 
             name=f"MGNN_{config_file}",
-            local_dir=LOG_DIR
+            storage_path=LOG_DIR
         )
     )
-    results = tuner.fit()
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    results.save(os.path.join(TUNE_CONFIG_PATH, f"results_{config_file}_{timestamp}.hyperres"))
+    print(f"Starting Ray Tune with config: {config_file}")
+    print(f"Search space keys: {list(search_space.keys())}")
+    print("------------------------------------------------")
+    try:
+        results = tuner.fit()
+    except KeyboardInterrupt:
+        print("Ray Tune run interrupted by user -> saving current results.")
+    print("------------------------------------------------")
+
     print("Best hyperparameters found were: ", results.get_best_result().config)
 
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    result_path = os.path.join(RES_DIR, f"results_{config_file}_{timestamp}.json")
+    all_results = [{ "config": r.config, "metrics": r.metrics } for r in results]
+    with open(result_path, 'w') as f:
+        json.dump(all_results, f, indent=4)
+    best_result = results.get_best_result()
+    with open(os.path.join(RES_DIR, f"best_{config_file}_{timestamp}.json"), 'w') as f:
+        json.dump({
+            "config": best_result.config,
+            "metrics": best_result.metrics,
+        }, f, indent=4)
+    print(f"Results saved to {result_path} and best result to {os.path.join(RES_DIR, f'best_{config_file}_{timestamp}.json')}")
+    print("Ray Tune run completed successfully.")
 
 def select_file():
     files = [f for f in os.listdir(TUNE_CONFIG_PATH) if os.path.isfile(os.path.join(TUNE_CONFIG_PATH, f))]
@@ -92,9 +130,22 @@ def select_file():
         return os.path.join(TUNE_CONFIG_PATH, selected)
     return None
 
+def count_discrete_combinations(search_space):
+    total = 1
+    discrete_params = {}
+    for k, v in search_space.items():
+        if isinstance(v, ray.tune.search.sample.Categorical):
+            num = len(v.categories)
+            total *= num
+            discrete_params[k] = num
+    return total, discrete_params
+
 if __name__ == "__main__": 
     TUNE_CONFIG_PATH = os.path.dirname(os.path.abspath(__file__)) + "/tune_config"
     LOG_DIR = os.path.dirname(os.path.abspath(__file__)) + "/tune_logs"
+    RES_DIR = os.path.dirname(os.path.abspath(__file__)) + "/tune_results"
+    BASIS_PATH = os.path.join(PROJECT_ROOT, "scripts/6-31g_2df_p_custom_nwchem.gbs")
     os.makedirs(LOG_DIR, exist_ok=True)
+    os.makedirs(RES_DIR, exist_ok=True)
     config_file = select_file().split('/')[-1]  # Get the filename only
     runhypertune(config_file) # may later be extended to choose datasets with cmd line args

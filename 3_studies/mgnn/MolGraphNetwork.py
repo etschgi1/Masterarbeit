@@ -12,9 +12,9 @@ from torch_geometric.loader import DataLoader
 from collections import defaultdict
 from torch_scatter import scatter_add #! maybe use other aggregation functions later on
 
-from utils import dprint, set_verbose, density_fock_overlap, unflatten_triang, rotate_points, rotate_M, rotated_xyz_content
+from mgnn.Graphutils import dprint, set_verbose, density_fock_overlap, unflatten_triang, rotate_points, rotate_M, rotated_xyz_content
 
-from encoder import EncoderDecoderFactory
+from mgnn.encoder import EncoderDecoderFactory
 
 
 set_verbose(2)  # Set the verbosity level for debugging output
@@ -77,6 +77,8 @@ class MolGraphNetwork(torch.nn.Module):
         self.edge_decoders = None # decodes hidden edge features to hetero/homo blocks for edges
         self.message_net = None # Net to provide message passing! 
 
+        self.no_progress_bar = False
+
         for key, value in kwargs.items():
             setattr(self, key, value)
         
@@ -124,7 +126,7 @@ class MolGraphNetwork(torch.nn.Module):
 
         #! gather train graphs + augment data if needed
         self.train_graphs = [] 
-        for key, target, overlap, coords, xyz_file in tqdm(zip(self.dataset.train_keys, *train_data), desc="Creating training graphs"):
+        for key, target, overlap, coords, xyz_file in tqdm(zip(self.dataset.train_keys, *train_data), desc="Creating training graphs", disable=self.no_progress_bar):
             mol = self.dataset.molecule(key)
             self.train_graphs.append(self.make_graph(overlap, target, coords, mol))
         n_aug = 0
@@ -133,7 +135,7 @@ class MolGraphNetwork(torch.nn.Module):
             n_aug = int(self.data_aug_factor * train_size - train_size)
             aug_graphs, aug_target_in, aug_overlap_in, aug_infos, aug_coords = [], [], [], [], []
             dprint(1, f"Augmenting training set using factor {self.data_aug_factor} -> {n_aug} additional training samples.")
-            for _ in tqdm(range(int(n_aug)), desc="Augmenting data"):
+            for _ in tqdm(range(int(n_aug)), desc="Augmenting data", disable=self.no_progress_bar):
                 idx = np.random.choice(range(len(train_data))) #! only augment training data
                 overlap, target, coords, xyz_file = overlap_in[idx], target_in[idx], coords_in[idx], files_in[idx]
                 aug_graph, aug_overlap, aug_target, aug_info = self.aug_data(overlap, target, coords, xyz_file)
@@ -152,10 +154,10 @@ class MolGraphNetwork(torch.nn.Module):
         # validation and test data
         self.val_graphs = []
         self.test_graphs = []
-        for key, target, overlap, coords, xyz_file in tqdm(zip(self.dataset.val_keys[:len(self.dataset.val_keys)//2], *val_data), desc="Creating validation graphs"):
+        for key, target, overlap, coords, xyz_file in tqdm(zip(self.dataset.val_keys[:len(self.dataset.val_keys)//2], *val_data), desc="Creating validation graphs", disable=self.no_progress_bar):
             mol = self.dataset.molecule(key)
             self.val_graphs.append(self.make_graph(overlap, target, coords, mol))
-        for key, target, overlap, coords, xyz_file in tqdm(zip(self.dataset.val_keys[len(self.dataset.val_keys)//2:], *test_data), desc="Creating test graphs"):
+        for key, target, overlap, coords, xyz_file in tqdm(zip(self.dataset.val_keys[len(self.dataset.val_keys)//2:], *test_data), desc="Creating test graphs", disable=self.no_progress_bar):
             mol = self.dataset.molecule(key)
             self.test_graphs.append(self.make_graph(overlap, target, coords, mol))
 
@@ -815,7 +817,7 @@ class MolGraphNetwork(torch.nn.Module):
                 self.train()
                 total_train_loss = 0.0
 
-                for batch in tqdm(self.train_loader, desc=f"Epoch {epoch} [Train]"):
+                for batch in tqdm(self.train_loader, desc=f"Epoch {epoch} [Train]", disable=self.no_progress_bar):
                     batch = batch.to(device)
                     optimizer.zero_grad()
                     batch = self.forward(batch)
@@ -839,7 +841,7 @@ class MolGraphNetwork(torch.nn.Module):
                 self.eval()
                 total_val_loss = 0.0
                 with torch.no_grad():
-                    for batch in tqdm(self.val_loader, desc=f"Epoch {epoch} [Val]"):
+                    for batch in tqdm(self.val_loader, desc=f"Epoch {epoch} [Val]", disable=self.no_progress_bar):
                         batch = batch.to(device)
                         batch = self.forward(batch)
 
@@ -879,7 +881,7 @@ class MolGraphNetwork(torch.nn.Module):
         self.eval()
         total_test_loss = 0.0
         with torch.no_grad():
-            for batch in tqdm(self.test_loader, desc=f"Epoch {epoch} [Test]"):
+            for batch in tqdm(self.test_loader, desc=f"Epoch {epoch} [Test]", disable=self.no_progress_bar):
                 batch = batch.to(device)
                 batch = self.forward(batch)
 
@@ -938,8 +940,5 @@ class MolGraphNetwork(torch.nn.Module):
                 raise e
 
 if __name__ == "__main__": 
-    BASIS_PATH = "scripts/6-31g_2df_p_custom_nwchem.gbs"
-    GEOMETRY_Source = "datasets/QM9/xyz_c7h10o2_sorted"
-    MGNN = MolGraphNetwork(xyz_source=GEOMETRY_Source, backend=Backend.PY, basis=BASIS_PATH, batch_size=2, data_aug_factor=3.14)
-    MGNN.load_data(max_samples=10, 
-                   cache_meta={"method":"dft", "basis":None, "functional": "b3lypg", "guess": "minao", "backend": "pyscf", "cache": "datasets/QM9/out/c7h10o2_b3lypg_6-31G(2df,p)/pyscf"})
+    print("Import test for MolGraphNetwork.py")
+    print("This file is not meant to be run directly. Use it as a module in your training script.")

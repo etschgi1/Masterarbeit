@@ -21,3 +21,4 @@
 /**/models/KRR/
 *pth
 /**/keras_tuning/
+/**/tune_logs/
