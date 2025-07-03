@@ -423,9 +423,7 @@ class MolGraphNetwork(torch.nn.Module):
         for u_sym in unique_atom_syms: 
             atom_sym_indices = [i for i, sym in enumerate(batch.atom_sym) if sym == u_sym]
             atom_indices_dict[u_sym].extend(atom_sym_indices)
-            raw_center_blocks = torch.stack(
-                [batch.center_blocks[i].to(device) for i in atom_sym_indices], dim=0
-            ) # This now has shape (Nr_of_atoms_for_this_sym, self.center_sizes[u_sym])
+            raw_center_blocks = torch.stack([batch.center_blocks[i].to(device) for i in atom_sym_indices], dim=0) # This now has shape (Nr_of_atoms_for_this_sym, self.center_sizes[u_sym])
             assert raw_center_blocks.shape[1] == self.center_sizes[u_sym], f"Center block size {raw_center_blocks.shape[1]} does not match expected size {self.center_sizes[u_sym]} for atom type {u_sym}."
             c_sym = self.node_encoders[u_sym](raw_center_blocks) 
             c[atom_sym_indices] = c_sym  # in h we have the same dimensiom self.hidden_dim for all atoms in the batch
@@ -437,9 +435,7 @@ class MolGraphNetwork(torch.nn.Module):
         for key in unique_edge_keys:
             edge_key_indices = [i for i, sym in enumerate(batch.edge_pair_sym) if sym == key]
             edge_indices_dict[key].extend(edge_key_indices)  # Store indices for this edge type
-            raw_edge_blocks = torch.stack(
-                [batch.edge_blocks[i].to(device) for i in edge_key_indices], dim=0
-            )
+            raw_edge_blocks = torch.stack([batch.edge_blocks[i].to(device) for i in edge_key_indices], dim=0)
             distances = batch.edge_dist[edge_key_indices].to(device).view(-1, 1)  # Reshape distances to match edge blocks -> (Nr of edges for this key, 1)
             edge_inputs = torch.cat((raw_edge_blocks, distances), dim=1)  
             

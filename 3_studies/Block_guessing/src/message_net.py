@@ -18,14 +18,17 @@ class MessageNet(torch.nn.Module):
     def __init__(self, input_dim, hidden_dim, num_layers=2, dropout=0.1):
         super().__init__()
         assert num_layers >= 1, "num_layers must be >= 1"
-
+        if type(dropout) is list:
+            assert len(dropout) == num_layers - 1, "dropout list must have length num_layers - 1"
         layers = []
         in_dim = input_dim
 
-        for _ in range(num_layers - 1):
+        for i in range(num_layers - 1):
             layers.append(torch.nn.Linear(in_dim, hidden_dim))
             layers.append(torch.nn.GELU())
-            if dropout > 0.0:
+            if type(dropout) is list:
+                layers.append(torch.nn.Dropout(dropout[i]))
+            elif dropout > 0.0:
                 layers.append(torch.nn.Dropout(dropout))
             in_dim = hidden_dim
 
