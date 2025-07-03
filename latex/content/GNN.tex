@@ -97,8 +97,8 @@ Similar to the loss function, the optimizer could also be treated as a hyperpara
 Training trials during which the validation loss stagnates will be cut short using the grace-epochs parameter. In most systems with high atom-counts our model learns sufficiently fast. This is due to the fact that each sample contains multiple self- and interaction block per atom sort / atom combination. Therefore, the number of grace epochs are set to a rather low 3-5 epochs in most runs. 
 
 \textbf{Hyperparameter tuning}\\
-\TODO{Add general remarks about hyperparameter tuning}
-
+Hyperparameter tuning is performed using the Ray Tune \parencite{ref:ray_tune} package. Given the the huge variety of hyperparameters\footnote{even with the shared encoder / decoder architecture of the GNN} a grid search is computationally not feasible. The Asynchronous Successive Halving Algorithm (ASHA) is used as a scheduler to find suitable hyperparameter combinations faster. The authors claim that the algorithm finds good hyperparameters nearly an order of magnitude faster, compared to a random search.\parencite{ref:ASHA}\\
+In order to further reduce the number of discrete combinations ASHA samples certain hyperparameters will be fixed and others may be uniformly / log-uniformly drawn from an interval. This constitutes a resource efficient way which can be easily extended to larger search spaces and larger compute clusters if needed. 
 
 \section{Benchmark model}
 \label{sec:0_d_benchmark_model}

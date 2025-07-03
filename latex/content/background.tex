@@ -284,7 +284,6 @@ error $\Delta$\footnote{This error includes both reducible components—such as 
 The loss function, also referred to as the cost function, quantifies the quality of the model's predictions by measuring the discrepancy between the predicted and true values. It may be motivated by system specific attributes, as is the case for F-score, or provide a general-purpose, model-agnostic measure of prediction accuracy, such as the mean squared error (MSE) or it's root (RMSE). \\
 
 \textbf{F-score}\\
-\label{subsec:f_score}
 One way of capturing the closeness of a guessed density $\psi^\sigma_{\text{guess}}$ to the converged one $\psi^\sigma_{\text{SCF}}$ can be defined as the overlap of same spin orbitals in \autoref{eq:f_score}.
 \begin{subequations}
 \label{eq:f_score}
@@ -297,7 +296,6 @@ Here the notation introduced in \autoref{sec:background_scf} was used. The norma
 
 
 \textbf{Mean Squared Error (MSE) / Root Mean Squared Error (RMSE)}\\
-\label{subsec:rmse_mse}
 For an abstract prediction matrix $\mathbf{Y^\text{(pred)}}$ the MSE is simply defined by the arithmetic mean of the squared differences with the actual values $\|\mathbf{Y^\text{(truth)}}$ as given in \autoref{eq:mse}. $F$ denotes the Frobenius norm in this case and our matrices will usually be square matrices $\rightarrow n \equiv m$\footnote{The GNN will use non-square sub-matrix blocks to evaluate it's loss}.  
 \begin{subequations}
 \begin{align}
@@ -349,16 +347,44 @@ f(\mathbf{x}^*) = \mathbf{k}(\mathbf{x}^*)^\top \mathbf{A}.
 
 KRR thus extends ridge regression in a non-parametric way, with the regularization term $\lambda \mathbf{I}$ ensuring that $(\mathbf{K} + \lambda \mathbf{I})$ is invertible and numerically stable, while enabling the model to capture complex, nonlinear patterns at a computational cost of $\mathcal{O}(N^3)$. One drawback of KRR is the growing computational cost,  because matrices $\mathbf{K}$ and $\mathbf{A}$ grow with the number of training samples $N$.
 
-
-\subsection{Multi Level Perceptron (MLP)}
+\subsection{Neural Network (NN) concepts}
+\label{subsec:nn_concepts}
+Neural networks are based on a simplified model of a neuron. Rosenblatt's perceptron algorithm, depicted in \autoref{fig:perceptron}, builds the foundation for nearly all neural network architectures \parencite{ref:rosenblatt1958perceptron}. It introduces the nonlinear mapping from the features $\mathbf{x}$ to the targets $\mathbf{y}$ using a step function $\Theta$ as shown in \autoref{eq:perceptron}\footnote{Bias is again prepended to the weight vector as well as a one to the feature vector to match their dimensions}.
+\begin{equation}
+    \label{eq:perceptron}
+    y = \Theta(\mathbf{w} \cdot \mathbf{x}) \quad \text{with} \quad
+    \Theta(z) =
+    \begin{cases}
+        1 & \text{if } z \geq 0 \\
+        0 & \text{otherwise}
+    \end{cases}
+\end{equation}
+The function used to transform the weight-feature product is also commonly referred to as an activation function. A step function gives a binary output and is thus most relevant in classification tasks. In the general case $\Theta$ denotes an arbitrary activation function which may also be monotonic and continuous, contrary to the step function.\\
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{../fig/background/Perceptron.pdf}
+    \caption[Perceptron]{Architecture of the perceptron algorithm. Features $x_i$ are multiplied with their respective weights $w_i$ summed together with the bias term $w_0$ and passed through an activation function $\Theta$ to produce the output $y$.}
+    \label{fig:perceptron}
+\end{figure}
+Functions mapping to values in the range $[0, 1]$, such as the step function or sigmoid functions, are used in classification tasks. Other (mostly) monotonic functions are used for activation in regression tasks. Due to their frequent invocation, computationally inexpensive functions like the Rectified Linear Unit (ReLU) are widely used in practice. The Gaussian Error Linear Unit (GeLU) converges to ReLU in the positive and negative limits, but smooths the transition around zero, ensuring differentiability over the entire domain. These commonly used functions are depicted in \autoref{fig:activation_functions}. 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../fig/background/activation_functions.pdf}
+    \caption[Common activation functions]{Common activation functions.}
+    \label{fig:activation_functions}
+\end{figure}
+\subsection{Feed forward Networks: Multi Layer Perceptron (MLP)}
 \label{subsec:background_mlp}
-\TODO{discuss model types relevant to thesis, e.g. linear regression + regularization by RR / KRR, neural networks, GNNs, activation etc.}\\
+\TODO{Info about Feed forward network - different layer types + dropout / regularization whatever}
 
 \subsection{Graph Neural Network (GNN)}
 \label{subsec:background_gnn}
+\TODO{Info about GNNs include graph with example molecule and empedding of data in there}
 
 
-\section{QM9 dataset \parencite{ref:data_qm9}}
+\section{Datasets}
+\label{sec:datasets}
+\subsection{QM9 dataset \parencite{ref:data_qm9}}
 \label{sec:qm9}
 During selection of a dataset for training two practical considerations dominate. 
 \begin{enumerate}
