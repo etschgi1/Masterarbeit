@@ -1,7 +1,7 @@
 import itertools
 import torch
 from typing import List, Dict
-from message_net import MessageNet
+from mgnn.message_net import MessageNet
 
 
 class EncoderDecoderFactory(torch.nn.Module):

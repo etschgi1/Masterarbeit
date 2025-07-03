@@ -1,0 +1,1 @@
+# src/mgnn/__init__.py

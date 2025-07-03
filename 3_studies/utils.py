@@ -414,3 +414,11 @@ def rotate_M(mol, axis, angle, M, maxL=3):
     i_u, j_u = np.triu_indices_from(outM.Matrix, k=1)
     outM.Matrix[j_u, i_u] = outM.Matrix[i_u, j_u]
     return outM
+
+def find_repo_root(repo_name='Masterarbeit'):
+    from pathlib import Path    
+    p = Path.cwd()
+    for d in (p, *p.parents):
+        if d.name == repo_name:
+            return d
+    raise FileNotFoundError(f"Could not find a folder named {repo_name} in {p} or its parents")

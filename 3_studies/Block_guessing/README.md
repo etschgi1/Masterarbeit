@@ -1,1 +1,0 @@
-The goal is to implement Block wise guessing analoguous to super position of atomic densities!

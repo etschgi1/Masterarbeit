@@ -258,10 +258,3 @@ def plot_mat_comp(reference, prediction, reshape=False, title="Fock Matrix Compa
     plt.tight_layout()
     plt.show()
 
-def find_repo_root(repo_name='Masterarbeit'):
-    from pathlib import Path    
-    p = Path.cwd()
-    for d in (p, *p.parents):
-        if d.name == repo_name:
-            return d
-    raise FileNotFoundError(f"Could not find a folder named {repo_name} in {p} or its parents")
