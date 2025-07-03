@@ -786,7 +786,8 @@ class MolGraphNetwork(torch.nn.Module):
                              "patience": 3,
                              "threshold": 1e-3,
                              "cooldown": 2, 
-                             "min_lr" : 1e-6}):
+                             "min_lr" : 1e-6}, 
+                    report_fn=None):
         import torch.nn.functional as F
         from tqdm import tqdm
         
@@ -850,6 +851,9 @@ class MolGraphNetwork(torch.nn.Module):
                         total_val_loss += ((lc + le) / batch.num_graphs).item()
 
                 avg_val_loss = total_val_loss / len(self.val_loader)
+                if report_fn is not None: # report to ray!
+                    report_fn({"loss": avg_val_loss, "epoch": epoch, "train_loss": avg_train_loss})
+
                 history["val_loss"].append(avg_val_loss)
                 print(f"Epoch {epoch}/{num_epochs} → Avg Val   Loss: {avg_val_loss:.6f}")
 
@@ -887,12 +891,13 @@ class MolGraphNetwork(torch.nn.Module):
                 total_test_loss += ((lt + le) / batch.num_graphs).item()
         avg_test_loss = total_test_loss / len(self.test_loader)
         history["test_loss"] = avg_test_loss
-        # save history
-        import pickle
-        base, _ = os.path.splitext(model_save_path)
-        hist_path = base + ".history"
-        with open(hist_path, "wb") as f: 
-            pickle.dump(history, f)
+        if model_save_path:
+            # save history
+            import pickle
+            base, _ = os.path.splitext(model_save_path)
+            hist_path = base + ".history"
+            with open(hist_path, "wb") as f: 
+                pickle.dump(history, f)
         print(f"Test  Loss: {avg_test_loss:.6f}")
 
     def save_model(self, path):
