@@ -2,7 +2,7 @@
 \label{chap:application}
 The GNN model introduced in \autoref{chap:gnn} will be benchmarked on various datasets in the following chapters. All reference data was calculated using the 6-31G(2df,p) basis at theory level B3LYP. \\
 
-Models will be evaluated by their iteration count till convergence, the energy difference from the converged solution and the RMSE of the diis commutator norm. 
+Models will be evaluated by their iteration count till convergence, the energy difference from the converged solution and the DIIS error (see \autoref{eq:diis_error}). 
 
 \TODO{Refer to 0d benchmark model, check basis + functional}
 \section{QM9 - \ch{C7H10O2} Isomers}
@@ -44,7 +44,7 @@ Training and validation losses both monotonically decrease up to around epoch 30
     \label{fig:initial_train_qm9_isomers}
 \end{figure}
 Both losses are further pushed down following learn rate decreases. This run produced the best model in epoch 33 with a validation loss of $33.00$ and a training loss of $28.83$ indicating slight overfitting which is to be expected especially without data augmentation in the training samples. The performance of the model $\text{GNN}_\text{initial}$ on the test set is compared to other models and guessing schemes in \autoref{tab:qm9_isomers_test_overview}. 
-\TODO{Define DIIS RMSE}
+
 
 
 \subsection{Hyperparameter tuning}

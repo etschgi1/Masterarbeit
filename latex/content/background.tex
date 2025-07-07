@@ -281,7 +281,7 @@ error $\Delta$\footnote{This error includes both reducible components—such as 
 \TODO{Supervised vs. unsupervised learning, reinforcement (?) propably not needed, Bias-Variance Trade-off (under/overfitting), Model Complexity \& Generalization - overfitting + need for validation crossref / test sets, Hyperparameter tuning, Feature representation [embedding]}  
 \subsection{Loss Functions}
 \label{subsec:background_loss_function}
-The loss function, also referred to as the cost function, quantifies the quality of the model's predictions by measuring the discrepancy between the predicted and true values. It may be motivated by system specific attributes, as is the case for F-score, or provide a general-purpose, model-agnostic measure of prediction accuracy, such as the mean squared error (MSE) or it's root (RMSE). \\
+The loss function, also referred to as the cost function, quantifies the quality of the model's predictions by measuring the discrepancy between the predicted and true values. It may be motivated by system specific attributes, as is the case for F-score or DIIS error, or provide a general-purpose, model-agnostic measure of prediction accuracy, such as the mean squared error (MSE) or it's root (RMSE). \\
 
 \textbf{F-score}\\
 One way of capturing the closeness of a guessed density $\psi^\sigma_{\text{guess}}$ to the converged one $\psi^\sigma_{\text{SCF}}$ can be defined as the overlap of same spin orbitals in \autoref{eq:f_score}.
@@ -303,7 +303,17 @@ For an abstract prediction matrix $\mathbf{Y^\text{(pred)}}$ the MSE is simply d
 \text{RMSE} &= \sqrt{ \text{MSE}}\label{eq:rmse}
 \end{align}
 \end{subequations}
-Calculating the square root of the MSE gives the RMSE in \autoref{eq:rmse}. Besides the fact that RMSE offers the same unit as the predicted quantity it offers no benefit and incurs additional computations. For this reason usage of MSE for model optimization is preferred. 
+Calculating the square root of the MSE gives the RMSE in \autoref{eq:rmse}. Besides the fact that RMSE offers the same unit as the predicted quantity it offers no benefit and incurs additional computations. For this reason usage of MSE for model optimization is preferred. \\
+
+\textbf{DIIS error}\\
+For evaluation of the models a computationally more demanding score, the DIIS error can be used. In this thesis it will be defined as the root mean squared error of the commutator relation of Fock and density matrix. In the general case this writes: 
+\begin{subequations}
+\begin{align}
+\mathbf{E_\sigma} &= \mathbf{F_\sigma} \mathbf{P_\sigma} \mathbf{S} - \mathbf{S} \mathbf{P_\sigma} \mathbf{F_\sigma}\\
+\text{DIIS error} &= \sqrt{\frac{\|\mathbf{E_\uparrow} + \mathbf{E_\downarrow}\|^2_F}{n_\text{elements, $\uparrow$} + n_\text{elements, $\downarrow$}}}\label{eq:diis_error}
+\end{align}
+\end{subequations}
+with a normalization factor $n_\text{elements, $\uparrow$} + n_\text{elements, $\downarrow$}$ to make different matrix sizes comparable. DIIS gives a measure of self consistency with DIIS error $=0$ (commuting $\mathbf{F} \& \mathbf{P}$) denoting convergence. 
 \subsection{Regression Models}
 \label{subsec:background_ml_model_types}
 Regression models try to establish the mapping in \autoref{eq:general_ML_model_formula} directly by modeling the mapping using a linear combination of terms. The most simple form, a linear regression in the multivariate multi-target case is given by: 
