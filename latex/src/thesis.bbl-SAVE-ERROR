@@ -965,6 +965,35 @@
       \field{title}{Deep Learning}
       \field{year}{2016}
     \endentry
+    \entry{ref:rosenblatt1958perceptron}{article}{}
+      \name{author}{1}{}{%
+        {{hash=9e8511ef13d0cdda3a709b93fa650e71}{%
+           family={Rosenblatt},
+           familyi={R\bibinitperiod},
+           given={Frank},
+           giveni={F\bibinitperiod}}}%
+      }
+      \strng{namehash}{9e8511ef13d0cdda3a709b93fa650e71}
+      \strng{fullhash}{9e8511ef13d0cdda3a709b93fa650e71}
+      \strng{bibnamehash}{9e8511ef13d0cdda3a709b93fa650e71}
+      \strng{authorbibnamehash}{9e8511ef13d0cdda3a709b93fa650e71}
+      \strng{authornamehash}{9e8511ef13d0cdda3a709b93fa650e71}
+      \strng{authorfullhash}{9e8511ef13d0cdda3a709b93fa650e71}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Psychological Review}
+      \field{number}{6}
+      \field{title}{The perceptron: A probabilistic model for information storage and organization in the brain}
+      \field{volume}{65}
+      \field{year}{1958}
+      \field{pages}{386\bibrangedash 408}
+      \range{pages}{23}
+      \verb{doi}
+      \verb 10.1037/h0042519
+      \endverb
+    \endentry
     \entry{ref:data_qm9}{misc}{}
       \name{author}{5}{}{%
         {{hash=28322231a418243314954d2bce103a74}{%
@@ -1721,8 +1750,8 @@
       \strng{authorbibnamehash}{95d226595653ed8da4ee9d46180aacb7}
       \strng{authornamehash}{95d226595653ed8da4ee9d46180aacb7}
       \strng{authorfullhash}{7c521cf550a09e821676b715fa4a0f18}
-      \field{sortinit}{3}
-      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{The Journal of Chemical Physics}
@@ -1822,6 +1851,147 @@
       \endverb
       \verb{url}
       \verb https://github.com/hauser-group/scf_guess_datasets
+      \endverb
+    \endentry
+    \entry{ref:adamW}{misc}{}
+      \name{author}{2}{}{%
+        {{hash=1241b8181104f1917578d4c7f9b323b6}{%
+           family={Loshchilov},
+           familyi={L\bibinitperiod},
+           given={Ilya},
+           giveni={I\bibinitperiod}}}%
+        {{hash=528d4af87fd2ecf5fb8a22db913ce088}{%
+           family={Hutter},
+           familyi={H\bibinitperiod},
+           given={Frank},
+           giveni={F\bibinitperiod}}}%
+      }
+      \strng{namehash}{b308ccb07134a06ec3735828ac4f15e2}
+      \strng{fullhash}{b308ccb07134a06ec3735828ac4f15e2}
+      \strng{bibnamehash}{b308ccb07134a06ec3735828ac4f15e2}
+      \strng{authorbibnamehash}{b308ccb07134a06ec3735828ac4f15e2}
+      \strng{authornamehash}{b308ccb07134a06ec3735828ac4f15e2}
+      \strng{authorfullhash}{b308ccb07134a06ec3735828ac4f15e2}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{cs.LG}
+      \field{eprinttype}{arXiv}
+      \field{title}{Decoupled Weight Decay Regularization}
+      \field{year}{2019}
+      \verb{eprint}
+      \verb 1711.05101
+      \endverb
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/1711.05101
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/1711.05101
+      \endverb
+    \endentry
+    \entry{ref:ray_tune}{article}{}
+      \name{author}{6}{}{%
+        {{hash=3eb896f5341af6688c143d8081eac1fe}{%
+           family={Liaw},
+           familyi={L\bibinitperiod},
+           given={Richard},
+           giveni={R\bibinitperiod}}}%
+        {{hash=882d47329b54117fb0b9bba0fecb0e2b}{%
+           family={Liang},
+           familyi={L\bibinitperiod},
+           given={Eric},
+           giveni={E\bibinitperiod}}}%
+        {{hash=60380b3a2f3cf35fc1d43074792d7567}{%
+           family={Nishihara},
+           familyi={N\bibinitperiod},
+           given={Robert},
+           giveni={R\bibinitperiod}}}%
+        {{hash=a901fd78fe1108cfa7d11129644967c7}{%
+           family={Moritz},
+           familyi={M\bibinitperiod},
+           given={Philipp},
+           giveni={P\bibinitperiod}}}%
+        {{hash=80175f489665023b28dbb4cf1775c0ef}{%
+           family={Gonzalez},
+           familyi={G\bibinitperiod},
+           given={Joseph\bibnamedelima E},
+           giveni={J\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+        {{hash=51d9ef26181e2e8a9dc546b401e0bb26}{%
+           family={Stoica},
+           familyi={S\bibinitperiod},
+           given={Ion},
+           giveni={I\bibinitperiod}}}%
+      }
+      \strng{namehash}{bc862ede41e39cd8560817b54f4bdf53}
+      \strng{fullhash}{6987a606e6370c1400c8e5f29eb66fcf}
+      \strng{bibnamehash}{bc862ede41e39cd8560817b54f4bdf53}
+      \strng{authorbibnamehash}{bc862ede41e39cd8560817b54f4bdf53}
+      \strng{authornamehash}{bc862ede41e39cd8560817b54f4bdf53}
+      \strng{authorfullhash}{6987a606e6370c1400c8e5f29eb66fcf}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{arXiv preprint arXiv:1807.05118}
+      \field{title}{Tune: A Research Platform for Distributed Model Selection and Training}
+      \field{year}{2018}
+    \endentry
+    \entry{ref:ASHA}{misc}{}
+      \name{author}{7}{}{%
+        {{hash=1f8dc2db3fb2bdd7a51ade713872affb}{%
+           family={Li},
+           familyi={L\bibinitperiod},
+           given={Lisha},
+           giveni={L\bibinitperiod}}}%
+        {{hash=240fa0e010cb30dc1e40c10157f58276}{%
+           family={Jamieson},
+           familyi={J\bibinitperiod},
+           given={Kevin},
+           giveni={K\bibinitperiod}}}%
+        {{hash=7aef26bccf2dba53f4b3c49adfb2983e}{%
+           family={Rostamizadeh},
+           familyi={R\bibinitperiod},
+           given={Afshin},
+           giveni={A\bibinitperiod}}}%
+        {{hash=937d6c7e24b08ab1227036c3056500d2}{%
+           family={Gonina},
+           familyi={G\bibinitperiod},
+           given={Katya},
+           giveni={K\bibinitperiod}}}%
+        {{hash=e771760b6d0d33f8b4dfd907d8d57ac2}{%
+           family={Hardt},
+           familyi={H\bibinitperiod},
+           given={Moritz},
+           giveni={M\bibinitperiod}}}%
+        {{hash=3503059e1c0c778913607c87d8c5173a}{%
+           family={Recht},
+           familyi={R\bibinitperiod},
+           given={Benjamin},
+           giveni={B\bibinitperiod}}}%
+        {{hash=70e0fe957473b80f1b1b5dcb8e99d31e}{%
+           family={Talwalkar},
+           familyi={T\bibinitperiod},
+           given={Ameet},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{60c45ec23c5a0d5531344a38753d8d90}
+      \strng{fullhash}{fbea7824b1195ca5c521843ca976d9bf}
+      \strng{bibnamehash}{60c45ec23c5a0d5531344a38753d8d90}
+      \strng{authorbibnamehash}{60c45ec23c5a0d5531344a38753d8d90}
+      \strng{authornamehash}{60c45ec23c5a0d5531344a38753d8d90}
+      \strng{authorfullhash}{fbea7824b1195ca5c521843ca976d9bf}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Massively Parallel Hyperparameter Tuning}
+      \field{year}{2018}
+      \verb{urlraw}
+      \verb https://openreview.net/forum?id=S1Y7OOlRZ
+      \endverb
+      \verb{url}
+      \verb https://openreview.net/forum?id=S1Y7OOlRZ
       \endverb
     \endentry
     \entry{ref:pyscf_user_guide}{misc}{}
@@ -1966,8 +2136,8 @@
       \strng{authornamehash}{9d22c08c2c5ed286d40e1b044bed9407}
       \strng{authorfullhash}{9d22c08c2c5ed286d40e1b044bed9407}
       \field{extraname}{2}
-      \field{sortinit}{4}
-      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{day}{28}

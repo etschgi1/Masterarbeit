@@ -174,7 +174,7 @@ The total energy of the system's ground state of our closed shell system can als
     E_\text{HF} &= \bra{\Psi} H \ket{\Psi} = 2\sum_{i=1}^{N/2} \bra{\chi_i} h(i) \ket{\chi_i}
     + \frac{1}{2}\sum_{i=1}^{N/2}\sum_{j=1}^{N/2} \left[ 2 J_j(i) - K_j(i) \right]\\
     E_\text{HF} &= \sum_{i=1}^{N/2}\left[ h(i) + \varepsilon_i\right] \text{  with  } \varepsilon_i = F_i =  h(i) + \sum_{j}^{N/2} \left[ 2 J_j(i) - K_j(i) \right]\\
-    E_\text{HF} &= \frac{1}{2} \sum_{\nu, \mu} \mathbf{P}_{\mu \nu} \left[ H_{\mu \nu}^\text{core} + F_{\mu \nu} \right] = \frac{1}{2} \text{Tr} \left( \mathbf{P} \left[ \mathbf{H}^\text{core} + \mathbf{F} \right] \right)
+    E_\text{HF} &= \frac{1}{2} \sum_{\nu, \mu} P_{\mu \nu} \left[ H_{\mu \nu}^\text{core} + F_{\mu \nu} \right] = \frac{1}{2} \text{Tr} \left( \mathbf{P} \left[ \mathbf{H}^\text{core} + \mathbf{F} \right] \right)
 \end{align}
 \end{subequations}
 To get the total energy of the system one adds the nuclear repulsion energy $E_\text{nuc} = \sum_{A<B} \frac{Z_A Z_B}{|\mathbf{R}_A - \mathbf{R}_B|}$ to the electronic energy $E_\text{HF}$, yielding the total energy of the system.\\
@@ -400,7 +400,7 @@ During selection of a dataset for training two practical considerations dominate
 \end{enumerate}
 
 \subsection{QM9 dataset \parencite{ref:data_qm9}}
-\label{sec:qm9}
+\label{subsec:qm9}
 The QM9 dataset \parencite{ref:article1_qm9,ref:article2_qm9} ticks both of these two boxes. It offers a variety of molecules from as little as 3 constituent atoms up to 29 atoms. Additionally, there are large enough chunks of constitutional isomers to train models on these subsets of same sized matrices. The distribution of molecules by atom count with the predominant constitutional isomers is shown in \autoref{fig:method_qm9_overview}.
 \begin{figure}[H]
     \centering
