@@ -68,6 +68,7 @@ class MolGraphNetwork(torch.nn.Module):
 
         self.atom_types = None
         self.overlap_types = None
+        self.cur_val_loss = None
 
         # Encoder / Decoder factory to generate stuff for different atom types - instantiated in setup_model inside load_data
         self.node_encoders = None # encodes upper triangular blocks for center blocks
@@ -95,7 +96,7 @@ class MolGraphNetwork(torch.nn.Module):
         xyz_root = self.dataset.xyz
         def load_set(set_name: str): 
             focks_in, dens_in, overlap_in, coords_in, files_in = [], [], [], [], []
-            set_keys = self.dataset.train_keys if set_name == "train" else self.dataset.val_keys[:len(self.dataset.val_keys)//2] if set_name == "val" else self.dataset.val_keys[len(self.dataset.val_keys)//2:]
+            set_keys = self.dataset.train_keys if set_name == "train" else self.dataset.val_keys if set_name == "val" else self.dataset.test_keys
             dprint(2, f"Loading {len(set_keys)} files for {set_name} set from {xyz_root}...")
             for key in set_keys:
                 result = self.dataset.solution(key)
@@ -149,15 +150,15 @@ class MolGraphNetwork(torch.nn.Module):
             target_in.extend(aug_target_in)
             coords_in.extend(aug_coords) # same as non-augmented!
             files_in.extend(aug_infos)  # augmentation info instead of filenames (this includes filenames)
-        total_samples = len(train_data[0]) + len(val_data[0]) + len(test_data[0]) + n_aug
+        total_samples = train_size + val_size + test_size + n_aug
 
         # validation and test data
         self.val_graphs = []
         self.test_graphs = []
-        for key, target, overlap, coords, xyz_file in tqdm(zip(self.dataset.val_keys[:len(self.dataset.val_keys)//2], *val_data), desc="Creating validation graphs", disable=self.no_progress_bar):
+        for key, target, overlap, coords, xyz_file in tqdm(zip(self.dataset.val_keys, *val_data), desc="Creating validation graphs", disable=self.no_progress_bar):
             mol = self.dataset.molecule(key)
             self.val_graphs.append(self.make_graph(overlap, target, coords, mol))
-        for key, target, overlap, coords, xyz_file in tqdm(zip(self.dataset.val_keys[len(self.dataset.val_keys)//2:], *test_data), desc="Creating test graphs", disable=self.no_progress_bar):
+        for key, target, overlap, coords, xyz_file in tqdm(zip(self.dataset.test_keys, *test_data), desc="Creating test graphs", disable=self.no_progress_bar):
             mol = self.dataset.molecule(key)
             self.test_graphs.append(self.make_graph(overlap, target, coords, mol))
 
@@ -858,7 +859,7 @@ class MolGraphNetwork(torch.nn.Module):
 
                 history["val_loss"].append(avg_val_loss)
                 print(f"Epoch {epoch}/{num_epochs} → Avg Val   Loss: {avg_val_loss:.6f}")
-
+                self.cur_val_loss = avg_val_loss 
                 # early stop!
                 if avg_val_loss < best_val: 
                     best_val = avg_val_loss
