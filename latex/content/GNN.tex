@@ -109,10 +109,12 @@ Comparable to the benchmarks in \autoref{chap:fock_matrix_predictions}, we will 
     \label{eq:avg_guess}
     \overline{P}_{\mu\nu} = \frac{1}{N_\text{train}} \sum_{i=1}^{N_\text{train}} P^{(i)}_{\mu\nu}
 \end{equation}
-The performance of $\overline{P}$ guess and various PySCF schemes on the \ch{C7H10O2}-isomer subset from the QM9 dataset is given in \autoref{fig:dummy_iterations_qm9_isomers}. 
+The performance of $\overline{P}$ guess and various PySCF schemes on the \ch{C7H10O2} isomer subset from the QM9 dataset is given in \autoref{fig:dummy_iterations_qm9_isomers}. 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{../fig/gnn/0_d_model_iteration_count.pdf}
+    \includegraphics[width=\textwidth]{../fig/gnn/0_d_model_iteration_count_bar.pdf}
     \caption[Iterations till convergence distribution for QM9-isomers]{Iterations till convergence distribution for QM9-isomers for PySCF and $\overline{P}$ guesses.}
     \label{fig:dummy_iterations_qm9_isomers}
 \end{figure}
+
+For further insights regarding convergence behavior using a second order newton solver, refer to \autoref{sec:notes_on_so_newton} 

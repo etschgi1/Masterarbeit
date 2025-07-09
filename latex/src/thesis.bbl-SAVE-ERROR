@@ -1750,6 +1750,7 @@
       \strng{authorbibnamehash}{95d226595653ed8da4ee9d46180aacb7}
       \strng{authornamehash}{95d226595653ed8da4ee9d46180aacb7}
       \strng{authorfullhash}{7c521cf550a09e821676b715fa4a0f18}
+      \field{extraname}{1}
       \field{sortinit}{4}
       \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
@@ -2150,6 +2151,72 @@
       \field{dateera}{ce}
       \verb{doi}
       \verb 10.1103/physreva.101.012516
+      \endverb
+    \endentry
+    \entry{ref:Schuett2019}{article}{}
+      \name{author}{5}{}{%
+        {{hash=8e662ecdd1f495b8ff7e5c84d6453526}{%
+           family={Schütt},
+           familyi={S\bibinitperiod},
+           given={T.},
+           giveni={T\bibinitperiod},
+           suffix={K.\},
+           suffixi={K\bibinitperiod}}}%
+        {{hash=6a355ee9c44decba2b2560f421828143}{%
+           family={Gastegger},
+           familyi={G\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=19d32c1900d46d951f402d354bb72352}{%
+           family={Tkatchenko},
+           familyi={T\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod}}}%
+        {{hash=042068b29291a1eb4d070a7dc43e7db4}{%
+           family={Müller},
+           familyi={M\bibinitperiod},
+           given={-R.},
+           giveni={\bibinithyphendelim \bibinitperiod},
+           suffix={K.\},
+           suffixi={K\bibinitperiod}}}%
+        {{hash=c006e4915027d8fc4e85d8655f303a87}{%
+           family={Maurer},
+           familyi={M\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod},
+           suffix={R.\},
+           suffixi={R\bibinitperiod}}}%
+      }
+      \strng{namehash}{62d2f33f0c7e741b3bbb471df15804a1}
+      \strng{fullhash}{0357bc3ced35c7becaee9ab1ffe71eac}
+      \strng{bibnamehash}{62d2f33f0c7e741b3bbb471df15804a1}
+      \strng{authorbibnamehash}{62d2f33f0c7e741b3bbb471df15804a1}
+      \strng{authornamehash}{62d2f33f0c7e741b3bbb471df15804a1}
+      \strng{authorfullhash}{0357bc3ced35c7becaee9ab1ffe71eac}
+      \field{extraname}{2}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Machine learning advances chemistry and materials science by enabling large-scale exploration of chemical space based on quantum chemical calculations. While these models supply fast and accurate predictions of atomistic chemical properties, they do not explicitly capture the electronic degrees of freedom of a molecule, which limits their applicability for reactive chemistry and chemical analysis. Here we present a deep learning framework for the prediction of the quantum mechanical wavefunction in a local basis of atomic orbitals from which all other ground-state properties can be derived. This approach retains full access to the electronic structure via the wavefunction at force-field-like efficiency and captures quantum mechanics in an analytically differentiable representation. On several examples, we demonstrate that this opens promising avenues to perform inverse design of molecular structures for targeting electronic property optimisation and a clear path towards increased synergy of machine learning and quantum chemistry.}
+      \field{day}{15}
+      \field{journaltitle}{Nature Communications}
+      \field{month}{11}
+      \field{number}{1}
+      \field{title}{Unifying machine learning and quantum chemistry with a deep neural network for molecular wavefunctions}
+      \field{volume}{10}
+      \field{year}{2019}
+      \field{dateera}{ce}
+      \field{pages}{5024}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1038/s41467-019-12875-2
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1038/s41467-019-12875-2
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1038/s41467-019-12875-2
       \endverb
     \endentry
   \enddatalist
