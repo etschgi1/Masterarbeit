@@ -396,8 +396,19 @@ Each connection is associated with a weight that must be learned to enable meani
 
 Like in regression, regularization may also be added in various places. Besides $L_1$ or $L_2$ penalities, which can be easily added to the loss function, dropout offers a neural network-specific way to regularize. During training, it randomly sets outputs of Perceptrons in the hidden layers to 0, thus deactivating the outgoing signal and reducing interdependence between Perceptrons. 
 
-\subsection{Graph Neural Network (GNN)}
+\subsection{Graph Neural Network (GNN) / Message Passing Neural Nets (MPNN)}
 \label{subsec:background_gnn}
+Many problems cannot be simply mapped to a flattened input vector without loosing information important in predictions. A natural representation of a molecule can be attained by using a graph with atoms as the nodes and edges between these bonds to represent interaction (e.g. bonds) between atoms. Learning features on graphs using a Graph Neural Network (GNN) is exploited in various fields across different scales from large protein structurs in DeepMinds Alphafold \parencite{ref:alphafold} down to molecular features such as energy, polarization and charge density in computational quantum chemistry. For the latter the term Message Passing Neural Nets was coined by Glimer et al. \parencite{ref:gilmer2017neural}.\\
+
+An abstract representation of a MPNN is depicted in \autoref{fig:gnn_background}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../fig/background/GNN.pdf}
+    \caption[Schematic Message Passing Neural Net]{Schematic representation of Message passing in a bidirectionally connected graph. Node colors influence neighbors which aggregate neighbor colors and updates own color via leaned update function each step. }
+    \label{fig:gnn_background}
+\end{figure}
+\TODO{explain stuff, such as: Node - feature empedding for nodes - edges - message concept - aggreagtion - update function + maybe readout!}
+
 \TODO{Info about GNNs include graph with example molecule and empedding of data in there}
 
 
