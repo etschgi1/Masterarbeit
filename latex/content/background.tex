@@ -134,7 +134,7 @@ As we have seen earlier, the Fock operator $F$ and thus the Fock matrix $\mathbf
             &\qquad - \frac{1}{2} \underbrace{\iint d\mathbf{r}_1 d\mathbf{r}_2\, \phi_\mu^*(\mathbf{r}_1) \phi_\lambda(\mathbf{r}_1) r_{12}^{-1} \phi_\sigma^*(\mathbf{r}_2) \phi_\nu(\mathbf{r}_2)}_{\text{Exchange-term}}
             \Bigg]
 \end{align}
-One and two electron contributions are now split into the core Hamiltonian $H_{\mu\nu}^\text{core}$ which is independent of the density matrix and thus stays constant for a given set of basis functions, and the Coulomb and exchange terms which depend on the density matrix $\mathbf{P}$. The later terms are often denoted as $G_{\mu\nu}$, the so called two-electron integrals, hence $F_{\mu \nu} = H_{\mu\nu}^\text{core} + G_{\mu\nu}$.\\
+One and two electron contributions are now split into the core Hamiltonian $H_{\mu\nu}^\text{core}$ which is independent of the density matrix and thus stays constant for a given set of basis functions, and the Coulomb and exchange terms which depend on the density matrix $\mathbf{P}$. The latter terms are often denoted as $G_{\mu\nu}$, the so called two-electron integrals, hence $F_{\mu \nu} = H_{\mu\nu}^\text{core} + G_{\mu\nu}$.\\
 
 \subsection{Self Consistent Field (SCF) Algorithm}
 \label{subsec:background_hf_scf}
@@ -209,7 +209,7 @@ The contraction coefficients $c_i$ and the exponents $\zeta_i$ are chosen such t
 The n in this nomenclature of Pople type basis sets \parencite{ref:pople_basis} denotes the number of GTOs used in the contraction. While STO-3G uses three GTOs for each orbital, STO-6-31G uses six GTOs for the inner shell and two functions with three and one GTO respectively for the outer shell. Basis sets using more then one contracted function (31 in 6-31G) are so called double-zeta basis sets; in this particular case a split-valence double zeta basis set because the core orbitals (6 in 6-31G) are modeled with only one contraction. The notation in parentheses denotes additional functions, e.g. STO-6-31G(2df,p)\footnote{also referred to as 6-31G(2df,p) in this thesis} uses two additional d-functions and one f-functions on heavy atoms (\ch{C}, \ch{O}, \ch{N} \& \ch{F}). \\
 
 \textbf{Segmented Contraction}\\
-Generally the GTOs used in the contraction of Pople type basis sets are not reused and thus of the segmented contraction type. In contrast, general contraction type basis sets (such as cc-pVXZ \parencite{ref:cc-pVXZ}) reuse some or all primitives in multiple contractions. The later can be converted to a computationally more efficient segmented form which retains the initial accuracy. One such modern segmented basis family optimized for density functional theory are the pcseg-n basis sets. \parencite{ref:Jensen2014pcs}\\
+Generally the GTOs used in the contraction of Pople type basis sets are not reused and thus of the segmented contraction type. In contrast, general contraction type basis sets (such as cc-pVXZ \parencite{ref:cc-pVXZ}) reuse some or all primitives in multiple contractions. The latter can be converted to a computationally more efficient segmented form which retains the initial accuracy. One such modern segmented basis family optimized for density functional theory are the pcseg-n basis sets. \parencite{ref:Jensen2014pcs}\\
 
 \textbf{Accuracy \& Hartree Limit}\\
 Expanding the spatial orbitals using basis functions introduces an error in the electron density distribution and subsequently the converged Energy $E_{HF}$. Given the limitation of a longer runtime--scaling with $\bigO{N^4}$ in the number of basis functions--the accuracy can be refined using a larger and more complete basis set. The so called Hartree limit constitutes the lowest energy asymptotically (theoretically) attainable by any HF-calculation. It can be estimated by the shrinking differences of energies given larger basis-sets. \parencite{ref:Jensen2005hf} Yet, it still lacks so called correlation energy of electrons and thus is makes bonds appear weaker. We will discuss methods which build or improve on Hartree Fock next. 
@@ -266,8 +266,8 @@ In the following we will give an overview of the most important concepts in ML w
 \subsection{Classification \& General Remarks}
 \label{subsec:background_ml_general_concepts}
 Machine learning itself is a subfield of artificial intelligence (AI), which is the broader field of creating machines that can perform tasks that would normally require human level intelligence. \\
-Central to ML is the concept of learning from data. This means that we need to define data given as input to predict a target output. Most broadly speaking, we can either predict a discrete class label (classification) or a continuous value (regression) given our input data. Our focus will be on the later task of finding a continuous value (Fock / density matrix entries) given another set of continuous values (atomic coordinates, overlap matrix elements, \dots). \\
-Another way to categorize machine learning models is into supervised, unsupervised, and reinforcement types. Supervised models learn a function that maps input data to labeled target values. Unsupervised models, on the other hand, seek patterns or structure in unlabeled data. Reinforcement learning refers to models that learn a policy through interaction with an environment by maximizing a reward signal over time.\\
+Central to ML is the concept of learning from data. This means that we need to define data given as input to predict a target output. Most broadly speaking, we can either predict a discrete class label (classification) or a continuous value (regression) given our input data. Our focus will be on the latter task, concretely on finding a continuous value (Fock / density matrix entries) given another set of continuous values (atomic coordinates, overlap matrix elements, \dots). \\
+They can also be grouped by learning paradigm: supervised, unsupervised, or reinforcement. Supervised models learn a function that maps input data to labeled target values. Unsupervised models, on the other hand, seek patterns or structure in unlabeled data. Reinforcement learning refers to models that learn a policy through interaction with an environment by maximizing a reward signal over time.\\
 
 For the purpose of this thesis we will focus on supervised models applied to our regression task. For consistency in the following sections we will introduce the general notation for our model: 
 \begin{equation}
@@ -277,8 +277,6 @@ For the purpose of this thesis we will focus on supervised models applied to our
 with the input vector $\mathbf{x} = (x_1, x_2, \dots)$ and the target or output vector $\mathbf{y} = (y_1, y_2, \dots)$ which is not necessarily of the same size as the input. The model $f$ represents the learned mapping from $\mathbf{x}$ to $\mathbf{y}$ with a certain 
 error $\Delta$\footnote{This error includes both reducible components—such as discretization error, which may be minimized by refining the DFT grid—and irreducible components, which stem from fundamental uncertainty in quantum mechanical systems.}. 
 
-
-\TODO{Supervised vs. unsupervised learning, reinforcement (?) propably not needed, Bias-Variance Trade-off (under/overfitting), Model Complexity \& Generalization - overfitting + need for validation crossref / test sets, Hyperparameter tuning, Feature representation [embedding]}  
 \subsection{Loss Functions}
 \label{subsec:background_loss_function}
 The loss function, also referred to as the cost function, quantifies the quality of the model's predictions by measuring the discrepancy between the predicted and true values. It may be motivated by system specific attributes, as is the case for F-score or DIIS error, or provide a general-purpose, model-agnostic measure of prediction accuracy, such as the mean squared error (MSE) or it's root (RMSE). \\
@@ -296,7 +294,7 @@ Here the notation introduced in \autoref{sec:background_scf} was used. The norma
 
 
 \textbf{Mean Squared Error (MSE) / Root Mean Squared Error (RMSE)}\\
-For an abstract prediction matrix $\mathbf{Y^\text{(pred)}}$ the MSE is simply defined by the arithmetic mean of the squared differences with the actual values $\|\mathbf{Y^\text{(truth)}}$ as given in \autoref{eq:mse}. $F$ denotes the Frobenius norm in this case and our matrices will usually be square matrices $\rightarrow n \equiv m$\footnote{The GNN will use non-square sub-matrix blocks to evaluate it's loss}.  
+For an abstract prediction matrix $\mathbf{Y^\text{(pred)}}$ the MSE is simply defined by the arithmetic mean of the squared differences with the actual values $\mathbf{Y^\text{(truth)}}$ as given in \autoref{eq:mse}. $F$ denotes the Frobenius norm in this case and our matrices will usually be square matrices $\rightarrow n \equiv m$\footnote{Only the GNN will use non-square sub-matrix blocks on the off-diagonals to evaluate it's loss}.  
 \begin{subequations}
 \begin{align}
 \text{MSE} &= \frac{1}{nm} \sum_{i=1}^{n} \sum_{j=1}^{m} \left( Y^\text{(pred)}_{ij} - Y^\text{(truth)}_{ij} \right)^2 = \frac{1}{nm} \|\mathbf{Y^\text{(pred)}} - \mathbf{Y^\text{(truth)}}\|_F^2 \label{eq:mse}\\
@@ -306,7 +304,7 @@ For an abstract prediction matrix $\mathbf{Y^\text{(pred)}}$ the MSE is simply d
 Calculating the square root of the MSE gives the RMSE in \autoref{eq:rmse}. Besides the fact that RMSE offers the same unit as the predicted quantity it offers no benefit and incurs additional computations. For this reason usage of MSE for model optimization is preferred. \\
 
 \textbf{DIIS error}\\
-For evaluation of the models a computationally more demanding score, the DIIS error can be used. In this thesis it will be defined as the root mean squared error of the commutator relation of Fock and density matrix. In the general case this writes: 
+A computationally more demanding score, the DIIS error, may also be used. In this thesis it will be defined as the root mean squared error of the commutator relation of Fock and density matrix. In the general case this writes: 
 \begin{subequations}
 \begin{align}
 \mathbf{E_\sigma} &= \mathbf{F_\sigma} \mathbf{P_\sigma} \mathbf{S} - \mathbf{S} \mathbf{P_\sigma} \mathbf{F_\sigma}\\
@@ -316,7 +314,7 @@ For evaluation of the models a computationally more demanding score, the DIIS er
 with a normalization factor $n_\text{elements, $\uparrow$} + n_\text{elements, $\downarrow$}$ to make different matrix sizes comparable. DIIS gives a measure of self consistency with DIIS error $=0$ (commuting $\mathbf{F} \& \mathbf{P}$) denoting convergence. 
 \subsection{Regression Models}
 \label{subsec:background_ml_model_types}
-Regression models try to establish the mapping in \autoref{eq:general_ML_model_formula} directly by modeling the mapping using a linear combination of terms. The most simple form, a linear regression in the multivariate multi-target case is given by: 
+Regression models try to establish the mapping in \autoref{eq:general_ML_model_formula} directly by modeling the mapping using a linear combination of terms. The most simple form, a linear regression in the multivariate multi-target case, is given by: 
 \begin{equation}
     \label{eq:linear_regression_formula}
     \begin{aligned}
@@ -376,53 +374,49 @@ The function used to transform the weight-feature product is also commonly refer
     \caption[Perceptron]{Architecture of the perceptron algorithm. Features $x_i$ are multiplied with their respective weights $w_i$ summed together with the bias term $w_0$ and passed through an activation function $\Theta$ to produce the output $y$.}
     \label{fig:perceptron}
 \end{figure}
-Functions mapping to values in the range $[0, 1]$, such as the step function or sigmoid functions, are used in classification tasks. Other (mostly) monotonic functions are used for activation in regression tasks. Due to their frequent invocation, computationally inexpensive functions like the Rectified Linear Unit (ReLU) are widely used in practice. The Gaussian Error Linear Unit (GeLU) converges to ReLU in the positive and negative limits, but smooths the transition around zero, ensuring differentiability over the entire domain. These commonly used functions are depicted in \autoref{fig:activation_functions}. 
+Functions mapping to values in the range $[0, 1]$, such as the step function or sigmoid functions, are used in classification tasks. Other (mostly) monotonic functions are used for activation in regression tasks. Due to their frequent invocation, computationally inexpensive functions like the Rectified Linear Unit (ReLU) are widely used in practice. The Gaussian Error Linear Unit (GeLU) converges to ReLU in the positive and negative limits, but smooths the transition around zero, ensuring differentiability over the entire domain. Some commonly used functions are depicted in \autoref{fig:activation_functions}. 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{../fig/background/activation_functions.pdf}
-    \caption[Common activation functions]{Common activation functions.}
+    \caption{Commonly used activation functions.}
     \label{fig:activation_functions}
 \end{figure}
 \subsection{Feed forward Networks: Multi Layer Perceptron (MLP)}
 \label{subsec:background_mlp}
-\begin{figure}[H]
+Feed forward networks refer to a network architecture in which the outputs of the networks do not feed back into the inputs or any intermediate representations. Hence the input is fed forward through the network to produce the output. This way there are no loops in the network's dataflow, making training with backpropagation possible. A Multi Layer Perceptron (MLP) as shown in \autoref{fig:mlp} combines many Perceptrons in layers. Data feeds into the input layer Perceptrons which are each connected to every other Perceptron in the first hidden layer. This connectivity is referred to as fully connected or dense. After several hidden layers an output layer provides the output in the desired dimensionality and often without activation.\\
+Each connection is associated with a weight that must be learned to enable meaningful predictions on unseen data. This learning process relies on backpropagation, which applies the chain rule iteratively to compute the gradient of the loss with respect to each weight, propagating from the output layer backwards through the network. While data flows forward through the network during prediction, the resulting loss propagates backward, guiding how the weights are adjusted. \\
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.75\textwidth]{../fig/background/MLP.pdf}
     \caption[Multi Layer Perceptron]{Multi Layer Perceptron with fully connected layers. Different shades of gray represent weights between Perceptrons.}
     \label{fig:mlp}
 \end{figure}
-Feed forward networks refer to a network architecture in which the outputs of the networks do not feed back into the inputs or any intermediate representations. Hence the input is fed forward through the network to produce the output. This way there are no loops in the network's dataflow, making training with backpropagation possible. A Multi Layer Perceptron (MLP) as shown in \autoref{fig:mlp} combines many Perceptrons in layers. Data feeds into the input layers Perceptrons which are each connected to every other Perceptron in the first hidden layer. We refer to this connectivity as fully connected or dense. After several hidden layers an output layer provides the output in the desired dimensionality and often without activation. \\
-Each connection is associated with a weight that must be learned to enable meaningful predictions on unseen data. This learning process relies on backpropagation, which applies the chain rule iteratively to compute the gradient of the loss with respect to each weight, propagating from the output layer backwards through the network. While data flows forward through the network during prediction, the resulting loss propagates backward, guiding how the weights are adjusted. \\
 
 Like in regression, regularization may also be added in various places. Besides $L_1$ or $L_2$ penalities, which can be easily added to the loss function, dropout offers a neural network-specific way to regularize. During training, it randomly sets outputs of Perceptrons in the hidden layers to 0, thus deactivating the outgoing signal and reducing interdependence between Perceptrons. 
 
 \subsection{Graph Neural Network (GNN) / Message Passing Neural Nets (MPNN)}
 \label{subsec:background_gnn}
-Many problems cannot be simply mapped to a flattened input vector without loosing information important in predictions. A natural representation of a molecule can be attained by using a graph with atoms as the nodes and edges between these bonds to represent interaction (e.g. bonds) between atoms. Learning features on graphs using a Graph Neural Network (GNN) is exploited in various fields across different scales from large protein structurs in DeepMinds Alphafold \parencite{ref:alphafold} down to molecular features such as energy, polarization and charge density in computational quantum chemistry. For the latter the term Message Passing Neural Nets was coined by Glimer et al. \parencite{ref:gilmer2017neural}.\\
+Many problems cannot be simply mapped to a flattened input vector without loosing information important in predictions. A natural representation of a molecule can be attained by using a graph with atoms as the nodes and edges between these bonds to represent interaction (e.g. bonds) between atoms. Learning features on graphs using a Graph Neural Network (GNN) is exploited in various fields across different scales from large protein structurs in DeepMind's Alphafold \parencite{ref:alphafold}, down to molecular features such as energy, polarization and charge density in computational quantum chemistry. For the latter the term Message Passing Neural Nets (MPNN) was coined by Glimer et al. \parencite{ref:gilmer2017neural}.\\
 
-An abstract representation of a MPNN is depicted in \autoref{fig:gnn_background}.
-\begin{figure}[H]
+An abstract representation of a MPNN is depicted in \autoref{fig:gnn_background}. Data, such as color in the concrete example, is encoded in the nodes of a graph. For many use cases separate encoder functions or even MLPs may be used to encode various features into the feature vector for a given node or edge. In the context of molecules, these might include atomic number, electronegativity or even overlap matrix elements. After initialization of the graph, the MPNN iteratively updates the nodes feature vector for several message passing rounds. 
+\begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{../fig/background/GNN.pdf}
     \caption[Schematic Message Passing Neural Net]{Schematic representation of Message passing in a bidirectionally connected graph. Node colors influence neighbors which aggregate neighbor colors and updates own color via leaned update function each step. }
     \label{fig:gnn_background}
 \end{figure}
-\TODO{explain stuff, such as: Node - feature empedding for nodes - edges - message concept - aggreagtion - update function + maybe readout!}
+For every round all nodes send a message containing their feature vector or a derived representation to all of it's neighbors. The Node $n_1$ in \autoref{fig:gnn_background} sends it's color to it's neighbors $n_2$ and $n_4$. After all messages have been sent, every node aggregates the received message via a permutation invariant function. In the example, this is simply the average of the received colors. Finally, a learned update function changes the node's feature vector based on the aggregated message and the current feature vector. After several round of message passing, which allow information flow between nodes which are not directly connected, the final graph representation can be used to predict various properties.\\
+Decoders essentially invert the encoder's process to extract either node-level features (e.g. atomic energy, partial charge or node color in \autoref{fig:gnn_background}) or graph-level properties such as total energy, polarizability or dipole moment.\\
 
-\TODO{Info about GNNs include graph with example molecule and empedding of data in there}
-
-
-\section{Datasets}
-\label{sec:datasets}
+\section{QM9 dataset}
+\label{sec:dataset}
 During selection of a dataset for training two practical considerations dominate. 
 \begin{enumerate}
     \item Cost per sample: Time savings through faster convergence are especially relevant for larger systems where the number of SCF iterations and especially the number of integrals to be calculated are large. Stated differently, it is of very little interest to optimize guessing methods for small systems which converge nearly instantly on conventional hardware. 
     \item Fixed I/O size: Most ML models are constraint to a constant input and output size. 
 \end{enumerate}
 
-\subsection{QM9 dataset \parencite{ref:data_qm9}}
-\label{subsec:qm9}
-The QM9 dataset \parencite{ref:article1_qm9,ref:article2_qm9} ticks both of these two boxes. It offers a variety of molecules from as little as 3 constituent atoms up to 29 atoms. Additionally, there are large enough chunks of constitutional isomers to train models on these subsets of same sized matrices. The distribution of molecules by atom count with the predominant constitutional isomers is shown in \autoref{fig:method_qm9_overview}.
+The QM9 dataset \parencite{ref:data_qm9, ref:article1_qm9,ref:article2_qm9} ticks both of these two boxes. It offers a variety of molecules from as little as 3 constituent atoms up to 29 atoms. Additionally, there are large enough chunks of constitutional isomers to train models on these subsets of same sized matrices. The distribution of molecules by atom count with the predominant constitutional isomers is shown in \autoref{fig:method_qm9_overview}.
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{../fig/qm9_general/qm9_overview_stacked_bar.pdf}
