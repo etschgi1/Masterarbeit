@@ -1,11 +1,11 @@
 setup.py
 mgnn/BlockMatrix.py
+mgnn/Graphutils.py
 mgnn/MolGraphNetwork.py
 mgnn/__init__.py
 mgnn/encoder.py
 mgnn/message_net.py
 mgnn/train_test.py
-mgnn/utils.py
 mgnn.egg-info/PKG-INFO
 mgnn.egg-info/SOURCES.txt
 mgnn.egg-info/dependency_links.txt

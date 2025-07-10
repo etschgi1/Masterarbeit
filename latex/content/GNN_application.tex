@@ -78,17 +78,18 @@ The models defined above are compared to PySCF guessing schemes in \autoref{tab:
                     S[table-format=2.1(2)]
                     S[table-format=-4(4)]
                     S[table-format=-1.3(2)]
+                    S[table-format=2.1(1.1)]
                     S[table-format=2.1(1.1)]}
         \toprule
-        Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} \\
+        Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {$\overline{\text{RMSE}}$ / $\unit{\hartree}$} \\
         \midrule
-        $\text{GNN}_\text{initial}$   & 11.2(5)  & 9000(9300)  & 5.8(60)   & 0.17(2)  \\
-        $\text{GNN}_\text{hyp. best}$ &          &             &           &          \\
-        0-D                           & 17.1(15) & -26(13)     & -0.017(8) & 0.01(0)  \\
-        1-e                           & 18.8(18) & -8000(100)  & -5.087(13)& 0.51(6)  \\
-        vsap                          & 14.2(9)  & -8500(4)    & -5.45(5)  & 1.15(10) \\
-        atom                          & 16.6(19) & -8600(30)   & -5.51(6)  & 1.12(10) \\
-        minao                         & 10.8(6)  & -8122(3)    & -5.21(4)  & 2.0(3)   \\
+        $\text{GNN}_\text{initial}$   & 11.2(5)  & 9000(9300)  & 5.8(60)   & 0.17(2)  & \\
+        $\text{GNN}_\text{hyp. best}$ &          &             &           &          & \\
+        0-D                           & 17.1(15) & -26(13)     & -0.017(8) & 0.01(0)  & \\
+        1-e                           & 18.8(18) & -8000(100)  & -5.087(13)& 0.51(6)  & \\
+        vsap                          & 14.2(9)  & -8500(4)    & -5.45(5)  & 1.15(10) & \\
+        atom                          & 16.6(19) & -8600(30)   & -5.51(6)  & 1.12(10) & \\
+        minao                         & 10.8(6)  & -8122(3)    & -5.21(4)  & 2.0(3)   & \\
         \bottomrule
     \end{tabular}
 \end{table}

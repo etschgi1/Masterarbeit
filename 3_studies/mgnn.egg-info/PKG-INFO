@@ -1,4 +1,4 @@
-Metadata-Version: 2.4
+Metadata-Version: 2.2
 Name: mgnn
 Version: 1.0
 Requires-Dist: torch

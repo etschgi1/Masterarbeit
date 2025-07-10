@@ -994,6 +994,99 @@
       \verb 10.1037/h0042519
       \endverb
     \endentry
+    \entry{ref:alphafold}{article}{}
+      \name{author}{4}{}{%
+        {{hash=b8bf793c7fbf851a5793be4b703722b6}{%
+           family={Jumper},
+           familyi={J\bibinitperiod},
+           given={J.\},
+           giveni={J\bibinitperiod}}}%
+        {{hash=f1a53d2443b31fb5320d4ba374fd2e88}{%
+           family={Evans},
+           familyi={E\bibinitperiod},
+           given={R.\},
+           giveni={R\bibinitperiod}}}%
+        {{hash=76fb3a2d9f0e3400a4f5c0255a2186eb}{%
+           family={Pritzel},
+           familyi={P\bibinitperiod},
+           given={A.\},
+           giveni={A\bibinitperiod}}}%
+        {{hash=e829e32c9278b2d49576410411d05ce9}{%
+           given={al.},
+           giveni={a\bibinitperiod},
+           prefix={et\~al.},
+           prefixi={e\bibinitperiod\bibinitdelim a\bibinitperiod}}}%
+      }
+      \strng{namehash}{c5151969fc2f181899a9953ce883bdb6}
+      \strng{fullhash}{693ab79c57c162be0618b88731e1bbea}
+      \strng{bibnamehash}{c5151969fc2f181899a9953ce883bdb6}
+      \strng{authorbibnamehash}{c5151969fc2f181899a9953ce883bdb6}
+      \strng{authornamehash}{c5151969fc2f181899a9953ce883bdb6}
+      \strng{authorfullhash}{693ab79c57c162be0618b88731e1bbea}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Nature}
+      \field{number}{7873}
+      \field{title}{Highly accurate protein structure prediction with AlphaFold}
+      \field{volume}{596}
+      \field{year}{2021}
+      \field{pages}{583\bibrangedash 589}
+      \range{pages}{7}
+      \verb{doi}
+      \verb 10.1038/s41586-021-03819-2
+      \endverb
+    \endentry
+    \entry{ref:gilmer2017neural}{inproceedings}{}
+      \name{author}{5}{}{%
+        {{hash=4f550339f0337905aa634f39e1ba4833}{%
+           family={Gilmer},
+           familyi={G\bibinitperiod},
+           given={Justin},
+           giveni={J\bibinitperiod}}}%
+        {{hash=aa3475bbb938eec3f9f0d7c8d44f1e86}{%
+           family={Schoenholz},
+           familyi={S\bibinitperiod},
+           given={Samuel\bibnamedelima S.},
+           giveni={S\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+        {{hash=e9632c2c29a574cd09a5a7503be60435}{%
+           family={Riley},
+           familyi={R\bibinitperiod},
+           given={Patrick\bibnamedelima F.},
+           giveni={P\bibinitperiod\bibinitdelim F\bibinitperiod}}}%
+        {{hash=494b568c5dc85ba8f3f409635f9c5f25}{%
+           family={Vinyals},
+           familyi={V\bibinitperiod},
+           given={Oriol},
+           giveni={O\bibinitperiod}}}%
+        {{hash=b2367e57c17225a47853346440e87b35}{%
+           family={Dahl},
+           familyi={D\bibinitperiod},
+           given={George\bibnamedelima E.},
+           giveni={G\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {PMLR}%
+      }
+      \strng{namehash}{c654290e16b9e71825428d767650ff2a}
+      \strng{fullhash}{a97dbeb15b563be460fc056e7a076a4b}
+      \strng{bibnamehash}{c654290e16b9e71825428d767650ff2a}
+      \strng{authorbibnamehash}{c654290e16b9e71825428d767650ff2a}
+      \strng{authornamehash}{c654290e16b9e71825428d767650ff2a}
+      \strng{authorfullhash}{a97dbeb15b563be460fc056e7a076a4b}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the 34th International Conference on Machine Learning}
+      \field{series}{Proceedings of Machine Learning Research}
+      \field{title}{Neural Message Passing for Quantum Chemistry}
+      \field{volume}{70}
+      \field{year}{2017}
+      \field{pages}{1263\bibrangedash 1272}
+      \range{pages}{10}
+    \endentry
     \entry{ref:data_qm9}{misc}{}
       \name{author}{5}{}{%
         {{hash=28322231a418243314954d2bce103a74}{%
@@ -1257,8 +1350,8 @@
       \strng{authorbibnamehash}{b400e9139be47d41d51c7ab94901302c}
       \strng{authornamehash}{b400e9139be47d41d51c7ab94901302c}
       \strng{authorfullhash}{37457b2f157b963e434b245ad5d28269}
-      \field{sortinit}{2}
-      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Journal of Clinical Epidemiology}
@@ -1363,8 +1456,8 @@
       \strng{authorbibnamehash}{3a097aa3ebf2b8c2acf988341dde9710}
       \strng{authornamehash}{3a097aa3ebf2b8c2acf988341dde9710}
       \strng{authorfullhash}{7a67607c66e4af944b5f16461d6d0a87}
-      \field{sortinit}{2}
-      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Journal of Machine Learning Research}
@@ -1534,8 +1627,8 @@
       \strng{authorbibnamehash}{24b1e0a436b566c814359b41f12b3ce3}
       \strng{authornamehash}{24b1e0a436b566c814359b41f12b3ce3}
       \strng{authorfullhash}{a869c8f2e8f9d507f1f31532ade2d486}
-      \field{sortinit}{3}
-      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{day}{5}
@@ -1568,8 +1661,8 @@
       \strng{authorbibnamehash}{2f3cf4de7406c8a08275677188d056f8}
       \strng{authornamehash}{2f3cf4de7406c8a08275677188d056f8}
       \strng{authorfullhash}{2f3cf4de7406c8a08275677188d056f8}
-      \field{sortinit}{3}
-      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{day}{1}
@@ -1627,8 +1720,8 @@
       \strng{authorbibnamehash}{fd73c0a4cd9935c263cb1542aec8b9d4}
       \strng{authornamehash}{fd73c0a4cd9935c263cb1542aec8b9d4}
       \strng{authorfullhash}{3bd0af8849b425ef9cc7ac24d6a17615}
-      \field{sortinit}{3}
-      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{howpublished}{\url{https://github.com/keras-team/keras-tuner}}
@@ -1659,8 +1752,8 @@
       \strng{authorbibnamehash}{278021aa20410028e4648cf93469c0c5}
       \strng{authornamehash}{278021aa20410028e4648cf93469c0c5}
       \strng{authorfullhash}{278021aa20410028e4648cf93469c0c5}
-      \field{sortinit}{3}
-      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Journal of Chemical Theory and Computation}
@@ -1702,8 +1795,8 @@
       \strng{authorbibnamehash}{2d3ff61117ef3f657b16d6070789673d}
       \strng{authornamehash}{2d3ff61117ef3f657b16d6070789673d}
       \strng{authorfullhash}{85fa9fdf8247a76c044d4bedd7bb0590}
-      \field{sortinit}{3}
-      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Nature Communications}
@@ -1750,6 +1843,7 @@
       \strng{authorbibnamehash}{95d226595653ed8da4ee9d46180aacb7}
       \strng{authornamehash}{95d226595653ed8da4ee9d46180aacb7}
       \strng{authorfullhash}{7c521cf550a09e821676b715fa4a0f18}
+      \field{extraname}{1}
       \field{sortinit}{4}
       \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
@@ -2008,8 +2102,8 @@
       \strng{authorbibnamehash}{a48adb747c1d47e80464b6c1fa69dcbb}
       \strng{authornamehash}{a48adb747c1d47e80464b6c1fa69dcbb}
       \strng{authorfullhash}{a48adb747c1d47e80464b6c1fa69dcbb}
-      \field{sortinit}{4}
-      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{howpublished}{PySCF User Guide}
@@ -2056,8 +2150,8 @@
       \strng{authornamehash}{3d1e375d42a31747695b3bd0386da818}
       \strng{authorfullhash}{47240aceb6ac03b9883fee2f126a1719}
       \field{extraname}{2}
-      \field{sortinit}{4}
-      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{day}{23}
@@ -2101,8 +2195,8 @@
       \strng{authorbibnamehash}{a144b29baf164e3d33f3f27101844d58}
       \strng{authornamehash}{a144b29baf164e3d33f3f27101844d58}
       \strng{authorfullhash}{a144b29baf164e3d33f3f27101844d58}
-      \field{sortinit}{4}
-      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Journal of Computational Chemistry}
@@ -2150,6 +2244,66 @@
       \field{dateera}{ce}
       \verb{doi}
       \verb 10.1103/physreva.101.012516
+      \endverb
+    \endentry
+    \entry{ref:schuett_unifying_2019}{article}{}
+      \name{author}{5}{}{%
+        {{hash=81311ad4426e968e8d85d88fd54a0e58}{%
+           family={Schütt},
+           familyi={S\bibinitperiod},
+           given={Kristof\bibnamedelima T.},
+           giveni={K\bibinitperiod\bibinitdelim T\bibinitperiod}}}%
+        {{hash=9ce7bc530268241e4e41784b0bfc553c}{%
+           family={Gastegger},
+           familyi={G\bibinitperiod},
+           given={Michael},
+           giveni={M\bibinitperiod}}}%
+        {{hash=db63bbf352ab65add01c899e021bf8a0}{%
+           family={Tkatchenko},
+           familyi={T\bibinitperiod},
+           given={Alexandre},
+           giveni={A\bibinitperiod}}}%
+        {{hash=9f1b6144a45b1967e989e74552e37ada}{%
+           family={Müller},
+           familyi={M\bibinitperiod},
+           given={Klaus{-}Robert},
+           giveni={K\bibinitperiod}}}%
+        {{hash=2b5944d06d8a496380eea177552aa4d1}{%
+           family={Maurer},
+           familyi={M\bibinitperiod},
+           given={Reinhard\bibnamedelima J.},
+           giveni={R\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+      }
+      \strng{namehash}{3d3cfdd37aaaf3334da090653b5da7db}
+      \strng{fullhash}{ab8a89aab4d9922a8f5830498ac8296a}
+      \strng{bibnamehash}{3d3cfdd37aaaf3334da090653b5da7db}
+      \strng{authorbibnamehash}{3d3cfdd37aaaf3334da090653b5da7db}
+      \strng{authornamehash}{3d3cfdd37aaaf3334da090653b5da7db}
+      \strng{authorfullhash}{ab8a89aab4d9922a8f5830498ac8296a}
+      \field{extraname}{2}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{day}{15}
+      \field{issn}{2041-1723}
+      \field{journaltitle}{Nature Communications}
+      \field{month}{11}
+      \field{number}{1}
+      \field{title}{Unifying machine learning and quantum chemistry with a deep neural network for molecular wavefunctions}
+      \field{volume}{10}
+      \field{year}{2019}
+      \field{dateera}{ce}
+      \field{pages}{5024}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1038/s41467-019-12875-2
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1038/s41467-019-12875-2
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1038/s41467-019-12875-2
       \endverb
     \endentry
   \enddatalist
