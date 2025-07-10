@@ -1,4 +1,4 @@
-import os, copy
+import os, copy, tempfile
 from typing import List
 from itertools import chain
 from scf_guess_tools import Backend, load
@@ -88,7 +88,7 @@ class MolGraphNetwork(torch.nn.Module):
             set_verbose(self.verbose_level)
 
 
-    def load_data(self, seed=42, cache_meta={"method":"dft", "basis":None, "functional": "b3lypg", "guess": "minao", "backend": "pyscf", "cache": "../../../datasets/QM9/out/c7h10o2_b3lypg_6-31G(2df,p)/pyscf"}):
+    def load_data(self):
         """Load data from source directory split into train and test sets and create normalized BlockMatrices."""
         self.molgraphs = [] #reset in case this is called again later!
         dprint(1, f"Loading {self.dataset.size} files from {self.dataset.name}...")
@@ -214,10 +214,20 @@ class MolGraphNetwork(torch.nn.Module):
         rotated_overlap = rotate_M(mol, rand_axis, rand_angle, overlap)
         rotated_target = rotate_M(mol, rand_axis, rand_angle, target)
         rotated_coords = rotate_points(coords, rand_axis, rand_angle)
-        tmp_coords_files = "/tmp/aug_coords.xyz"
-        with open(tmp_coords_files, 'w') as f:
-            f.writelines(rotated_xyz_content(xyz_file, rotated_coords))
-        rotated_mol = load(tmp_coords_files, backend=Backend.PY, basis=self.basis).native
+        
+        #! own temp file for every process to avoid race conditions!
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".xyz", delete=False) as tf:
+            tf.writelines(rotated_xyz_content(xyz_file, rotated_coords))
+            tmp_path = tf.name
+        try:
+            rotated_mol = load(tmp_path, backend=Backend.PY, basis=self.basis).native
+        except Exception as e:
+            dprint(0, f"Error loading rotated molecule from {tmp_path}: {e}")
+            dprint(0, xyz_file)
+            dprint(0, rotated_coords)
+            with open(xyz_file, 'r') as f:
+                dprint(0, f"Rotated coordinates content:\n{f.read()}")
+            raise e
         aug_graph = self.make_graph(rotated_overlap, rotated_target, rotated_coords, rotated_mol)
         return aug_graph, rotated_overlap, rotated_target, (xyz_file, rand_axis, rand_angle)  
 

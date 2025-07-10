@@ -55,16 +55,16 @@ def hyperopt_train(config, dataset, basis):
                     report_fn=tune.report)
     
 
-def runhypertune(config_file):
-    dataset = Qm9Isomeres("/home/dmilacher/datasets/data", size = 500, split_ratio=0.8)
+def runhypertune(config_file, slurm_start=False):
+    dataset = Qm9Isomeres("/home/dmilacher/datasets/data", size = 500, val=0.1, test=0.1)
     basis = BASIS_PATH
     config_module = importlib.import_module(f"tune_config.{config_file.replace('.py', '')}")
     search_space = config_module.search_space
     disc_comb, disc_params = count_discrete_combinations(search_space)
     print(f"Total discrete combinations: {disc_comb}, Discrete parameters: {disc_params}")
-    num_samples = disc_comb * 2
+    num_samples = disc_comb #* 2
     print(f"Number of samples to try: {num_samples}")
-    if input("Start Ray Tune with the above configuration? (y/n): ").strip().lower() != 'y':
+    if not slurm_start and input("Start Ray Tune with the above configuration? (y/n): ").strip().lower() != 'y':
         print("Aborting Ray Tune run.")
         return
     tuner = tune.Tuner(tune.with_resources(
@@ -79,7 +79,7 @@ def runhypertune(config_file):
             scheduler=ASHAScheduler(
                 time_attr="training_iteration",
                 max_t=50,  # Maximum number of training iterations
-                grace_period=5,  # Initial iterations to run before starting to evaluate
+                grace_period= 20,  # Initial iterations to run before starting to evaluate
                 reduction_factor=3, # prune factor
             )
         ),
@@ -147,5 +147,19 @@ if __name__ == "__main__":
     BASIS_PATH = os.path.join(PROJECT_ROOT, "scripts/6-31g_2df_p_custom_nwchem.gbs")
     os.makedirs(LOG_DIR, exist_ok=True)
     os.makedirs(RES_DIR, exist_ok=True)
-    config_file = select_file().split('/')[-1]  # Get the filename only
-    runhypertune(config_file) # may later be extended to choose datasets with cmd line args
+
+    args = sys.argv[1:]  # Get command line arguments
+    if args:
+        config_file = args[0]
+        if not config_file.endswith('.py'):
+            print("Please provide a valid Python config file.")
+            sys.exit(1)
+        if not os.path.isfile(os.path.join(TUNE_CONFIG_PATH, config_file)):
+            print(f"Config file {config_file} does not exist in {TUNE_CONFIG_PATH}.")
+            sys.exit(1)
+        slurmstart = True
+    else:
+        config_file = select_file().split('/')[-1]  # Get the filename only
+        slurmstart = False
+    print(f"Using config file: {config_file}")
+    runhypertune(config_file, slurmstart) # may later be extended to choose datasets with cmd line args
