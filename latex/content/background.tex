@@ -5,22 +5,21 @@ This chapter provides an overview of the theoretical background used in this the
 
 \section{Self Consistent Field (SCF) Theory}
 \label{sec:background_scf}
-Quantum chemistry has its roots far before the advent of the computer age. Based on the original theories on quantum mechanics formulated by Schrödinger and Heisenberg, the interest in the accurate description of matter via this new theory was sparked. After the introduction of the wave function by Schrödinger almost a century ago Max Born's statistical interpretation enabled a direct calculation of the electron density. \parencite{ref:schroedinger_1926undulatory} Already a year later Hartree coined a self consistent method to solve the many-electron problem utilizing a mean-field approach. Slater and Fock independently adapted the method by adding the exchange term and consistency with the Pauli exclusion principle. This method was later named Hartree-Fock (HF) method. \parencite{ref:Hartree_1928,ref:slater1930note,ref:fock1930naherungsmethode}. From that point on many advancements have been made in this field. Most prominently density functional theory (DFT), coupled cluster methods (CC), and perturbation theory (MP2) have been developed. Yet the theory behind the HF method is still the foundation for nearly all of these methods.
+Quantum chemistry has its roots far before the advent of the computer age. Based on the original theories on quantum mechanics formulated by Schrödinger and Heisenberg, the interest in the accurate description of matter via this new theory was sparked. After the introduction of the wave function by Schrödinger almost a century ago, Max Born's statistical interpretation enabled a direct calculation of the electron density. \parencite{ref:schroedinger_1926undulatory} Already a year later, Hartree coined a self consistent method to solve the many-electron problem utilizing a mean-field approach. Slater and Fock independently adapted the method by adding the exchange term and consistency with the Pauli exclusion principle. This method was later named Hartree-Fock (HF) method. \parencite{ref:Hartree_1928,ref:slater1930note,ref:fock1930naherungsmethode}. From that point on many advancements have been made in this field. Most prominently density functional theory (DFT), coupled cluster methods (CC), and perturbation theory (MP2) have been developed. Yet the theory behind the HF method is still the foundation for nearly all of these methods.
 
 The following introductory overview of the Hartree-Fock method is mostly based on the book by Szabo and Ostlund \parencite{ref:szabo_ostlund}. 
 
 \subsection{Ideas behind the Hartree-Fock method}
 \label{subsec:background_hf}
-The Born Oppenheimer approximations allows for a separate treatment of the nuclear and electronic problem of a system. This is motivated by the vastly different masses and hence time-scales of nuclei and electron movement. The total wavefunction of a system may be written as a product state of electronic and nuclear wavefunction (using the convention of small letters for electrons and capital letters for nuclei coordinates):
+The Born Oppenheimer approximations allows for a separate treatment of the nuclear and electronic problem of a system. This is motivated by the vastly different masses and hence time-scales of nuclei and electron movement. The total wavefunction of a system may be written as a product state of electronic and nuclear wavefunctions (using the convention of small letters for electrons and capital letters for nuclei coordinates):
 \begin{equation}
     \Psi_{\text{tot}}(\mathbf{r}_n, \mathbf{R}_m) = \Psi_{\text{elec}}(\mathbf{r}_n; \mathbf{R}_m) \Psi_{\text{nuc}}(\mathbf{R}_m)
 \end{equation}
-Given our approximation, the total wavefunction can be derived rather easily from the electronic wavefunction via an effective potential for the nuclear motion, given by a solved electronic wavefunction. However, we will focus on this prerequisite, namely, the electronic wavefunction, and therefore omit the subscript from here on. It parametrically depends on the nuclear coordinates and is the solution to the time independent Schrödinger equation:
+Using our approximation, the total wavefunction can be derived rather easily from the electronic wavefunction via an effective potential for the nuclear motion, given by a solved electronic wavefunction. However, we will focus on this prerequisite, namely, the electronic wavefunction, and therefore omit the subscript from here on. It parametrically depends on the nuclear coordinates and is the solution to the time independent Schrödinger equation:
 \begin{equation}
     H \Psi(\mathbf{r}_n; \mathbf{R}_m) = E[\Psi](\mathbf{R}_m) \Psi(\mathbf{r}_n; \mathbf{R}_m)
 \end{equation}
-With the electronic energy $E$ being a functional of the electronic wavefunction which will be minimized under certain constraints as we'll see later. 
-The Hamiltonian operator $H$ reads: 
+The electronic energy $E$ is a functional of the electronic wavefunction. We will minimize this energy using orthogonality constraints on the wavefunction, as will be explained later. The corresponding Hamiltonian operator $H$ reads: 
 \begin{equation}
     H = T + V_{\text{ne}} + V_{\text{ee}} = -\frac{1}{2} \sum_{i=1}^N \nabla_i^2 - \sum_{i=1}^N \sum_{A=1}^M \frac{Z_A}{|\mathbf{r}_i - \mathbf{R}_A|} + \sum_{i<j}^N \frac{1}{|\mathbf{r}_i - \mathbf{r}_j|}
 \end{equation}
@@ -44,12 +43,12 @@ To write down this so called Slater determinant we have introduced the notation 
 Using this expansion we reduce the problem to the determination of the coefficients $C_{\nu i}$ for a given set of orthogonal basis functions $\phi_\nu(\mathbf{r})$. For a complete set of basis functions this expansion is exact. However, in practice we have to limit the number of basis functions and hence the size of our Slater determinant to a computationally feasible size. For the subsequent considerations we introduce the shorthand ket for a slater determinant $\ket{\Psi} = \ket{\chi_1, \chi_2, \ldots, \chi_N}$ or $\ket{\Psi} = \ket{1, 2, \ldots, N}$ for the sake of brevity.
 
 %Energy functional
-A slater determinants is one simple way of describing the state of a system as a linear combination of basis functions. From that we can derive the energy of the given systems state $E$ using: 
+A slater determinant is one simple way of describing the state of a system as a linear combination of basis functions. From that we can derive the energy of the given systems state $E$ using: 
 \begin{equation}
     \label{eq:elec_energy}
     E[\Psi] = \bra{\Psi} H \ket{\Psi}
 \end{equation}
-For our considerations we will be interested in the ground state of the system. This means we need to find the minimum of our energy functional $E[\Psi]$ and it's corresponding slater determinant $\ket{\Psi}$ which marks our approximation to the ground state wavefunction. This is done via the variational principle which yields an eigenvalue problem: 
+For our considerations we will be interested in the ground state of the system. This means we need to find the minimum of our energy functional $E[\Psi]$ and its corresponding slater determinant $\ket{\Psi}$, which marks our approximation to the ground state wavefunction. This is done via the variational principle, which yields an eigenvalue problem: 
 \begin{equation}
     \label{eq:hf_eigenval_equation}
     F \ket{\Psi_i} = \varepsilon_i \ket{\Psi_i}
@@ -75,7 +74,7 @@ While the core Hamiltonian $h(i)$ contains the well-known kinetic and nuclear at
 \end{subequations}
 Here, $J_j(i)$ is the Coulomb operator, representing the classical electrostatic repulsion, and $K_j(i)$ is the exchange operator, arising from the antisymmetry of the wavefunction.
 
-While \autoref{eq:hf_eigenval_equation} seems like an ordinary eigenvalue problem, the $\chi$ terms in $J$ and $K$ depend on our slater determinant wavefunction $\ket{\Psi}$. Thus to get the ground state wavefunction, we need the corresponding Fock operator $F$ which in turn depends on the ground state wavefunction. 
+While \autoref{eq:hf_eigenval_equation} seems like an ordinary eigenvalue problem, the $\chi$ terms in $J$ and $K$ depend on our slater determinant wavefunction $\ket{\Psi}$. Thus to get the ground state wavefunction, we need the corresponding Fock operator $F$, which in turn depends on the ground state wavefunction. 
 
 %DONE
 
@@ -97,7 +96,7 @@ which differs from \autoref{eq:hf_eigenval_equation} in the fact that we have in
     F(\mathbf{r}_1) = h(\mathbf{r}_1) + 2 \sum_{j\neq i}^{\nicefrac{N}{2}} \left( J_j(\mathbf{r}_1) - K_j(\mathbf{r}_1) \right)
 \end{equation}
 
-We need to represent the spatial orbitals in a finite computer readable way. While the spatial orbitals in \autoref{eq:spin_orbital_expansion} are exact for a complete basis set, we will limit ourselves to a finite set of known basis functions which will approximate the spatial orbitals by linear combination:
+We need to represent the spatial orbitals in a finite computer readable way. While the spatial orbitals in \autoref{eq:spin_orbital_expansion} are exact for a complete basis set, we will limit ourselves to a finite set of known basis functions, which will approximate the spatial orbitals by linear combination:
 \begin{equation}
     \label{eq:psi_approximation}
     \psi_i(\mathbf{r}) \approx \sum_{\nu}^{\nu_\text{max}} C_{\nu i} \phi_\nu(\mathbf{r})
@@ -120,7 +119,7 @@ Where we identify the Fock matrix $\mathbf{F}$, the overlap matrix $\mathbf{S}$,
         \varepsilon_{ij} &= \varepsilon_i \delta_{ij} \text{ (diagonal matrix with orbital energies)}
     \end{align}
 \end{subequations}
-Ultimately, we are interested in the electron density distribution $\rho(\mathbf{r})$ which is given by the sum of the squares of the occupied spin orbitals: 
+Ultimately, we are interested in the electron density distribution $\rho(\mathbf{r})$, which is given by the sum of the squares of the occupied spin orbitals: 
 \begin{equation}
     \rho(\mathbf{r}) = 2 \sum_{i=1}^{N/2} |\psi_i(\mathbf{r})|^2 = 2 \sum_{i=1}^{N/2} \sum_{\mu,\nu}^{\nu_\text{max}} C_{\mu i} C_{\nu i}^* \phi_\mu(\mathbf{r}) \phi_\nu^*(\mathbf{r}) = \sum_{\mu,\nu}^{\nu_\text{max}} P_{\mu \nu} \phi_\mu(\mathbf{r}) \phi_\nu^*(\mathbf{r})
 \end{equation}
@@ -134,12 +133,12 @@ As we have seen earlier, the Fock operator $F$ and thus the Fock matrix $\mathbf
             &\qquad - \frac{1}{2} \underbrace{\iint d\mathbf{r}_1 d\mathbf{r}_2\, \phi_\mu^*(\mathbf{r}_1) \phi_\lambda(\mathbf{r}_1) r_{12}^{-1} \phi_\sigma^*(\mathbf{r}_2) \phi_\nu(\mathbf{r}_2)}_{\text{Exchange-term}}
             \Bigg]
 \end{align}
-One and two electron contributions are now split into the core Hamiltonian $H_{\mu\nu}^\text{core}$ which is independent of the density matrix and thus stays constant for a given set of basis functions, and the Coulomb and exchange terms which depend on the density matrix $\mathbf{P}$. The latter terms are often denoted as $G_{\mu\nu}$, the so called two-electron integrals, hence $F_{\mu \nu} = H_{\mu\nu}^\text{core} + G_{\mu\nu}$.\\
+One and two electron contributions are now split into the core Hamiltonian $H_{\mu\nu}^\text{core}$ term, which is independent of the density matrix and thus stays constant for a given set of basis functions, and the Coulomb and exchange terms that depend on the density matrix $\mathbf{P}$. The latter terms are often denoted as $G_{\mu\nu}$, the so called two-electron integrals, hence $F_{\mu \nu} = H_{\mu\nu}^\text{core} + G_{\mu\nu}$.\\
 
 \subsection{Self Consistent Field (SCF) Algorithm}
 \label{subsec:background_hf_scf}
-We now have all ingredients to solve our Matrix equations \autoref{eq:roothaan_equations_matrix} iteratively. The self consistent field (SCF) algorithm is a fixed point iteration method which means that we initially need the atom coordinates $\mathbf{R}_A$ and atomic numbers. Furthermore, we require the number of electrons $N$ and a set of basis functions $\phi_\nu(\mathbf{r})$ to obtain our orbitals.\\
-Initially we also calculate the core Hamiltonian $H_{\mu\nu}^\text{core}$ and the overlap matrix $S_{\mu\nu}$ once (they will be reused in every step) and we guess an initial density. The guess of this initial density is crucial and has a big influences on the convergence speed of the algorithm. Then we start the loop: 
+We now have all ingredients to solve \autoref{eq:roothaan_equations_matrix} iteratively. The self consistent field (SCF) algorithm is a fixed point iteration method which means that we initially need the atom coordinates $\mathbf{R}_A$ and atomic numbers. Furthermore, we require the number of electrons $N$ and a set of basis functions $\phi_\nu(\mathbf{r})$ to obtain our orbitals.\\
+Initially, we also calculate the core Hamiltonian $H_{\mu\nu}^\text{core}$ and the overlap matrix $S_{\mu\nu}$ once (they will be reused in every step) and we guess an initial density. The guess of this initial density is crucial and has a big influences on the convergence speed of the algorithm. Then we start the loop: 
 \begin{enumerate}[itemsep=0.1em]
     \item Calculate $G_{\mu\nu}$ using the current $\mathbf{P}$.
     \item Build a new $\mathbf{F}$ using $H_{\mu\nu}^\text{core}$ and $G_{\mu\nu}$.
@@ -148,36 +147,36 @@ Initially we also calculate the core Hamiltonian $H_{\mu\nu}^\text{core}$ and th
     \item Total energy or $\mathbf{P}$ converged? If not, repeat.
 \end{enumerate}
 
-Computationally, the calculation of the two-electron integrals $G_{\mu\nu}$ is the most expensive step which scales with the number of basis functions as $\bigO{n^4}$. Given this fact, a small enough basis set which still captures the essence of the physical system should be chosen and the number of iterations shall be kept to a minimum by a good initial guess. Keeping our approximation of the spatial orbitals via \autoref{eq:psi_approximation} in mind, we see that better approximations of the systems wavefunction and energy can be achieved with larger and larger basis sets. Given the drawback of increased computational cost (mostly in step 1 of the SCF algorithm) a reduction of iterations is even more crucial for larger systems and larger basis sets.
+Computationally, the calculation of the two-electron integrals $G_{\mu\nu}$ is the most expensive step which scales with the number of basis functions as $\bigO{n^4}$. Given this fact, a small enough basis set that still captures the essence of the physical system, should be chosen and the number of iterations shall be kept to a minimum by a good initial guess. Keeping our approximations of the spatial orbitals via \autoref{eq:psi_approximation} in mind, we see that better approximations of the systems wavefunction and energy can be achieved with larger and larger basis sets. Given the drawback of increased computational cost (mostly in step 1 of the SCF algorithm), a reduction of iterations is even more crucial for larger systems and larger basis sets.
 \subsection{Guessing schemes}
 \label{subsec:background_hf_guessing}
-As eluded to earlier, our algorithm needs an initial density matrix $\mathbf{P}$ to start the SCF iteration. Over the years various schemes have been developed and implemented in quantum chemistry packages. It is instructive to introduce two commonly used schemes here. For sake of brevity details regarding initial guess strategies in PySCF can be found in \autoref{sec:appendix}.\\
+As eluded to earlier, our algorithm needs an initial density matrix $\mathbf{P}$ to start the SCF iteration. Over the years various schemes have been developed and implemented in quantum chemistry packages. It is instructive to introduce two commonly used schemes here. For sake of brevity, details regarding initial guess strategies in PySCF can be found in \autoref{sec:appendix}.\\
 
-\textbf{Superposition of Atomic Densities (SAD / MINAO)}\\
-This scheme builds on atomic HF-calculations which are performed for each atom type. With very little overhead these calculations yield initial atomic densities, usually calculated in a minimal atomic basis, which are expanded into the molecular basis and used to build an initial block diagonal density matrix. After calculating the Fock matrix from this density one diagonalizes it to obtain the molecular orbitals. Although the initial density matrix is strictly block-diagonal, diagonalizing the Fock matrix naturally mixes atomic orbitals and generates the off-block elements. \parencite{ref:sad_guess}\\
+\textbf{Superposition of Atomic Densities (SAD) / Minimal Atomic Orbital (MINAO)}\\
+This scheme builds on atomic HF-calculations, which are performed for each atom type. With very little overhead, these calculations yield initial atomic densities, usually calculated in a minimal atomic basis, which are expanded into the molecular basis and used to build an initial block diagonal density matrix. After calculating the Fock matrix from this density, one diagonalizes it to obtain the molecular orbitals. Although the initial density matrix is strictly block-diagonal, diagonalizing the Fock matrix naturally mixes atomic orbitals and generates the off-block elements. \parencite{ref:sad_guess}\\
 
 \textbf{Generalized Wolfsberg-Helmholtz (GWH)}\\
-A semi-empirical ansatz is given by the generalized Wolfsberg-Helmholtz method. It approximates the off-diagonal elements of the core Hamiltonian using: 
+A semi-empirical approach is given by the generalized Wolfsberg-Helmholtz method. It approximates the off-diagonal elements of the core Hamiltonian using: 
 \begin{equation}
     \label{eq:gwh}
     F_{ij} \approx H^{\text{core}}_{ij} = \frac{K}{2}(H^{\text{core}}_{ii} + H^{\text{core}}_{jj})S_{ij}
 \end{equation}
-where $K$ is a constant usually set to $1.75$. From \autoref{eq:fock_full_eq_coul_ex} it is immediately evident that this approximation completely omits Coulomb and exchange terms, reducing the Fock matrix to core-Hamiltonian integrals evaluated with the same orbitals on both sides. \parencite{ref:gwh_wolfsberg1952spectra, ref:Lehtola2019}
+where $K$ is a constant usually set to $1.75$. From \autoref{eq:fock_full_eq_coul_ex} it is immediately evident, that this approximation completely omits Coulomb and exchange terms, reducing the Fock matrix to core-Hamiltonian integrals evaluated with the same orbitals on both sides. \parencite{ref:gwh_wolfsberg1952spectra, ref:Lehtola2019}
 
 \subsection{Derived quantities}
 \label{subsec:background_hf_derived_quantities}
 Several quantities can be derived from the solution of the Hartree-Fock equations. As eluded to in \autoref{eq:hf_eigenval_equation} the eigenvalues of $F$ are the orbital energies $\varepsilon_i$. This relation is exact if $F$ is a hermitian operator, which only happens on self-consistency of the equations. Our HF-approximation will thus yield an approximation of the orbital energies for a limited number of states (depending on the size of the basis set). The lowest $\nicefrac{n_\text{elec}}{2}$ eigenvalues correspond to the occupied orbitals, while the rest are so called virtual orbitals \footnote{We still assume closed shell systems with equal number of spin up and spin down electrons.}. One might be tempted to simply sum over the occupied orbital energies to obtain the total energy of the system. However, this is leads to a double counting of the energy given by the exchange interaction for electron pairs. Nevertheless, the orbital energies can still be used to estimate ionization energies in a frozen shell model given by Koopmans' theorem \parencite{ref:koopmans1934}. Removing an electron from an occupied orbital $\chi_i$ will lead to an increase in energy of $\varepsilon_i$.\\
 
-The total energy of the system's ground state of our closed shell system can also be derived using $F$ by inserting our Hamiltonian operator into \autoref{eq:elec_energy}:
+By inserting $F$ for the Hamiltonian in \autoref{eq:elec_energy}, one directly derives the total energy of the closed-shell ground state: 
 \begin{subequations}
 \begin{align}
     E_\text{HF} &= \bra{\Psi} H \ket{\Psi} = 2\sum_{i=1}^{N/2} \bra{\chi_i} h(i) \ket{\chi_i}
     + \frac{1}{2}\sum_{i=1}^{N/2}\sum_{j=1}^{N/2} \left[ 2 J_j(i) - K_j(i) \right]\\
-    E_\text{HF} &= \sum_{i=1}^{N/2}\left[ h(i) + \varepsilon_i\right] \text{  with  } \varepsilon_i = F_i =  h(i) + \sum_{j}^{N/2} \left[ 2 J_j(i) - K_j(i) \right]\\
-    E_\text{HF} &= \frac{1}{2} \sum_{\nu, \mu} P_{\mu \nu} \left[ H_{\mu \nu}^\text{core} + F_{\mu \nu} \right] = \frac{1}{2} \text{Tr} \left( \mathbf{P} \left[ \mathbf{H}^\text{core} + \mathbf{F} \right] \right)
+    \implies E_\text{HF} &= \sum_{i=1}^{N/2}\left[ h(i) + \varepsilon_i\right] \text{  with  } \varepsilon_i = F_i =  h(i) + \sum_{j}^{N/2} \left[ 2 J_j(i) - K_j(i) \right]\\
+    \implies E_\text{HF} &= \frac{1}{2} \sum_{\nu, \mu} P_{\mu \nu} \left[ H_{\mu \nu}^\text{core} + F_{\mu \nu} \right] = \frac{1}{2} \text{Tr} \left( \mathbf{P} \left[ \mathbf{H}^\text{core} + \mathbf{F} \right] \right)
 \end{align}
 \end{subequations}
-To get the total energy of the system one adds the nuclear repulsion energy $E_\text{nuc} = \sum_{A<B} \frac{Z_A Z_B}{|\mathbf{R}_A - \mathbf{R}_B|}$ to the electronic energy $E_\text{HF}$, yielding the total energy of the system.\\
+To get the total energy of the system, one adds the nuclear repulsion energy $E_\text{nuc} = \sum_{A<B} \frac{Z_A Z_B}{|\mathbf{R}_A - \mathbf{R}_B|}$ to the electronic energy $E_\text{HF}$, yielding the total energy of the system.\\
 
 Additionally, the population of electrons on a given atom are of interest. Partial charges can be derived using this population. Given the fact that the density matrix represents spatial orbitals in the atom centered basis set, we can interpret $\mathbf{(PS)}_{\mu \mu}$ as the population of electrons on orbital $\mu$. This leads to the partial charge for an atom $A$ with on-atom centered basis function indices $\mu$:
 \begin{equation}
@@ -187,13 +186,13 @@ Additionally, the population of electrons on a given atom are of interest. Parti
 This represents one of several approaches to population and charge analysis, commonly referred to as Mulliken population analysis \parencite{ref:mulliken1955electronic}. 
 \subsection{Basis sets}
 \label{subsec:background_hf_basis_sets}
-For computational treatment our abstract basis functions $\phi_\nu(\mathbf{r})$ need to manifest in a concrete form. 
-Motivated by the analytical solution of the Hydrogen atom one can introduce the so called Slater-type orbitals (STOs) using an exponential radial term and spherical harmonics\footnote{for sake of clarity the spherical harmonics term is written with $\Omega$ instead of $\theta$ \& $\varphi$}: 
+For computational treatment, our abstract basis functions $\phi_\nu(\mathbf{r})$ need to manifest in a concrete form. 
+Motivated by the analytical solution of the Hydrogen atom, one can introduce the so called Slater-type orbitals (STOs) using an exponential radial term and spherical harmonics\footnote{for sake of clarity the spherical harmonics term is written with $\Omega$ instead of $\theta$ \& $\varphi$}: 
 \begin{equation}
     \label{eq:slater_orbital}
     \phi_{n, l, m}^{\text{STO}}(r, \Omega, \zeta) = N Y_{l,m}(\Omega) r^{n-1} e^{\zeta r}
 \end{equation} 
-Computationally, the integrals which occur by using linear combinations of STOs are expensive to calculate. \\
+Computationally, the integrals that occur by using linear combinations of STOs are expensive to calculate. \\
 
 \textbf{Gaussian-Type Orbitals (GTOs)}\\
 Fortunately, a very good approximation of STOs can be achieved by combining several Gaussian-type orbitals (GTOs). This combination, called a contraction of GTOs, referred to as contracted Gaussian function (CGF), only differs in the changed exponential term from the STOs. The GTOs are defined as:
@@ -206,20 +205,20 @@ With each STO modelled by a CGF as:
     \phi_{n, l, m}^{\text{STO}}(r, \Omega, \zeta)  \approx \phi_{n, l, m}^{\text{CGF}}(r, \Omega, \zeta) = \sum_{i=1}^N c_i \phi_{n, l, m}^{\text{GTO}_i}(r, \Omega, \zeta_i)
 \end{equation}
 The contraction coefficients $c_i$ and the exponents $\zeta_i$ are chosen such that the CGF of a STO-nG basis set approximates the STOs as closely as possible. Common STO-nG basis sets include STO-3G, STO-6-31G or STO-6-31G(2df,p). \\
-The n in this nomenclature of Pople type basis sets \parencite{ref:pople_basis} denotes the number of GTOs used in the contraction. While STO-3G uses three GTOs for each orbital, STO-6-31G uses six GTOs for the inner shell and two functions with three and one GTO respectively for the outer shell. Basis sets using more then one contracted function (31 in 6-31G) are so called double-zeta basis sets; in this particular case a split-valence double zeta basis set because the core orbitals (6 in 6-31G) are modeled with only one contraction. The notation in parentheses denotes additional functions, e.g. STO-6-31G(2df,p)\footnote{also referred to as 6-31G(2df,p) in this thesis} uses two additional d-functions and one f-functions on heavy atoms (\ch{C}, \ch{O}, \ch{N} \& \ch{F}). \\
+The n in this nomenclature of Pople type basis sets \parencite{ref:pople_basis} denotes the number of GTOs used in the contraction. While STO-3G uses three GTOs for each orbital, STO-6-31G uses six GTOs for the inner shell and two functions with three and one GTO respectively for the outer shell. Basis sets using more then one contracted function (31 in 6-31G) are so called double-zeta basis sets; in this particular case it is a split-valence double zeta basis set because the core orbitals (6 in 6-31G) are modeled with only one contraction. The notation in parentheses denotes additional functions, e.g. STO-6-31G(2df,p)\footnote{also referred to as 6-31G(2df,p) in this thesis} uses two additional d-functions and one f-functions on heavy atoms (\ch{C}, \ch{O}, \ch{N} \& \ch{F}). \\
 
 \textbf{Segmented Contraction}\\
-Generally the GTOs used in the contraction of Pople type basis sets are not reused and thus of the segmented contraction type. In contrast, general contraction type basis sets (such as cc-pVXZ \parencite{ref:cc-pVXZ}) reuse some or all primitives in multiple contractions. The latter can be converted to a computationally more efficient segmented form which retains the initial accuracy. One such modern segmented basis family optimized for density functional theory are the pcseg-n basis sets. \parencite{ref:Jensen2014pcs}\\
+Generally, the GTOs used in the contraction of Pople type basis sets are not reused and thus of the segmented contraction type. In contrast, general contraction type basis sets (such as cc-pVXZ \parencite{ref:cc-pVXZ}) reuse some or all primitives in multiple contractions. The latter can be converted to a computationally more efficient segmented form, which retains the initial accuracy. One such modern segmented basis family optimized for density functional theory are the pcseg-n basis sets. \parencite{ref:Jensen2014pcs}\\
 
 \textbf{Accuracy \& Hartree Limit}\\
-Expanding the spatial orbitals using basis functions introduces an error in the electron density distribution and subsequently the converged Energy $E_{HF}$. Given the limitation of a longer runtime--scaling with $\bigO{N^4}$ in the number of basis functions--the accuracy can be refined using a larger and more complete basis set. The so called Hartree limit constitutes the lowest energy asymptotically (theoretically) attainable by any HF-calculation. It can be estimated by the shrinking differences of energies given larger basis-sets. \parencite{ref:Jensen2005hf} Yet, it still lacks so called correlation energy of electrons and thus is makes bonds appear weaker. We will discuss methods which build or improve on Hartree Fock next. 
+Expanding the spatial orbitals using basis functions introduces an error in the electron density distribution and subsequently the converged Energy $E_{HF}$. Given the limitation of a longer runtime-scaling with $\bigO{N^4}$ in the number of basis functions, the accuracy can be refined using a larger and more complete basis set. The so called Hartree limit constitutes the lowest energy asymptotically (theoretically) attainable by any HF-calculation. This can be estimated by the shrinking differences of energies given larger basis-sets. \parencite{ref:Jensen2005hf} Yet, it still lacks the so called correlation energy of electrons and thus it makes bonds appear weaker. We will discuss methods that build or improve on Hartree Fock next. 
 
 \subsection{Post-Hartree-Fock Methods}
 \label{subsec:background_post_hf}
 HF theory provides a solid foundation to solve the many-electron problem and is usually used as the starting point for more refined techniques. These are generally bundled under the umbrella term post-Hartree-Fock methods.\\
 
 \textbf{Configuration Interaction (CI)}\\
-Configuration Interaction (CI) improves upon the Hartree-Fock approximation by expressing the many-electron wavefunction as a linear combination of multiple Slater determinants, including excited configurations. While HF provides the best single-determinant approximation to the ground state, it neglects electron correlation. CI systematically includes this by mixing determinants generated from excitations out of the HF reference, thus recovering the missing correlation energy. Combinatorially for a system with $2k$ spin orbitals and $n_e$ electrons, the number of possible determinants grows as $\binom{2k}{n_e}$ which makes CI calculations using all possible determinants, called full CI, intractable for all but the smallest molecular systems. One usually limits the number of determinants by calculating only with single and double excitations (CISD) given a time complexity of $\bigO{N^6}$.\\
+Configuration Interaction (CI) improves upon the Hartree-Fock approximation by expressing the many-electron wavefunction as a linear combination of multiple Slater determinants, including excited configurations. While HF provides the best single-determinant approximation to the ground state, it neglects electron correlation. CI systematically includes this by mixing determinants generated from excitations out of the HF reference, thus recovering the missing correlation energy. Combinatorially, for a system with $2k$ spin orbitals and $n_e$ electrons, the number of possible determinants grows as $\binom{2k}{n_e}$, which makes CI calculations, using all possible determinants, called full CI, intractable for all but the smallest molecular systems. The number of determinants is usually limited by calculating only with single and double excitations (CISD), resulting in a time complexity of $\bigO{N^6}$.\\
 
 \textbf{Coupled Cluster (CC)}\\
 Coupled Cluster (CC) theory uses an exponential ansatz of the form $\ket{\Psi} = e^T \ket{\phi_0}$, where $T$ is a cluster operator typically truncated to single and double excitations: $T = T_1 + T_2$. Although only low-rank excitation operators are included, the exponential generates higher excitations implicitly. CCSD (Coupled Cluster Singles and Doubles) is the most common variant and scales with $\mathcal{O}(N^6)$ in computational cost. Extensions like CCSD(T), which include perturbative triples, increase the scaling to $\mathcal{O}(N^7)$.
@@ -229,8 +228,8 @@ Møller-Plesset Perturbation Theory (MP) partitions the total energy into a zero
 
 \subsection{Density Functional Theory (DFT)}
 \label{subsec:background_dft}
-Density funcitonal theory (DFT) takes an alternative approach to the many-electron problem. It uses a system of non-interacting electrons to approximate the actual many-electron interacting system. The formulation based on the Hohenberg-Kohn theorems \parencite{ref:hohenberg_kohn1964} states that the ground state energy of a many-electron system is a functional of the electron density $\rho(\mathbf{r})$. Contrary to HF-theory this functional $G[\rho] = T[\rho] + E_{\text{ex + corr}}[\rho]$ encompasses kinetic energy as well as both exchange and correlation energy. \parencite{ref:kohn_sham_1965}\\
-While the exact functional cannot be attained, with the exception of free-electron gas, functionals can be constructed via fitting methods to experimental data or higher level methods. Given the functional, one solves for the atomic orbitals in an analogous way by minimizing the energy under the constraint of orthogonal orbitals, in an iterative, self-consistent manner. In practice, one usually combines multiple different sources such as fitted functionals, corrections and exact exchange contributions from HF. Coefficients for this combinations are fitted and can often be altered in quantum physics packages. 
+Density funcitonal theory (DFT) takes an alternative approach to the many-electron problem. It uses a system of non-interacting electrons to approximate the actual many-electron interacting system. The formulation based on the Hohenberg-Kohn theorems \parencite{ref:hohenberg_kohn1964} states that the ground state energy of a many-electron system is a functional of the electron density $\rho(\mathbf{r})$. Contrary to HF-theory, this functional $G[\rho] = T[\rho] + E_{\text{ex + corr}}[\rho]$ encompasses kinetic energy as well as both exchange and correlation energy. \parencite{ref:kohn_sham_1965}\\
+While the exact functional cannot be attained (with the exception of free-electron gas) functionals can be constructed via fitting methods to experimental data or higher level methods. Given the functional, one solves for the atomic orbitals in an analogous way by minimizing the energy under the constraint of orthogonal orbitals in an iterative, self-consistent manner. In practice, one usually combines multiple different sources such as fitted functionals, corrections and exact exchange contributions from HF. Coefficients for this combinations are fitted and can often be altered in quantum physics packages. 
 Common choices of DFT functionals grouped by level of accuracy on Jacob's Ladder include:
 
 \begin{enumerate}
@@ -254,7 +253,7 @@ Common choices of DFT functionals grouped by level of accuracy on Jacob's Ladder
     Adds second-order perturbation theory (like MP2) to hybrid functionals; uses occupied and unoccupied orbitals.\\
     \textit{Example:} B2PLYP (Becke2 + LYP + MP2 correction) \parencite{ref:grimme2006}
 \end{enumerate}
-DFT accuracy is limited by the choice of functional. Standard Kohn-Sham DFT is bound by a $\bigO{N^3}$ scaling (rung 1-3) with the number of basis functions. In practice commonly used functionals on rung 4 or 5 of Jacob's ladder are bound by a $\bigO{N^4}$-$\bigO{N^6}$ scaling due to the need to calculate exchange-correlation integrals or MP2 corrections.
+DFT accuracy is limited by the choice of functional. Standard Kohn-Sham DFT is bound by a $\bigO{N^3}$ scaling (rung 1-3) with the number of basis functions. In practice, commonly used functionals on rung 4 or 5 of Jacob's ladder are bound by a $\bigO{N^4}$-$\bigO{N^6}$ scaling due to the need to calculate exchange-correlation integrals or MP2 corrections.
 
 
 \section{Machine Learning}
@@ -262,14 +261,14 @@ DFT accuracy is limited by the choice of functional. Standard Kohn-Sham DFT is b
 Machine Learning (ML) constitutes a rich subfield of computer science that aims to develop algorithms capable of inferring patterns from data and making predictions without being explicitly programmed with deterministic instructions. \\
 The history of ML closely coincides with the development of computers. In the 1950s Arthur Lee Samuel coined the term ``machine learning'' while programming a computer to play checkers, eventually beating the 4th ranked player in the US at the time. \parencite{ref:knuth1989comments} Since it's humble beginnings, ML has influenced many scientific fields as well as everyday life.\\
 
-In the following we will give an overview of the most important concepts in ML with special emphasis on techniques used in this thesis. The books written by Bishop \parencite{ref:bishop2006pattern} and Goodfellow \parencite{ref:goodfellow2016deep} provide a more in-depth treatment of various subjects treated in the following introduction.
+We will give an overview of the most important concepts in ML with special emphasis on techniques used in this thesis. The books written by Bishop \parencite{ref:bishop2006pattern} and Goodfellow \parencite{ref:goodfellow2016deep} provide a more in-depth treatment of various subjects explained in the following introduction.
 \subsection{Classification \& General Remarks}
 \label{subsec:background_ml_general_concepts}
-Machine learning itself is a subfield of artificial intelligence (AI), which is the broader field of creating machines that can perform tasks that would normally require human level intelligence. \\
+Machine learning itself is a subfield of artificial intelligence (AI), which is the broader field of creating machines that can perform tasks that would normally require human-level intelligence. \\
 Central to ML is the concept of learning from data. This means that we need to define data given as input to predict a target output. Most broadly speaking, we can either predict a discrete class label (classification) or a continuous value (regression) given our input data. Our focus will be on the latter task, concretely on finding a continuous value (Fock / density matrix entries) given another set of continuous values (atomic coordinates, overlap matrix elements, \dots). \\
-They can also be grouped by learning paradigm: supervised, unsupervised, or reinforcement. Supervised models learn a function that maps input data to labeled target values. Unsupervised models, on the other hand, seek patterns or structure in unlabeled data. Reinforcement learning refers to models that learn a policy through interaction with an environment by maximizing a reward signal over time.\\
+They can also be grouped by learning paradigms: supervised, unsupervised, or reinforcement. Supervised models learn a function that maps input data to labeled target values. Unsupervised models, on the other hand, seek patterns or structure in unlabeled data. Reinforcement learning refers to models that learn a policy through interaction with an environment by maximizing a reward signal over time.\\
 
-For the purpose of this thesis we will focus on supervised models applied to our regression task. For consistency in the following sections we will introduce the general notation for our model: 
+For the purpose of this thesis, we will focus on supervised models applied to our regression task. For consistency in the following sections, we will introduce the general notation for our model: 
 \begin{equation}
     \label{eq:general_ML_model_formula}
     \mathbf{y} = f(\mathbf{x}) + \Delta
@@ -279,10 +278,10 @@ error $\Delta$\footnote{This error includes both reducible components—such as 
 
 \subsection{Loss Functions}
 \label{subsec:background_loss_function}
-The loss function, also referred to as the cost function, quantifies the quality of the model's predictions by measuring the discrepancy between the predicted and true values. It may be motivated by system specific attributes, as is the case for F-score or DIIS error, or provide a general-purpose, model-agnostic measure of prediction accuracy, such as the mean squared error (MSE) or it's root (RMSE). \\
+The loss function, also referred to as the cost function, quantifies the quality of the model's predictions by measuring the discrepancy between the predicted and true values. It may be motivated by system specific attributes, as is the case for F-score or DIIS error, or provide a general-purpose, model-agnostic measure of prediction accuracy, such as the mean squared error (MSE) or its root (RMSE). \\
 
 \textbf{F-score}\\
-One way of capturing the closeness of a guessed density $\psi^\sigma_{\text{guess}}$ to the converged one $\psi^\sigma_{\text{SCF}}$ can be defined as the overlap of same spin orbitals in \autoref{eq:f_score}.
+One way of measuring the closeness of a guessed density $\psi^\sigma_{\text{guess}}$ to the converged density $\psi^\sigma_{\text{SCF}}$ can be defined as the overlap of same spin orbitals in \autoref{eq:f_score}.
 \begin{subequations}
 \label{eq:f_score}
 \begin{align}
@@ -290,18 +289,18 @@ One way of capturing the closeness of a guessed density $\psi^\sigma_{\text{gues
     \text{using} \quad Q^\sigma &= \sum_{i,j=1}^{N^\sigma_\text{occ}} \left| \left\langle \psi^\sigma_{i,\text{guess}} \middle| \psi^\sigma_{j,\text{SCF}} \right\rangle \right|^2 = \mathrm{Tr}\left( \mathbf{P}^{\sigma}_\text{guess} \, \mathbf{S} \, \mathbf{P}^{\sigma}_\text{SCF} \, \mathbf{S} \right)  \label{eq:f_score_b}
 \end{align}
 \end{subequations}
-Here the notation introduced in \autoref{sec:background_scf} was used. The normalization in \autoref{eq:f_score_a} is introduced to make the intensive measure of \autoref{eq:f_score_b} extensive and thus attain comparability of differently sized systems.
+Here, the notation introduced in \autoref{sec:background_scf} was used. The normalization in \autoref{eq:f_score_a} is introduced to make the intensive measure of \autoref{eq:f_score_b} extensive and thus attain comparability of differently sized systems.
 
 
 \textbf{Mean Squared Error (MSE) / Root Mean Squared Error (RMSE)}\\
-For an abstract prediction matrix $\mathbf{Y^\text{(pred)}}$ the MSE is simply defined by the arithmetic mean of the squared differences with the actual values $\mathbf{Y^\text{(truth)}}$ as given in \autoref{eq:mse}. $F$ denotes the Frobenius norm in this case and our matrices will usually be square matrices $\rightarrow n \equiv m$\footnote{Only the GNN will use non-square sub-matrix blocks on the off-diagonals to evaluate it's loss}.  
+For an abstract prediction matrix $\mathbf{Y^\text{(pred)}}$ the MSE is simply defined by the arithmetic mean of the squared differences with the actual values $\mathbf{Y^\text{(truth)}}$ as given in \autoref{eq:mse}. $F$ denotes the Frobenius norm in this case, and our matrices will usually be square matrices $\rightarrow n \equiv m$\footnote{Only the GNN will use non-square sub-matrix blocks on the off-diagonals to evaluate its loss}.  
 \begin{subequations}
 \begin{align}
 \text{MSE} &= \frac{1}{nm} \sum_{i=1}^{n} \sum_{j=1}^{m} \left( Y^\text{(pred)}_{ij} - Y^\text{(truth)}_{ij} \right)^2 = \frac{1}{nm} \|\mathbf{Y^\text{(pred)}} - \mathbf{Y^\text{(truth)}}\|_F^2 \label{eq:mse}\\
 \text{RMSE} &= \sqrt{ \text{MSE}}\label{eq:rmse}
 \end{align}
 \end{subequations}
-Calculating the square root of the MSE gives the RMSE in \autoref{eq:rmse}. Besides the fact that RMSE offers the same unit as the predicted quantity it offers no benefit and incurs additional computations. For this reason usage of MSE for model optimization is preferred. \\
+Calculating the square root of the MSE gives the RMSE in \autoref{eq:rmse}. Besides the fact that RMSE offers the same unit as the predicted quantity, it offers no benefit and incurs additional computations. For this reason usage of MSE for model optimization is preferred. \\
 
 \textbf{DIIS error}\\
 A computationally more demanding score, the DIIS error, may also be used. In this thesis it will be defined as the root mean squared error of the commutator relation of Fock and density matrix. In the general case this writes: 
@@ -311,7 +310,7 @@ A computationally more demanding score, the DIIS error, may also be used. In thi
 \text{DIIS error} &= \sqrt{\frac{\|\mathbf{E_\uparrow} + \mathbf{E_\downarrow}\|^2_F}{n_\text{elements, $\uparrow$} + n_\text{elements, $\downarrow$}}}\label{eq:diis_error}
 \end{align}
 \end{subequations}
-with a normalization factor $n_\text{elements, $\uparrow$} + n_\text{elements, $\downarrow$}$ to make different matrix sizes comparable. DIIS gives a measure of self consistency with DIIS error $=0$ (commuting $\mathbf{F} \& \mathbf{P}$) denoting convergence. 
+with a normalization factor $n_\text{elements, $\uparrow$} + n_\text{elements, $\downarrow$}$ to make different matrix sizes comparable. DIIS gives a measure of self consistency with DIIS error $=0$ (commuting $\mathbf{F} \& \mathbf{P}$), denoting convergence. 
 \subsection{Regression Models}
 \label{subsec:background_ml_model_types}
 Regression models try to establish the mapping in \autoref{eq:general_ML_model_formula} directly by modeling the mapping using a linear combination of terms. The most simple form, a linear regression in the multivariate multi-target case, is given by: 
@@ -322,12 +321,12 @@ Regression models try to establish the mapping in \autoref{eq:general_ML_model_f
         \mathbf{y} &= \mathbf{W^\top} \mathbf{x} \quad \text{in matrix form}
     \end{aligned}
 \end{equation}
-Here $w_{i,m}$ denotes the coefficients, also called weights in ML, to create a relation between feature $x_i$ and target $y_m$. The zeroth weight, a linear offset, is named bias and is commonly introduced into the matrix notation by prepending a one in the input vector $\mathbf{x}$. Note that we have dropped the $\Delta$ term for compact notation. The weights are chosen in a way to reduce the sum of squared errors, a procedure known as least squares (LS) fitting: 
+Here, $w_{i,m}$ denotes the coefficients, also called weights in ML, to create a relation between feature $x_i$ and target $y_m$. The zeroth weight, a linear offset, is named bias and is commonly introduced into the matrix notation by prepending a one in the input vector $\mathbf{x}$. Note that we have dropped the $\Delta$ term for compact notation. The weights are chosen to reduce the sum of squared errors, a procedure known as least squares (LS) fitting: 
 \begin{equation}
     \label{eq:least_squares_error}
     \text{Loss}_\text{LS}(\mathbf{W}) = \sum_{n=1}^{N}\|\mathbf{y}^{(n)} - \mathbf{W^\top} \mathbf{x}^{(n)}\|_2^2
 \end{equation}
-Weights can be seen to represent the influence of a given feature $x_i$ on the target $y_m$. Least squares fitting of these weights guarantees the minimization of the prediction error on the data the model was trained on; however, nothing can be said for unseen new data. Especially for high dimensional data with correlations between input features this model is prone to overfit. Such cases happen if the model is too flexible and captures noise in the data instead of actual patterns. To combat this issue we will introduce regularization into our problem.\\
+Weights represent the influence of a given feature $x_i$ on the target $y_m$. Least squares fitting of these weights guarantees the minimization of the prediction error on the data the model was trained on; however, nothing can be said for unseen new data. Especially for high dimensional data with correlations between input features this model is prone to overfit. Such cases happen if the model is too flexible and captures noise in the data instead of actual patterns. To combat this issue we will introduce regularization into our problem.\\
 
 \textbf{Ridge Regression}\\
 There are multiple ways of introducing a regularization in order to keep weights small and limit overfitting of data. One simple way is to add a penalty term dependent on the size of the weight: 
@@ -357,7 +356,7 @@ KRR thus extends ridge regression in a non-parametric way, with the regularizati
 
 \subsection{Neural Network (NN) concepts}
 \label{subsec:nn_concepts}
-Neural networks are based on a simplified model of a neuron. Rosenblatt's perceptron algorithm, depicted in \autoref{fig:perceptron}, builds the foundation for nearly all neural network architectures \parencite{ref:rosenblatt1958perceptron}. It introduces the nonlinear mapping from the features $\mathbf{x}$ to the targets $\mathbf{y}$ using a step function $\Theta$ as shown in \autoref{eq:perceptron}\footnote{Bias is again prepended to the weight vector as well as a one to the feature vector to match their dimensions}.
+Neural networks are based on a simplified model of a biological neuron. Rosenblatt's perceptron algorithm, depicted in \autoref{fig:perceptron}, builds the foundation for nearly all neural network architectures \parencite{ref:rosenblatt1958perceptron}. It introduces the nonlinear mapping from the features $\mathbf{x}$ to the targets $\mathbf{y}$ using a step function $\Theta$ as shown in \autoref{eq:perceptron}\footnote{Bias is again prepended to the weight vector}.
 \begin{equation}
     \label{eq:perceptron}
     y = \Theta(\mathbf{w} \cdot \mathbf{x}) \quad \text{with} \quad
@@ -367,11 +366,11 @@ Neural networks are based on a simplified model of a neuron. Rosenblatt's percep
         0 & \text{otherwise}
     \end{cases}
 \end{equation}
-The function used to transform the weight-feature product is also commonly referred to as an activation function. A step function gives a binary output and is thus most relevant in classification tasks. In the general case $\Theta$ denotes an arbitrary activation function which may also be monotonic and continuous, contrary to the step function.\\
+The function used to transform the weight-feature product is also commonly referred to as an `activation' function. A step function gives a binary output and is thus most relevant in classification tasks. In the general case $\Theta$ denotes an arbitrary activation function which may also be monotonic and continuous, contrary to the step function.\\
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.75\textwidth]{../fig/background/Perceptron.pdf}
-    \caption[Perceptron]{Architecture of the perceptron algorithm. Features $x_i$ are multiplied with their respective weights $w_i$ summed together with the bias term $w_0$ and passed through an activation function $\Theta$ to produce the output $y$.}
+    \caption[Perceptron]{Architecture of the perceptron algorithm. Features $x_i$ are multiplied with their respective weights $w_i$, summed together with the bias term $w_0$ and passed through an activation function $\Theta$ to produce the output $y$.}
     \label{fig:perceptron}
 \end{figure}
 Functions mapping to values in the range $[0, 1]$, such as the step function or sigmoid functions, are used in classification tasks. Other (mostly) monotonic functions are used for activation in regression tasks. Due to their frequent invocation, computationally inexpensive functions like the Rectified Linear Unit (ReLU) are widely used in practice. The Gaussian Error Linear Unit (GeLU) converges to ReLU in the positive and negative limits, but smooths the transition around zero, ensuring differentiability over the entire domain. Some commonly used functions are depicted in \autoref{fig:activation_functions}. 
@@ -383,7 +382,7 @@ Functions mapping to values in the range $[0, 1]$, such as the step function or 
 \end{figure}
 \subsection{Feed forward Networks: Multi Layer Perceptron (MLP)}
 \label{subsec:background_mlp}
-Feed forward networks refer to a network architecture in which the outputs of the networks do not feed back into the inputs or any intermediate representations. Hence the input is fed forward through the network to produce the output. This way there are no loops in the network's dataflow, making training with backpropagation possible. A Multi Layer Perceptron (MLP) as shown in \autoref{fig:mlp} combines many Perceptrons in layers. Data feeds into the input layer Perceptrons which are each connected to every other Perceptron in the first hidden layer. This connectivity is referred to as fully connected or dense. After several hidden layers an output layer provides the output in the desired dimensionality and often without activation.\\
+Feed forward networks refer to a network architecture in which the outputs of the networks do not feed back into the inputs or any intermediate representations. Hence the input is fed forward through the network to produce the output. This way there are no loops in the network's dataflow, making training with backpropagation possible. A Multi Layer Perceptron (MLP) as shown in \autoref{fig:mlp} combines many Perceptrons in layers. Data feeds into the input layer Perceptrons which are each connected to every other Perceptron in the first hidden layer. This connectivity is referred to as `fully connected' or `dense'. After several hidden layers, an output layer provides the output in the desired dimensionality and often without activation.\\
 Each connection is associated with a weight that must be learned to enable meaningful predictions on unseen data. This learning process relies on backpropagation, which applies the chain rule iteratively to compute the gradient of the loss with respect to each weight, propagating from the output layer backwards through the network. While data flows forward through the network during prediction, the resulting loss propagates backward, guiding how the weights are adjusted. \\
 \begin{figure}[h]
     \centering
@@ -392,27 +391,27 @@ Each connection is associated with a weight that must be learned to enable meani
     \label{fig:mlp}
 \end{figure}
 
-Like in regression, regularization may also be added in various places. Besides $L_1$ or $L_2$ penalities, which can be easily added to the loss function, dropout offers a neural network-specific way to regularize. During training, it randomly sets outputs of Perceptrons in the hidden layers to 0, thus deactivating the outgoing signal and reducing interdependence between Perceptrons. 
+Like in regression, regularization may also be added in various places. Besides $L_1$ or $L_2$ penalities, which can be easily added to the loss function, dropouts offer a neural network-specific way to regularize. During training, it randomly sets outputs of Perceptrons in the hidden layers to 0, thus deactivating the outgoing signal and reducing interdependence between Perceptrons. 
 
 \subsection{Graph Neural Network (GNN) / Message Passing Neural Nets (MPNN)}
 \label{subsec:background_gnn}
-Many problems cannot be simply mapped to a flattened input vector without loosing information important in predictions. A natural representation of a molecule can be attained by using a graph with atoms as the nodes and edges between these bonds to represent interaction (e.g. bonds) between atoms. Learning features on graphs using a Graph Neural Network (GNN) is exploited in various fields across different scales from large protein structurs in DeepMind's Alphafold \parencite{ref:alphafold}, down to molecular features such as energy, polarization and charge density in computational quantum chemistry. For the latter the term Message Passing Neural Nets (MPNN) was coined by Glimer et al. \parencite{ref:gilmer2017neural}.\\
+Many problems cannot be simply mapped to a flattened input vector without losing information that is important in predictions. A natural representation of a molecule can be attained by using a graph consisting of atoms as the nodes and edges between these bonds to represent interaction (e.g. bonds) between atoms. Learning features on graphs using a Graph Neural Network (GNN) is exploited in various fields across different scales from large protein structurs in DeepMind's Alphafold \parencite{ref:alphafold}, down to molecular features such as energy, polarization and charge density in computational quantum chemistry. For the latter the term Message Passing Neural Nets (MPNN) was coined by Glimer et al. \parencite{ref:gilmer2017neural}.\\
 
 An abstract representation of a MPNN is depicted in \autoref{fig:gnn_background}. Data, such as color in the concrete example, is encoded in the nodes of a graph. For many use cases separate encoder functions or even MLPs may be used to encode various features into the feature vector for a given node or edge. In the context of molecules, these might include atomic number, electronegativity or even overlap matrix elements. After initialization of the graph, the MPNN iteratively updates the nodes feature vector for several message passing rounds. 
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{../fig/background/GNN.pdf}
-    \caption[Schematic Message Passing Neural Net]{Schematic representation of Message passing in a bidirectionally connected graph. Node colors influence neighbors which aggregate neighbor colors and updates own color via leaned update function each step. }
+    \caption[Schematic Message Passing Neural Net]{Schematic representation of message passing in a bidirectionally connected graph. Node colors influence neighbors which aggregate neighbor colors and updates own color via leaned update function each step.}
     \label{fig:gnn_background}
 \end{figure}
-For every round all nodes send a message containing their feature vector or a derived representation to all of it's neighbors. The Node $n_1$ in \autoref{fig:gnn_background} sends it's color to it's neighbors $n_2$ and $n_4$. After all messages have been sent, every node aggregates the received message via a permutation invariant function. In the example, this is simply the average of the received colors. Finally, a learned update function changes the node's feature vector based on the aggregated message and the current feature vector. After several round of message passing, which allow information flow between nodes which are not directly connected, the final graph representation can be used to predict various properties.\\
+For every round all nodes send a message containing their feature vector or a derived representation to all its neighbors. The Node $n_1$ in \autoref{fig:gnn_background} sends its color to its neighbors $n_2$ and $n_4$. After all messages have been sent, every node aggregates the received message via a permutation invariant function. In the example, this is simply the average of the received colors. Finally, a learned update function changes the node's feature vector based on the aggregated message and the current feature vector. After several rounds of message passing, which allow information flow between nodes not directly connected to each other, the final graph representation can be used to predict various properties.\\
 Decoders essentially invert the encoder's process to extract either node-level features (e.g. atomic energy, partial charge or node color in \autoref{fig:gnn_background}) or graph-level properties such as total energy, polarizability or dipole moment.\\
 
 \section{QM9 dataset}
 \label{sec:dataset}
-During selection of a dataset for training two practical considerations dominate. 
+During the selection of a dataset for training there are two practical considerations dominating:
 \begin{enumerate}
-    \item Cost per sample: Time savings through faster convergence are especially relevant for larger systems where the number of SCF iterations and especially the number of integrals to be calculated are large. Stated differently, it is of very little interest to optimize guessing methods for small systems which converge nearly instantly on conventional hardware. 
+    \item Cost per sample: Time savings through faster convergence are especially relevant for larger systems where the number of SCF iterations and especially the number of integrals to be calculated are large. Stated differently, it is of very little interest to optimize guessing methods for small systems that converge nearly instantly on conventional hardware. 
     \item Fixed I/O size: Most ML models are constraint to a constant input and output size. 
 \end{enumerate}
 
