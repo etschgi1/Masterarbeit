@@ -257,6 +257,27 @@ class MolGraphNetwork(torch.nn.Module):
         # batch_data.ao_slices = [g.ao_slices for g in batch]
         # batch_data.edge_ao_slices = [g.edge_ao_slices for g in batch]
 
+       # --> offset and collect ao_slices and edge_ao_slices needed for loss_on_full_matrix=True
+        cum = 0
+        all_ao, all_edge_ao = [], []
+
+        for g in batch:
+            # atom-slices: each is (field1, field2, start, end)
+            for (f1, f2, s, e) in g.ao_slices:
+                all_ao.append((f1, f2, s + cum, e + cum))
+
+            # edge-slices are already pairs of 2-tuples (start,end)
+            for ((si, ei), (sj, ej)) in g.edge_ao_slices:
+                all_edge_ao.append(
+                    ((si + cum, ei + cum),
+                    (sj + cum, ej + cum))
+                )
+
+            cum += g.num_nodes
+
+        batch_data.ao_slices      = all_ao
+        batch_data.edge_ao_slices = all_edge_ao
+
         return batch_data
 
     def get_graphs(self, set_name="train"):
@@ -274,7 +295,26 @@ class MolGraphNetwork(torch.nn.Module):
         assert set_name in ["train", "val", "test"], "set_name must be 'train', 'val', or 'test'."
         return self.files[set_name]
     
-
+    def rebuild_full_torch(self, pred_centers, pred_edges, ao_slices, edge_ao_slices, N, device):
+        out = torch.zeros(N, N, device=device)
+        """This supports backpropagation through the full matrix reconstruction - not needed for prediction!"""
+        for i, (_, _, s, e) in enumerate(ao_slices):
+            d = e - s
+            flat = pred_centers[i]                  # shape [d*(d+1)//2]
+            idx = torch.triu_indices(d, d, 0, device=device)
+            block = torch.zeros(d, d, device=device)
+            block[idx[0], idx[1]] = flat
+            # mirror lower triangle
+            block = block + block.T - torch.diag(block.diag())
+            out[s:e, s:e] = block
+        # edges
+        for i, ((si, ei), (sj, ej)) in enumerate(edge_ao_slices):
+            flat = pred_edges[2*i]                  # directed‐edge doubling
+            block = flat.view(ei - si, ej - sj)
+            out[si:ei, sj:ej] = block
+            out[sj:ej, si:ei] = block.T
+        return out
+    
     def rebuild_matrix(self, pred_center_blocks, pred_edge_blocks, ao_slices, edge_ao_slices):
         N = sum(end-start for _, _, start, end in ao_slices)  
         out = np.zeros((N, N), dtype=np.float64)  
@@ -800,7 +840,29 @@ class MolGraphNetwork(torch.nn.Module):
                              "threshold": 1e-3,
                              "cooldown": 2, 
                              "min_lr" : 1e-6}, 
-                    report_fn=None):
+                    report_fn=None, loss_on_full_matrix=False):
+        """Train the GNN on the training set, validate & test, with optional early stopping and LR scheduling.
+
+        Args:
+            num_epochs (int): maximum number of training epochs.
+            lr (float): initial learning rate for AdamW optimizer.
+            weight_decay (float): weight decay (L2 penalty).
+            device (torch.device or str): device to run training on (e.g. 'cuda' or 'cpu').
+            model_save_path (str or None): path to save best model checkpoints; if None, no checkpoints are saved.
+            grace_epochs (int): number of epochs with no improvement on val loss before early stopping.
+            lr_args (dict): arguments for ReduceLROnPlateau scheduler:
+                - mode (str): 'min' or 'max'
+                - factor (float): LR reduction factor
+                - patience (int): epochs to wait before reducing LR
+                - threshold (float): threshold for measuring improvement
+                - cooldown (int): epochs to wait after LR reduction
+                - min_lr (float): minimum LR
+            report_fn (callable or None): function to report intermediate metrics (e.g. to Ray Tune); called as report_fn({"loss": val_loss, "epoch": epoch, ...}).
+            loss_on_full_matrix (bool): if True, compute loss on reconstructed full matrices (MSE/RMSE) instead of block-wise loss.
+
+        Returns:
+            None  (prints training/validation/test loss and saves history/checkpoints if configured)
+        """
         import torch.nn.functional as F
         from tqdm import tqdm
         
@@ -823,23 +885,41 @@ class MolGraphNetwork(torch.nn.Module):
             "lr":[],
         }
         best_val, no_imp_epochs = float('inf'), 0
+
+        def compute_loss(batch, device):
+            if loss_on_full_matrix: 
+                max_dim = max(e for (_,_,_,e) in batch.ao_slices)
+                rebuilded_matrices = self.rebuild_full_torch(batch.pred_center_blocks, batch.pred_edge_blocks, batch.ao_slices, batch.edge_ao_slices, N=max_dim, device=device)
+                target_matrices = self.rebuild_full_torch(batch.target_center_blocks, batch.target_edge_blocks, batch.ao_slices, batch.edge_ao_slices, N=max_dim, device=device)
+                return F.mse_loss(rebuilded_matrices.to(device), target_matrices.to(device), reduction="sum") / batch.num_graphs 
+            else:
+                loss_center, loss_edge = 0.0, 0.0
+                for i in range(batch.num_nodes):
+                    loss_center += F.mse_loss(batch.pred_center_blocks[i], batch.target_center_blocks[i].to(device))
+                for k in range(batch.num_edges):
+                    loss_edge += F.mse_loss(batch.pred_edge_blocks[k], batch.target_edge_blocks[k].to(device))
+                return (loss_center + loss_edge) / batch.num_graphs
+
         try: 
             for epoch in range(1, num_epochs + 1):
                 self.train()
                 total_train_loss = 0.0
 
                 for batch in tqdm(self.train_loader, desc=f"Epoch {epoch} [Train]", disable=self.no_progress_bar):
+                    ao_slices, edge_ao_slices = batch.ao_slices, batch.edge_ao_slices
                     batch = batch.to(device)
                     optimizer.zero_grad()
+                    batch.ao_slices = ao_slices
+                    batch.edge_ao_slices = edge_ao_slices
                     batch = self.forward(batch)
+                    # loss_center, loss_edge = 0.0, 0.0
+                    # for i in range(batch.num_nodes):
+                    #     loss_center += F.mse_loss(batch.pred_center_blocks[i], batch.target_center_blocks[i].to(device))
+                    # for k in range(batch.num_edges):
+                    #     loss_edge += F.mse_loss(batch.pred_edge_blocks[k], batch.target_edge_blocks[k].to(device))
 
-                    loss_center, loss_edge = 0.0, 0.0
-                    for i in range(batch.num_nodes):
-                        loss_center += F.mse_loss(batch.pred_center_blocks[i], batch.target_center_blocks[i].to(device))
-                    for k in range(batch.num_edges):
-                        loss_edge += F.mse_loss(batch.pred_edge_blocks[k], batch.target_edge_blocks[k].to(device))
-
-                    loss = (loss_center + loss_edge) / batch.num_graphs
+                    # loss = (loss_center + loss_edge) / batch.num_graphs
+                    loss = compute_loss(batch, device)
                     loss.backward()
                     optimizer.step()
                     total_train_loss += loss.item()
@@ -856,12 +936,13 @@ class MolGraphNetwork(torch.nn.Module):
                         batch = batch.to(device)
                         batch = self.forward(batch)
 
-                        lc, le = 0.0, 0.0
-                        for i in range(batch.num_nodes):
-                            lc += F.mse_loss(batch.pred_center_blocks[i], batch.target_center_blocks[i].to(device))
-                        for k in range(batch.num_edges):
-                            le += F.mse_loss(batch.pred_edge_blocks[k], batch.target_edge_blocks[k].to(device))
-                        total_val_loss += ((lc + le) / batch.num_graphs).item()
+                        # lc, le = 0.0, 0.0
+                        # for i in range(batch.num_nodes):
+                        #     lc += F.mse_loss(batch.pred_center_blocks[i], batch.target_center_blocks[i].to(device))
+                        # for k in range(batch.num_edges):
+                        #     le += F.mse_loss(batch.pred_edge_blocks[k], batch.target_edge_blocks[k].to(device))
+                        # total_val_loss += ((lc + le) / batch.num_graphs).item()
+                        total_val_loss += compute_loss(batch, device).item()
 
                 avg_val_loss = total_val_loss / len(self.val_loader)
                 if report_fn is not None: # report to ray!
@@ -896,12 +977,13 @@ class MolGraphNetwork(torch.nn.Module):
                 batch = batch.to(device)
                 batch = self.forward(batch)
 
-                lt, le = 0.0, 0.0
-                for i in range(batch.num_nodes):
-                    lt += F.mse_loss(batch.pred_center_blocks[i], batch.target_center_blocks[i].to(device))
-                for k in range(batch.num_edges):
-                    le += F.mse_loss(batch.pred_edge_blocks[k], batch.target_edge_blocks[k].to(device))
-                total_test_loss += ((lt + le) / batch.num_graphs).item()
+                # lt, le = 0.0, 0.0
+                # for i in range(batch.num_nodes):
+                #     lt += F.mse_loss(batch.pred_center_blocks[i], batch.target_center_blocks[i].to(device))
+                # for k in range(batch.num_edges):
+                #     le += F.mse_loss(batch.pred_edge_blocks[k], batch.target_edge_blocks[k].to(device))
+                # total_test_loss += ((lt + le) / batch.num_graphs).item()
+                total_test_loss += compute_loss(batch, device).item()
         avg_test_loss = total_test_loss / len(self.test_loader)
         history["test_loss"] = avg_test_loss
         if model_save_path:
