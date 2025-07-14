@@ -30,7 +30,8 @@ class EncoderDecoderFactory(torch.nn.Module):
                  center_sizes: Dict[str, int],
                  edge_sizes: Dict[str, int],
                  message_layers: int = 3, 
-                 message_dropout: float = 0.1):
+                 message_dropout: float = 0.1,
+                 edge_updaters: bool = False):
         """atom_types: list of element symbols, e.g. ["C","H","O"]
             edge_types: list of edge types, e.g. ["C_H", "H_H", "C_O", "H_O"]
             hidden_dim: dimension of every hidden embedding
@@ -84,13 +85,26 @@ class EncoderDecoderFactory(torch.nn.Module):
             for key in edge_types
         })
 
-        # 5) EDGE DECODERS (hidden → flattened hetero/homo-block)
+        # 5) EDGE Updater - optional edge updater!
+        #    [h_i, h_j, edge_emb] → updated edge_emb
+        self.edge_updaters = None
+        if edge_updaters: 
+            self.edge_updaters = torch.nn.ModuleDict({
+            key: torch.nn.Sequential(
+                torch.nn.Linear(3 * hidden_dim, hidden_dim),
+                torch.nn.GELU(),
+                torch.nn.Linear(hidden_dim, hidden_dim)
+            )
+            for key in edge_types
+        })
+
+        # 6) EDGE DECODERS (hidden → flattened hetero/homo-block)
         self.edge_decoders = torch.nn.ModuleDict({
             key: torch.nn.Linear(hidden_dim, self.edge_sizes[key])
             for key in edge_types
         })
 
-        # 6) MESSAGE NET (shared MLP for combining [h_i, h_j, edge_emb])
+        # 7) MESSAGE NET (shared MLP for combining [h_i, h_j, edge_emb])
         input_dim = 3 * hidden_dim  # h_i, h_j, edge_emb
         self.message_net = MessageNet(input_dim = input_dim,
                                       hidden_dim = hidden_dim,

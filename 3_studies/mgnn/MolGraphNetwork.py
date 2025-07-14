@@ -76,9 +76,12 @@ class MolGraphNetwork(torch.nn.Module):
         self.center_decoders = None # decodes hidden node features to upper triangular blocks for centers
         self.edge_encoders = None # encodes hetero/homo blocks for edges
         self.edge_decoders = None # decodes hidden edge features to hetero/homo blocks for edges
+        self.edge_updaters = None # updates edge feature based on its two neighbors
         self.message_net = None # Net to provide message passing! 
 
         self.no_progress_bar = False
+
+        self.update_edges = kwargs.get("update_edges", False)
 
         for key, value in kwargs.items():
             setattr(self, key, value)
@@ -205,7 +208,9 @@ class MolGraphNetwork(torch.nn.Module):
 
         meta_info = self.setup_model()
         dprint(1, f"---\nModel setup (encoders / decoders message net) complete!")
-        dprint(2, f"Total encoders / decoders / updaters: {meta_info['total']}, Node: {meta_info['node']} ({self.atom_types} - atom types) * 3 (enc, dec, update), Edge: {meta_info['edge']} ({self.overlap_types} - overlap types) * 2 (enc, dec).")
+        dprint(2, f"Total encoders / decoders / updaters: {meta_info['total']}, Node: {meta_info['node']} ({self.atom_types} - atom types) * 3 (enc, dec, update), Edge: {meta_info['edge']} ({self.overlap_types} - overlap types) * 2[3 if used with edge updaters] (enc, dec).")
+        if self.update_edges:
+            dprint(2, f"Additional Edge updaters: {len(self.edge_updaters)} ({self.overlap_types} - overlap types) * 1 (update).")
 
     def aug_data(self, overlap, target, coords, xyz_file): 
         mol = load(xyz_file, backend=Backend.PY, basis=self.basis).native
@@ -514,6 +519,15 @@ class MolGraphNetwork(torch.nn.Module):
                 old_and_agg = torch.cat([c[i], agg[i]], dim=0)  # 2*self.hidden_dim; This goes into our node updater!
                 c_new[i] = self.node_updaters[sym](old_and_agg)  # Update node features with the aggregated messages
             c = c_new 
+        # optional edge updater once at end!
+        if self.update_edges: 
+            edge_update_inp = torch.cat([c[src_nodes], c[tgt_nodes], e], dim=1)  
+            e_new = torch.zeros_like(e)
+            for key in unique_edge_keys:
+                idx = edge_indices_dict[key]   
+                inp = edge_update_inp[idx]   
+                e_new[idx] += 0.5 * self.edge_updaters[key](inp) # learn residual updates
+            e = e_new
         
         # IV) Decode node features to center blocks
         pred_center_blocks = [None] * len(batch.center_blocks)  # Note that we do not use numpy arrays here because differnt blocks have different sizes!
@@ -552,6 +566,7 @@ class MolGraphNetwork(torch.nn.Module):
                 edge_sizes = self.edge_sizes,
                 message_layers = self.message_net_layers if hasattr(self, 'message_net_layers') else 2,  # Default to 2 layers if not set
                 message_dropout = self.message_net_dropout if hasattr(self, 'message_net_dropout') else 0.0,  # Default to 0.0 if not set
+                edge_updaters = self.update_edges,
             )
         # encoder / decoders
         self.node_encoders = factory.node_encoders
@@ -559,6 +574,8 @@ class MolGraphNetwork(torch.nn.Module):
         self.center_decoders = factory.center_decoders
         self.edge_encoders = factory.edge_encoders
         self.edge_decoders = factory.edge_decoders
+        self.edge_updaters = factory.edge_updaters
+        
 
         # message_net
         self.message_net = factory.message_net
@@ -568,6 +585,8 @@ class MolGraphNetwork(torch.nn.Module):
             "edge": len(self.edge_encoders),
             }
         encoder_dec_counts["total"] = 3 * encoder_dec_counts["node"] + 2 * encoder_dec_counts["edge"]
+        if self.update_edges:
+            encoder_dec_counts["total"] += encoder_dec_counts["edge"]
         return encoder_dec_counts
 
     def gather_block_size_stats(self):
