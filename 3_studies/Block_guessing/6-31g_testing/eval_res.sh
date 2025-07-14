@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH -J eval_res
+#SBATCH -J eval_dist
 #SBATCH -c 8
 #SBATCH -N 1                  # Ensure it runs on a single node
 #SBATCH --partition=local     # use partition that fits to the qos
@@ -27,4 +27,4 @@ echo 'Partition used:  '$SLURM_JOB_PARTITION
 echo 'Using the nodes: '$SLURM_JOB_NODELIST
 echo 
 
-python eval_res.py /home/ewachmann/REPOS/Masterarbeit/3_studies/Block_guessing/6-31g_testing/tune_logs/MGNN_hyp_data_aug_only.py
+python eval_res.py /home/ewachmann/REPOS/Masterarbeit/3_studies/Block_guessing/6-31g_testing/tune_logs/MGNN_hyp_distance_only.py

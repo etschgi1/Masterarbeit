@@ -27,4 +27,4 @@ echo 'Partition used:  '$SLURM_JOB_PARTITION
 echo 'Using the nodes: '$SLURM_JOB_NODELIST
 echo 
 
-python hyperopt.py hyp_data_aug_only.py
+python hyperopt.py hyp_distance_only.py
