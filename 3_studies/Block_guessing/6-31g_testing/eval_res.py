@@ -4,6 +4,7 @@ import torch.optim as optim
 import importlib, json, questionary
 from scf_guess_datasets import Qm9Isomeres
 import scf_guess_datasets
+from pathlib import Path
 
 from datetime import datetime
 import sys, os
@@ -67,6 +68,7 @@ def train_using_config(config, dataset, basis, save_path):
                             verbose_level=1,
                             no_progress_bar=True)
     molgraphnet.load_data()
+    loss_on_full_matrix = config.get("loss_on_full_matrix", False)
     print("Start model training", flush=True)
     molgraphnet.train_model(num_epochs=config["num_epochs"],
                     lr=config["lr"],
@@ -78,7 +80,8 @@ def train_using_config(config, dataset, basis, save_path):
                              "threshold": config["lr_threshold"],
                              "cooldown": config["lr_cooldown"],
                              "min_lr" : config["lr_min"]},
-                    model_save_path=save_path)
+                    model_save_path=save_path,
+                    loss_on_full_matrix=loss_on_full_matrix)
     molgraphnet.save_model(save_path)
     print("Model using")
     pprint(config)
@@ -185,11 +188,17 @@ def eval_model(model, dataset, eval_result_path):
     print("Done...")
 
 
-def main(tune_log_folder): 
+def main(tune_log_folder, param_paths_override=None): 
     # get all params
     all_params_path = [os.path.join(tune_log_folder, run, "params.json")  for run in os.listdir(tune_log_folder) if os.path.isdir(os.path.join(tune_log_folder, run))]
+    if param_paths_override is not None:
+        override_prefixes = [ov.split(",", 1)[0] for ov in param_paths_override]
+        all_params_path = [p for p in all_params_path
+                if any(Path(p).parent.name.startswith(pref) for pref in override_prefixes)
+            ]
+    # dataset = Qm9Isomeres("/home/dmilacher/datasets/data", size = 500, val=0.1, test=0.1)
+    dataset = Qm9Isomeres("/home/etschgi1/REPOS/Masterarbeit/datasets/QM9", size = 500, val=0.1, test=0.1)
 
-    dataset = Qm9Isomeres("/home/dmilacher/datasets/data", size = 500, val=0.1, test=0.1)
     basis = BASIS_PATH
     print(f"Dataset: {dataset.name}, for {len(all_params_path)} models", flush=True)
 
@@ -208,8 +217,14 @@ def main(tune_log_folder):
 
 if __name__ == "__main__": 
     print("Starting evaluation script...", flush=True)
+    param_paths_override = None
     if len(sys.argv) > 1:
         tune_log_folder = sys.argv[1]
     else:
         tune_log_folder = select_folder()
-    main(tune_log_folder)
+    # check if param_paths_override.txt exists
+    if os.path.exists(os.path.join(tune_log_folder, "param_paths_override.txt")):
+        with open(os.path.join(tune_log_folder, "param_paths_override.txt"), "r") as f:
+            param_paths_override = [line.strip() for line in f.readlines()]
+        print(f"Using parameter paths override: {param_paths_override}")
+    main(tune_log_folder, param_paths_override=param_paths_override)

@@ -44,4 +44,7 @@ Given this fact, one needs to be caution in making prediction regarding wall clo
 
 \section{Source Code \& Packages used}
 \label{sec:source_code_packages}
-\TODO{Remarks + references to code and packages used}
+%!TODO maybe add version here
+The source code for this thesis was fully written in Python 3.11.11 and is made available upon request. \parencite{ref:python}\\
+
+Models in \autoref{chap:fock_matrix_predictions} were trained using \textsc{scikit-learn} \parencite{ref:sk-learn} and \textsc{Tensorflow} \parencite{ref:tensorflow} with the \textsc{keras} frontend \parencite{ref:keras} and \textsc{kerastuner} for optimization \parencite{ref:kerastuner}. The GNN in \autoref{chap:gnn} was implemented using the \textsc{PyTorch Geometric} library \parencite{ref:PyTorchGeometric}. Hyperparameter optimization was performed using the \textsc{ray} library \parencite{ref:ray_tune}. Dataset handling was performed using a custom written \textsc{scf\_guess\_datasets} package which is available online \parencite{ref:milacher_scf_guess_datasets}. 

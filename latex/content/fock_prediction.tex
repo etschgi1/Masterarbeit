@@ -183,7 +183,7 @@ We implement a MLP model which is trained to map the overlap matrix to the main 
     \end{tabular}
 \end{table}
 
-\texttt{Tensorflow} was used as backend with \texttt{Keras} and the module \texttt{Keras\_tuner} for hyperparameter optimization. \parencite{ref:tensorflow,ref:keras,ref:kerastuner}
+\textsc{Tensorflow} was used as backend with \textsc{Keras} and the module \textsc{Keras\_tuner} for hyperparameter optimization. \parencite{ref:tensorflow,ref:keras,ref:kerastuner}
 All models in the hyperparameter optimization where trained using the Adam optimizer with an exponential decay (rate $0.96$ every 100 batches). Using mean squared error as the optimization objective on the validation set, Hyperband tuner selected a single-layer MLP with 1024 neurons and a 10\% dropout rate.\\
 Subsequently, this model was retrained for 50 epochs for initial evaluation on the test set. A prediction performance (RMSE on test set) of $\num{0.1 \pm 0.014}$ compared to $\num{0.357 \pm 0.007}$ \texttt{minao}'s on the main diagonal looks promising. However, after reconstructing the full Fock matrix using \autoref{eq:gwh} the global prediction quality on the full matrix suffers drastically as seen in \autoref{fig:comparison_mlp_gwh_fock}. 
 

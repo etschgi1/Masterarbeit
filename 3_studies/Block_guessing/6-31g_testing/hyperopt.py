@@ -21,7 +21,7 @@ from scf_guess_tools import Backend
 from utils import find_repo_root
 PROJECT_ROOT = find_repo_root()
 print(f"Project root found at: {PROJECT_ROOT}")
-NUM_CPU = os.cpu_count()//16 or 1  # Fallback to 1 if os.cpu_count() returns None
+NUM_CPU = os.cpu_count() or 1  # Fallback to 1 if os.cpu_count() returns None
 NUM_GPU = 1 if torch.cuda.is_available() else 0
 print(f"Using {NUM_CPU} CPUs and {NUM_GPU} GPUs for Ray Tune")
 
@@ -42,6 +42,7 @@ def hyperopt_train(config, dataset, basis):
                             verbose_level=1,
                             no_progress_bar=True)
     MGNN.load_data()
+    loss_on_full_matrix = config.get("loss_on_full_matrix", False)
     MGNN.train_model(num_epochs=config["num_epochs"],
                     lr=config["lr"],
                     weight_decay=config["weight_decay"],
@@ -52,40 +53,46 @@ def hyperopt_train(config, dataset, basis):
                              "threshold": config["lr_threshold"],
                              "cooldown": config["lr_cooldown"],
                              "min_lr" : config["lr_min"]},
-                    report_fn=tune.report)
-    
+                    report_fn=tune.report,
+                    loss_on_full_matrix=loss_on_full_matrix)
 
 def runhypertune(config_file, slurm_start=False):
-    dataset = Qm9Isomeres("/home/dmilacher/datasets/data", size = 500, val=0.1, test=0.1)
+    if os.path.exists("/home/dmilacher/datasets/data"):
+        dataset = Qm9Isomeres("/home/dmilacher/datasets/data", size = 500, val=0.1, test=0.1)
+    else: 
+        dataset = Qm9Isomeres("/home/etschgi1/REPOS/Masterarbeit/datasets/QM9", size = 500, val=0.1, test=0.1)
     basis = BASIS_PATH
     config_module = importlib.import_module(f"tune_config.{config_file.replace('.py', '')}")
     search_space = config_module.search_space
     disc_comb, disc_params = count_discrete_combinations(search_space)
     print(f"Total discrete combinations: {disc_comb}, Discrete parameters: {disc_params}")
-    num_samples = disc_comb #* 2
+    num_samples = disc_comb * 2 if disc_comb < 50 else disc_comb
     print(f"Number of samples to try: {num_samples}")
+    conc_trials = NUM_CPU // 8 if NUM_CPU >= 32 else 1
+    print(f"Concurrent trials: {conc_trials}") 
     if not slurm_start and input("Start Ray Tune with the above configuration? (y/n): ").strip().lower() != 'y':
         print("Aborting Ray Tune run.")
         return
     tuner = tune.Tuner(tune.with_resources(
         tune.with_parameters(hyperopt_train, dataset=dataset, basis=basis),
-        resources={"cpu": NUM_CPU, "gpu": NUM_GPU/2} 
+        resources={"cpu": NUM_CPU, "gpu": NUM_GPU/2},
         ),
         param_space=search_space,
         tune_config=tune.TuneConfig(
             num_samples=num_samples,  # Number of hyperparameter samples to try
             metric="loss",  # Metric to optimize
             mode="min",  # Minimize the metric
+            max_concurrent_trials=conc_trials,
             scheduler=ASHAScheduler(
                 time_attr="training_iteration",
                 max_t=50,  # Maximum number of training iterations
-                grace_period= 20,  # Initial iterations to run before starting to evaluate
+                grace_period= 5,  # Initial iterations to run before starting to evaluate
                 reduction_factor=3, # prune factor
             )
         ),
         run_config=RunConfig( 
             name=f"MGNN_{config_file}",
-            storage_path=LOG_DIR
+            storage_path=LOG_DIR,
         )
     )
     print(f"Starting Ray Tune with config: {config_file}")
