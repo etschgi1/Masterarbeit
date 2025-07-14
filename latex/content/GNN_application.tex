@@ -61,11 +61,10 @@ $\text{GNN}_\text{initial}$ already performed quite well in terms of iterations 
     \label{fig:loss_hyper_qm9_isomers}
 \end{figure}
 Comparing the training and validation loss between different augmentation factors in \autoref{fig:loss_hyper_qm9_isomers} shows no clear trend regarding the choice of the augmentation factor. While a factor of $2.5$ initially outperforms no augmentation and other factors, they all converge in validation towards the end. 
-Tuning the 
-
-\begin{table}[H]
+Investigating different metrics on the test set in \autoref{tab:qm9_isomers_data_aug_hyperparam} does not yield conclusive insight. Our initial model has the best performance in terms of iterations. However, other models do not fall far behind in that metric.
+\begin{table}[h]
     \centering
-    \caption{Different data augmentation}
+    \caption[GNN on QM9 isomers with different data augmentation factors]{GNN using different data augmentation factors on QM9 \ch{C7H10O2} isomers test set. Other hyperparameters are set according to \autoref{tab:init_hparams}}
     \label{tab:qm9_isomers_data_aug_hyperparam}
     \resizebox{\textwidth}{!}{
         \begin{tabular}{l
@@ -77,26 +76,23 @@ Tuning the
             \toprule
             Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {$\overline{\text{RMSE}}$ / $\unit{\hartree}$} \\
             \midrule
-            $\text{GNN}_\text{initial}$  & \textbf{11.2(5)}  & \TODO{ENERGY with new cached}  &  & \textbf{0.17(2)}  & \textbf{0.0078(6)}\\
-            $\text{GNN}_\text{aug. 1.5}$ & 11.2(6)  &   &  & 0.205(15)& \textbf{0.0078(6)}\\
-            $\text{GNN}_\text{aug. 2.0}$ & 11.5(6)  &   &  & 0.209(17)& 0.0079(6)\\
-            $\text{GNN}_\text{aug. 2.5}$ & 12.0(7)  &   &  & 0.216(18)& 0.0081(6)\\
-            $\text{GNN}_\text{aug. 3.0}$ & 11.4(8)  &   &  & 0.206(16)& 0.0081(6)\\
-            $\text{GNN}_\text{aug. 3.5}$ & 11.3(6)  &   &  & 0.204(17)& 0.0080(6)\\
-            $\text{GNN}_\text{aug. 4.0}$ & 11.6(10) &   &  & 0.213(16)& 0.0080(6)\\
+            $\text{GNN}_\text{initial}$  & \textbf{11.2(5)}  & -1230(30) & -0.703(10) & 0.204(15)  & \textbf{0.0078(6)}\\
+            $\text{GNN}_\text{aug. 1.5}$ & 11.2(6)           & -1240(40) & -0.707(10) & 0.206(16)& 0.0079(6)\\
+            $\text{GNN}_\text{aug. 2.0}$ & 11.5(6)           & -1230(40) & -0.706(12) & 0.205(17)& 0.0079(6)\\
+            $\text{GNN}_\text{aug. 2.5}$ & 12.0(7)           & \textbf{-1220(40)} & \textbf{-0.698(11)} & \textbf{0.203(17)}& 0.0080(6)\\
+            $\text{GNN}_\text{aug. 3.0}$ & 11.4(8)           & \textbf{-1220(40)} & -0.701(12) & 0.204(16)& 0.0081(6)\\
+            $\text{GNN}_\text{aug. 3.5}$ & 11.3(6)           & -1230(40) & -0.702(12) & 0.206(18)& 0.0080(6)\\
+            $\text{GNN}_\text{aug. 4.0}$ & 11.6(10)          & -1240(40) & -0.711(12) & 0.210(17)& 0.0080(6)\\
             \bottomrule
         \end{tabular}
     }
 \end{table}
 
-\TODO{RESULTS FROM HYPERPARAMETER OPTIMIZATION RUNS - EVAL}\\
-
-\textbf{Note to self: table 5.2 and 5.3 were computed without global loss (meaning loss was evaluated only on centerblocks + blocks which are within threshold!) -> Another manual run with global loss should be done maybe for Hyperparam optimization runs! -> then check if that performs better! }
-
-\textbf{Investigate edge\_threshold}\\
-\begin{table}[H]
+\textbf{Investigate Edge Threshold Distance}\\
+The edge threshold distance has an immediate impact on message passing between nodes. Setting it rather low, in the vicinity of bond-lengths will only connect directly bound neighbors. On the other hand, a higher threshold distance allows the formation of longer range connections in the GNN. \autoref{tab:qm9_isomers_dist_hyperparam} shows the influence on the metrics for varying threshold distances.  
+\begin{table}[h]
     \centering
-    \caption{Different edge formation thresholds}
+    \caption[GNN on QM9 isomers with different edge threshold distances]{GNN using different edge threshold distances (numbers denoted in $\unit{\angstrom}$) on QM9 \ch{C7H10O2} isomers test set. Other hyperparameters are set according to \autoref{tab:init_hparams}}
     \label{tab:qm9_isomers_dist_hyperparam}
     \resizebox{\textwidth}{!}{
         \begin{tabular}{l
@@ -105,21 +101,24 @@ Tuning the
                         S[table-format=-1.3(2)]
                         S[table-format=1.3(1.1)]
                         S[table-format=1.4(1)]}
-            \toprule
-            Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {$\overline{\text{RMSE}}$ / $\unit{\hartree}$} \\
-            \midrule
-            $\text{GNN}_\text{dist. thres. 1.5}$ & 15.1(19)&   &  & \textbf{0.184(15)}& 0.0104(5)\\
-            $\text{GNN}_\text{dist. thres. 2.0}$ & 12.3(9) &   &  & 0.226(18)& 0.0084(5)\\
-            $\text{GNN}_\text{dist. thres. 2.5}$ & \textbf{11.2(5)} &   &  & 0.205(15)& 0.0080(6)\\
-            $\text{GNN}_\text{dist. thres. 3.0}$ & 11.8(13)& \TODO{ENERGY with new cached}  &  & 0.208(16)  & 0.0079(6)\\
-            $\text{GNN}_\text{dist. thres. 3.5}$ & 12.6(8) &   &  & 0.210(16)& 0.0079(6)\\
-            $\text{GNN}_\text{dist. thres. 4.0}$ & 12.0(9) &   &  & 0.202(16)& 0.0079(6)\\
-            $\text{GNN}_\text{dist. thres. 4.5}$ & 12.4(10)&   &  & 0.206(15)& 0.0080(6)\\
-            $\text{GNN}_\text{dist. thres. 5.0}$ & 11.2(7) &   &  & 0.197(14)& \textbf{0.0077(7)}\\
+                        \toprule
+                        Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {$\overline{\text{RMSE}}$ / $\unit{\hartree}$} \\
+                        \midrule
+                        $\text{GNN}_\text{dist. thres. 1.5}$ & 15.1(19)& \textbf{-1170(50)} & \textbf{-0.67(3)} & \textbf{0.187(19)}& 0.0104(5)\\
+                        $\text{GNN}_\text{dist. thres. 2.0}$ & 12.3(9) & -1290(40) & -0.739(12) & 0.225(18)& 0.0084(5)\\
+                        $\text{GNN}_\text{dist. thres. 2.5}$ & \textbf{11.2(5)} & -1230(30) & -0.71(11) & 0.204(15)& 0.0081(6)\\
+                        $\text{GNN}_\text{dist. thres. 3.0}$ & 11.8(13)& -1230(40) & -0.702(12) & 0.204(16)  & 0.0079(6)\\
+                        $\text{GNN}_\text{dist. thres. 3.5}$ & 12.6(8) & -1230(40) & -0.703(12) & 0.198(15)& 0.0077(6)\\
+                        $\text{GNN}_\text{dist. thres. 4.0}$ & 12.0(9) & -1220(40) & -0.699(16) & 0.196(15)& 0.0078(6)\\
+                        $\text{GNN}_\text{dist. thres. 4.5}$ & 12.4(10)& -1230(40) & -0.704(13) & 0.200(14)& 0.0080(6)\\
+                        $\text{GNN}_\text{dist. thres. 5.0}$ & 11.2(7) & -1230(40) & -0.701(10) & 0.197(14)& \textbf{0.0077(7)}\\
             \bottomrule
         \end{tabular}
     }
 \end{table}
+For a low distance threshold of $\SI{1.5}{\angstrom}$, which is around the bond length of \ch{C}-\ch{C} bonds low iterations performance is attained. Interestingly, the DIIS metric performs best on this variant, contrary to the high RMSE.  
+
+\textbf{Note to self: table 5.2 and 5.3 were computed without global loss (meaning loss was evaluated only on centerblocks + blocks which are within threshold!) -> Another manual run with global loss should be done maybe for Hyperparam optimization runs! -> then check if that performs better! }
 
 --> compare initial vs. dist. thres. 3.0
 \begin{verbatim}
@@ -172,6 +171,45 @@ Tuning the
             \bottomrule
         \end{tabular}
     }
+        \resizebox{\textwidth}{!}{
+        \begin{tabular}{lrrrrrrrrrr}
+        \toprule
+        Parameters& 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\
+        \midrule
+        Hidden Dimension & 512 & 256 & 128 & 128 & 128 & 512 & 256 & 128 & 256 & 256 \\
+        Batch Size & 8 & 8 & 8 & 8 & 32 & 32 & 32 & 32 & 32 & 32 \\
+        Data aug. & 1.83 & 2.46 & 2.38 & 1.76 & 1.50 & 1.14 & 1.67 & 2.45 & 1.91 & 2.33 \\
+        Edge thres. & 2.73 & 3.87 & 3.21 & 2.07 & 2.11 & 2.11 & 2.14 & 2.12 & 2.11 & 2.05 \\
+        Message p. steps & 2 & 4 & 3 & 3 & 4 & 2 & 3 & 2 & 3 & 3 \\
+        Message Net Dropout & 0.10 & 0.27 & 0.21 & 0.18 & 0.29 & 0.14 & 0.18 & 0.23 & 0.22 & 0.11 \\
+        Message Net Layers & 3 & 5 & 4 & 3 & 5 & 3 & 3 & 3 & 5 & 3 \\
+        Learn Rate & 6.34e-04 & 2.31e-04 & 2.89e-04 & 4.93e-03 & 3.97e-03 & 1.79e-04 & 3.54e-04 & 4.36e-03 & 2.61e-04 & 1.16e-04 \\
+        Weight Decay & 4.56e-04 & 7.37e-05 & 4.37e-05 & 1.69e-05 & 9.97e-04 & 8.35e-05 & 5.21e-05 & 4.43e-05 & 2.97e-04 & 2.35e-05 \\
+        \bottomrule
+        \end{tabular}
+        }
+\end{table}
+\begin{table}[H]
+    \centering
+    \caption{Further runs}
+    \label{tab:qm9_isomers_further_runs}
+    \resizebox{\textwidth}{!}{
+    \begin{tabular}{lrrrrrrrrrr}
+        \toprule
+        Parameters& 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\
+        \midrule
+        Hidden Dimension & 512 & 256 & 128 & 128 & 128 & 512 & 256 & 128 & 256 & 256 \\
+        Batch Size & 8 & 8 & 8 & 8 & 32 & 32 & 32 & 32 & 32 & 32 \\
+        Data aug. & 1.8284 & 2.4589 & 2.3841 & 1.7602 & 1.4980 & 1.1408 & 1.6722 & 2.4478 & 1.9081 & 2.3284 \\
+        Edge thres. & 2.7331 & 3.8705 & 3.2133 & 2.0669 & 2.1125 & 2.1070 & 2.1384 & 2.1235 & 2.1113 & 2.0468 \\
+        Message p. steps & 2 & 4 & 3 & 3 & 4 & 2 & 3 & 2 & 3 & 3 \\
+        Message Net Dropout & 0.1039 & 0.2664 & 0.2111 & 0.1760 & 0.2946 & 0.1403 & 0.1834 & 0.2280 & 0.2191 & 0.1080 \\
+        Message Net Layers & 3 & 5 & 4 & 3 & 5 & 3 & 3 & 3 & 5 & 3 \\
+        Learn Rate & 0.0006 & 0.0002 & 0.0003 & 0.0049 & 0.0040 & 0.0002 & 0.0004 & 0.0044 & 0.0003 & 0.0001 \\
+        Weight Decay & 0.0005 & 0.0001 & 0.0000 & 0.0000 & 0.0010 & 0.0001 & 0.0001 & 0.0000 & 0.0003 & 0.0000 \\
+        \bottomrule
+        \end{tabular}
+        }
 \end{table}
 \TODO{write something about very well performing RMSE runs}
 

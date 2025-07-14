@@ -141,7 +141,7 @@ def update_stats(metrics, cum_stat_key="cummulative_stats"):
             metrics[cum_stat_key][key]["mean"] = np.mean(values)
             metrics[cum_stat_key][key]["std"] = np.std(values)
 
-def eval_model(model, dataset, eval_result_path):
+def eval_model(model, dataset, eval_result_path, skip_iterations= False):
     print("Evaluating model - gathering results...")
     test_graphs = model.get_graphs("test")
     density_preds = model.predict(test_graphs)
@@ -156,7 +156,9 @@ def eval_model(model, dataset, eval_result_path):
         pred_overlaps.append(mf.get_ovlp())
         coreHs.append(mf.get_hcore())
     print("Done...", flush=True)
-    metrics = {"cummulative_stats": None, "iterations": [], "energy_abs": [], "energy_rel": [], "diis": [], "rmse": []}
+    metrics = {"cummulative_stats": None, "energy_abs": [], "energy_rel": [], "diis": [], "rmse": []}
+    if not skip_iterations: 
+        metrics["iterations"] = []
     # start with energy_abs
     print("Calculating metrics...")
     for density, fock, coreH, overlap, key in zip(density_preds, pred_focks, coreHs, pred_overlaps, dataset.test_keys):
@@ -176,10 +178,11 @@ def eval_model(model, dataset, eval_result_path):
         metrics["rmse"].append(rmse)
         print(f"Key: {key}, RMSE: {rmse:.6f}")
         # iterations
-        solver = dataset.solver(key)
-        _, _, _, _, status = scf_guess_datasets.solve(solver, density.astype(np.float64))
-        metrics["iterations"].append(status.iterations)
-        print(f"Key: {key}, Iterations: {status.iterations}", flush=True)
+        if not skip_iterations:
+            solver = dataset.solver(key)
+            _, _, _, _, status = scf_guess_datasets.solve(solver, density.astype(np.float64))
+            metrics["iterations"].append(status.iterations)
+            print(f"Key: {key}, Iterations: {status.iterations}", flush=True)
         # update cummulative stats
         update_stats(metrics)
         with open(eval_result_path, "w") as f:
@@ -188,7 +191,7 @@ def eval_model(model, dataset, eval_result_path):
     print("Done...")
 
 
-def main(tune_log_folder, param_paths_override=None): 
+def main(tune_log_folder, param_paths_override=None, skip_iterations=False): 
     # get all params
     all_params_path = [os.path.join(tune_log_folder, run, "params.json")  for run in os.listdir(tune_log_folder) if os.path.isdir(os.path.join(tune_log_folder, run))]
     if param_paths_override is not None:
@@ -213,18 +216,20 @@ def main(tune_log_folder, param_paths_override=None):
             cur_model = load_using_config(cur_config, dataset, basis, model_path)
         else: 
             cur_model = train_using_config(cur_config, dataset, basis, model_path)
-        eval_model(cur_model, dataset, eval_res_path)
+        eval_model(cur_model, dataset, eval_res_path, skip_iterations)
 
 if __name__ == "__main__": 
     print("Starting evaluation script...", flush=True)
     param_paths_override = None
+    skip_iterations = False
     if len(sys.argv) > 1:
         tune_log_folder = sys.argv[1]
     else:
         tune_log_folder = select_folder()
+        skip_iterations = True if input("skip iterations in benchmark?").lower() == "y" else False
     # check if param_paths_override.txt exists
     if os.path.exists(os.path.join(tune_log_folder, "param_paths_override.txt")):
         with open(os.path.join(tune_log_folder, "param_paths_override.txt"), "r") as f:
             param_paths_override = [line.strip() for line in f.readlines()]
         print(f"Using parameter paths override: {param_paths_override}")
-    main(tune_log_folder, param_paths_override=param_paths_override)
+    main(tune_log_folder, param_paths_override=param_paths_override, skip_iterations=skip_iterations)
