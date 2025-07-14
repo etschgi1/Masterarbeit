@@ -143,7 +143,36 @@ Tuning the
         "weight_decay": 1.78e-05
         }
 \end{verbatim}
-\textbf{Hyperparameter optimization runs}\\
+\textbf{Further hyperparameter optimization runs}\\
+
+\begin{table}[H]
+    \centering
+    \caption{Further runs}
+    \label{tab:qm9_isomers_further_runs}
+    \resizebox{\textwidth}{!}{
+        \begin{tabular}{l
+                        S[table-format=2.1(2)]
+                        S[table-format=-4(2)]
+                        S[table-format=-1.3(2)]
+                        S[table-format=1.3(1)]
+                        S[table-format=1.4(1)]}
+            \toprule
+            Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {$\overline{\text{RMSE}}$ / $\unit{\hartree}$} \\
+            \midrule
+            $\text{GNN}_\text{hyp. 0}$ & \textbf{11.5(9)} & -1250(40)          & -0.718(0.011)          & 0.209(0.02) & \textbf{0.0076(6)} \\
+            $\text{GNN}_\text{hyp. 1}$ & 11.6(0.7)        & -1250(40)          & -0.713(0.012)          & 0.206(0.02) & 0.0078(0.0006) \\
+            $\text{GNN}_\text{hyp. 2}$ & 11.7(0.8)        & \textbf{-1190(40)} & \textbf{-0.680(10)} & \textbf{0.190(2)} & 0.0079(0.0006) \\
+            $\text{GNN}_\text{hyp. 3}$ & 13.1(1.1)        & -1310(50)          & -0.752(0.014) & 0.230(0.02) & 0.0084(0.0005) \\
+            $\text{GNN}_\text{hyp. 4}$ & 13.2(1.2)        & -1310(40)          & -0.752(0.012) & 0.234(0.02) & 0.0088(0.0005) \\
+            $\text{GNN}_\text{hyp. 5}$ & 13.3(1.1)        & -1300(40)          & -0.743(0.012) & 0.232(0.02) & 0.0090(0.0005) \\
+            $\text{GNN}_\text{hyp. 6}$ & 13.6(1.3)        & -1320(40)          & -0.753(0.014) & 0.235(0.02) & 0.0089(0.0005) \\
+            $\text{GNN}_\text{hyp. 7}$ & 13.9(1.1)        & -1320(50)          & -0.758(0.014) & 0.238(0.02) & 0.0088(0.0006) \\
+            $\text{GNN}_\text{hyp. 8}$ & 14.5(1.4)        & -1350(40)          & -0.770(0.012) & 0.244(0.02) & 0.0090(0.0005) \\
+            $\text{GNN}_\text{hyp. 9}$ & 14.7(1.2)        & -1350(50)          & -0.772(0.016) & 0.248(0.02) & 0.0091(0.0005) \\
+            \bottomrule
+        \end{tabular}
+    }
+\end{table}
 \TODO{write something about very well performing RMSE runs}
 
 

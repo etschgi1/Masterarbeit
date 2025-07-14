@@ -4,8 +4,8 @@ import numpy as np
 
 # FOLDER = "/home/etschgi1/REPOS/Masterarbeit/datasets/QM9/xyz_c7h10o2"
 # FOLDER = "/home/etschgi1/REPOS/Masterarbeit/datasets/QM9/xyz_c5h4n2o2"
-FOLDER = "/home/ewachmann/REPOS/Masterarbeit/scf_guess_datasets/scf_guess_datasets/qm9_isomeres/xyz"
-FOLDER = "/home/etschgi1/REPOS/Masterarbeit/scf_guess_datasets/scf_guess_datasets/qm9_isomeres/xyz"
+# FOLDER = "/home/ewachmann/REPOS/Masterarbeit/scf_guess_datasets/scf_guess_datasets/qm9_isomeres/xyz"
+FOLDER = "/home/etschgi1/REPOS/Masterarbeit/scf_guess_datasets/scf_guess_datasets/qm9_isomeres_md/xyz"
 
 VALENCE_ELECTRONS = {
     1: 1,   # H
@@ -31,7 +31,10 @@ def get_multiplicity_smiles(smiles):
 
 
 charge_list, mult_list = [], []
+charge, mult = 0, 1
+overwrite_flag = False
 def add_charge_and_mult(folder_path): 
+    global overwrite_flag, charge, mult
     for file in os.listdir(folder_path): 
         if not file.endswith(".xyz"):
             continue
@@ -43,9 +46,16 @@ def add_charge_and_mult(folder_path):
                 print(f"File {filepath} already preprocessed") 
                 continue
             content = content.split("\n")
-            inchi_ = content[-2].split("\t")[0].split("=")[-1]
-            smiles = content[-3].split("\t")[0]
-            charge, mult = get_multiplicity_smiles(smiles)
+            if not overwrite_flag:
+                inchi_ = content[-2].split("\t")[0].split("=")[-1]
+                smiles = content[-3].split("\t")[0]
+                try:
+                    charge, mult = get_multiplicity_smiles(smiles)
+                except Exception as e: 
+                    print(e)
+                    in_ = input("Fallback to charge 0 multiplicity 1?")
+                    if in_.lower() == "y":
+                        overwrite_flag = True
             content[1] = content[1] + f"charge {charge} multiplicity {mult}"
         with open(filepath, "w+") as f:
             f.write("\n".join(content))

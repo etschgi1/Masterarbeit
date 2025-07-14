@@ -107,7 +107,8 @@ class MolGraphNetwork(torch.nn.Module):
 
                 with open(xyz_file, 'r') as f:
                     lines = f.readlines()
-                    coords = [list(map(float, line.split()[1:4])) for line in lines[2:-3]]
+                    coords_count = int(lines[0])  # First line contains the number of atoms
+                    coords = [list(map(float, line.split()[1:4])) for line in lines[2:coords_count+2]]
                     assert len(coords) == int(lines[0]), f"Number of coordinates {len(coords)} does not match number of atoms {int(lines[0])} in file {xyz_file}"
                     coords_in.append(coords)
                     files_in.append(xyz_file)

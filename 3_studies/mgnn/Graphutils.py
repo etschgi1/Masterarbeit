@@ -207,7 +207,7 @@ def rotated_xyz_content(xyz_source, new_coords):
     if len(new_coords) != xyz_source_nr_atoms:
         raise ValueError(f"Number of atoms in new_coords ({len(new_coords)}) does not match xyz_source ({xyz_source_nr_atoms})")
     for i, line in enumerate(lines[2:2+xyz_source_nr_atoms]):
-        parts = line.split("\t")
+        parts = line.split()
         if len(parts) < 4:
             raise ValueError(f"Line {i+3} in xyz file does not have enough parts: {line}")
         parts[1:4] = new_coords[i]
