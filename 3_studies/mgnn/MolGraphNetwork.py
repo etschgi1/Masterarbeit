@@ -217,7 +217,7 @@ class MolGraphNetwork(torch.nn.Module):
         rotated_coords = rotate_points(coords, rand_axis, rand_angle)
         
         #! own temp file for every process to avoid race conditions!
-        with tempfile.NamedTemporaryFile(mode="w", suffix=".xyz") as tf:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".xyz", delete=False) as tf:
             tf.writelines(rotated_xyz_content(xyz_file, rotated_coords))
             tmp_path = tf.name
         try:
@@ -226,9 +226,11 @@ class MolGraphNetwork(torch.nn.Module):
             dprint(0, f"Error loading rotated molecule from {tmp_path}: {e}")
             dprint(0, xyz_file)
             dprint(0, rotated_coords)
-            with open(xyz_file, 'r') as f:
+            with open(tmp_path, 'r') as f:
                 dprint(0, f"Rotated coordinates content:\n{f.read()}")
             raise e
+        finally: 
+            os.remove(tmp_path) # clean up manually
         aug_graph = self.make_graph(rotated_overlap, rotated_target, rotated_coords, rotated_mol)
         return aug_graph, rotated_overlap, rotated_target, (xyz_file, rand_axis, rand_angle)  
 

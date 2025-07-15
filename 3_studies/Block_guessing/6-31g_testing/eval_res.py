@@ -210,11 +210,18 @@ def main(tune_log_folder, param_paths_override=None, skip_iterations=False):
 
     for param_path in all_params_path: 
         # check if model already trained?
-        with open(param_path, "r") as f:
-            cur_config = json.load(f)
+        try:
+            with open(param_path, "r") as f:
+                cur_config = json.load(f)
+        except FileNotFoundError: 
+            print(f"Parameter file {param_path} not found, skipping...")
+            continue
         print(cur_config)
         model_path =  param_path.replace("params.json", "model.pth")
         eval_res_path = param_path.replace("params.json", "eval_res.json")
+        if os.path.exists(eval_res_path):
+            print(f"Evaluation results already exist at {eval_res_path}, skipping...")
+            continue
         if os.path.exists(model_path):
             cur_model = load_using_config(cur_config, dataset, basis, model_path)
         else: 
