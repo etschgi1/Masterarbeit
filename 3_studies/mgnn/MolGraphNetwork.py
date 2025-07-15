@@ -217,7 +217,7 @@ class MolGraphNetwork(torch.nn.Module):
         rotated_coords = rotate_points(coords, rand_axis, rand_angle)
         
         #! own temp file for every process to avoid race conditions!
-        with tempfile.NamedTemporaryFile(mode="w", suffix=".xyz", delete=False) as tf:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".xyz") as tf:
             tf.writelines(rotated_xyz_content(xyz_file, rotated_coords))
             tmp_path = tf.name
         try:
