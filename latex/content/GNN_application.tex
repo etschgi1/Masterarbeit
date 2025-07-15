@@ -2,7 +2,7 @@
 \label{chap:application}
 The GNN model introduced in \autoref{chap:gnn} will be benchmarked on various datasets in the following chapters. All reference data was calculated using the 6-31G(2df,p) basis at theory level B3LYP. \\
 
-Models will be evaluated by their iteration count till convergence, the energy difference from the converged solution and the DIIS error (see \autoref{eq:diis_error}). 
+Models will be evaluated by their iteration count till convergence, the energy difference from the converged solution the DIIS error (see \autoref{eq:diis_error}) and RMSE. 
 
 \TODO{Refer to 0d benchmark model, check basis + functional}
 \section{QM9 - \ch{C7H10O2} Isomers}
@@ -74,7 +74,7 @@ Investigating different metrics on the test set in \autoref{tab:qm9_isomers_data
                         S[table-format=1.3(1.1)]
                         S[table-format=1.4(1)]}
             \toprule
-            Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {$\overline{\text{RMSE}}$ / $\unit{\hartree}$} \\
+            Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / $\unit{\hartree}$} \\
             \midrule
             $\text{GNN}_\text{initial}$  & \textbf{11.2(6)}  & -1230(30) & -0.703(10) & 0.204(15)  & \textbf{0.0078(6)}\\
             $\text{GNN}_\text{aug. 1.5}$ & \textbf{11.2(6)}  & -1240(40) & -0.707(10) & 0.206(16)& 0.0079(6)\\
@@ -102,7 +102,7 @@ The edge threshold distance has an immediate impact on message passing between n
                         S[table-format=1.3(1.1)]
                         S[table-format=1.4(1)]}
                         \toprule
-                        Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {$\overline{\text{RMSE}}$ / $\unit{\hartree}$} \\
+                        Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / $\unit{\hartree}$} \\
                         \midrule
                         $\text{GNN}_\text{dist. thres. 1.5}$ & 15.1(19)& \textbf{-1170(50)} & \textbf{-0.67(3)} & \textbf{0.187(19)}& 0.0104(5)\\
                         $\text{GNN}_\text{dist. thres. 2.0}$ & 12.3(9) & -1290(40) & -0.739(12) & 0.225(18)& 0.0084(5)\\
@@ -123,7 +123,7 @@ For all training runs up to now, the training loss was evaluated only on the nor
 \begin{table}[H]
     \centering
     \caption[GNN on QM9 isomers training with full matrix loss]{GNN on QM9 isomers using full matrix loss to train. Metrics on test set and corresponding hyperparameter settings for 5 best performing networks (0-4) from search and 5 sampled ones (5-9) from same hyperparameter search.}
-    \label{tab:qm9_isomers_further_runs}
+    \label{tab:qm9_isomers_further_runs} %!TODO rerun with all models if there is time!
     \resizebox{\textwidth}{!}{
         \begin{tabular}{l
                         S[table-format=2.1(2)]
@@ -132,7 +132,7 @@ For all training runs up to now, the training loss was evaluated only on the nor
                         S[table-format=1.3(1)]
                         S[table-format=1.4(1)]}
             \toprule
-            Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {$\overline{\text{RMSE}}$ / $\unit{\hartree}$} \\
+            Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / $\unit{\hartree}$} \\
             \midrule
             $\text{GNN}_\text{f. 0}$ & \textbf{11.5(9)} & -1250(40)          & -0.718(0.011)          & 0.209(0.02) & \textbf{0.0076(6)} \\
             $\text{GNN}_\text{f. 1}$ & 11.6(0.7)        & -1250(40)          & -0.713(0.012)          & 0.206(0.02) & 0.0078(0.0006) \\
@@ -165,7 +165,7 @@ For all training runs up to now, the training loss was evaluated only on the nor
         \end{tabular}
         }
 \end{table}
-The best performing networks using full matrix loss fare a bit worse with regards to iteration count. Notably, $\text{GNN}_\text{f. 0}$ reaches the lowest $\overline{\text{RMSE}}$ of all benchmarked models so far. Correlation between our surrogate metrics and iterations is rather high with a pearson correlation coefficient of $ß.94$ for DIIS and $\overline{\text{RMSE}}$ and $-0.92$ for $\Delta E_\text{HF}$ for the full matrix loss runs. However, as seen in \autoref{tab:qm9_isomers_dist_hyperparam}, the correlation for $\Delta E_\text{HF}$ and DIIS breaks down for the $\SI{1.5}{\angstrom}$ distance cutoff. Contrary, $\overline{\text{RMSE}}$ is comparably high for this cutoff. \\
+The best performing networks using full matrix loss fare a bit worse with regards to iteration count. Notably, $\text{GNN}_\text{f. 0}$ reaches the lowest RMSE of all benchmarked models so far. Correlation between our surrogate metrics and iterations is rather high with a pearson correlation coefficient of $ß.94$ for DIIS and RMSE and $-0.92$ for $\Delta E_\text{HF}$ for the full matrix loss runs. However, as seen in \autoref{tab:qm9_isomers_dist_hyperparam}, the correlation for $\Delta E_\text{HF}$ and DIIS breaks down for the $\SI{1.5}{\angstrom}$ distance cutoff. Contrary, RMSE is comparably high for this cutoff. \\
 
 
 \subsection{Evaluation \& Conclusion}
@@ -183,7 +183,7 @@ Top performing models defined above are compared to \textsc{PySCF} guessing sche
                         S[table-format=2.1(1.1)]
                         S[table-format=1.4(1)]}
             \toprule
-            Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {$\overline{\text{RMSE}}$ / $\unit{\hartree}$} \\
+            Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / $\unit{\hartree}$} \\
             \midrule
             $\text{GNN}_\text{initial}$   & 11.2(6)  & -1230(30)   & -0.703(10)& 0.2040(15)& 0.0078(6)\\
             $\text{GNN}_\text{f. 0}$      & 11.5(9)  & -1250(40)   & -0.718(11)& 0.209(2)  & 0.0076(6)\\
@@ -200,10 +200,80 @@ Comparing \textsc{PySCF} and $\overline{P}$ guessing schemes with our GNN approa
 
 We have shown that the GNN approach surpasses most conventional guessing schemes and performs nearly on par with \texttt{minao} in terms of iterations. Varying the data augmentation factor had negligible effect on the convergence speed, while the distance threshold contributes for distances around the bond length. It remains to be seen how well these models generalize to other data. 
 
-\section{MD of QM9}
-\label{sec:qm9_isomers_benchmark}
-\TODO{Notes on training}
+\section{QM9 - \ch{C7H10O2} Molecular Dynamics (MD)}
+\label{sec:qm9_md_isomers_benchmark}
+So far, all predictions have considered only ground state geometries. While predicted and calculated traits of the ground state give invaluable insight into the chemical properties, the behavior of the molecules in more attainable environments is of interest. The MD trajectories of \ch{C7H10O2} dataset \parencite{ref:qm9_isomers_md} compiles a randomly samples set of 113 isomers from the QM9 \ch{C7H10O2} data. The trajectory of every isomer is calculated every $\SI{1}{\femto\second}$ for 5000 steps at a temperature of 500 K using the PBE exchange-correlation potential (see \ref{subsec:background_dft}). From these geometries 500 are sampled to calculated a reference data set using the 6-31G(2df,p) basis at theory level B3LYP. We use this set in the following experiments. 
 
-\section{QM9 - full?}
+\subsection{Zero shot predictions}
+\label{sec:qm9_md_isomers_zero_shot}
+Zero shot predictions are predictions performed on data which is out of scope of training data. In our case a model previously trained on the QM9 \ch{C7H10O2} isomer set may be used to predict the density for a given MD sample. Prediction metrics using the pre trained models from \autoref{sec:qm9_isomers_benchmark} on the MD test set is given in \autoref{tab:qm9_md_zero_shot}. 
+\begin{table}[h]
+    \centering
+    \caption[GNN zero shot predictions on QM9 isomers MD]{GNN zero shot predictions on the QM9 isomer MD test set. $\text{GNN}_\text{initial}$ and $\text{GNN}_\text{f. 0}$ were trained using the QM9 isomer set.}
+    \label{tab:qm9_md_zero_shot}
+    \resizebox{\textwidth}{!}{
+        \begin{tabular}{l
+                        S[table-format=2.1(2)]
+                        S[table-format=-4(4)]
+                        S[table-format=-1.3(2)]
+                        S[table-format=2.1(1.1)]
+                        S[table-format=1.4(1)]}
+            \toprule
+            Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / $\unit{\hartree}$} \\
+            \midrule
+            $\text{GNN}_\text{initial}$   & 11.2(8)  & -7000(7000) & -4(4)       & 0.209(15)& 0.0080(4) \\
+            $\text{GNN}_\text{f. 0}$      & 11.3(7)  & -8000(8000) & -5(4)       & 0.213(15)& 0.0077(4) \\
+            \bottomrule
+        \end{tabular}
+    }
+\end{table}
+\TODO{Diskussion zero shots}
+\subsection{Hyperparameter tuning}
+\label{sec:qm9_md_isomers_hyp_tuning}
+%! full matrix run in tune_logs_MGNN_hyp_small_full_mat_loss_md
+
+\subsection{Evalutation \& Conclusion}
+\label{sec:qm9_md_isomers_conclusion}
+
+
+\begin{table}[H]
+    \centering
+    \caption{Comparison of different models with \textsc{PySCF} and $\overline{P}$ guessing schemes.}
+    \label{tab:qm9_md_test_overview}
+    \resizebox{\textwidth}{!}{
+        \begin{tabular}{l
+                        S[table-format=2.1(2)]
+                        S[table-format=-4(4)]
+                        S[table-format=-1.5(1.1)]
+                        S[table-format=1.4(1.1)]
+                        S[table-format=1.5(1.1)]}
+            \toprule
+            Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / $\unit{\hartree}$} \\
+            \midrule
+            $\text{GNN}_\text{initial}$   & 11.2(8)  & -7000(7000) & -4(4)       & 0.209(15)& 0.0080(4) \\
+            $\text{GNN}_\text{f. 0}$      &          &             &             &          &  \\
+            $\overline{P}$                & 16.9(10) & -202(3)     & -0.11(0)    & 0.012(0) & 0.0134(3) \\
+            \texttt{1-e}                  & 18.2(17) & -229(5)     & -0.1300(19) & 0.126(8) & 0.14(3) \\
+            \texttt{vsap}                 & 14.5(7)  & -5.9(2)     & -0.00333(10)& 0.0276(2)& 0.0114(6) \\
+            \texttt{atom}                 & 16.6(17) & -19(3)      & -0.0106(15) & 0.047(6) & 0.0167(16) \\
+            \texttt{minao}                & 10.7(5)  & 2.96(4)     & 0.001673(8) & 0.077(3) & 0.01538(18) \\
+            \bottomrule
+        \end{tabular}
+    }
+\end{table}
+\section{QM9 - stratified sample}
 \label{sec:qm9_isomers_benchmark}
-\TODO{Notes on training}
+
+\subsection{Zero shot predictions}
+\label{sec:qm9_full_isomers_zero_shot}
+
+
+\subsection{Hyperparameter tuning}
+\label{sec:qm9_full_isomers_hyp_tuning}
+
+\subsection{Evalutation \& Conclusion}
+\label{sec:qm9_full_isomers_conclusion}
+
+\section{Lost Tweaks}
+\label{sec:lost_tweaks}
+\TODO{Optionally: Write about stuff that did not really make it }

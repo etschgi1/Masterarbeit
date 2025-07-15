@@ -23,7 +23,7 @@ print(f"Project root found at: {PROJECT_ROOT}")
 # NUM_GPU = 1 if torch.cuda.is_available() else 0
 # print(f"Using {NUM_CPU} CPUs and {NUM_GPU} GPUs for Eval")
 
-LOG_ROOT = os.path.join(PROJECT_ROOT, "3_studies/Block_guessing/6-31g_testing/tune_logs")
+LOG_ROOT = os.path.join(PROJECT_ROOT, "3_studies/Block_guessing/6-31g_md_testing/tune_logs")
 BASIS_PATH = os.path.join(PROJECT_ROOT, "scripts/6-31g_2df_p_custom_nwchem.gbs")
 
 def load_using_config(config, dataset, basis, model_path): 
@@ -156,9 +156,8 @@ def eval_model(model, dataset, eval_result_path, skip_iterations= False):
         pred_overlaps.append(mf.get_ovlp())
         coreHs.append(mf.get_hcore())
     print("Done...", flush=True)
-    metrics = {"cummulative_stats": None, "energy_abs": [], "energy_rel": [], "diis": [], "rmse": []}
-    if not skip_iterations: 
-        metrics["iterations"] = []
+    metrics = {"cummulative_stats": None, "energy_abs": [], "iterations": [], "energy_rel": [], "diis": [], "rmse": []}
+
     # start with energy_abs
     print("Calculating metrics...")
     for density, fock, coreH, overlap, key in zip(density_preds, pred_focks, coreHs, pred_overlaps, dataset.test_keys):
@@ -187,6 +186,10 @@ def eval_model(model, dataset, eval_result_path, skip_iterations= False):
         update_stats(metrics)
         with open(eval_result_path, "w") as f:
             json.dump(metrics, f, indent=4)
+
+        if len(metrics["iterations"]) > 5 and np.mean(metrics["iterations"]) > 13.5: 
+            print("abort - mean iteration too high -> uninteresting!")
+            break
 
     print("Done...")
 

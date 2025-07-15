@@ -2418,26 +2418,27 @@
     <bcf:citekey order="44" intorder="1">ref:adamW</bcf:citekey>
     <bcf:citekey order="45" intorder="1">ref:ray_tune</bcf:citekey>
     <bcf:citekey order="46" intorder="1">ref:ASHA</bcf:citekey>
-    <bcf:citekey order="47" intorder="1">ref:pyscf</bcf:citekey>
-    <bcf:citekey order="48" intorder="1">ref:pyscf_user_guide</bcf:citekey>
-    <bcf:citekey order="49" intorder="1">ref:minao_sad1</bcf:citekey>
-    <bcf:citekey order="49" intorder="2">ref:minao_sad2</bcf:citekey>
-    <bcf:citekey order="50" intorder="1">ref:Lehtola2019</bcf:citekey>
-    <bcf:citekey order="51" intorder="1">ref:minao_sad1</bcf:citekey>
-    <bcf:citekey order="51" intorder="2">ref:minao_sad2</bcf:citekey>
-    <bcf:citekey order="52" intorder="1">ref:lethola_fully_numerical_atomic_potentials</bcf:citekey>
-    <bcf:citekey order="53" intorder="1">ref:Lehtola2019</bcf:citekey>
+    <bcf:citekey order="47" intorder="1">ref:qm9_isomers_md</bcf:citekey>
+    <bcf:citekey order="48" intorder="1">ref:pyscf</bcf:citekey>
+    <bcf:citekey order="49" intorder="1">ref:pyscf_user_guide</bcf:citekey>
+    <bcf:citekey order="50" intorder="1">ref:minao_sad1</bcf:citekey>
+    <bcf:citekey order="50" intorder="2">ref:minao_sad2</bcf:citekey>
+    <bcf:citekey order="51" intorder="1">ref:Lehtola2019</bcf:citekey>
+    <bcf:citekey order="52" intorder="1">ref:minao_sad1</bcf:citekey>
+    <bcf:citekey order="52" intorder="2">ref:minao_sad2</bcf:citekey>
+    <bcf:citekey order="53" intorder="1">ref:lethola_fully_numerical_atomic_potentials</bcf:citekey>
     <bcf:citekey order="54" intorder="1">ref:Lehtola2019</bcf:citekey>
-    <bcf:citekey order="55" intorder="1">ref:lethola_fully_numerical_atomic_potentials</bcf:citekey>
-    <bcf:citekey order="56" intorder="1">ref:schuett_unifying_2019</bcf:citekey>
-    <bcf:citekey order="57" intorder="1">ref:python</bcf:citekey>
-    <bcf:citekey order="58" intorder="1">ref:sk-learn</bcf:citekey>
-    <bcf:citekey order="59" intorder="1">ref:tensorflow</bcf:citekey>
-    <bcf:citekey order="60" intorder="1">ref:keras</bcf:citekey>
-    <bcf:citekey order="61" intorder="1">ref:kerastuner</bcf:citekey>
-    <bcf:citekey order="62" intorder="1">ref:PyTorchGeometric</bcf:citekey>
-    <bcf:citekey order="63" intorder="1">ref:ray_tune</bcf:citekey>
-    <bcf:citekey order="64" intorder="1">ref:milacher_scf_guess_datasets</bcf:citekey>
+    <bcf:citekey order="55" intorder="1">ref:Lehtola2019</bcf:citekey>
+    <bcf:citekey order="56" intorder="1">ref:lethola_fully_numerical_atomic_potentials</bcf:citekey>
+    <bcf:citekey order="57" intorder="1">ref:schuett_unifying_2019</bcf:citekey>
+    <bcf:citekey order="58" intorder="1">ref:python</bcf:citekey>
+    <bcf:citekey order="59" intorder="1">ref:sk-learn</bcf:citekey>
+    <bcf:citekey order="60" intorder="1">ref:tensorflow</bcf:citekey>
+    <bcf:citekey order="61" intorder="1">ref:keras</bcf:citekey>
+    <bcf:citekey order="62" intorder="1">ref:kerastuner</bcf:citekey>
+    <bcf:citekey order="63" intorder="1">ref:PyTorchGeometric</bcf:citekey>
+    <bcf:citekey order="64" intorder="1">ref:ray_tune</bcf:citekey>
+    <bcf:citekey order="65" intorder="1">ref:milacher_scf_guess_datasets</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="none">
