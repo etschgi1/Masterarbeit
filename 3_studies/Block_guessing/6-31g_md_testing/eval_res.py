@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import importlib, json, questionary
-from scf_guess_datasets import Qm9Isomeres
+from scf_guess_datasets import Qm9IsomeresMd
 import scf_guess_datasets
 from pathlib import Path
 
@@ -23,7 +23,7 @@ print(f"Project root found at: {PROJECT_ROOT}")
 # NUM_GPU = 1 if torch.cuda.is_available() else 0
 # print(f"Using {NUM_CPU} CPUs and {NUM_GPU} GPUs for Eval")
 
-LOG_ROOT = os.path.join(PROJECT_ROOT, "3_studies/Block_guessing/6-31g_testing/tune_logs")
+LOG_ROOT = os.path.join(PROJECT_ROOT, "3_studies/Block_guessing/6-31g_md_testing/tune_logs")
 BASIS_PATH = os.path.join(PROJECT_ROOT, "scripts/6-31g_2df_p_custom_nwchem.gbs")
 
 def load_using_config(config, dataset, basis, model_path): 
@@ -187,14 +187,14 @@ def eval_model(model, dataset, eval_result_path, skip_iterations= False):
         with open(eval_result_path, "w") as f:
             json.dump(metrics, f, indent=4)
 
-        if len(metrics["iterations"]) > 5 and np.mean(metrics["iterations"]) > 13.5: 
-            print("abort - mean iteration too high -> uninteresting!")
-            break
+        # if len(metrics["iterations"]) > 5 and np.mean(metrics["iterations"]) > 13.5: 
+        #     print("abort - mean iteration too high -> uninteresting!")
+        #     break
 
     print("Done...")
 
 
-def main(tune_log_folder, param_paths_override=None, skip_iterations=False): 
+def main(tune_log_folder, param_paths_override=None, skip_iterations=False, retrain=True): 
     # get all params
     all_params_path = [os.path.join(tune_log_folder, run, "params.json")  for run in os.listdir(tune_log_folder) if os.path.isdir(os.path.join(tune_log_folder, run))]
     if param_paths_override is not None:
@@ -202,8 +202,8 @@ def main(tune_log_folder, param_paths_override=None, skip_iterations=False):
         all_params_path = [p for p in all_params_path
                 if any(Path(p).parent.name.startswith(pref) for pref in override_prefixes)
             ]
-    # dataset = Qm9Isomeres("/home/dmilacher/datasets/data", size = 500, val=0.1, test=0.1)
-    dataset = Qm9Isomeres("/home/etschgi1/REPOS/Masterarbeit/datasets/QM9", size = 500, val=0.1, test=0.1)
+    # dataset = Qm9IsomeresMd("/home/dmilacher/datasets/data", size = 500, val=0.1, test=0.1)
+    dataset = Qm9IsomeresMd("/home/etschgi1/REPOS/Masterarbeit/datasets/QM9", size = 500, val=0.1, test=0.1)
 
     basis = BASIS_PATH
     print(f"Dataset: {dataset.name}, for {len(all_params_path)} models", flush=True)
@@ -222,7 +222,7 @@ def main(tune_log_folder, param_paths_override=None, skip_iterations=False):
         if os.path.exists(eval_res_path):
             print(f"Evaluation results already exist at {eval_res_path}, skipping...")
             continue
-        if os.path.exists(model_path):
+        if os.path.exists(model_path) and not retrain:
             cur_model = load_using_config(cur_config, dataset, basis, model_path)
         else: 
             cur_model = train_using_config(cur_config, dataset, basis, model_path)

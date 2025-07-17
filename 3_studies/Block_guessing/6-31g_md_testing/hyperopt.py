@@ -4,10 +4,13 @@ import torch.optim as optim
 import ray 
 from ray import tune
 from ray.tune import RunConfig
+from ray.air import session
+from ray.air.config import RunConfig
 from ray.tune.schedulers import ASHAScheduler
 import questionary
 import importlib, json
 from scf_guess_datasets import Qm9IsomeresMd
+from pprint import pprint
 
 from datetime import datetime
 import sys, os
@@ -28,7 +31,13 @@ print(f"Using {NUM_CPU} CPUs and {NUM_GPU} GPUs for Ray Tune")
 def hyperopt_train(config, dataset, basis):
     import sys
     sys.path.append(os.path.join(PROJECT_ROOT, "src"))
-    MGNN = MolGraphNetwork(dataset=dataset,
+    ctx     = tune.get_context()
+    storage = ctx.get_storage()
+    persistent_dir = storage.trial_fs_path
+    print("persistent dir:", persistent_dir)
+    save_path = os.path.join(persistent_dir, "model.pth")
+    # assert os.path.exists(persistent_dir)
+    molgraphnet = MolGraphNetwork(dataset=dataset,
                            basis=basis,
                            backend=Backend.PY,
                             batch_size=config["batch_size"],
@@ -41,9 +50,9 @@ def hyperopt_train(config, dataset, basis):
                             target="density",
                             verbose_level=1,
                             no_progress_bar=True)
-    MGNN.load_data()
+    molgraphnet.load_data()
     loss_on_full_matrix = config.get("loss_on_full_matrix", False)
-    MGNN.train_model(num_epochs=config["num_epochs"],
+    molgraphnet.train_model(num_epochs=config["num_epochs"],
                     lr=config["lr"],
                     weight_decay=config["weight_decay"],
                     grace_epochs=config["grace_epochs"],
@@ -54,7 +63,12 @@ def hyperopt_train(config, dataset, basis):
                              "cooldown": config["lr_cooldown"],
                              "min_lr" : config["lr_min"]},
                     report_fn=tune.report,
-                    loss_on_full_matrix=loss_on_full_matrix)
+                    loss_on_full_matrix=loss_on_full_matrix, 
+                    model_save_path= save_path)
+    molgraphnet.save_model(save_path)
+    print("Model using")
+    pprint(config)
+    print("finished training!")
 
 def runhypertune(config_file, slurm_start=False):
     if os.path.exists("/home/dmilacher/datasets/data"):
@@ -67,6 +81,7 @@ def runhypertune(config_file, slurm_start=False):
     disc_comb, disc_params = count_discrete_combinations(search_space)
     print(f"Total discrete combinations: {disc_comb}, Discrete parameters: {disc_params}")
     num_samples = disc_comb * 2 if disc_comb < 50 else disc_comb
+    num_samples = min(num_samples, 50)
     print(f"Number of samples to try: {num_samples}")
     conc_trials = NUM_CPU // 8 if NUM_CPU >= 32 else 1
     print(f"Concurrent trials: {conc_trials}") 

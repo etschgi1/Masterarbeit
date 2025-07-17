@@ -221,16 +221,46 @@ Zero shot predictions are predictions performed on data which is out of scope of
             \toprule
             Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / $\unit{\hartree}$} \\
             \midrule
-            $\text{GNN}_\text{initial}$   & 11.2(8)  & -7000(7000) & -4(4)       & 0.209(15)& 0.0080(4) \\
-            $\text{GNN}_\text{f. 0}$      & 11.3(7)  & -8000(8000) & -5(4)       & 0.213(15)& 0.0077(4) \\
+            $\text{GNN}_\text{initial}$   & 13(3)  & -1290(60) & -0.73(2)       & 0.23(2)& 0.0094(13) \\
+            $\text{GNN}_\text{f. 0}$      & 11.3(8)  & -1250(40) & -0.706(11)       & 0.213(15)& 0.0077(4) \\
             \bottomrule
         \end{tabular}
     }
 \end{table}
-\TODO{Diskussion zero shots}
+
 \subsection{Hyperparameter tuning}
 \label{sec:qm9_md_isomers_hyp_tuning}
 %! full matrix run in tune_logs_MGNN_hyp_small_full_mat_loss_md
+
+\begin{table}[H]
+    \centering
+    \caption[GNN on QM9 isomers MD training with full matrix loss]{GNN on QM9 isomers MD using full matrix loss to train. \TODO{how choosen}}
+    \label{tab:qm9_md_further_runs} %!TODO rerun with all models if there is time!
+    \resizebox{\textwidth}{!}{
+        \begin{tabular}{l
+                        S[table-format=2.1(2)]
+                        S[table-format=-4(2)]
+                        S[table-format=-1.3(2)]
+                        S[table-format=1.3(1)]
+                        S[table-format=1.4(1)]}
+            \toprule
+            Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / $\unit{\hartree}$} \\
+            \midrule
+
+            \bottomrule
+        \end{tabular}
+    }
+        \resizebox{\textwidth}{!}{
+        \begin{tabular}{lrrrrrrrrrr}
+        \toprule
+        Parameters & $\text{GNN}_\text{f. 0}$ & $\text{GNN}_\text{f. 1}$ & $\text{GNN}_\text{f. 2}$ & $\text{GNN}_\text{f. 3}$ & $\text{GNN}_\text{f. 4}$ & $\text{GNN}_\text{f. 5}$ & $\text{GNN}_\text{f. 6}$ & $\text{GNN}_\text{f. 7}$ & $\text{GNN}_\text{f. 8}$ & $\text{GNN}_\text{f. 9}$ \\
+        \midrule
+
+
+        \bottomrule
+        \end{tabular}
+        }
+\end{table}
 
 \subsection{Evalutation \& Conclusion}
 \label{sec:qm9_md_isomers_conclusion}
