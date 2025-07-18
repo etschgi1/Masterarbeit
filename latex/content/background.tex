@@ -401,10 +401,10 @@ An abstract representation of a MPNN is depicted in \autoref{fig:gnn_background}
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{../fig/background/GNN.pdf}
-    \caption[Schematic Message Passing Neural Net]{Schematic representation of message passing in a bidirectionally connected graph. Node colors influence neighbors which aggregate neighbor colors and updates own color via leaned update function each step.}
+    \caption[Schematic Message Passing Neural Net]{Schematic representation of message passing in a bidirectionally connected graph. Node colors influence neighbours which aggregate neighbour colors and updates own color via leaned update function each step.}
     \label{fig:gnn_background}
 \end{figure}
-For every round all nodes send a message containing their feature vector or a derived representation to all its neighbors. The Node $n_1$ in \autoref{fig:gnn_background} sends its color to its neighbors $n_2$ and $n_4$. After all messages have been sent, every node aggregates the received message via a permutation invariant function. In the example, this is simply the average of the received colors. Finally, a learned update function changes the node's feature vector based on the aggregated message and the current feature vector. After several rounds of message passing, which allow information flow between nodes not directly connected to each other, the final graph representation can be used to predict various properties.\\
+For every round all nodes send a message containing their feature vector or a derived representation to all its neighbours. The Node $n_1$ in \autoref{fig:gnn_background} sends its color to its neighbours $n_2$ and $n_4$. After all messages have been sent, every node aggregates the received message via a permutation invariant function. In the example, this is simply the average of the received colors. Finally, a learned update function changes the node's feature vector based on the aggregated message and the current feature vector. After several rounds of message passing, which allow information flow between nodes not directly connected to each other, the final graph representation can be used to predict various properties.\\
 Decoders essentially invert the encoder's process to extract either node-level features (e.g. atomic energy, partial charge or node color in \autoref{fig:gnn_background}) or graph-level properties such as total energy, polarizability or dipole moment.\\
 
 \section{QM9 dataset}

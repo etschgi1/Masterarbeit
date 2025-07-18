@@ -35,7 +35,7 @@ To gauge the performance of the GNN devised in \autoref{chap:gnn} manual runs we
         \bottomrule
     \end{tabular}
 \end{table}
-Note, that this initial run did not use data augmentation and thus trained on 400 samples (corresponding to our default datasplit of 80\% / 10\% / 10\%). The grace period, time without improvement, was set to 10 epochs to allow the learning rate scheduler sufficient time to take effect and for potential improvements to manifest thereafter.\\
+Note, that this initial run did not use data augmentation and thus trained on 400 samples (corresponding to our default data split of 80\% / 10\% / 10\%). The grace period, time without improvement, was set to 10 epochs to allow the learning rate scheduler sufficient time to take effect and for potential improvements to manifest thereafter.\\
 Training and validation losses both monotonically decrease up to around epoch 30 as can be seen in \autoref{fig:initial_train_qm9_isomers}. While the loss on the validation set plateaus rather early, training loss decreases throughout the training process. 
 
 \begin{figure}[H]
@@ -50,7 +50,7 @@ Both losses are further pushed down following learn rate decreases. This run pro
 
 \subsection{Hyperparameter tuning}
 \label{subsec:qm9_isomers_hyperparamtuning}
-Generally one uses the validation loss as a benchmark to select the best model from a hyperparameter run. While we will also prefer models with lower loss, we have to be very careful not to select models which look good on paper but perform worse due to the lack good correlation between MSE and iteration count. For this reason we will base our hyperparameter search on the $\text{GNN}_\text{initial}$ model and explore in a structured way. 
+Generally, one uses the validation loss as a benchmark to select the best model from a hyperparameter run. While we will also prefer models with lower loss, we must be very careful not to select models which look good on paper but perform worse due to the lack good correlation between MSE and iteration count. For this reason, we will base our hyperparameter search on the $\text{GNN}_\text{initial}$ model and explore in a structured way. 
 
 \textbf{Data augmentation}\\
 $\text{GNN}_\text{initial}$ already performed quite well in terms of iterations without using any data augmentation. One might argue that there is already some data augmentation baked into the train set due to the different orientations of atoms in various molecules. 
@@ -89,7 +89,7 @@ Investigating different metrics on the test set in \autoref{tab:qm9_isomers_data
 \end{table}
 
 \textbf{Investigate Edge Threshold Distance}\\
-The edge threshold distance has an immediate impact on message passing between nodes. Setting it rather low, in the vicinity of bond-lengths will only connect directly bound neighbors. On the other hand, a higher threshold distance allows the formation of longer range connections in the GNN. \autoref{tab:qm9_isomers_dist_hyperparam} shows the influence on the metrics for varying threshold distances.  
+The edge threshold distance has an immediate impact on message passing between nodes. Setting it rather low, in the vicinity of bond-lengths will only connect directly bound neighbours. On the other hand, a higher threshold distance allows the formation of longer-range connections in the GNN. \autoref{tab:qm9_isomers_dist_hyperparam} shows the influence on the metrics for varying threshold distances.  
 \begin{table}[h]
     \centering
     \caption[GNN on QM9 isomers with different edge threshold distances]{GNN using different edge threshold distances (numbers denoted in $\unit{\angstrom}$) on QM9 \ch{C7H10O2} isomers test set. Other hyperparameters are set according to \autoref{tab:init_hparams}}
@@ -165,7 +165,7 @@ For all training runs up to now, the training loss was evaluated only on the nor
         \end{tabular}
         }
 \end{table}
-The best performing networks using full matrix loss fare a bit worse with regards to iteration count. Notably, $\text{GNN}_\text{f. 0}$ reaches the lowest RMSE of all benchmarked models so far. Correlation between our surrogate metrics and iterations is rather high with a pearson correlation coefficient of $ß.94$ for DIIS and RMSE and $-0.92$ for $\Delta E_\text{HF}$ for the full matrix loss runs. However, as seen in \autoref{tab:qm9_isomers_dist_hyperparam}, the correlation for $\Delta E_\text{HF}$ and DIIS breaks down for the $\SI{1.5}{\angstrom}$ distance cutoff. Contrary, RMSE is comparably high for this cutoff. \\
+The best performing networks using full matrix loss fare a bit worse with regards to iteration count. Notably, $\text{GNN}_\text{f. 0}$ reaches the lowest RMSE of all benchmarked models so far. Correlation between our surrogate metrics and iterations is rather high with a Pearson correlation coefficient of $ß.94$ for DIIS and RMSE and $-0.92$ for $\Delta E_\text{HF}$ for the full matrix loss runs. However, as seen in \autoref{tab:qm9_isomers_dist_hyperparam}, the correlation for $\Delta E_\text{HF}$ and DIIS breaks down for the $\SI{1.5}{\angstrom}$ distance cutoff. Contrary, RMSE is comparably high for this cutoff. \\
 
 
 \subsection{Evaluation \& Conclusion}
@@ -202,11 +202,11 @@ We have shown that the GNN approach surpasses most conventional guessing schemes
 
 \section{QM9 - \ch{C7H10O2} Molecular Dynamics (MD)}
 \label{sec:qm9_md_isomers_benchmark}
-So far, all predictions have considered only ground state geometries. While predicted and calculated traits of the ground state give invaluable insight into the chemical properties, the behavior of the molecules in more attainable environments is of interest. The MD trajectories of \ch{C7H10O2} dataset \parencite{ref:qm9_isomers_md} compiles a randomly samples set of 113 isomers from the QM9 \ch{C7H10O2} data. The trajectory of every isomer is calculated every $\SI{1}{\femto\second}$ for 5000 steps at a temperature of 500 K using the PBE exchange-correlation potential (see \ref{subsec:background_dft}). From these geometries 500 are sampled to calculated a reference data set using the 6-31G(2df,p) basis at theory level B3LYP. We use this set in the following experiments. 
+So far, all predictions have considered only ground state geometries. While predicted and calculated traits of the ground state give invaluable insight into the chemical properties, the behavior of the molecules in more attainable environments is of interest. The MD trajectories of \ch{C7H10O2} dataset \parencite{ref:qm9_isomers_md} compiles a randomly samples set of 113 isomers from the QM9 \ch{C7H10O2} data. The trajectory of every isomer is calculated every $\SI{1}{\femto\second}$ for 5000 steps at a temperature of 500 K using the PBE exchange-correlation potential (see \ref{subsec:background_dft}). From these geometries 500 are sampled to calculate a reference data set using the 6-31G(2df,p) basis at theory level B3LYP. We use this set in the following experiments. 
 
 \subsection{Zero shot predictions}
 \label{sec:qm9_md_isomers_zero_shot}
-Zero shot predictions are predictions performed on data which is out of scope of training data. In our case a model previously trained on the QM9 \ch{C7H10O2} isomer set may be used to predict the density for a given MD sample. Prediction metrics using the pre trained models from \autoref{sec:qm9_isomers_benchmark} on the MD test set is given in \autoref{tab:qm9_md_zero_shot}. 
+Zero shot predictions are predictions performed on data which is out of scope of training data. In our case, a model previously trained on the QM9 \ch{C7H10O2} isomer set may be used to predict the density for a given MD sample. Prediction metrics using the pre trained models from \autoref{sec:qm9_isomers_benchmark} on the MD test set is given in \autoref{tab:qm9_md_zero_shot}. 
 \begin{table}[h]
     \centering
     \caption[GNN zero shot predictions on QM9 isomers MD]{GNN zero shot predictions on the QM9 isomer MD test set. $\text{GNN}_\text{initial}$ and $\text{GNN}_\text{f. 0}$ were trained using the QM9 isomer set.}
@@ -227,10 +227,34 @@ Zero shot predictions are predictions performed on data which is out of scope of
         \end{tabular}
     }
 \end{table}
+Both models perform surprisingly well on the unseen data. $\text{GNN}_\text{f. 0}$ is on par in both datasets indicating generalization to various perturbations of the geometry. Contrary, $\text{GNN}_\text{initial}$ cannot fully capture structures given by the MD dataset, likely due to it's rather small weight decay and no data augmentation, which makes it prone to overfit on data. 
+
 
 \subsection{Hyperparameter tuning}
 \label{sec:qm9_md_isomers_hyp_tuning}
 %! full matrix run in tune_logs_MGNN_hyp_small_full_mat_loss_md
+Metrics for retrained versions of $\text{GNN}_\text{initial}$ and $\text{GNN}_\text{f. 0}$ from \autoref{sec:qm9_isomers_benchmark} are shown in \autoref{tab:qm9_md_last_best_retrain}. While both models have lower loss, as seen by the reduction in RMSE, this only translates to an improvement in iterations for the latter model. 
+
+\begin{table}[h]
+    \centering
+    \caption[GNN predictions on QM9 isomers MD]{GNN predictions on the QM9 isomer MD test set. With MD-retrained versions of $\text{GNN}_\text{initial}$ and $\text{GNN}_\text{f. 0}$.}
+    \label{tab:qm9_md_last_best_retrain}
+    \resizebox{\textwidth}{!}{
+        \begin{tabular}{l
+                        S[table-format=2.1(2)]
+                        S[table-format=-4(4)]
+                        S[table-format=-1.3(2)]
+                        S[table-format=2.1(1.1)]
+                        S[table-format=1.4(1)]}
+            \toprule
+            Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / $\unit{\hartree}$} \\
+            \midrule
+            $\text{GNN}^{\text{MD}}_\text{initial}$   & 13.9(11)  & -1350(50) & -0.763(16)      & 0.25(2)& 0.0086(6) \\
+            $\text{GNN}^{\text{MD}}_\text{f. 0}$      & 11.1(5)  & -1250(40) & -0.706(10)       & 0.213(14)& 0.0073(5) \\
+            \bottomrule
+        \end{tabular}
+    }
+\end{table}
 
 \begin{table}[H]
     \centering
@@ -253,7 +277,7 @@ Zero shot predictions are predictions performed on data which is out of scope of
         \resizebox{\textwidth}{!}{
         \begin{tabular}{lrrrrrrrrrr}
         \toprule
-        Parameters & $\text{GNN}_\text{f. 0}$ & $\text{GNN}_\text{f. 1}$ & $\text{GNN}_\text{f. 2}$ & $\text{GNN}_\text{f. 3}$ & $\text{GNN}_\text{f. 4}$ & $\text{GNN}_\text{f. 5}$ & $\text{GNN}_\text{f. 6}$ & $\text{GNN}_\text{f. 7}$ & $\text{GNN}_\text{f. 8}$ & $\text{GNN}_\text{f. 9}$ \\
+        Parameters & $\text{GNN}^{\text{MD}}_\text{f. 0}$ & $\text{GNN}^{\text{MD}}_\text{f. 1}$ & $\text{GNN}^{\text{MD}}_\text{f. 2}$ & $\text{GNN}^{\text{MD}}_\text{f. 3}$ & $\text{GNN}^{\text{MD}}_\text{f. 4}$ & $\text{GNN}^{\text{MD}}_\text{f. 5}$ & $\text{GNN}^{\text{MD}}_\text{f. 6}$ & $\text{GNN}^{\text{MD}}_\text{f. 7}$ & $\text{GNN}^{\text{MD}}_\text{f. 8}$ & $\text{GNN}^{\text{MD}}_\text{f. 9}$ \\
         \midrule
 
 
@@ -280,8 +304,10 @@ Zero shot predictions are predictions performed on data which is out of scope of
             \toprule
             Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / $\unit{\hartree}$} \\
             \midrule
-            $\text{GNN}_\text{initial}$   & 11.2(8)  & -7000(7000) & -4(4)       & 0.209(15)& 0.0080(4) \\
-            $\text{GNN}_\text{f. 0}$      &          &             &             &          &  \\
+            $\text{GNN}^{\text{MD}}_\text{initial}$   & 13.9(11)  & -1350(50) & -0.763(16)      & 0.25(2)& 0.0086(6) \\
+            $\text{GNN}^{\text{MD}}_\text{f. 0}$      & 11.1(5)  & -1250(40) & -0.706(10)       & 0.213(14)& 0.0073(5) \\
+            best MD model &&&&&\\
+            maybe other notable md model &&&&&\\
             $\overline{P}$                & 16.9(10) & -202(3)     & -0.11(0)    & 0.012(0) & 0.0134(3) \\
             \texttt{1-e}                  & 18.2(17) & -229(5)     & -0.1300(19) & 0.126(8) & 0.14(3) \\
             \texttt{vsap}                 & 14.5(7)  & -5.9(2)     & -0.00333(10)& 0.0276(2)& 0.0114(6) \\
@@ -294,12 +320,11 @@ Zero shot predictions are predictions performed on data which is out of scope of
 \section{QM9 - stratified sample}
 \label{sec:qm9_isomers_benchmark}
 
-\subsection{Zero shot predictions}
-\label{sec:qm9_full_isomers_zero_shot}
-
-
 \subsection{Hyperparameter tuning}
 \label{sec:qm9_full_isomers_hyp_tuning}
+
+\subsection{Zero shot predictions of Isomers}
+\label{sec:qm9_full_isomers_zero_shot}
 
 \subsection{Evalutation \& Conclusion}
 \label{sec:qm9_full_isomers_conclusion}
