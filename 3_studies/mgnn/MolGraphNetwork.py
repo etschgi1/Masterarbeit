@@ -481,7 +481,11 @@ class MolGraphNetwork(torch.nn.Module):
             atom_indices_dict[u_sym].extend(atom_sym_indices)
             raw_center_blocks = torch.stack([batch.center_blocks[i].to(device) for i in atom_sym_indices], dim=0) # This now has shape (Nr_of_atoms_for_this_sym, self.center_sizes[u_sym])
             assert raw_center_blocks.shape[1] == self.center_sizes[u_sym], f"Center block size {raw_center_blocks.shape[1]} does not match expected size {self.center_sizes[u_sym]} for atom type {u_sym}."
-            c_sym = self.node_encoders[u_sym](raw_center_blocks) 
+            try:
+                c_sym = self.node_encoders[u_sym](raw_center_blocks) 
+            except KeyError as excep:
+                # no encoder available -> set 0
+                c_sym = torch.zeros((len(atom_sym_indices), self.hidden_dim), device=device)  # No encoder for this atom type, so we set it to zero
             c[atom_sym_indices] = c_sym  # in h we have the same dimensiom self.hidden_dim for all atoms in the batch
 
         # II) Encode edge features (edge blocks)
@@ -494,8 +498,11 @@ class MolGraphNetwork(torch.nn.Module):
             raw_edge_blocks = torch.stack([batch.edge_blocks[i].to(device) for i in edge_key_indices], dim=0)
             distances = batch.edge_dist[edge_key_indices].to(device).view(-1, 1)  # Reshape distances to match edge blocks -> (Nr of edges for this key, 1)
             edge_inputs = torch.cat((raw_edge_blocks, distances), dim=1)  
-            
-            e_key = self.edge_encoders[key](edge_inputs)  
+            try:
+                e_key = self.edge_encoders[key](edge_inputs)  
+            except KeyError as excep:
+                # no encoder available -> set 0
+                e_key = torch.zeros((len(edge_key_indices), self.hidden_dim), device=device)
             e[edge_key_indices] = e_key  
 
         # III) Message passing
@@ -514,7 +521,11 @@ class MolGraphNetwork(torch.nn.Module):
             c_new = torch.zeros_like(c)
             for i, sym in enumerate(batch.atom_sym):
                 old_and_agg = torch.cat([c[i], agg[i]], dim=0)  # 2*self.hidden_dim; This goes into our node updater!
-                c_new[i] = self.node_updaters[sym](old_and_agg)  # Update node features with the aggregated messages
+                try:
+                    c_new[i] = self.node_updaters[sym](old_and_agg)  # Update node features with the aggregated messages
+                except KeyError as excep:
+                    # no updater available -> set 0
+                    c_new[i] = torch.zeros(self.hidden_dim, device=device)
             c = c_new 
         
         # IV) Decode node features to center blocks
@@ -522,7 +533,10 @@ class MolGraphNetwork(torch.nn.Module):
         for sym in unique_atom_syms:
             atom_sym_indices = atom_indices_dict[sym] #reuse the indices from encoding
             c_sym_stack = torch.stack([c[i] for i in atom_sym_indices], dim=0)  # (Nr_of_atoms_for_this_sym, self.hidden_dim)
-            center_decoded = self.center_decoders[sym](c_sym_stack)  # Decode to center blocks
+            try:
+                center_decoded = self.center_decoders[sym](c_sym_stack)  # Decode to center blocks
+            except KeyError as excep:
+                center_decoded = torch.zeros((len(atom_sym_indices), self.center_sizes[sym]), device=device)  # No decoder for this atom type, so we set it to zero
             for i, idx in enumerate(atom_sym_indices):
                 pred_center_blocks[idx] = center_decoded[i]
         
@@ -531,7 +545,10 @@ class MolGraphNetwork(torch.nn.Module):
         for key in unique_edge_keys: 
             edge_key_indices = edge_indices_dict[key]
             e_key_stack = torch.stack([e[i] for i in edge_key_indices], dim=0)  # (Nr_of_edges_for_this_key, self.hidden_dim)
-            edge_decoded = self.edge_decoders[key](e_key_stack)  
+            try:
+                edge_decoded = self.edge_decoders[key](e_key_stack)  
+            except KeyError as excep:
+                edge_decoded = torch.zeros((len(edge_key_indices), self.edge_sizes[key]), device=device)  # No decoder for this edge type, so we set it to zero
             for i, idx in enumerate(edge_key_indices):
                 pred_edge_blocks[idx] = edge_decoded[i]
         
@@ -577,15 +594,28 @@ class MolGraphNetwork(torch.nn.Module):
         assert len(self.train_graphs) > 0, "No training graphs found. Please load data first."
         self.center_sizes = {}
         self.edge_sizes = {}
-        for graph in self.train_graphs:
-            for i, atom_sym in enumerate(graph.atom_sym):
-                if atom_sym not in self.center_sizes:
-                    self.center_sizes[atom_sym] = graph.center_blocks[i].shape[0]
-                    dprint(2, f"Found center block size {self.center_sizes[atom_sym]} for atom type {atom_sym}.")
-            for i, edge_sym in enumerate(graph.edge_pair_sym):
-                if edge_sym not in self.edge_sizes:
-                    self.edge_sizes[edge_sym] = graph.edge_blocks[i].shape[0]
-                    dprint(2, f"Found edge block size {self.edge_sizes[edge_sym]} for edge type {edge_sym}.")
+        def add_types(graphs):
+            found = 0
+            for graph in graphs:
+                for i, atom_sym in enumerate(graph.atom_sym):
+                    if atom_sym not in self.center_sizes:
+                        self.center_sizes[atom_sym] = graph.center_blocks[i].shape[0]
+                        dprint(2, f"Found center block size {self.center_sizes[atom_sym]} for atom type {atom_sym}.")
+                        found += 1
+                for i, edge_sym in enumerate(graph.edge_pair_sym):
+                    if edge_sym not in self.edge_sizes:
+                        self.edge_sizes[edge_sym] = graph.edge_blocks[i].shape[0]
+                        dprint(2, f"Found edge block size {self.edge_sizes[edge_sym]} for edge type {edge_sym}.")
+                        found += 1
+            return found
+        add_types(self.train_graphs)  # gather from training graphs
+        # additionally setup stats for val and test graphs
+        found_val = add_types(self.val_graphs)
+        found_test = add_types(self.test_graphs)
+        if found_val > 0 or found_test > 0:
+            dprint(1, "===Gathering block size statistics from validation and test graphs===")
+            dprint(1, f"!!!Found {found_val} new center/edge block sizes in validation graphs and {found_test} in test graphs.")
+            dprint(1, f"NO PREDICTIONS WILL BE MADE ON CENTER / EDGE BLOCKS OF THESE TYPES! Please ensure that all types are present in the training set.")
 
     def make_graph(self, S, T, coords, mol): 
         """Create a graph from the overlap matrix S, target matrix T (fock / density) coordinates, and atomic numbers."""
@@ -712,22 +742,27 @@ class MolGraphNetwork(torch.nn.Module):
             # centers
             for i, (S_center_block, T_center_block) in enumerate(zip(graph.center_blocks, graph.target_center_blocks)):
                 key = graph.atom_sym[i]
-                # source
-                S_mean_t, S_std_t = torch.tensor(self.center_norm[key][0], device=S_center_block.device), torch.tensor(self.center_norm[key][1], device=S_center_block.device) # to use device block is stored on
-                graph.center_blocks[i] = (S_center_block - S_mean_t) / S_std_t
-                # target
-                T_mean_t, T_std_t = torch.tensor(self.center_norm_target[key][0], device=T_center_block.device), torch.tensor(self.center_norm_target[key][1], device=T_center_block.device)
-                graph.target_center_blocks[i] = (T_center_block - T_mean_t) / T_std_t
+                try:
+                    # source
+                    S_mean_t, S_std_t = torch.tensor(self.center_norm[key][0], device=S_center_block.device), torch.tensor(self.center_norm[key][1], device=S_center_block.device) # to use device block is stored on
+                    graph.center_blocks[i] = (S_center_block - S_mean_t) / S_std_t
+                    # target
+                    T_mean_t, T_std_t = torch.tensor(self.center_norm_target[key][0], device=T_center_block.device), torch.tensor(self.center_norm_target[key][1], device=T_center_block.device)
+                    graph.target_center_blocks[i] = (T_center_block - T_mean_t) / T_std_t
+                except KeyError as e:
+                    continue  # If the key is not found in the normalization dict, skip for this atom type
             # edges
             for i, (S_edge_block, T_edge_block) in enumerate(zip(graph.edge_blocks, graph.target_edge_blocks)):
                 key = graph.edge_pair_sym[i]
                 # source
-                S_mean_t, S_std_t = torch.tensor(self.edge_norm[key][0], device=S_edge_block.device), torch.tensor(self.edge_norm[key][1], device=S_edge_block.device)
-                graph.edge_blocks[i] = (S_edge_block - S_mean_t) / S_std_t
-                # target
-                T_mean_t, T_std_t = torch.tensor(self.edge_norm_target[key][0], device=T_edge_block.device), torch.tensor(self.edge_norm_target[key][1], device=T_edge_block.device)
-                graph.target_edge_blocks[i] = (T_edge_block - T_mean_t) / T_std_t
-            
+                try:  # If the key is not found in the normalization dict, skip for this edge type
+                    S_mean_t, S_std_t = torch.tensor(self.edge_norm[key][0], device=S_edge_block.device), torch.tensor(self.edge_norm[key][1], device=S_edge_block.device)
+                    graph.edge_blocks[i] = (S_edge_block - S_mean_t) / S_std_t
+                    # target
+                    T_mean_t, T_std_t = torch.tensor(self.edge_norm_target[key][0], device=T_edge_block.device), torch.tensor(self.edge_norm_target[key][1], device=T_edge_block.device)
+                    graph.target_edge_blocks[i] = (T_edge_block - T_mean_t) / T_std_t
+                except KeyError as e:
+                    continue # same for edges
             if distance_cutoff:
                 graph.edge_dist = torch.clamp(graph.edge_dist, min=0, max=self.edge_threshold)  # Ensure distances are within [0, edge_threshold]
             graph.edge_dist = graph.edge_dist / self.edge_threshold  # Normalize distances to [0, 1]
@@ -748,24 +783,30 @@ class MolGraphNetwork(torch.nn.Module):
             # rest shouldn't change + distance is of no importance for our predictions and benchmarking
             for i, (S_center_block, T_center_block, P_center_block) in enumerate(zip(inv_g.center_blocks, inv_g.target_center_blocks, inv_g.pred_center_blocks)):
                 key = inv_g.atom_sym[i]
-                S_mean_t, S_std_t = torch.tensor(self.center_norm[key][0], device=S_center_block.device), torch.tensor(self.center_norm[key][1], device=S_center_block.device)
-                inv_g.center_blocks[i] = S_center_block * S_std_t + S_mean_t
+                try:
+                    S_mean_t, S_std_t = torch.tensor(self.center_norm[key][0], device=S_center_block.device), torch.tensor(self.center_norm[key][1], device=S_center_block.device)
+                    inv_g.center_blocks[i] = S_center_block * S_std_t + S_mean_t
 
-                T_mean_t, T_std_t = torch.tensor(self.center_norm_target[key][0], device=T_center_block.device), torch.tensor(self.center_norm_target[key][1], device=T_center_block.device)
-                inv_g.target_center_blocks[i] = T_center_block * T_std_t + T_mean_t
+                    T_mean_t, T_std_t = torch.tensor(self.center_norm_target[key][0], device=T_center_block.device), torch.tensor(self.center_norm_target[key][1], device=T_center_block.device)
+                    inv_g.target_center_blocks[i] = T_center_block * T_std_t + T_mean_t
 
-                inv_g.pred_center_blocks[i] = P_center_block * T_std_t + T_mean_t  # Uses same stats as target (from training set)
+                    inv_g.pred_center_blocks[i] = P_center_block * T_std_t + T_mean_t  # Uses same stats as target (from training set)
+                except KeyError as e:
+                    continue
             # edges
             for i, (S_edge_block, T_edge_block, P_edge_block) in enumerate(zip(inv_g.edge_blocks, inv_g.target_edge_blocks, inv_g.pred_edge_blocks)):
                 key = inv_g.edge_pair_sym[i]
+                try:
                 # source
-                S_mean_t, S_std_t = torch.tensor(self.edge_norm[key][0], device=S_edge_block.device), torch.tensor(self.edge_norm[key][1], device=S_edge_block.device)
-                inv_g.edge_blocks[i] = S_edge_block * S_std_t + S_mean_t
-                # target
-                T_mean_t, T_std_t = torch.tensor(self.edge_norm_target[key][0], device=T_edge_block.device), torch.tensor(self.edge_norm_target[key][1], device=T_edge_block.device)
-                inv_g.target_edge_blocks[i] = T_edge_block * T_std_t + T_mean_t
+                    S_mean_t, S_std_t = torch.tensor(self.edge_norm[key][0], device=S_edge_block.device), torch.tensor(self.edge_norm[key][1], device=S_edge_block.device)
+                    inv_g.edge_blocks[i] = S_edge_block * S_std_t + S_mean_t
+                    # target
+                    T_mean_t, T_std_t = torch.tensor(self.edge_norm_target[key][0], device=T_edge_block.device), torch.tensor(self.edge_norm_target[key][1], device=T_edge_block.device)
+                    inv_g.target_edge_blocks[i] = T_edge_block * T_std_t + T_mean_t
 
-                inv_g.pred_edge_blocks[i] = P_edge_block * T_std_t + T_mean_t  # Uses same stats as target (from training set)
+                    inv_g.pred_edge_blocks[i] = P_edge_block * T_std_t + T_mean_t  # Uses same stats as target (from training set)
+                except KeyError as e:
+                    continue
 
             inv_graphs.append(inv_g)
             # not really needed for our predictions
@@ -843,7 +884,7 @@ class MolGraphNetwork(torch.nn.Module):
                              "threshold": 1e-3,
                              "cooldown": 2, 
                              "min_lr" : 1e-6}, 
-                    report_fn=None, loss_on_full_matrix=False):
+                    report_fn=None, loss_on_full_matrix=False, cpu_training=False):
         """Train the GNN on the training set, validate & test, with optional early stopping and LR scheduling.
 
         Args:
@@ -868,9 +909,12 @@ class MolGraphNetwork(torch.nn.Module):
         """
         import torch.nn.functional as F
         from tqdm import tqdm
-        
+        setattr(self, "model_save_path", model_save_path)  # save path for later use
         if device is None:
             device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        if cpu_training:
+            device = torch.device("cpu")
+            dprint(1, "Training on CPU! Overwrite is set!")
         self.to(device)
         optimizer = torch.optim.AdamW(self.parameters(), lr=lr, weight_decay=weight_decay)
         
@@ -997,10 +1041,12 @@ class MolGraphNetwork(torch.nn.Module):
             with open(hist_path, "wb") as f: 
                 pickle.dump(history, f)
         print(f"Test  Loss: {avg_test_loss:.6f}")
+        return epoch, history
 
-    def save_model(self, path):
+    def save_model(self, path, epoch=0):
         """Save the model to the specified path."""
         checkpoint = {
+            'epoch': epoch, 
             'model_state_dict': self.state_dict(),
         }
         torch.save(checkpoint, path)
@@ -1016,6 +1062,15 @@ class MolGraphNetwork(torch.nn.Module):
             checkpoint['optimizer_state_dict'] = optimizer.state_dict()
         torch.save(checkpoint, path)
         dprint(1, f"Model checkpoint saved to {path}")
+    
+    def get_last_epoch(self, save_path=None): 
+        save_path = getattr(self, 'model_save_path', save_path) 
+        checkpoint = torch.load(save_path, map_location=lambda storage, loc: storage)
+        if "epoch" in checkpoint:
+            return checkpoint["epoch"]
+        else:
+            print(f"No epoch information found in checkpoint {save_path}. Returning 0.")
+            return 0
         
     def load_model(self, path: str, strict: bool = True):
         """
@@ -1023,6 +1078,7 @@ class MolGraphNetwork(torch.nn.Module):
         If `strict=True`, will error if keys don't match exactly.
         If `strict=False`, will load only matching keys and ignore others.
         """
+        self.model_save_path = path  # Store the path for later use
         checkpoint = torch.load(path, map_location=lambda storage, loc: storage)
         try:
             self.load_state_dict(checkpoint["model_state_dict"], strict=strict)

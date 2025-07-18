@@ -50,13 +50,13 @@ def load_using_config(config, dataset, basis, model_path):
     print("loaded!")
     return molgraphnet
 
-def train_using_config(config, dataset, basis, save_path):
+def train_using_config(config, dataset, basis, save_path, cpu_training=False):
     print(f"Training model and saving to {save_path}", flush=True)
     import sys
     sys.path.append(os.path.join(PROJECT_ROOT, "src"))
     molgraphnet = MolGraphNetwork(dataset=dataset,
-                           basis=basis,
-                           backend=Backend.PY,
+                            basis=basis,
+                            backend=Backend.PY,
                             batch_size=config["batch_size"],
                             hidden_dim=config["hidden_dim"],
                             message_passing_steps=config["message_passing_steps"],
@@ -81,7 +81,8 @@ def train_using_config(config, dataset, basis, save_path):
                              "cooldown": config["lr_cooldown"],
                              "min_lr" : config["lr_min"]},
                     model_save_path=save_path,
-                    loss_on_full_matrix=loss_on_full_matrix)
+                    loss_on_full_matrix=loss_on_full_matrix, 
+                    cpu_training=cpu_training)
     molgraphnet.save_model(save_path)
     print("Model using")
     pprint(config)
@@ -202,8 +203,10 @@ def main(tune_log_folder, param_paths_override=None, skip_iterations=False, retr
         all_params_path = [p for p in all_params_path
                 if any(Path(p).parent.name.startswith(pref) for pref in override_prefixes)
             ]
-    # dataset = Qm9IsomeresMd("/home/dmilacher/datasets/data", size = 500, val=0.1, test=0.1)
-    dataset = Qm9IsomeresMd("/home/etschgi1/REPOS/Masterarbeit/datasets/QM9", size = 500, val=0.1, test=0.1)
+    if os.path.exists("/home/dmilacher/datasets/data1"):
+        dataset = Qm9IsomeresMd("/home/dmilacher/datasets/data1", size = 500, val=0.1, test=0.1)
+    else:
+        dataset = Qm9IsomeresMd("/home/etschgi1/REPOS/Masterarbeit/datasets/QM9", size = 500, val=0.1, test=0.1)
 
     basis = BASIS_PATH
     print(f"Dataset: {dataset.name}, for {len(all_params_path)} models", flush=True)

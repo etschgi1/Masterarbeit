@@ -5,7 +5,7 @@ import numpy as np
 # FOLDER = "/home/etschgi1/REPOS/Masterarbeit/datasets/QM9/xyz_c7h10o2"
 # FOLDER = "/home/etschgi1/REPOS/Masterarbeit/datasets/QM9/xyz_c5h4n2o2"
 # FOLDER = "/home/ewachmann/REPOS/Masterarbeit/scf_guess_datasets/scf_guess_datasets/qm9_isomeres/xyz"
-FOLDER = "/home/etschgi1/REPOS/Masterarbeit/scf_guess_datasets/scf_guess_datasets/qm9_isomeres_md/xyz"
+FOLDER = "/home/ewachmann/REPOS/Masterarbeit/scf_guess_datasets/scf_guess_datasets/qm9/xyz"
 
 VALENCE_ELECTRONS = {
     1: 1,   # H
