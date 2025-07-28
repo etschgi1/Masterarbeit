@@ -249,16 +249,17 @@ Metrics for retrained versions of $\text{GNN}_\text{initial}$ and $\text{GNN}_\t
             \toprule
             Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / $\unit{\hartree}$} \\
             \midrule
-            $\text{GNN}^{\text{MD}}_\text{initial}$   & 13.9(11)  & -1350(50) & -0.763(16)      & 0.25(2)& 0.0086(6) \\
-            $\text{GNN}^{\text{MD}}_\text{f. 0}$      & 11.1(5)  & -1250(40) & -0.706(10)       & 0.213(14)& 0.0073(5) \\
+            $\text{GNN}^{\text{MD*}}_\text{initial}$   & 13.9(11)  & -1350(50) & -0.763(16)      & 0.25(2)& 0.0086(6) \\
+            $\text{GNN}^{\text{MD*}}_\text{f. 0}$      & 11.1(5)  & -1250(40) & -0.706(10)       & 0.213(14)& 0.0073(5) \\
             \bottomrule
         \end{tabular}
     }
 \end{table}
-
+Analogous to the hyperparameter optimization in \autoref{tab:qm9_isomers_further_runs} we also use full matrix loss for hyperparameter tuning of the specialized MD models. Results for the 10 best performing networks are shown in \autoref{tab:qm9_md_further_runs}. Comparing \autoref{tab:qm9_isomers_further_runs} and \autoref{tab:qm9_md_further_runs} a heavier regularization can be generally seen in MD models. Higher data augmentation and a slightly stronger weight decay help fitting the varied density given by the perturbed geometries. Furthermore, four out of the top five networks have a batch size of 8 introducing more noise and thus regularization into the update steps. \\
+Moderate dropout rates are generally advisable, but $\text{GNN}^{\text{MD}}_\text{f. 2}$ is a notable exception to this. With a nearly vanishing dropout rate this network takes the lead in terms of self consistency at the expense of RMSE and iterations. 
 \begin{table}[H]
     \centering
-    \caption[GNN on QM9 isomers MD training with full matrix loss]{GNN on QM9 isomers MD using full matrix loss to train. \TODO{how choosen}}
+    \caption[GNN on QM9 isomers MD training with full matrix loss]{GNN on QM9 isomers MD using full matrix loss to train. Metrics on test set and corresponding hyperparameter settings for 10 best performing networks in terms of iterations.}
     \label{tab:qm9_md_further_runs} %!TODO rerun with all models if there is time!
     \resizebox{\textwidth}{!}{
         \begin{tabular}{l
@@ -270,7 +271,16 @@ Metrics for retrained versions of $\text{GNN}_\text{initial}$ and $\text{GNN}_\t
             \toprule
             Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / $\unit{\hartree}$} \\
             \midrule
-
+            $\text{GNN}^{\text{MD}}_\text{f. 0}$ & \textbf{10.9(5)} & \textbf{-1240 (30)} & -0.702(0.009) & 0.210(0.014) & \textbf{0.0075(4)} \\
+            $\text{GNN}^{\text{MD}}_\text{f. 1}$ & 11.0(4) & \textbf{-1240 (30)} & \textbf{-0.700(9)}     & 0.212(0.015) & 0.0076(0.0004) \\
+            $\text{GNN}^{\text{MD}}_\text{f. 2}$ & 11.2(6) & -1240 (40) & -0.701(0.011) &                   \textbf{0.204(14)} & 0.0079(0.0005) \\
+            $\text{GNN}^{\text{MD}}_\text{f. 3}$ & 11.2(4) & -1260 (40) & -0.711(0.010) &                   0.222(0.017) & 0.0084(0.0003) \\
+            $\text{GNN}^{\text{MD}}_\text{f. 4}$ & 11.4(6) & -1280 (40) & -0.725(0.011) &                   0.218(0.015) & 0.0081(0.0003) \\
+            $\text{GNN}^{\text{MD}}_\text{f. 5}$ & 11.6(10)& -1260 (40) & -0.714(0.013) &                   0.222(0.016) & 0.0087(0.0005) \\
+            $\text{GNN}^{\text{MD}}_\text{f. 6}$ & 11.6(9) & -1280 (40) & -0.721(0.012) &                   0.223(0.020) & 0.0087(0.0012) \\
+            $\text{GNN}^{\text{MD}}_\text{f. 7}$ & 11.8(9) & -1270 (40) & -0.718(0.013) &                   0.217(0.016) & 0.0084(0.0004) \\
+            $\text{GNN}^{\text{MD}}_\text{f. 8}$ & 11.8(7) & -1270 (40) & -0.715(0.011) &                   0.218(0.014) & 0.0085(0.0003) \\
+            $\text{GNN}^{\text{MD}}_\text{f. 9}$ & 11.8(7) & -1280 (40) & -0.723(0.010) &                   0.220(0.014) & 0.0083(0.0009) \\
             \bottomrule
         \end{tabular}
     }
@@ -279,8 +289,15 @@ Metrics for retrained versions of $\text{GNN}_\text{initial}$ and $\text{GNN}_\t
         \toprule
         Parameters & $\text{GNN}^{\text{MD}}_\text{f. 0}$ & $\text{GNN}^{\text{MD}}_\text{f. 1}$ & $\text{GNN}^{\text{MD}}_\text{f. 2}$ & $\text{GNN}^{\text{MD}}_\text{f. 3}$ & $\text{GNN}^{\text{MD}}_\text{f. 4}$ & $\text{GNN}^{\text{MD}}_\text{f. 5}$ & $\text{GNN}^{\text{MD}}_\text{f. 6}$ & $\text{GNN}^{\text{MD}}_\text{f. 7}$ & $\text{GNN}^{\text{MD}}_\text{f. 8}$ & $\text{GNN}^{\text{MD}}_\text{f. 9}$ \\
         \midrule
-
-
+        Hidden Dimension & 512 & 256 & 512 & 128 & 128 & 512 & 512 & 512 & 256 & 128 \\
+        Batch Size & 8 & 8 & 8 & 16 & 8 & 32 & 32 & 16 & 32 & 8 \\
+        Data aug. & 3.00 & 4.00 & 2.00 & 4.00 & 3.00 & 3.00 & 3.00 & 3.00 & 2.00 & 1.00 \\
+        Edge thres. & 2.65 & 3.25 & 3.86 & 3.11 & 2.22 & 3.31 & 3.86 & 3.95 & 2.29 & 3.82 \\
+        Message p. steps & 3 & 4 & 3 & 3 & 4 & 2 & 2 & 2 & 5 & 4 \\
+        Message Net Dropout & 0.14 & 0.24 & 0.02 & 0.05 & 0.16 & 0.20 & 0.10 & 0.27 & 0.06 & 0.02 \\
+        Message Net Layers & 3 & 3 & 4 & 4 & 4 & 2 & 3 & 2 & 3 & 3 \\
+        Learn Rate & 1.08e-04 & 3.99e-04 & 1.95e-04 & 3.27e-04 & 4.82e-04 & 8.66e-04 & 5.65e-04 & 2.80e-04 & 1.21e-03 & 3.32e-03 \\
+        Weight Decay & 7.13e-04 & 1.24e-04 & 2.35e-04 & 1.50e-05 & 8.57e-04 & 1.35e-04 & 4.36e-05 & 2.06e-04 & 9.34e-04 & 7.39e-04 \\
         \bottomrule
         \end{tabular}
         }
@@ -304,15 +321,14 @@ Metrics for retrained versions of $\text{GNN}_\text{initial}$ and $\text{GNN}_\t
             \toprule
             Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / $\unit{\hartree}$} \\
             \midrule
-            $\text{GNN}^{\text{MD}}_\text{initial}$   & 13.9(11)  & -1350(50) & -0.763(16)      & 0.25(2)& 0.0086(6) \\
-            $\text{GNN}^{\text{MD}}_\text{f. 0}$      & 11.1(5)  & -1250(40) & -0.706(10)       & 0.213(14)& 0.0073(5) \\
-            best MD model &&&&&\\
-            maybe other notable md model &&&&&\\
-            $\overline{P}$                & 16.9(10) & -202(3)     & -0.11(0)    & 0.012(0) & 0.0134(3) \\
+            $\text{GNN}^{\text{MD*}}_\text{initial}$   & 13.9(11)  & -1350(50) & -0.763(16)      & 0.25(2)& 0.0086(6) \\
+            $\text{GNN}^{\text{MD*}}_\text{f. 0}$      & 11.1(5)  & -1250(40) & -0.706(10)       & 0.213(14)& 0.0073(5) \\
+            $\text{GNN}^{\text{MD}}_\text{f. 0}$ & 10.9(5) & -1240 (30) & -0.702(0.009) & 0.210(0.014) & \textbf{0.0075(4)} \\
+            $\overline{P}$                & 16.9(10) & -202(3)     & -0.11(0)    & \textbf{0.012(0)} & 0.0134(3) \\
             \texttt{1-e}                  & 18.2(17) & -229(5)     & -0.1300(19) & 0.126(8) & 0.14(3) \\
             \texttt{vsap}                 & 14.5(7)  & -5.9(2)     & -0.00333(10)& 0.0276(2)& 0.0114(6) \\
             \texttt{atom}                 & 16.6(17) & -19(3)      & -0.0106(15) & 0.047(6) & 0.0167(16) \\
-            \texttt{minao}                & 10.7(5)  & 2.96(4)     & 0.001673(8) & 0.077(3) & 0.01538(18) \\
+            \texttt{minao}                & \textbf{10.7(5)}  & \textbf{2.96(4)}     & \textbf{0.001673(8)} & 0.077(3) & 0.01538(18) \\
             \bottomrule
         \end{tabular}
     }
