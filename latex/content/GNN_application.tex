@@ -7,7 +7,7 @@ Models will be evaluated by their iteration count till convergence, the energy d
 \TODO{Refer to 0d benchmark model, check basis + functional}
 \section{QM9 - \ch{C7H10O2} Isomers}
 \label{sec:qm9_isomers_benchmark}
-There are 6095 structural isomers of \ch{C7H10O2} in the QM9 dataset (see \autoref{subsec:qm9}). Analogous to the trials performed in \autoref{sec:further_trials_mlp}, we will train and validate on a randomly drawn sample of 500 isomers\footnote{using \textsc{scf\_guess\_datasets} (see \autoref{subsec:gnn_normalization})}. This reduction is necessary to make training and hyperparameter-tuning feasible in the scope of the thesis. Contrary to the full matrix prediction schemes in \autoref{chap:fock_matrix_predictions}, we employ sub-matrix predictions and reconstruct the full matrix thus making the actual number of samples significantly higher. Per molecule sample we get 7, 10 and 2 samples for \ch{C}, \ch{H} and \ch{O} respectively, totalling 3500 \ch{C}, 5000 \ch{H} and 1000 \ch{O} samples. This already provides some rotational variability. Additional rotations can be introduced through data augmentation during training to develop a model that is agnostic to rotation when predicting density.\\
+There are 6095 structural isomers of \ch{C7H10O2} in the QM9 dataset (see \autoref{sec:dataset}). Analogous to the trials performed in \autoref{sec:further_trials_mlp}, we will train and validate on a randomly drawn sample of 500 isomers\footnote{using \textsc{scf\_guess\_datasets} (see \autoref{subsec:gnn_normalization})}. This reduction is necessary to make training and hyperparameter-tuning feasible in the scope of the thesis. Contrary to the full matrix prediction schemes in \autoref{chap:fock_matrix_predictions}, we employ sub-matrix predictions and reconstruct the full matrix thus making the actual number of samples significantly higher. Per molecule sample we get 7, 10 and 2 samples for \ch{C}, \ch{H} and \ch{O} respectively, totalling 3500 \ch{C}, 5000 \ch{H} and 1000 \ch{O} samples. This already provides some rotational variability. Additional rotations can be introduced through data augmentation during training to develop a model that is agnostic to rotation when predicting density.\\
 
 \subsection{Initial training}
 \label{subsec:qm9_isomers_initial}
@@ -173,7 +173,7 @@ The best performing networks using full matrix loss fare a bit worse with regard
 Top performing models defined above are compared to \textsc{PySCF} guessing schemes in \autoref{tab:qm9_isomers_test_overview}
 \begin{table}[H]
     \centering
-    \caption{Comparison of different models with \textsc{PySCF} and $\overline{P}$ guessing schemes.}
+    \caption{Comparison of different models with \textsc{PySCF} and $\overline{P}$ guessing schemes for QM9 - \ch{C7H10O2} Isomers.}
     \label{tab:qm9_isomers_test_overview}
     \resizebox{\textwidth}{!}{
         \begin{tabular}{l
@@ -237,7 +237,7 @@ Metrics for retrained versions of $\text{GNN}_\text{initial}$ and $\text{GNN}_\t
 
 \begin{table}[h]
     \centering
-    \caption[GNN predictions on QM9 isomers MD]{GNN predictions on the QM9 isomer MD test set. With MD-retrained versions of $\text{GNN}_\text{initial}$ and $\text{GNN}_\text{f. 0}$.}
+    \caption[GNN predictions on QM9 isomers MD]{GNN predictions on the QM9 isomer MD test set. With MD-retrained\footnote{models marked with a $*$ are architectures from another dataset retrained on the current one} versions of $\text{GNN}_\text{initial}$ and $\text{GNN}_\text{f. 0}$.}
     \label{tab:qm9_md_last_best_retrain}
     \resizebox{\textwidth}{!}{
         \begin{tabular}{l
@@ -306,10 +306,9 @@ Moderate dropout rates are generally advisable, but $\text{GNN}^{\text{MD}}_\tex
 \subsection{Evalutation \& Conclusion}
 \label{sec:qm9_md_isomers_conclusion}
 
-
-\begin{table}[H]
+\begin{table}[h]
     \centering
-    \caption{Comparison of different models with \textsc{PySCF} and $\overline{P}$ guessing schemes.}
+    \caption{Comparison of different models with \textsc{PySCF} and $\overline{P}$ guessing schemes for QM9 - \ch{C7H10O2} MD.}
     \label{tab:qm9_md_test_overview}
     \resizebox{\textwidth}{!}{
         \begin{tabular}{l
@@ -318,30 +317,42 @@ Moderate dropout rates are generally advisable, but $\text{GNN}^{\text{MD}}_\tex
                         S[table-format=-1.5(1.1)]
                         S[table-format=1.4(1.1)]
                         S[table-format=1.5(1.1)]}
-            \toprule
-            Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / $\unit{\hartree}$} \\
-            \midrule
-            $\text{GNN}^{\text{MD*}}_\text{initial}$   & 13.9(11)  & -1350(50) & -0.763(16)      & 0.25(2)& 0.0086(6) \\
-            $\text{GNN}^{\text{MD*}}_\text{f. 0}$      & 11.1(5)  & -1250(40) & -0.706(10)       & 0.213(14)& 0.0073(5) \\
-            $\text{GNN}^{\text{MD}}_\text{f. 0}$ & 10.9(5) & -1240 (30) & -0.702(0.009) & 0.210(0.014) & \textbf{0.0075(4)} \\
-            $\overline{P}$                & 16.9(10) & -202(3)     & -0.11(0)    & \textbf{0.012(0)} & 0.0134(3) \\
-            \texttt{1-e}                  & 18.2(17) & -229(5)     & -0.1300(19) & 0.126(8) & 0.14(3) \\
-            \texttt{vsap}                 & 14.5(7)  & -5.9(2)     & -0.00333(10)& 0.0276(2)& 0.0114(6) \\
-            \texttt{atom}                 & 16.6(17) & -19(3)      & -0.0106(15) & 0.047(6) & 0.0167(16) \\
-            \texttt{minao}                & \textbf{10.7(5)}  & \textbf{2.96(4)}     & \textbf{0.001673(8)} & 0.077(3) & 0.01538(18) \\
-            \bottomrule
+                        \toprule
+                        Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / $\unit{\hartree}$} \\
+                        \midrule
+                        $\text{GNN}^{\text{MD*}}_\text{initial}$   & 13.9(11)  & -1350(50) & -0.763(16)      & 0.25(2)& 0.0086(6) \\
+                        $\text{GNN}^{\text{MD*}}_\text{f. 0}$      & 11.1(5)  & -1250(40) & -0.706(10)       & 0.213(14)& 0.0073(5) \\
+                        $\text{GNN}^{\text{MD}}_\text{f. 0}$ & 10.9(5) & -1240 (30) & -0.702(0.009) & 0.210(0.014) & \textbf{0.0075(4)} \\
+                        $\overline{P}$                & 16.9(10) & -202(3)     & -0.11(0)    & \textbf{0.012(0)} & 0.0134(3) \\
+                        \texttt{1-e}                  & 18.2(17) & -229(5)     & -0.1300(19) & 0.126(8) & 0.14(3) \\
+                        \texttt{vsap}                 & 14.5(7)  & -5.9(2)     & -0.00333(10)& 0.0276(2)& 0.0114(6) \\
+                        \texttt{atom}                 & 16.6(17) & -19(3)      & -0.0106(15) & 0.047(6) & 0.0167(16) \\
+                        \texttt{minao}                & \textbf{10.7(5)}  & \textbf{2.96(4)}     & \textbf{0.001673(8)} & 0.077(3) & 0.01538(18) \\
+                        \bottomrule
         \end{tabular}
     }
 \end{table}
-\section{QM9 - stratified sample}
+We have seen that not every model and hyperparameter configuration translates to good results for the geometry perturbed MD dataset. The best performing model for the isomers $\text{GNN}^{\text{MD*}}_\text{initial}$ takes two to three iterations longer to converge (even after retraining) than the $\text{GNN}^{\text{MD*}}_\text{f. 0}$ model. Therefore, the latter model generalizes better to the MD geometries. This may be attributed at least to some extend to the full matrix loss used during training for this model. \\
+\autoref{tab:qm9_md_test_overview} compares the best performing GNNs with established guesses. Besides the well established \texttt{minao} scheme, the GNNs outperform all other guessing schemes in terms of iterations. 
+\section{QM9 - Full Dataset}
 \label{sec:qm9_isomers_benchmark}
-
+So far our experiments and applications focused on structural isomers of one molecule, \ch{C5H4N2O2} (see \autoref{sec:qm9_c5h4n2o2}) initially and \ch{C7H10O2} later. The GNN architecture fared very well against established guessing schemes but still has to prove its capabilities in a more general non-isomer setting. The 134k molecules of QM9 \parencite{ref:qm9} provide a broad chemical space with up to 9 heavy atoms and 4 different non-hydrogen elements, \ch{C}, \ch{N}, \ch{O} and \ch{F} for this task. 
+\subsection{Sampling the QM9 dataset}
+\label{sec:qm9_full_isomers_sampling}
+To evaluate the different guessing types fairly, some effort has to be made to sample the QM9 dataset representatively. Contrary to the previous isomer datasets, we have to ensure a balanced distribution of traits. Concretely, we will stratify the train, validation and test sets by the number of atoms in the molecules. This stratification helps prevent the models from being unduly biased toward any particular molecular size due to an unbalanced train / validation / test split.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{../fig/application/strat_sample.pdf}
+    \caption[Stratified sample of QM9 dataset]{Stratified sample of QM9 dataset by number of atoms per molecule for each set.}
+    \label{fig:sample_QM9}
+\end{figure}
+We sample 500 molecules from the QM9 set in a stratified manner and additionally ensure ample representation for various molecule sizes. Therefore, compared to the actual distribution seen in \autoref{fig:method_qm9_overview}, the representation of molecules with 6 to 13 and 24 to 29 atoms per molecule is increased. This results in the distribution for the train, validation and test sets shown in \autoref{fig:sample_QM9}. Once again the train / validation / test split is 80\% / 10\% / 10\%.
 \subsection{Hyperparameter tuning}
 \label{sec:qm9_full_isomers_hyp_tuning}
 
 \subsection{Zero shot predictions of Isomers}
 \label{sec:qm9_full_isomers_zero_shot}
-
+-> not possible because we do not have N and F in train set for our models! Maybe i will do something here idk maybe... But not possible straightforward. 
 \subsection{Evalutation \& Conclusion}
 \label{sec:qm9_full_isomers_conclusion}
 

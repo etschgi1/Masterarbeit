@@ -376,7 +376,7 @@ The function used to transform the weight-feature product is also commonly refer
 Functions mapping to values in the range $[0, 1]$, such as the step function or sigmoid functions, are used in classification tasks. Other (mostly) monotonic functions are used for activation in regression tasks. Due to their frequent invocation, computationally inexpensive functions like the Rectified Linear Unit (ReLU) are widely used in practice. The Gaussian Error Linear Unit (GeLU) converges to ReLU in the positive and negative limits, but smooths the transition around zero, ensuring differentiability over the entire domain. Some commonly used functions are depicted in \autoref{fig:activation_functions}. 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{../fig/background/activation_functions.pdf}
+    \includegraphics[width=0.8\textwidth]{../fig/background/activation_functions.pdf}
     \caption{Commonly used activation functions.}
     \label{fig:activation_functions}
 \end{figure}
@@ -422,5 +422,3 @@ The QM9 dataset \parencite{ref:data_qm9, ref:article1_qm9,ref:article2_qm9} tick
     \caption[QM9 dataset overview]{Overview of the QM9 dataset. The dataset contains $134,000$ molecules with up to nine heavy - \ch{C} \ch{O} \ch{N} \ch{F} - atoms. Large groups of constitutional isomers are present (largest depicted in red).}
     \label{fig:method_qm9_overview}
 \end{figure}
-
-\TODO{MD Trajectories of C7O2H10- QM9 MD}
