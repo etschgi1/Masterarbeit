@@ -188,9 +188,9 @@ def eval_model(model, dataset, eval_result_path, skip_iterations= False):
         with open(eval_result_path, "w") as f:
             json.dump(metrics, f, indent=4)
 
-        # if len(metrics["iterations"]) > 5 and np.mean(metrics["iterations"]) > 13.5: 
-        #     print("abort - mean iteration too high -> uninteresting!")
-        #     break
+        if len(metrics["iterations"]) > 5 and np.mean(metrics["iterations"]) > 15.5: 
+            print("abort - mean iteration too high -> uninteresting!")
+            break
 
     print("Done...")
 

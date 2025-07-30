@@ -67,9 +67,9 @@ Investigating different metrics on the test set in \autoref{tab:qm9_isomers_data
     \label{tab:qm9_isomers_data_aug_hyperparam}
     \resizebox{\textwidth}{!}{
         \begin{tabular}{l
-                        S[table-format=2.1(2)]
-                        S[table-format=-4(4)]
-                        S[table-format=-1.3(2)]
+                        S[table-format=2.1(1.1)]
+                        S[table-format=-4(2)]
+                        S[table-format=-1.3(1.1)]
                         S[table-format=1.3(1.1)]
                         S[table-format=1.4(1)]}
             \toprule
@@ -95,8 +95,8 @@ The edge threshold distance has an immediate impact on message passing between n
     \label{tab:qm9_isomers_dist_hyperparam}
     \resizebox{\textwidth}{!}{
         \begin{tabular}{l
-                        S[table-format=2.1(2)]
-                        S[table-format=-4(4)]
+                        S[table-format=2.1(1.1)]
+                        S[table-format=-4(2)]
                         S[table-format=-1.3(2)]
                         S[table-format=1.3(1.1)]
                         S[table-format=1.4(1)]}
@@ -125,7 +125,7 @@ For all training runs up to now, the training loss was evaluated only on the nor
     \label{tab:qm9_isomers_further_runs} %!TODO rerun with all models if there is time!
     \resizebox{\textwidth}{!}{
         \begin{tabular}{l
-                        S[table-format=2.1(2)]
+                        S[table-format=2.1(1.1)]
                         S[table-format=-4(2)]
                         S[table-format=-1.3(2)]
                         S[table-format=1.3(1)]
@@ -176,21 +176,21 @@ Top performing models defined above are compared to \textsc{PySCF} guessing sche
     \label{tab:qm9_isomers_test_overview}
     \resizebox{\textwidth}{!}{
         \begin{tabular}{l
-                        S[table-format=2.1(2)]
-                        S[table-format=-4(4)]
-                        S[table-format=-1.3(2)]
                         S[table-format=2.1(1.1)]
+                        S[table-format=-4(3)]
+                        S[table-format=-1.3(2)]
+                        S[table-format=1.4(1.1)]
                         S[table-format=1.4(1)]}
             \toprule
             Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / $\unit{\hartree}$} \\
             \midrule
             $\text{GNN}_\text{initial}$   & 11.2(6)  & -1230(30)   & -0.703(10)& 0.2040(15)& 0.0078(6)\\
-            $\text{GNN}_\text{f. 0}$      & 11.5(9)  & -1250(40)   & -0.718(11)& 0.209(2)  & 0.0076(6)\\
-            $\overline{P}$                & 17.1(15) & -100(100)   & -0.06(7)  & 0.01(0)   & 0.0138(4)\\
+            $\text{GNN}_\text{f. 0}$      & 11.5(9)  & -1250(40)   & -0.718(11)& 0.209(2)  & \textbf{0.0076(6)}\\
+            $\overline{P}$                & 17.1(15) & -100(100)   & -0.06(7)  & \textbf{0.01(0)}& 0.0138(4)\\
             \texttt{1-e}                  & 18.8(18) & 600(700)    & 0.4(5)    & 0.1220(10)& 0.14(4)  \\
-            \texttt{vsap}                 & 14.2(9)  & 9(15)       & 0.006(10) & 0.026(2) & 0.0109(7)\\
+            \texttt{vsap}                 & 14.2(9)  & \textbf{9(15)}& \textbf{0.006(10)}& 0.026(2) & 0.0109(7)\\
             \texttt{atom}                 & 16.6(19) & 20(40)      & 0.01(2)   & 0.044(7) & 0.016(2) \\
-            \texttt{minao}                & 10.8(6)  & 120(120)    & 0.08(8)   & 0.077(3) & 0.0155(4)\\
+            \texttt{minao}                & \textbf{10.8(6)}& 120(120)    & 0.08(8)   & 0.077(3) & 0.0155(4)\\
             \bottomrule
         \end{tabular}
     }
@@ -203,20 +203,20 @@ We have shown that the GNN approach surpasses most conventional guessing schemes
 \label{sec:qm9_md_isomers_benchmark}
 So far, all predictions have considered only ground state geometries. While predicted and calculated traits of the ground state give invaluable insight into the chemical properties, the behavior of the molecules in more attainable environments is of interest. The MD trajectories of \ch{C7H10O2} dataset \parencite{ref:qm9_isomers_md} compiles a randomly samples set of 113 isomers from the QM9 \ch{C7H10O2} data. The trajectory of every isomer is calculated every $\SI{1}{\femto\second}$ for 5000 steps at a temperature of 500 K using the PBE exchange-correlation potential (see \ref{subsec:background_dft}). From these geometries 500 are sampled to calculate a reference data set using the 6-31G(2df,p) basis at theory level B3LYP. We use this set in the following experiments. 
 
-\subsection{Zero shot predictions}
+\subsection{Zero-shot predictions}
 \label{sec:qm9_md_isomers_zero_shot}
-Zero shot predictions are predictions performed on data which is out of scope of training data. In our case, a model previously trained on the QM9 \ch{C7H10O2} isomer set may be used to predict the density for a given MD sample. Prediction metrics using the pre trained models from \autoref{sec:qm9_isomers_benchmark} on the MD test set is given in \autoref{tab:qm9_md_zero_shot}. 
+Zero-shot predictions are predictions performed on data which is out of scope of training data. In our case, a model previously trained on the QM9 \ch{C7H10O2} isomer set may be used to predict the density for a given MD sample. Prediction metrics using the pre trained models from \autoref{sec:qm9_isomers_benchmark} on the MD test set is given in \autoref{tab:qm9_md_zero_shot}. 
 \begin{table}[h]
     \centering
-    \caption[GNN zero shot predictions on QM9 isomers MD]{GNN zero shot predictions on the QM9 isomer MD test set. $\text{GNN}_\text{initial}$ and $\text{GNN}_\text{f. 0}$ were trained using the QM9 isomer set.}
+    \caption[GNN Zero-shot predictions on QM9 isomers MD]{GNN Zero-shot predictions on the QM9 isomer MD test set. $\text{GNN}_\text{initial}$ and $\text{GNN}_\text{f. 0}$ were trained using the QM9 isomer set.}
     \label{tab:qm9_md_zero_shot}
     \resizebox{\textwidth}{!}{
         \begin{tabular}{l
-                        S[table-format=2.1(2)]
-                        S[table-format=-4(4)]
-                        S[table-format=-1.3(2)]
-                        S[table-format=2.1(1.1)]
-                        S[table-format=1.4(1)]}
+                        S[table-format=2.1(1)]
+                        S[table-format=-4(2)]
+                        S[table-format=-1.3(1.1)]
+                        S[table-format=1.2(1.1)]
+                        S[table-format=1.4(1.1)]}
             \toprule
             Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / $\unit{\hartree}$} \\
             \midrule
@@ -240,10 +240,10 @@ Metrics for retrained versions of $\text{GNN}_\text{initial}$ and $\text{GNN}_\t
     \label{tab:qm9_md_last_best_retrain}
     \resizebox{\textwidth}{!}{
         \begin{tabular}{l
-                        S[table-format=2.1(2)]
-                        S[table-format=-4(4)]
-                        S[table-format=-1.3(2)]
                         S[table-format=2.1(1.1)]
+                        S[table-format=-4(2)]
+                        S[table-format=-1.3(2)]
+                        S[table-format=1.3(2)]
                         S[table-format=1.4(1)]}
             \toprule
             Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / $\unit{\hartree}$} \\
@@ -311,11 +311,11 @@ Moderate dropout rates are generally advisable, but $\text{GNN}^{\text{MD}}_\tex
     \label{tab:qm9_md_test_overview}
     \resizebox{\textwidth}{!}{
         \begin{tabular}{l
-                        S[table-format=2.1(2)]
-                        S[table-format=-4(4)]
+                        S[table-format=2.1(1.1)]
+                        S[table-format=-4.1(2)]
                         S[table-format=-1.5(1.1)]
                         S[table-format=1.4(1.1)]
-                        S[table-format=1.5(1.1)]}
+                        S[table-format=1.4(1.1)]}
                         \toprule
                         Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / $\unit{\hartree}$} \\
                         \midrule
@@ -335,7 +335,7 @@ We have seen that not every model and hyperparameter configuration translates to
 \autoref{tab:qm9_md_test_overview} compares the best performing GNNs with established guesses. Besides the well established \texttt{minao} scheme, the GNNs outperform all other guessing schemes in terms of iterations. 
 \section{QM9 - Full Dataset}
 \label{sec:qm9_isomers_benchmark}
-So far our experiments and applications focused on structural isomers of one molecule, \ch{C5H4N2O2} (see \autoref{sec:qm9_c5h4n2o2}) initially and \ch{C7H10O2} later. The GNN architecture fared very well against established guessing schemes but still has to prove its capabilities in a more general non-isomer setting. The 134k molecules of QM9 \parencite{ref:qm9} provide a broad chemical space with up to 9 heavy atoms and 4 different non-hydrogen elements, \ch{C}, \ch{N}, \ch{O} and \ch{F} for this task. 
+So far our experiments and applications focused on structural isomers of one molecule, \ch{C5H4N2O2} (see \autoref{sec:qm9_c5h4n2o2}) initially and \ch{C7H10O2} later. The GNN architecture fared very well against established guessing schemes but still has to prove its capabilities in a more general non-isomer setting. The 134k molecules of QM9 \parencite{ref:data_qm9} provide a broad chemical space with up to 9 heavy atoms and 4 different non-hydrogen elements, \ch{C}, \ch{N}, \ch{O} and \ch{F} for this task. 
 \subsection{Sampling the QM9 dataset}
 \label{sec:qm9_full_isomers_sampling}
 To evaluate the different guessing types fairly, some effort has to be made to sample the QM9 dataset representatively. Contrary to the previous isomer datasets, we have to ensure a balanced distribution of traits. Concretely, we will stratify the train, validation and test sets by the number of atoms in the molecules. This stratification helps prevent the models from being unduly biased toward any particular molecular size due to an unbalanced train / validation / test split.
@@ -345,15 +345,67 @@ To evaluate the different guessing types fairly, some effort has to be made to s
     \caption[Stratified sample of QM9 dataset]{Stratified sample of QM9 dataset by number of atoms per molecule for each set.}
     \label{fig:sample_QM9}
 \end{figure}
-We sample 500 molecules from the QM9 set in a stratified manner and additionally ensure ample representation for various molecule sizes. Therefore, compared to the actual distribution seen in \autoref{fig:method_qm9_overview}, the representation of molecules with 6 to 13 and 24 to 29 atoms per molecule is increased. This results in the distribution for the train, validation and test sets shown in \autoref{fig:sample_QM9}. Once again the train / validation / test split is 80\% / 10\% / 10\%.
+We sample 500 molecules from the QM9 set in a stratified manner and additionally ensure ample representation for various molecule sizes. Therefore, compared to the actual distribution seen in \autoref{fig:method_qm9_overview}, the representation of molecules with 6 to 13 and 24 to 29 atoms per molecule is increased. This results in the distribution for the train, validation and test sets shown in \autoref{fig:sample_QM9}. Once again the train / validation / test split is 80\% / 10\% / 10\%.\\
+
+Zero-shot predictions like those devised in the previous section aren't possible on the full dataset due to missing encoders/decoders for \ch{N}, \ch{F} and their respective interaction blocks. Therefore, we'll proceed directly to hyperparameter tuning. 
 \subsection{Hyperparameter tuning}
 \label{sec:qm9_full_isomers_hyp_tuning}
+\begin{table}[H]
+    \centering
+    \caption[GNN on QM9 full dataset sample with full matrix loss]{GNN on QM9 full dataset sample using full matrix loss to train. Metrics on test set and corresponding hyperparameter settings for 10 best performing networks in terms of iterations.}
+    \label{tab:qm9_full_further_runs} 
+    \resizebox{\textwidth}{!}{
+        \begin{tabular}{l
+                        S[table-format=2.1(2)]
+                        S[table-format=-4(2)]
+                        S[table-format=-1.3(2)]
+                        S[table-format=1.3(1)]
+                        S[table-format=1.4(1)]}
+            \toprule
+            Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / $\unit{\hartree}$} \\
+            \midrule
+            \bottomrule
+        \end{tabular}
+    }
+        \resizebox{\textwidth}{!}{
+        \begin{tabular}{lrrrrrrrrrr}
+        \toprule
+        Parameters & $\text{GNN}^{\text{Full}}_\text{f. 0}$ & $\text{GNN}^{\text{Full}}_\text{f. 1}$ & $\text{GNN}^{\text{Full}}_\text{f. 2}$ & $\text{GNN}^{\text{Full}}_\text{f. 3}$ & $\text{GNN}^{\text{Full}}_\text{f. 4}$ & $\text{GNN}^{\text{Full}}_\text{f. 5}$ & $\text{GNN}^{\text{Full}}_\text{f. 6}$ & $\text{GNN}^{\text{Full}}_\text{f. 7}$ & $\text{GNN}^{\text{Full}}_\text{f. 8}$ & $\text{GNN}^{\text{Full}}_\text{f. 9}$ \\
+        \midrule
 
-\subsection{Zero shot predictions of Isomers}
-\label{sec:qm9_full_isomers_zero_shot}
--> not possible because we do not have N and F in train set for our models! Maybe i will do something here idk maybe... But not possible straightforward. 
+        \bottomrule
+        \end{tabular}
+        }
+\end{table}
 \subsection{Evalutation \& Conclusion}
 \label{sec:qm9_full_isomers_conclusion}
+
+\begin{table}[H]
+    \centering
+    \caption[Comparison of different models employing \textsc{PySCF} and $\overline{P}$ guessing schemes on the QM9 full dataset.]{Comparison of different models employing \textsc{PySCF} and $\overline{P}$ guessing schemes on the QM9 full dataset. Here, $\overline{P}$ is computed block-wise across all molecules by averaging over each \ch{C}, \ch{O}-\ch{H}, \dots block.
+}
+    \label{tab:qm9_full_test_overview}
+    \resizebox{\textwidth}{!}{
+        \begin{tabular}{l
+                        S[table-format=2.1(1.1)]
+                        S[table-format=-3.4(3)]
+                        S[table-format=-1.6(1.1)]
+                        S[table-format=1.3(1.1)]
+                        S[table-format=1.4(1.1)]}
+                        \toprule
+                        Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / $\unit{\hartree}$} \\
+                        \midrule
+                        % &&&&&\\
+                        $\overline{P}$                & 17(3)            & -800(200)     & -0.52(2)    & 0.11(2) & 0.014(2)  \\
+                        \texttt{1-e}                  & 19(3)            & -225(4)    & -0.124(3)    & 0.122(15) & 0.16(12)  \\
+                        \texttt{vsap}                 & 14(2)            & -4.8419(4) & -0.002665(19)& 0.024(3)  & 0.0106(14)\\
+                        \texttt{atom}                 & 16(2)            & -14.0(9)   & -0.0077(5)   & 0.039(7)  & 0.015(2)  \\
+                        \texttt{minao}                & \textbf{11.1(11)}& \textbf{2.86(2)} & \textbf{0.001577(0)}& 0.081(12) & 0.017(3)  \\
+                        \bottomrule
+                    \end{tabular}
+    }
+\end{table}
+Another notable finding emerges when contrasting the full dataset results for $\overline{P}$ with those from the isomer only runs. Although the average number of iterations remained essentially unchanged (only their spread increased for the more diverse dataset) the DIIS error in the full dataset case is an order of magnitude higher. This increase is unsurprising given the broader chemical variety and the block-wise averaging inherent to $\overline{P}$. Crucially, it underscores that DIIS error and iteration count are largely uncorrelated.
 
 \section{Lost Tweaks}
 \label{sec:lost_tweaks}

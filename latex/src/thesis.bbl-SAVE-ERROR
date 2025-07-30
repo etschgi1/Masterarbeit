@@ -33,8 +33,8 @@
       \strng{authorbibnamehash}{86b3e1b87463065d6da6ca558e6541b3}
       \strng{authornamehash}{86b3e1b87463065d6da6ca558e6541b3}
       \strng{authorfullhash}{86b3e1b87463065d6da6ca558e6541b3}
-      \field{sortinit}{3}
-      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{eprinttype}{arXiv}
@@ -64,8 +64,8 @@
       \strng{authorbibnamehash}{ef83d4dc8a30fe4456be4321cd8ad41b}
       \strng{authornamehash}{ef83d4dc8a30fe4456be4321cd8ad41b}
       \strng{authorfullhash}{ef83d4dc8a30fe4456be4321cd8ad41b}
-      \field{sortinit}{4}
-      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Mathematical Proceedings of the Cambridge Philosophical Society}
@@ -94,8 +94,8 @@
       \strng{authornamehash}{2680effb67f4c8cd7c73443f7af7dbe9}
       \strng{authorfullhash}{2680effb67f4c8cd7c73443f7af7dbe9}
       \field{extraname}{1}
-      \field{sortinit}{4}
-      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Physical Review}
@@ -123,8 +123,8 @@
       \strng{authorbibnamehash}{09f4ce0c70d617227c2dc0df7d4e36e0}
       \strng{authornamehash}{09f4ce0c70d617227c2dc0df7d4e36e0}
       \strng{authorfullhash}{09f4ce0c70d617227c2dc0df7d4e36e0}
-      \field{sortinit}{4}
-      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Zeitschrift für Physik}
@@ -159,8 +159,8 @@
       \strng{authorbibnamehash}{7e4e963df06b39584349eaf439922455}
       \strng{authornamehash}{7e4e963df06b39584349eaf439922455}
       \strng{authorfullhash}{7e4e963df06b39584349eaf439922455}
-      \field{sortinit}{5}
-      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{edition}{Dover ed.}
@@ -198,8 +198,8 @@
       \strng{authornamehash}{b07f33069638ff9d5782a78006299123}
       \strng{authorfullhash}{7e9f57bf40eea8c921a2b6045e942379}
       \field{extraname}{1}
-      \field{sortinit}{6}
-      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{Abstract We describe the procedure to start an SCF calculation of the general type from a sum of atomic electron densities, as implemented in GAMESS-UK. Although the procedure is well known for closed-shell calculations and was already suggested when the Direct SCF procedure was proposed, the general procedure is less obvious. For instance, there is no need to converge the corresponding closed-shell Hartree–Fock calculation when dealing with an open-shell species. We describe the various choices and illustrate them with test calculations, showing that the procedure is easier, and on average better, than starting from a converged minimal basis calculation and much better than using a bare nucleus Hamiltonian. © 2006 Wiley Periodicals, Inc. J Comput Chem 27: 926–932, 2006}
@@ -243,8 +243,8 @@
       \strng{authorbibnamehash}{0b18a11ce3fdf0d377181711d29a1a13}
       \strng{authornamehash}{0b18a11ce3fdf0d377181711d29a1a13}
       \strng{authorfullhash}{0b18a11ce3fdf0d377181711d29a1a13}
-      \field{sortinit}{7}
-      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{The Journal of Chemical Physics}
@@ -273,8 +273,8 @@
       \strng{authornamehash}{9d22c08c2c5ed286d40e1b044bed9407}
       \strng{authorfullhash}{9d22c08c2c5ed286d40e1b044bed9407}
       \field{extraname}{1}
-      \field{sortinit}{7}
-      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{day}{17}
@@ -308,8 +308,8 @@
       \strng{authorbibnamehash}{3933ab1d7abb89b43fd4d3c88a4453ba}
       \strng{authornamehash}{3933ab1d7abb89b43fd4d3c88a4453ba}
       \strng{authorfullhash}{3933ab1d7abb89b43fd4d3c88a4453ba}
-      \field{sortinit}{8}
-      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Physica}
@@ -337,8 +337,8 @@
       \strng{authornamehash}{3521fe904d43bf09dea279ce123210c6}
       \strng{authorfullhash}{3521fe904d43bf09dea279ce123210c6}
       \field{extraname}{1}
-      \field{sortinit}{9}
-      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
+      \field{sortinit}{8}
+      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{The Journal of Chemical Physics}
@@ -376,8 +376,8 @@
       \strng{authorbibnamehash}{3ee84718606923325c524c7f3c39f8ac}
       \strng{authornamehash}{3ee84718606923325c524c7f3c39f8ac}
       \strng{authorfullhash}{3ee84718606923325c524c7f3c39f8ac}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{sortinit}{9}
+      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{Least-squares representations of Slater-type atomic orbitals as a sum of Gaussian-type orbitals are presented. These have the special feature that common Gaussian exponents are shared between Slater-type 2s and 2p functions. Use of these atomic orbitals in self-consistent molecular-orbital calculations is shown to lead to values of atomization energies, atomic populations, and electric dipole moments which converge rapidly (with increasing size of Gaussian expansion) to the values appropriate for pure Slater-type orbitals. The ζ exponents (or scale factors) for the atomic orbitals which are optimized for a number of molecules are also shown to be nearly independent of the number of Gaussian functions. A standard set of ζ values for use in molecular calculations is suggested on the basis of this study and is shown to be adequate for the calculation of total and atomization energies, but less appropriate for studies of charge distribution.}
@@ -838,8 +838,8 @@
       \strng{authorbibnamehash}{3a2585af369dbd4150db746c63177b0c}
       \strng{authornamehash}{3a2585af369dbd4150db746c63177b0c}
       \strng{authorfullhash}{3a2585af369dbd4150db746c63177b0c}
-      \field{sortinit}{2}
-      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{The Journal of Chemical Physics}
@@ -996,33 +996,33 @@
     \endentry
     \entry{ref:alphafold}{article}{}
       \name{author}{4}{}{%
-        {{hash=b8bf793c7fbf851a5793be4b703722b6}{%
+        {{hash=e22aba0253bef8ca741fe37e94a15493}{%
            family={Jumper},
            familyi={J\bibinitperiod},
-           given={J.\},
+           given={J.},
            giveni={J\bibinitperiod}}}%
-        {{hash=f1a53d2443b31fb5320d4ba374fd2e88}{%
+        {{hash=61d03071a9aa21b21a849b81a3a4dc00}{%
            family={Evans},
            familyi={E\bibinitperiod},
-           given={R.\},
+           given={R.},
            giveni={R\bibinitperiod}}}%
-        {{hash=76fb3a2d9f0e3400a4f5c0255a2186eb}{%
+        {{hash=101c59a53767ebfc35ef049c00b17a54}{%
            family={Pritzel},
            familyi={P\bibinitperiod},
-           given={A.\},
+           given={A.},
            giveni={A\bibinitperiod}}}%
-        {{hash=e829e32c9278b2d49576410411d05ce9}{%
-           given={al.},
-           giveni={a\bibinitperiod},
-           prefix={et\~al.},
-           prefixi={e\bibinitperiod\bibinitdelim a\bibinitperiod}}}%
+        {{hash=38026ba4ee6b102b47bf3ffb41325c8f}{%
+           family={al.},
+           familyi={a\bibinitperiod},
+           prefix={et},
+           prefixi={e\bibinitperiod}}}%
       }
-      \strng{namehash}{c5151969fc2f181899a9953ce883bdb6}
-      \strng{fullhash}{693ab79c57c162be0618b88731e1bbea}
-      \strng{bibnamehash}{c5151969fc2f181899a9953ce883bdb6}
-      \strng{authorbibnamehash}{c5151969fc2f181899a9953ce883bdb6}
-      \strng{authornamehash}{c5151969fc2f181899a9953ce883bdb6}
-      \strng{authorfullhash}{693ab79c57c162be0618b88731e1bbea}
+      \strng{namehash}{e0a6c2cc87618512e593f7d386585143}
+      \strng{fullhash}{8f51148b61c0b6cf548efea129b5369d}
+      \strng{bibnamehash}{e0a6c2cc87618512e593f7d386585143}
+      \strng{authorbibnamehash}{e0a6c2cc87618512e593f7d386585143}
+      \strng{authornamehash}{e0a6c2cc87618512e593f7d386585143}
+      \strng{authorfullhash}{8f51148b61c0b6cf548efea129b5369d}
       \field{sortinit}{2}
       \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
@@ -1350,8 +1350,8 @@
       \strng{authorbibnamehash}{b400e9139be47d41d51c7ab94901302c}
       \strng{authornamehash}{b400e9139be47d41d51c7ab94901302c}
       \strng{authorfullhash}{37457b2f157b963e434b245ad5d28269}
-      \field{sortinit}{3}
-      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Journal of Clinical Epidemiology}
@@ -1456,8 +1456,8 @@
       \strng{authorbibnamehash}{3a097aa3ebf2b8c2acf988341dde9710}
       \strng{authornamehash}{3a097aa3ebf2b8c2acf988341dde9710}
       \strng{authorfullhash}{7a67607c66e4af944b5f16461d6d0a87}
-      \field{sortinit}{3}
-      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Journal of Machine Learning Research}
@@ -1627,8 +1627,8 @@
       \strng{authorbibnamehash}{24b1e0a436b566c814359b41f12b3ce3}
       \strng{authornamehash}{24b1e0a436b566c814359b41f12b3ce3}
       \strng{authorfullhash}{a869c8f2e8f9d507f1f31532ade2d486}
-      \field{sortinit}{4}
-      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{day}{5}
@@ -1661,8 +1661,8 @@
       \strng{authorbibnamehash}{2f3cf4de7406c8a08275677188d056f8}
       \strng{authornamehash}{2f3cf4de7406c8a08275677188d056f8}
       \strng{authorfullhash}{2f3cf4de7406c8a08275677188d056f8}
-      \field{sortinit}{4}
-      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{day}{1}
@@ -1720,8 +1720,8 @@
       \strng{authorbibnamehash}{fd73c0a4cd9935c263cb1542aec8b9d4}
       \strng{authornamehash}{fd73c0a4cd9935c263cb1542aec8b9d4}
       \strng{authorfullhash}{3bd0af8849b425ef9cc7ac24d6a17615}
-      \field{sortinit}{4}
-      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{howpublished}{\url{https://github.com/keras-team/keras-tuner}}
@@ -1752,8 +1752,8 @@
       \strng{authorbibnamehash}{278021aa20410028e4648cf93469c0c5}
       \strng{authornamehash}{278021aa20410028e4648cf93469c0c5}
       \strng{authorfullhash}{278021aa20410028e4648cf93469c0c5}
-      \field{sortinit}{4}
-      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Journal of Chemical Theory and Computation}
@@ -1795,8 +1795,8 @@
       \strng{authorbibnamehash}{2d3ff61117ef3f657b16d6070789673d}
       \strng{authornamehash}{2d3ff61117ef3f657b16d6070789673d}
       \strng{authorfullhash}{85fa9fdf8247a76c044d4bedd7bb0590}
-      \field{sortinit}{4}
-      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Nature Communications}
@@ -2088,6 +2088,36 @@
       \verb https://openreview.net/forum?id=S1Y7OOlRZ
       \endverb
     \endentry
+    \entry{ref:qm9_isomers_md}{online}{}
+      \name{author}{1}{}{%
+        {{hash=cee2b5bd735c2537935d1c45d4d06db5}{%
+           family={{Quantum Machine}},
+           familyi={Q\bibinitperiod}}}%
+      }
+      \strng{namehash}{cee2b5bd735c2537935d1c45d4d06db5}
+      \strng{fullhash}{cee2b5bd735c2537935d1c45d4d06db5}
+      \strng{bibnamehash}{cee2b5bd735c2537935d1c45d4d06db5}
+      \strng{authorbibnamehash}{cee2b5bd735c2537935d1c45d4d06db5}
+      \strng{authornamehash}{cee2b5bd735c2537935d1c45d4d06db5}
+      \strng{authorfullhash}{cee2b5bd735c2537935d1c45d4d06db5}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Contains MD trajectories of 113 QM9 C$_7$O$_2$H$_{10}$ isomers, 500 K, 15 fs resolution; energies in `id.energy.dat`}
+      \field{title}{{MD Trajectories of C$_7$O$_2$H$_{10}$}}
+      \field{urlday}{15}
+      \field{urlmonth}{7}
+      \field{urlyear}{2025}
+      \field{year}{2025}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb http://quantum-machine.org/datasets/
+      \endverb
+      \verb{url}
+      \verb http://quantum-machine.org/datasets/
+      \endverb
+    \endentry
     \entry{ref:pyscf_user_guide}{misc}{}
       \name{author}{1}{}{%
         {{hash=a48adb747c1d47e80464b6c1fa69dcbb}{%
@@ -2306,7 +2336,33 @@
       \verb https://doi.org/10.1038/s41467-019-12875-2
       \endverb
     \endentry
+    \entry{ref:python}{manual}{}
+      \name{author}{1}{}{%
+        {{hash=c7b5508dc5e59a2846d22617276cc27c}{%
+           family={{Python Software Foundation}},
+           familyi={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{c7b5508dc5e59a2846d22617276cc27c}
+      \strng{fullhash}{c7b5508dc5e59a2846d22617276cc27c}
+      \strng{bibnamehash}{c7b5508dc5e59a2846d22617276cc27c}
+      \strng{authorbibnamehash}{c7b5508dc5e59a2846d22617276cc27c}
+      \strng{authornamehash}{c7b5508dc5e59a2846d22617276cc27c}
+      \strng{authorfullhash}{c7b5508dc5e59a2846d22617276cc27c}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{{Python} Language Reference, version 3.11.11}
+      \field{year}{2024}
+      \verb{urlraw}
+      \verb https://www.python.org
+      \endverb
+      \verb{url}
+      \verb https://www.python.org
+      \endverb
+    \endentry
   \enddatalist
+  \missing{ref:qm9}
 \endrefsection
 \endinput
 
