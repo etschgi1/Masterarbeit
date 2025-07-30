@@ -2440,6 +2440,7 @@
     <bcf:citekey order="64" intorder="1">ref:PyTorchGeometric</bcf:citekey>
     <bcf:citekey order="65" intorder="1">ref:ray_tune</bcf:citekey>
     <bcf:citekey order="66" intorder="1">ref:milacher_scf_guess_datasets</bcf:citekey>
+    <bcf:citekey order="67" intorder="1">ref:scf_guess_tools</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="none">

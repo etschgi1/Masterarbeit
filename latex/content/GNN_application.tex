@@ -15,7 +15,7 @@ To gauge the performance of the GNN devised in \autoref{chap:gnn} manual runs we
 
 \begin{table}[H]
     \centering
-    \caption{Hyperparameters used for the initial MGNN training (manually selected)}
+    \caption[Hyperparameters - initial MGNN training (manually selected)]{Hyperparameters used for the initial MGNN training (manually selected)}
     \label{tab:init_hparams}
     \begin{tabular}{ll ll}
         \toprule
@@ -56,7 +56,7 @@ $\text{GNN}_\text{initial}$ already performed quite well in terms of iterations 
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.75\textwidth]{../fig/application/aug_train_val_loss.pdf}
-    \caption[GNN loss different augmentation factors | QM9-isomers]{GNN loss for different data augmentation factors on QM9-isomers. All other hyperparameters are kept as in \autoref{tab:init_hparams}.}
+    \caption[GNN loss for different augmentation factors on QM9-isomers]{GNN loss for different data augmentation factors on QM9-isomers. All other hyperparameters are kept as in \autoref{tab:init_hparams}.}
     \label{fig:loss_hyper_qm9_isomers}
 \end{figure}
 Comparing the training and validation loss between different augmentation factors in \autoref{fig:loss_hyper_qm9_isomers} shows no clear trend regarding the choice of the augmentation factor. While a factor of $2.5$ initially outperforms no augmentation and other factors, they all converge in validation towards the end. 
@@ -172,7 +172,7 @@ The best performing networks using full matrix loss fare a bit worse with regard
 Top performing models defined above are compared to \textsc{PySCF} guessing schemes in \autoref{tab:qm9_isomers_test_overview}
 \begin{table}[H]
     \centering
-    \caption{Comparison of different models with \textsc{PySCF} and $\overline{P}$ guessing schemes for QM9 - \ch{C7H10O2} Isomers.}
+    \caption[Models compared to \textsc{PySCF} and $\overline{P}$ schemes - \ch{C7H10O2} Isomers]{Comparison of different models with \textsc{PySCF} and $\overline{P}$ guessing schemes for QM9 - \ch{C7H10O2} Isomers.}
     \label{tab:qm9_isomers_test_overview}
     \resizebox{\textwidth}{!}{
         \begin{tabular}{l
@@ -208,7 +208,7 @@ So far, all predictions have considered only ground state geometries. While pred
 Zero-shot predictions are predictions performed on data which is out of scope of training data. In our case, a model previously trained on the QM9 \ch{C7H10O2} isomer set may be used to predict the density for a given MD sample. Prediction metrics using the pre trained models from \autoref{sec:qm9_isomers_benchmark} on the MD test set is given in \autoref{tab:qm9_md_zero_shot}. 
 \begin{table}[h]
     \centering
-    \caption[GNN Zero-shot predictions on QM9 isomers MD]{GNN Zero-shot predictions on the QM9 isomer MD test set. $\text{GNN}_\text{initial}$ and $\text{GNN}_\text{f. 0}$ were trained using the QM9 isomer set.}
+    \caption[GNN zero-shot predictions on QM9 \ch{C7H10O2} isomer MD]{GNN zero-shot predictions on the QM9 \ch{C7H10O2} isomer MD test set. $\text{GNN}_\text{initial}$ and $\text{GNN}_\text{f. 0}$ were trained using the QM9 \ch{C7H10O2} isomer set.}
     \label{tab:qm9_md_zero_shot}
     \resizebox{\textwidth}{!}{
         \begin{tabular}{l
@@ -236,7 +236,7 @@ Metrics for retrained versions of $\text{GNN}_\text{initial}$ and $\text{GNN}_\t
 
 \begin{table}[h]
     \centering
-    \caption[GNN predictions on QM9 isomers MD]{GNN predictions on the QM9 isomer MD test set. With MD-retrained\footnote{models marked with a $*$ are architectures from another dataset retrained on the current one} versions of $\text{GNN}_\text{initial}$ and $\text{GNN}_\text{f. 0}$.}
+    \caption[GNN predictions on QM9 \ch{C7H10O2} isomer MD]{GNN predictions on the QM9 \ch{C7H10O2} isomer MD test set. With MD-retrained\footnote{models marked with a $*$ are architectures from another dataset retrained on the current one} versions of $\text{GNN}_\text{initial}$ and $\text{GNN}_\text{f. 0}$.}
     \label{tab:qm9_md_last_best_retrain}
     \resizebox{\textwidth}{!}{
         \begin{tabular}{l
@@ -307,7 +307,7 @@ Moderate dropout rates are generally advisable, but $\text{GNN}^{\text{MD}}_\tex
 
 \begin{table}[h]
     \centering
-    \caption{Comparison of different models with \textsc{PySCF} and $\overline{P}$ guessing schemes for QM9 - \ch{C7H10O2} MD.}
+    \caption[Models compared to \textsc{PySCF} and $\overline{P}$ schemes - \ch{C7H10O2} MD]{Comparison of different models with \textsc{PySCF} and $\overline{P}$ guessing schemes for QM9 - \ch{C7H10O2} MD.}
     \label{tab:qm9_md_test_overview}
     \resizebox{\textwidth}{!}{
         \begin{tabular}{l
@@ -384,7 +384,7 @@ Zero-shot predictions like those devised in the previous section aren't possible
 
 \begin{table}[H]
     \centering
-    \caption[Comparison of different models employing \textsc{PySCF} and $\overline{P}$ guessing schemes on the QM9 full dataset.]{Comparison of different models employing \textsc{PySCF} and $\overline{P}$ guessing schemes on the QM9 full dataset. Here, $\overline{P}$ is computed block-wise across all molecules by averaging over each \ch{C}, \ch{O}-\ch{H}, \dots block.
+    \caption[Models compared to \textsc{PySCF} and $\overline{P}$ schemes - QM9 full dataset]{Comparison of different models employing \textsc{PySCF} and $\overline{P}$ guessing schemes on the QM9 full dataset. Here, $\overline{P}$ is computed block-wise across all molecules by averaging over each \ch{C}, \ch{O}-\ch{H}, \dots block.
 }
     \label{tab:qm9_full_test_overview}
     \resizebox{\textwidth}{!}{

@@ -25,7 +25,7 @@ A second order Newton-solver essentially uses the Newton algorithm to converge a
 \[H \Delta x = -g\]
 to obtain the update $\Delta x$ which is to be applied to the orbitals.\\
 
-Faster convergence in terms of iterations was claimed by Schütt et al. for their neural network. \parencite{ref:schuett_unifying_2019} This prompted investigations on the \ch{C7H10O2} isomer set. Given our test set a comparable reduction of iterations from 1$^\text{st}$ order in \autoref{fig:dummy_iterations_qm9_isomers} to 2$^\text{nd}$ order\footnote{using PySCF's \texttt{newton\_ah} solver} in \autoref{fig:so_macro_iterations} can be seen. 
+Faster convergence in terms of iterations was claimed by Schütt et al. for their neural network \parencite{ref:schuett_unifying_2019}. This prompted investigations on the \ch{C7H10O2} isomer set. Given our test set a comparable reduction of iterations from 1$^\text{st}$ order in \autoref{fig:dummy_iterations_qm9_isomers} to 2$^\text{nd}$ order\footnote{using PySCF's \texttt{newton\_ah} solver} in \autoref{fig:so_macro_iterations} can be seen. 
 
 \begin{figure}[H]
     \centering
@@ -40,11 +40,11 @@ Yet this direct comparison is not a fair one. Contrary to DIIS, which builds the
     \caption[Fock matrix build count till convergence QM9-isomers]{Fock matrix build count till convergence for QM9-isomers for PySCF, $\overline{P}$ and GNN$_\text{initial}$ guesses. All entries with $\geq 40$ fock builds are grouped at $40$.}
     \label{fig:so_fock_build_iterations}
 \end{figure}
-Given this fact, one needs to be caution in making prediction regarding wall clock time of simulations from 'iteration` counts, especially for comparisons of different algorithms.
+Given this fact, one needs to be cautious in making prediction regarding wall clock time of simulations from 'iteration` counts, especially for comparisons of different algorithms.
 
 \section{Source Code \& Packages used}
 \label{sec:source_code_packages}
 %!TODO maybe add version here
-The source code for this thesis was fully written in Python 3.11.11 and is made available upon request. \parencite{ref:python}\\
+The source code for this thesis was fully written in Python 3.11.11 \parencite{ref:python} and is made available upon request.\\
 
-Models in \autoref{chap:fock_matrix_predictions} were trained using \textsc{scikit-learn} \parencite{ref:sk-learn} and \textsc{Tensorflow} \parencite{ref:tensorflow} with the \textsc{keras} frontend \parencite{ref:keras} and \textsc{kerastuner} for optimization \parencite{ref:kerastuner}. The GNN in \autoref{chap:gnn} was implemented using the \textsc{PyTorch Geometric} library \parencite{ref:PyTorchGeometric}. Hyperparameter optimization was performed using the \textsc{ray} library \parencite{ref:ray_tune}. Dataset handling was performed using a custom written \textsc{scf\_guess\_datasets} package which is available online \parencite{ref:milacher_scf_guess_datasets}. 
+Models in \autoref{chap:fock_matrix_predictions} were trained using \textsc{scikit-learn} \parencite{ref:sk-learn} and \textsc{Tensorflow} \parencite{ref:tensorflow} with the \textsc{keras} frontend \parencite{ref:keras} and \textsc{kerastuner} for optimization \parencite{ref:kerastuner}. The GNN in \autoref{chap:gnn} was implemented using the \textsc{PyTorch Geometric} library \parencite{ref:PyTorchGeometric}. Hyperparameter optimization was performed using the \textsc{ray} library \parencite{ref:ray_tune}. Dataset handling was performed using a custom written \textsc{scf\_guess\_datasets} package, which is available \hrefu{https://github.com/hauser-group/scf_guess_datasets}{online} \parencite{ref:milacher_scf_guess_datasets}. Data augmentation partially used APIs of the custom developed \textsc{scf\_guess\_tools} package (release v1.0), also to be found \hrefu{https://github.com/hauser-group/scf_guess_tools}{online} \parencite{ref:scf_guess_tools}. 
