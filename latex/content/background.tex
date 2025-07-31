@@ -386,7 +386,7 @@ Feed forward networks refer to a network architecture in which the outputs of th
 Each connection is associated with a weight that must be learned to enable meaningful predictions on unseen data. This learning process relies on backpropagation, which applies the chain rule iteratively to compute the gradient of the loss with respect to each weight, propagating from the output layer backwards through the network. While data flows forward through the network during prediction, the resulting loss propagates backward, guiding how the weights are adjusted. \\
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.75\textwidth]{../fig/background/MLP.pdf}
+    \includegraphics[width=0.6\textwidth]{../fig/background/MLP.pdf}
     \caption[Multi Layer Perceptron]{Multi Layer Perceptron with fully connected layers. Different shades of gray represent weights between Perceptrons.}
     \label{fig:mlp}
 \end{figure}
@@ -418,7 +418,7 @@ During the selection of a dataset for training there are two practical considera
 The QM9 dataset \parencite{ref:data_qm9, ref:article1_qm9,ref:article2_qm9} ticks both of these two boxes. It offers a variety of molecules from as little as 3 constituent atoms up to 29 atoms. Additionally, there are large enough chunks of constitutional isomers to train models on these subsets of same sized matrices. The distribution of molecules by atom count with the predominant constitutional isomers is shown in \autoref{fig:method_qm9_overview}.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{../fig/qm9_general/qm9_overview_stacked_bar.pdf}
+    \includegraphics[width=0.85\textwidth]{../fig/qm9_general/qm9_overview_stacked_bar.pdf}
     \caption[QM9 dataset overview]{Overview of the QM9 dataset. The dataset contains $134,000$ molecules with up to nine heavy - \ch{C} \ch{O} \ch{N} \ch{F} - atoms. Large groups of constitutional isomers are present (largest depicted in red).}
     \label{fig:method_qm9_overview}
 \end{figure}

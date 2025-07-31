@@ -39,7 +39,7 @@ Training and validation losses both monotonically decrease up to around epoch 30
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{../fig/gnn/MGNN_6-31G_NO_AUG_07_07_manual_ref_train_val_loss.pdf}
+    \includegraphics[width=0.75\textwidth]{../fig/gnn/MGNN_6-31G_NO_AUG_07_07_manual_ref_train_val_loss.pdf}
     \caption[Initial GNN loss on QM9-isomers]{Initial GNN training / validation loss and corresponding learn rate per epoch on QM9-isomers.}
     \label{fig:initial_train_qm9_isomers}
 \end{figure}
@@ -61,11 +61,11 @@ $\text{GNN}_\text{initial}$ already performed quite well in terms of iterations 
 \end{figure}
 Comparing the training and validation loss between different augmentation factors in \autoref{fig:loss_hyper_qm9_isomers} shows no clear trend regarding the choice of the augmentation factor. While a factor of $2.5$ initially outperforms no augmentation and other factors, they all converge in validation towards the end. 
 Investigating different metrics on the test set in \autoref{tab:qm9_isomers_data_aug_hyperparam} does not yield conclusive insight. Our initial model has the best performance in terms of iterations. However, other models do not fall far behind in that metric.
-\begin{table}[h]
+\begin{table}[H]
     \centering
     \caption[GNN on QM9 isomers with different data augmentation factors]{GNN using different data augmentation factors on QM9 \ch{C7H10O2} isomers test set. Other hyperparameters are set according to \autoref{tab:init_hparams}}
     \label{tab:qm9_isomers_data_aug_hyperparam}
-    \resizebox{\textwidth}{!}{
+    % \resizebox{\textwidth}{!}{
         \begin{tabular}{l
                         S[table-format=2.1(1.1)]
                         S[table-format=-4(2)]
@@ -84,16 +84,16 @@ Investigating different metrics on the test set in \autoref{tab:qm9_isomers_data
             $\text{GNN}_\text{aug. 4.0}$ & 11.6(10)          & -1240(40) & -0.711(12) & 0.210(17)& 0.0080(6)\\
             \bottomrule
         \end{tabular}
-    }
+    % }
 \end{table}
 
 \textbf{Investigate Edge Threshold Distance}\\
 The edge threshold distance has an immediate impact on message passing between nodes. Setting it rather low, in the vicinity of bond-lengths will only connect directly bound neighbours. On the other hand, a higher threshold distance allows the formation of longer-range connections in the GNN. \autoref{tab:qm9_isomers_dist_hyperparam} shows the influence on the metrics for varying threshold distances.  
-\begin{table}[h]
+\begin{table}[H]
     \centering
     \caption[GNN on QM9 isomers with different edge threshold distances]{GNN using different edge threshold distances (numbers denoted in $\unit{\angstrom}$) on QM9 \ch{C7H10O2} isomers test set. Other hyperparameters are set according to \autoref{tab:init_hparams}}
     \label{tab:qm9_isomers_dist_hyperparam}
-    \resizebox{\textwidth}{!}{
+    % \resizebox{\textwidth}{!}{
         \begin{tabular}{l
                         S[table-format=2.1(1.1)]
                         S[table-format=-4(2)]
@@ -113,7 +113,7 @@ The edge threshold distance has an immediate impact on message passing between n
                         $\text{GNN}_\text{dist. thres. 5.0}$ & 11.2(7) & -1230(40) & -0.701(10) & 0.197(14)& \textbf{0.0077(7)}\\
             \bottomrule
         \end{tabular}
-    }
+    % }
 \end{table}
 For a low distance threshold of $\SI{1.5}{\angstrom}$, which is around the bond length of \ch{C}-\ch{C} bonds low iterations performance is attained. Interestingly, the DIIS metric performs best on this variant, contrary to the high RMSE. 
 
@@ -164,7 +164,7 @@ For all training runs up to now, the training loss was evaluated only on the nor
         \end{tabular}
         }
 \end{table}
-The best performing networks using full matrix loss fare a bit worse with regards to iteration count. Notably, $\text{GNN}_\text{f. 0}$ reaches the lowest RMSE of all benchmarked models so far. Correlation between our surrogate metrics and iterations is rather high with a Pearson correlation coefficient of $ß.94$ for DIIS and RMSE and $-0.92$ for $\Delta E_\text{HF}$ for the full matrix loss runs. However, as seen in \autoref{tab:qm9_isomers_dist_hyperparam}, the correlation for $\Delta E_\text{HF}$ and DIIS breaks down for the $\SI{1.5}{\angstrom}$ distance cutoff. Contrary, RMSE is comparably high for this cutoff. \\
+The best performing networks using full matrix loss fare a bit worse with regards to iteration count. Notably, $\text{GNN}_\text{f. 0}$ reaches the lowest RMSE of all benchmarked models so far. Correlation between our surrogate metrics and iterations is rather high with a Pearson correlation coefficient of $0.94$ for DIIS and RMSE and $-0.92$ for $\Delta E_\text{HF}$ for the full matrix loss runs. However, as seen in \autoref{tab:qm9_isomers_dist_hyperparam}, the correlation for $\Delta E_\text{HF}$ and DIIS breaks down for the $\SI{1.5}{\angstrom}$ distance cutoff. Contrary, RMSE is comparably high for this cutoff. \\
 
 
 \subsection{Evaluation \& Conclusion}
@@ -174,7 +174,7 @@ Top performing models defined above are compared to \textsc{PySCF} guessing sche
     \centering
     \caption[Models compared to \textsc{PySCF} and $\overline{P}$ schemes - \ch{C7H10O2} Isomers]{Comparison of different models with \textsc{PySCF} and $\overline{P}$ guessing schemes for QM9 - \ch{C7H10O2} Isomers.}
     \label{tab:qm9_isomers_test_overview}
-    \resizebox{\textwidth}{!}{
+    % \resizebox{\textwidth}{!}{
         \begin{tabular}{l
                         S[table-format=2.1(1.1)]
                         S[table-format=-4(3)]
@@ -193,7 +193,7 @@ Top performing models defined above are compared to \textsc{PySCF} guessing sche
             \texttt{minao}                & \textbf{10.8(6)}& 120(120)    & 0.08(8)   & 0.077(3) & 0.0155(4)\\
             \bottomrule
         \end{tabular}
-    }
+    % }
 \end{table}
 Comparing \textsc{PySCF} and $\overline{P}$ guessing schemes with our GNN approach gives various insights. Most strikingly, it is not necessary to obtain a low error in energy. $\Delta E_\text{HF}$ varies by over 2 magnitudes between the top contenders \texttt{vsap}, \texttt{minao} and $\text{GNN}_\text{initial}$. Furthermore, a low DIIS alone will not necessarily translate into fast convergence of the guessed density. \\
 
@@ -210,7 +210,7 @@ Zero-shot predictions are predictions performed on data which is out of scope of
     \centering
     \caption[GNN zero-shot predictions on QM9 \ch{C7H10O2} isomer MD]{GNN zero-shot predictions on the QM9 \ch{C7H10O2} isomer MD test set. $\text{GNN}_\text{initial}$ and $\text{GNN}_\text{f. 0}$ were trained using the QM9 \ch{C7H10O2} isomer set.}
     \label{tab:qm9_md_zero_shot}
-    \resizebox{\textwidth}{!}{
+    % \resizebox{\textwidth}{!}{
         \begin{tabular}{l
                         S[table-format=2.1(1)]
                         S[table-format=-4(2)]
@@ -224,7 +224,7 @@ Zero-shot predictions are predictions performed on data which is out of scope of
             $\text{GNN}_\text{f. 0}$      & 11.3(8)  & -1250(40) & -0.706(11)       & 0.213(15)& 0.0077(4) \\
             \bottomrule
         \end{tabular}
-    }
+    % }
 \end{table}
 Both models perform surprisingly well on the unseen data. $\text{GNN}_\text{f. 0}$ is on par in both datasets indicating generalization to various perturbations of the geometry. Contrary, $\text{GNN}_\text{initial}$ cannot fully capture structures given by the MD dataset, likely due to it's rather small weight decay and no data augmentation, which makes it prone to overfit on data. 
 
@@ -238,7 +238,7 @@ Metrics for retrained versions of $\text{GNN}_\text{initial}$ and $\text{GNN}_\t
     \centering
     \caption[GNN predictions on QM9 \ch{C7H10O2} isomer MD]{GNN predictions on the QM9 \ch{C7H10O2} isomer MD test set. With MD-retrained\footnote{models marked with a $*$ are architectures from another dataset retrained on the current one} versions of $\text{GNN}_\text{initial}$ and $\text{GNN}_\text{f. 0}$.}
     \label{tab:qm9_md_last_best_retrain}
-    \resizebox{\textwidth}{!}{
+    % \resizebox{\textwidth}{!}{
         \begin{tabular}{l
                         S[table-format=2.1(1.1)]
                         S[table-format=-4(2)]
@@ -252,7 +252,7 @@ Metrics for retrained versions of $\text{GNN}_\text{initial}$ and $\text{GNN}_\t
             $\text{GNN}^{\text{MD*}}_\text{f. 0}$      & 11.1(5)  & -1250(40) & -0.706(10)       & 0.213(14)& 0.0073(5) \\
             \bottomrule
         \end{tabular}
-    }
+    % }
 \end{table}
 Analogous to the hyperparameter optimization in \autoref{tab:qm9_isomers_further_runs} we also use full matrix loss for hyperparameter tuning of the specialized MD models. Results for the 10 best performing networks are shown in \autoref{tab:qm9_md_further_runs}. Comparing \autoref{tab:qm9_isomers_further_runs} and \autoref{tab:qm9_md_further_runs} a heavier regularization can be generally seen in MD models. Higher data augmentation and a slightly stronger weight decay help fitting the varied density given by the perturbed geometries. Furthermore, four out of the top five networks have a batch size of 8 introducing more noise and thus regularization into the update steps. \\
 Moderate dropout rates are generally advisable, but $\text{GNN}^{\text{MD}}_\text{f. 2}$ is a notable exception to this. With a nearly vanishing dropout rate this network takes the lead in terms of self consistency at the expense of RMSE and iterations. 
@@ -309,7 +309,7 @@ Moderate dropout rates are generally advisable, but $\text{GNN}^{\text{MD}}_\tex
     \centering
     \caption[Models compared to \textsc{PySCF} and $\overline{P}$ schemes - \ch{C7H10O2} MD]{Comparison of different models with \textsc{PySCF} and $\overline{P}$ guessing schemes for QM9 - \ch{C7H10O2} MD.}
     \label{tab:qm9_md_test_overview}
-    \resizebox{\textwidth}{!}{
+    % \resizebox{\textwidth}{!}{
         \begin{tabular}{l
                         S[table-format=2.1(1.1)]
                         S[table-format=-4.1(2)]
@@ -329,7 +329,7 @@ Moderate dropout rates are generally advisable, but $\text{GNN}^{\text{MD}}_\tex
                         \texttt{minao}                & \textbf{10.7(5)}  & \textbf{2.96(4)}     & \textbf{0.001673(8)} & 0.077(3) & 0.01538(18) \\
                         \bottomrule
         \end{tabular}
-    }
+    % }
 \end{table}
 We have seen that not every model and hyperparameter configuration translates to good results for the geometry perturbed MD dataset. The best performing model for the isomers $\text{GNN}^{\text{MD*}}_\text{initial}$ takes two to three iterations longer to converge (even after retraining) than the $\text{GNN}^{\text{MD*}}_\text{f. 0}$ model. Therefore, the latter model generalizes better to the MD geometries. This may be attributed at least to some extend to the full matrix loss used during training for this model. \\
 \autoref{tab:qm9_md_test_overview} compares the best performing GNNs with established guesses. Besides the well established \texttt{minao} scheme, the GNNs outperform all other guessing schemes in terms of iterations. 
@@ -341,7 +341,7 @@ So far our experiments and applications focused on structural isomers of one mol
 To evaluate the different guessing types fairly, some effort has to be made to sample the QM9 dataset representatively. Contrary to the previous isomer datasets, we have to ensure a balanced distribution of traits. Concretely, we will stratify the train, validation and test sets by the number of atoms in the molecules. This stratification helps prevent the models from being unduly biased toward any particular molecular size due to an unbalanced train / validation / test split.
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\textwidth]{../fig/application/strat_sample.pdf}
+    \includegraphics[width=0.85\textwidth]{../fig/application/strat_sample.pdf}
     \caption[Stratified sample of QM9 dataset]{Stratified sample of QM9 dataset by number of atoms per molecule for each set.}
     \label{fig:sample_QM9}
 \end{figure}
@@ -381,13 +381,13 @@ Zero-shot predictions like those devised in the previous section aren't possible
 \TODO{Add graphic with distribution of iterations on testset (maybe sort by small - medium - large mols)}
 \subsection{Evalutation \& Conclusion}
 \label{sec:qm9_full_isomers_conclusion}
-
+\TODO{Add results after hyperparameter tuning - tuning + eval done with max-epochs 50}
 \begin{table}[H]
     \centering
     \caption[Models compared to \textsc{PySCF} and $\overline{P}$ schemes - full QM9 dataset]{Comparison of different models employing \textsc{PySCF} and $\overline{P}$ guessing schemes on the full QM9 dataset. Here, $\overline{P}$ is computed block-wise across all molecules by averaging over each \ch{C}, \ch{O}-\ch{H}, \dots block.
 }
     \label{tab:qm9_full_test_overview}
-    \resizebox{\textwidth}{!}{
+    % \resizebox{\textwidth}{!}{
         \begin{tabular}{l
                         S[table-format=2.1(1.1)]
                         S[table-format=-3.4(3)]
@@ -397,7 +397,7 @@ Zero-shot predictions like those devised in the previous section aren't possible
                         \toprule
                         Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / $\unit{\hartree}$} \\
                         \midrule
-                        % &&&&&\\
+                        &&&&&\\
                         $\overline{P}$                & 17(3)            & -800(200)     & -0.52(2)    & 0.11(2) & 0.014(2)  \\
                         \texttt{1-e}                  & 19(3)            & -225(4)    & -0.124(3)    & 0.122(15) & 0.16(12)  \\
                         \texttt{vsap}                 & 14(2)            & -4.8419(4) & -0.002665(19)& 0.024(3)  & 0.0106(14)\\
@@ -405,10 +405,10 @@ Zero-shot predictions like those devised in the previous section aren't possible
                         \texttt{minao}                & \textbf{11.1(11)}& \textbf{2.86(2)} & \textbf{0.001577(0)}& 0.081(12) & 0.017(3)  \\
                         \bottomrule
                     \end{tabular}
-    }
+    % }
 \end{table}
 Another notable finding emerges when contrasting the full dataset results for $\overline{P}$ with those from the isomer only runs. Although the average number of iterations remained essentially unchanged (only their spread increased for the more diverse dataset) the DIIS error in the full dataset case is an order of magnitude higher. This increase is unsurprising given the broader chemical variety and the block-wise averaging inherent to $\overline{P}$. Crucially, it underscores that DIIS error and iteration count are largely uncorrelated.
 
-\section{Lost Tweaks}
-\label{sec:lost_tweaks}
-\TODO{Optionally: Write about stuff that did not really make it }
+% \section{Lost Tweaks}
+% \label{sec:lost_tweaks}
+% \TODO{Optionally: Write about stuff that did not really make it }

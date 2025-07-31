@@ -17,7 +17,7 @@ Subsequently, we shall label self-blocks as node-blocks and homo- / hetero-block
 A schematic depiction for the \ch{H2O} molecule using the 6-31G(2df,p) Basis is given in \autoref{fig:schematic_gnn_blocks}. Due to the symmetry of our input and output matrices, we are only concerned with the upper triangular matrices for self-blocks and the homo- / hetero-blocks in the upper triangular part with respect to the full matrix. For the given example we thus have 351 entries for \ch{O} and 15 for \ch{H} self-blocks. Additionally, the \ch{H} homo-blocks yield 25 entries each and we obtain 130 values per \ch{O}-\ch{H} hetero-block. In total 666 entries suffice to reconstruct the full $36 \times 36$ matrix. 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{../fig/gnn/schematic_blocks.pdf}
+    \includegraphics[width=0.85\textwidth]{../fig/gnn/schematic_blocks.pdf}
     \caption[Matrix block regions of \ch{H2O}]{Converged density of \ch{H2O} with matrix block types indicated.}
     \label{fig:schematic_gnn_blocks}
 \end{figure}
@@ -109,7 +109,7 @@ Comparable to the benchmarks in \autoref{chap:fock_matrix_predictions}, we will 
 For fairness this average is only evaluated on the elements of the respective training set. The performance of $\overline{P}$ guess and various PySCF schemes on the \ch{C7H10O2} isomer test subset is given in \autoref{fig:dummy_iterations_qm9_isomers}. 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{../fig/gnn/0_d_model_iteration_count_bar.pdf}
+    \includegraphics[width=0.75\textwidth]{../fig/gnn/0_d_model_iteration_count_bar.pdf}
     \caption[Iterations till convergence distribution for QM9-isomers]{Iterations till convergence distribution for QM9-isomers for PySCF and $\overline{P}$ guesses.}
     \label{fig:dummy_iterations_qm9_isomers}
 \end{figure}
