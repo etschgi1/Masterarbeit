@@ -63,7 +63,7 @@ The GNN's pipeline is designed to take coordinates from xyz-files, embed them in
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{../fig/gnn/GNN_design.pdf}
-    \caption[GNN pipeline design]{Overview of the GNN pipeline: training data is augmented, converted to graphs, normalized, and passed through a message-passing GNN. Predicted submatrices are denormalized and combined to reconstruct the full density matrix. \ch{H2O} overlap matrix is shown with exemplary embedding vectors for the STO-3G basis set.}
+    \caption[GNN pipeline design]{Overview of the GNN pipeline: training data is augmented, converted to graphs, normalized, and passed through a message passing GNN. Predicted submatrices are denormalized and combined to reconstruct the full density matrix. \ch{H2O} overlap matrix is shown with exemplary embedding vectors for the STO-3G basis set.}
     \label{fig:gnn_pipeline_design}
 \end{figure}
 
@@ -114,4 +114,4 @@ For fairness this average is only evaluated on the elements of the respective tr
     \label{fig:dummy_iterations_qm9_isomers}
 \end{figure}
 
-For further insights regarding convergence behavior using a second order newton solver, refer to \autoref{sec:notes_on_so_newton} 
+For further insights regarding convergence behaviour using a second order newton solver, refer to \autoref{sec:notes_on_so_newton} 

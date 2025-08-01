@@ -4,11 +4,11 @@
 
 \section{Initial guessing methods in \textsc{PySCF} \parencite{ref:pyscf}}
 \label{sec:pyscf_initial_guessing_methods}
-The \textsc{PySCF} package offers a variety of initial guessing methods for the density matrix for SCF calculations as described in the excerpt of the documentation \parencite{ref:pyscf_user_guide} bellow: 
+The \textsc{PySCF} package offers a variety of initial guessing methods for the density matrix for SCF calculations, as described in the excerpt of the documentation \parencite{ref:pyscf_user_guide} below: 
 \begin{itemize}
     \item \texttt{minao} (default): A superposition of atomic densities \parencite{ref:minao_sad1,ref:minao_sad2} technique, in which the guess is obtained by projecting the minimal basis of the first contracted functions in the cc-pVTZ or cc-pVTZ-PP basis set onto the orbital basis set, and then forming the density matrix. The guess orbitals are obtained by diagonalizing the Fock matrix that arises from the spin-restricted guess density.
 
-    \item \texttt{1e}: The one-electron guess, also known as the core guess, obtains the guess orbitals from the diagonalisation of the core Hamiltonian, thereby ignoring all interelectronic interactions and the screening of nuclear charge. The 1e guess should only be used as a last resort, because it is so bad for molecular systems; see \parencite{ref:Lehtola2019}.
+    \item \texttt{1e}: The one-electron guess, also known as the core guess, obtains the guess orbitals from the diagonalization of the core Hamiltonian, thereby ignoring all interelectronic interactions and the screening of nuclear charge. The 1e guess should only be used as a last resort, because it is so bad for molecular systems; see \parencite{ref:Lehtola2019}.
 
     \item \texttt{atom}: Superposition of atomic densities \parencite{ref:minao_sad1,ref:minao_sad2}. Employs spin-restricted atomic HF calculations that use spherically averaged fractional occupations with ground states determined by fully numerical calculations at the complete basis set limit in \parencite{ref:lethola_fully_numerical_atomic_potentials}.
 
@@ -33,11 +33,11 @@ Faster convergence in terms of iterations was claimed by Schütt et al. for thei
     \caption[Macro iterations till convergence distribution for QM9-isomers]{Macro iterations till convergence distribution for QM9-isomers for PySCF, $\overline{P}$ and GNN$_\text{initial}$ guesses. All entries with $\geq 20$ macro iterations are grouped at $20$.}
     \label{fig:so_macro_iterations}
 \end{figure}
-Yet this direct comparison is not a fair one. Contrary to DIIS, which builds the Fock matrix once per iteration, the Newton-solver repeatedly rebuilds the Fock matrix in it's inner loop. Summing all Fock matrix builds one obtains different behavior depicted in \autoref{fig:so_fock_build_iterations}.  
+Yet, this direct comparison is not a fair one. Contrary to DIIS, which builds the Fock matrix once per iteration, the Newton-solver repeatedly rebuilds the Fock matrix in its inner loop. Summing all Fock matrix builds, one obtains different behaviour depicted in \autoref{fig:so_fock_build_iterations}.  
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{../fig/gnn/SO_0D_GNN_model_fock_build_count_bar.pdf}
-    \caption[Fock matrix build count till convergence QM9-isomers]{Fock matrix build count till convergence for QM9-isomers for PySCF, $\overline{P}$ and GNN$_\text{initial}$ guesses. All entries with $\geq 40$ fock builds are grouped at $40$.}
+    \caption[Fock matrix build count till convergence QM9-isomers]{Fock matrix build count till convergence for QM9-isomers for PySCF, $\overline{P}$ and GNN$_\text{initial}$ guesses. All entries with $\geq 40$ Fock builds are grouped at $40$.}
     \label{fig:so_fock_build_iterations}
 \end{figure}
 Given this fact, one needs to be cautious in making prediction regarding wall clock time of simulations from 'iteration` counts, especially for comparisons of different algorithms.
