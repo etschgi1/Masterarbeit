@@ -37,7 +37,7 @@ As explained in \autoref{subsec:background_hf_computational}, the density matrix
     \caption[Schematic overview data flow]{Schematic overview of the data flow (using \ch{CH4}): overlap matrix to Fock matrix via ML model prediction, and construction of the density matrix from the Fock matrix.}
     \label{fig:method_data_flow}
 \end{figure}
-Effectively, one performs part of the SCF cycle here to obtain the density matrix, which ideally should be close to the final density matrix. This step takes $\bigO{N^3}$ time, which is asymptotically faster than $\bigO{N^4}$ time of the SCF cycles. 
+Effectively, one performs part of the SCF cycle here to obtain the density matrix, which ideally should be close to the final density matrix. This step takes $\bigO{K^3}$ time, which is asymptotically faster than $\bigO{K^4}$ time of the SCF cycles. 
 
 The schematic workflow for the generation of a density matrix from the overlap matrix is shown in \autoref{fig:method_data_flow}. Overlap and density matrices appear visually similar, which might lead to the conclusion that predicting the density matrix directly from the overlap matrix is easier. However, learning the Fock matrix tends to involve fewer strict physical constraints. A Fock matrix primarily needs to be Hermitian, while a density matrix must be strictly positive semidefinite by construction, as well as normalized to the correct number of electrons. That makes direct density matrix learning more challenging, whereas learning the Fock matrix and then obtaining the density through diagonalization could yield better results. We shall investigate this hypothesis in the following experiments.\\
 
