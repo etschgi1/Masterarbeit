@@ -121,7 +121,7 @@ For a low distance threshold of $\SI{1.5}{\angstrom}$, which is around the bond 
 For all training runs up to now, the training loss was evaluated only on the normalized sub matrices included in training. Practically this means that the network has generally lower loss for low cutoff distances because fewer interaction blocks are included in the loss calculation. We investigate, if changing the loss to a full matrix loss will impact GNN prediction performance. \autoref{tab:qm9_isomers_further_runs} shows 10 different configurations evaluated on the test set. 
 \begin{table}[H]
     \centering
-    \caption[GNN on QM9 isomers training with full matrix loss]{GNN on QM9 isomers using full matrix loss to train. Metrics on test set and corresponding hyperparameter settings for 5 best performing networks (0-4) from search and 5 sampled ones (5-9) from same hyperparameter search.}
+    \caption[GNN on QM9 isomers training with full matrix loss]{GNN on QM9 isomers using full matrix loss and a maximum of 30 epochs to train. Metrics on test set and corresponding hyperparameter settings for 5 best performing networks (0-4) from search and 5 sampled ones (5-9) from same hyperparameter search.}
     \label{tab:qm9_isomers_further_runs} %!TODO rerun with all models if there is time!
     \resizebox{\textwidth}{!}{
         \begin{tabular}{l
@@ -258,7 +258,7 @@ Analogous to the hyperparameter optimization in \autoref{tab:qm9_isomers_further
 Moderate dropout rates are generally advisable, but $\text{GNN}^{\text{MD}}_\text{f. 2}$ is a notable exception to this. With a nearly vanishing dropout rate this network takes the lead in terms of self consistency at the expense of RMSE and iterations. 
 \begin{table}[H]
     \centering
-    \caption[GNN on QM9 isomers MD training with full matrix loss]{GNN on QM9 isomers MD using full matrix loss to train. Metrics on test set and corresponding hyperparameter settings for 10 best performing networks in terms of iterations.}
+    \caption[GNN on QM9 isomers MD training with full matrix loss]{GNN on QM9 isomers MD using full matrix loss and a maximum of 30 epochs to train. Metrics on test set and corresponding hyperparameter settings for 10 best performing networks in terms of iterations.}
     \label{tab:qm9_md_further_runs} %!TODO rerun with all models if there is time!
     \resizebox{\textwidth}{!}{
         \begin{tabular}{l
@@ -350,20 +350,31 @@ We sample 500 molecules from the QM9 set in a stratified manner and additionally
 Zero-shot predictions like those devised in the previous section aren't possible on the full dataset due to missing encoders/decoders for \ch{N}, \ch{F} and their respective interaction blocks. Therefore, we'll proceed directly to hyperparameter tuning. 
 \subsection{Hyperparameter tuning}
 \label{sec:qm9_full_isomers_hyp_tuning}
+Network hyperparameter tuning was carried out in the same manner as above, except that the maximum number of training epochs was increased to 50 to accommodate the more diverse dataset. \autoref{tab:qm9_full_further_runs} shows the results for the 10 best performing models.
 \begin{table}[H]
     \centering
-    \caption[GNN on full QM9 dataset sample with full matrix loss]{GNN on full QM9 dataset sample using full matrix loss to train. Metrics on test set and corresponding hyperparameter settings for 10 best performing networks in terms of iterations.}
+    \caption[GNN on full QM9 dataset sample with full matrix loss]{GNN on full QM9 dataset sample using full matrix loss and a maximum of 50 epochs to train. Metrics on test set and corresponding hyperparameter settings for 10 best performing networks in terms of iterations.}
     \label{tab:qm9_full_further_runs} 
     \resizebox{\textwidth}{!}{
         \begin{tabular}{l
                         S[table-format=2.1(2)]
-                        S[table-format=-4(2)]
+                        S[table-format=-4(3)]
                         S[table-format=-1.3(2)]
                         S[table-format=1.3(1)]
                         S[table-format=1.4(1)]}
             \toprule
             Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / $\unit{\hartree}$} \\
-            \midrule
+            \midrule %Data from server run!
+            $\text{GNN}^{\text{Full}}_\text{f. 0}$ & \textbf{11.9(21)} & -1070(300) & -0.680(0.04) & 0.20(0.03) & 0.009(0.003) \\ %!TODO not everything rounded good :) 
+            $\text{GNN}^{\text{Full}}_\text{f. 1}$ & 12.0(1.7) & -1060(300) & -0.680(0.04) & 0.20(0.03) & \textbf{0.009(2)} \\
+            $\text{GNN}^{\text{Full}}_\text{f. 2}$ & 12.0(1.8) & \textbf{-1050(300)} & \textbf{-0.670(4)} & \textbf{0.19(3)} & 0.009(0.003) \\
+            $\text{GNN}^{\text{Full}}_\text{f. 3}$ & 12.0(1.9) & -1060(300) & -0.680(0.03) & 0.20(0.03) & 0.009(0.003) \\
+            $\text{GNN}^{\text{Full}}_\text{f. 4}$ & 12.0(1.7) & -1060(300) & -0.680(0.04) & 0.20(0.03) & 0.009(0.003) \\
+            $\text{GNN}^{\text{Full}}_\text{f. 5}$ & 12.0(1.8) & -1080(300) & -0.680(0.04) & 0.21(0.08) & 0.009(0.003) \\
+            $\text{GNN}^{\text{Full}}_\text{f. 6}$ & 12.0(2.0) & -1080(300) & -0.690(0.04) & 0.20(0.03) & 0.009(0.003) \\
+            $\text{GNN}^{\text{Full}}_\text{f. 7}$ & 12.1(1.6) & -1080(300) & -0.690(0.04) & 0.20(0.03) & 0.009(0.003) \\
+            $\text{GNN}^{\text{Full}}_\text{f. 8}$ & 12.1(2.1) & \textbf{-1050(300)} & \textbf{-0.670(4)} & \textbf{0.19(3)} & 0.009(0.003) \\
+            $\text{GNN}^{\text{Full}}_\text{f. 9}$ & 12.1(1.8) & -1090(300) & -0.690(0.04) & 0.21(0.03) & 0.009(0.003) \\
             \bottomrule
         \end{tabular}
     }
@@ -372,19 +383,75 @@ Zero-shot predictions like those devised in the previous section aren't possible
         \toprule
         Parameters & $\text{GNN}^{\text{Full}}_\text{f. 0}$ & $\text{GNN}^{\text{Full}}_\text{f. 1}$ & $\text{GNN}^{\text{Full}}_\text{f. 2}$ & $\text{GNN}^{\text{Full}}_\text{f. 3}$ & $\text{GNN}^{\text{Full}}_\text{f. 4}$ & $\text{GNN}^{\text{Full}}_\text{f. 5}$ & $\text{GNN}^{\text{Full}}_\text{f. 6}$ & $\text{GNN}^{\text{Full}}_\text{f. 7}$ & $\text{GNN}^{\text{Full}}_\text{f. 8}$ & $\text{GNN}^{\text{Full}}_\text{f. 9}$ \\
         \midrule
-
+        Hidden Dimension & 128 & 256 & 256 & 256 & 512 & 128 & 512 & 512 & 512 & 128 \\
+        Batch Size & 8 & 8 & 8 & 8 & 8 & 8 & 8 & 16 & 8 & 8 \\
+        Data aug. & 4.00 & 1.00 & 1.00 & 1.00 & 1.00 & 2.00 & 4.00 & 3.00 & 1.00 & 2.00 \\
+        Edge thres. & 3.40 & 2.58 & 3.98 & 3.21 & 3.29 & 2.85 & 3.27 & 2.72 & 3.44 & 2.30 \\
+        Message p. steps & 4 & 5 & 3 & 2 & 4 & 2 & 3 & 3 & 2 & 4 \\
+        Message Net Dropout & 0.09 & 0.16 & 0.25 & 0.21 & 0.04 & 0.11 & 0.25 & 0.04 & 0.18 & 0.19 \\
+        Message Net Layers & 3 & 3 & 3 & 3 & 3 & 4 & 3 & 2 & 3 & 2 \\
+        Learn Rate & 6.90e-04 & 9.31e-04 & 1.61e-03 & 2.75e-04 & 1.51e-04 & 8.03e-04 & 1.26e-04 & 5.85e-04 & 1.09e-03 & 6.50e-04 \\
+        Weight Decay & 7.15e-05 & 5.46e-05 & 3.58e-05 & 4.69e-05 & 3.99e-04 & 6.06e-04 & 2.56e-04 & 1.45e-04 & 1.84e-05 & 1.74e-05 \\
         \bottomrule
         \end{tabular}
         }
 \end{table}
+Both the mean iteration count and its variability increased by about one cycle compared to the best-performing isomer models. Further analysis of iteration performance by molecule size revealed no clear correlation between atom count and the number of iterations to converge.
+% \begin{table}[H]
+%     \centering
+%     \caption[GNN on full QM9 dataset sample with full matrix loss]{GNN on full QM9 dataset sample using full matrix loss to train. Metrics on test set and corresponding hyperparameter settings for 10 best performing networks in terms of iterations.}
+%     \label{tab:qm9_full_further_runs} 
+%     \resizebox{\textwidth}{!}{
+%         \begin{tabular}{l
+%                         S[table-format=2.1(2)]
+%                         S[table-format=-4(2)]
+%                         S[table-format=-1.3(2)]
+%                         S[table-format=1.3(1)]
+%                         S[table-format=1.4(1)]}
+%             \toprule
+%             Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / $\unit{\hartree}$} \\
+%             \midrule %Data from pc run!
+% 0 & 12.0(2.1) & -1083.6(274.8) & -0.690(0.039) & 0.204(0.031) & 0.0085(0.0026) \\
+% 1 & 12.0(2.0) & -1058.4(264.2) & -0.675(0.035) & 0.196(0.030) & 0.0090(0.0024) \\
+% 2 & 12.1(1.8) & -1081.6(274.1) & -0.688(0.040) & 0.204(0.028) & 0.0091(0.0027) \\
+% 3 & 12.1(2.2) & -1076.6(274.5) & -0.685(0.040) & 0.200(0.026) & 0.0087(0.0027) \\
+% 4 & 12.2(1.7) & -1086.2(271.7) & -0.692(0.036) & 0.207(0.030) & 0.0094(0.0028) \\
+% 5 & 12.2(2.4) & -1057.7(265.8) & -0.674(0.036) & 0.197(0.028) & 0.0094(0.0029) \\
+% 6 & 12.2(2.1) & -1068.8(269.3) & -0.681(0.040) & 0.202(0.032) & 0.0089(0.0029) \\
+% 7 & 12.3(2.2) & -1068.2(273.0) & -0.680(0.042) & 0.202(0.027) & 0.0098(0.0033) \\
+% 8 & 12.3(2.0) & -1079.4(271.8) & -0.687(0.037) & 0.204(0.029) & 0.0095(0.0029) \\
+% 9 & 12.3(2.3) & -1078.4(275.0) & -0.686(0.041) & 0.205(0.027) & 0.0093(0.0032) \\
+%             \bottomrule
+%         \end{tabular}
+%     }
+%         \resizebox{\textwidth}{!}{
+%         \begin{tabular}{lrrrrrrrrrr}
+%         \toprule
+%         Parameters & $\text{GNN}^{\text{Full}}_\text{f. 0}$ & $\text{GNN}^{\text{Full}}_\text{f. 1}$ & $\text{GNN}^{\text{Full}}_\text{f. 2}$ & $\text{GNN}^{\text{Full}}_\text{f. 3}$ & $\text{GNN}^{\text{Full}}_\text{f. 4}$ & $\text{GNN}^{\text{Full}}_\text{f. 5}$ & $\text{GNN}^{\text{Full}}_\text{f. 6}$ & $\text{GNN}^{\text{Full}}_\text{f. 7}$ & $\text{GNN}^{\text{Full}}_\text{f. 8}$ & $\text{GNN}^{\text{Full}}_\text{f. 9}$ \\
+%         \midrule
+% Hidden Dimension & 128 & 256 & 512 & 128 & 128 & 256 & 128 & 512 & 256 & 512 \\
+% Batch Size & 8 & 8 & 16 & 8 & 16 & 8 & 8 & 32 & 32 & 16 \\
+% Data aug. & 4.00 & 1.00 & 3.00 & 2.00 & 2.00 & 1.00 & 4.00 & 4.00 & 3.00 & 3.00 \\
+% Edge thres. & 2.96 & 2.58 & 3.54 & 2.85 & 3.57 & 3.21 & 3.27 & 3.24 & 2.67 & 2.72 \\
+% Message p. steps & 5 & 5 & 4 & 2 & 3 & 2 & 3 & 2 & 2 & 3 \\
+% Message Net Dropout & 0.08 & 0.16 & 0.23 & 0.11 & 0.27 & 0.21 & 0.16 & 0.12 & 0.20 & 0.04 \\
+% Message Net Layers & 3 & 3 & 2 & 4 & 3 & 3 & 2 & 4 & 2 & 2 \\
+% Learn Rate & 5.62e-04 & 9.31e-04 & 3.84e-04 & 8.03e-04 & 9.04e-04 & 2.75e-04 & 6.98e-04 & 3.99e-04 & 2.42e-03 & 5.85e-04 \\
+% Weight Decay & 5.61e-05 & 5.46e-05 & 9.63e-05 & 6.06e-04 & 2.13e-05 & 4.69e-05 & 8.74e-04 & 2.38e-05 & 4.19e-05 & 1.45e-04 \\
+%         \bottomrule
+%         \end{tabular}
+%         }
+% \end{table}
 
-\TODO{Add graphic with distribution of iterations on testset (maybe sort by small - medium - large mols)}
+
+% \TODO{Add ... graphic with distribution of iterations on testset (maybe sort by small - medium - large mols)} -> no clear trend in iterations and number of atoms, so not worth it. 
 \subsection{Evalutation \& Conclusion}
 \label{sec:qm9_full_isomers_conclusion}
-\TODO{Add results after hyperparameter tuning - tuning + eval done with max-epochs 50}
+Using our stratified QM9 sample, we show that our GNN implementation trained on just 400 molecules achieves lower SCF iteration counts than every guessing scheme except \text{minao}. The greater chemical diversity in this subset leads to a uniformly higher standard deviation in cycle counts across all methods. \autoref{tab:qm9_full_test_overview} compares our top-performing GNN against the established guessing schemes.
+
 \begin{table}[H]
     \centering
-    \caption[Models compared to \textsc{PySCF} and $\overline{P}$ schemes - full QM9 dataset]{Comparison of different models employing \textsc{PySCF} and $\overline{P}$ guessing schemes on the full QM9 dataset. Here, $\overline{P}$ is computed block-wise across all molecules by averaging over each \ch{C}, \ch{O}-\ch{H}, \dots block.
+    \caption[Models compared to \textsc{PySCF} and $\overline{P}$ schemes - full QM9 dataset]{Comparison of GNN model with calculations employing \textsc{PySCF} and $\overline{P}$ guessing schemes on the full QM9 dataset. Here, $\overline{P}$ is computed block-wise across all molecules by averaging over each \ch{C}, \ch{O}-\ch{H}, \dots block.
 }
     \label{tab:qm9_full_test_overview}
     % \resizebox{\textwidth}{!}{
@@ -397,17 +464,17 @@ Zero-shot predictions like those devised in the previous section aren't possible
                         \toprule
                         Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / $\unit{\hartree}$} \\
                         \midrule
-                        &&&&&\\
-                        $\overline{P}$                & 17(3)            & -800(200)     & -0.52(2)    & 0.11(2) & 0.014(2)  \\
+                        $\text{GNN}^{\text{Full}}_\text{f. 0}$ & 11.9(2.1)& -1070(300)& -0.680(0.04) & 0.20(0.03)& \textbf{0.009(3)} \\
+                        $\overline{P}$                & 17(3)            & -800(200)  & -0.52(2)     & 0.11(2)   & 0.014(2)  \\
                         \texttt{1-e}                  & 19(3)            & -225(4)    & -0.124(3)    & 0.122(15) & 0.16(12)  \\
-                        \texttt{vsap}                 & 14(2)            & -4.8419(4) & -0.002665(19)& 0.024(3)  & 0.0106(14)\\
+                        \texttt{vsap}                 & 14(2)            & -4.8419(4) & -0.002665(19)& \textbf{0.024(3)}  & 0.0106(14)\\
                         \texttt{atom}                 & 16(2)            & -14.0(9)   & -0.0077(5)   & 0.039(7)  & 0.015(2)  \\
                         \texttt{minao}                & \textbf{11.1(11)}& \textbf{2.86(2)} & \textbf{0.001577(0)}& 0.081(12) & 0.017(3)  \\
                         \bottomrule
                     \end{tabular}
     % }
 \end{table}
-Another notable finding emerges when contrasting the full dataset results for $\overline{P}$ with those from the isomer only runs. Although the average number of iterations remained essentially unchanged (only their spread increased for the more diverse dataset) the DIIS error in the full dataset case is an order of magnitude higher. This increase is unsurprising given the broader chemical variety and the block-wise averaging inherent to $\overline{P}$. Crucially, it underscores that DIIS error and iteration count are largely uncorrelated.
+Another notable finding emerges when contrasting the full dataset results for $\overline{P}$ with those from the isomer only runs. Although the average number of iterations remained essentially unchanged (only their spread increased for the more diverse dataset), the DIIS error in the full dataset case is an order of magnitude higher. This increase isn't surprising given the broader chemical variety and the block-wise averaging inherent to $\overline{P}$. Crucially, it once again underscores that DIIS error and iteration count are largely uncorrelated.
 
 % \section{Lost Tweaks}
 % \label{sec:lost_tweaks}
