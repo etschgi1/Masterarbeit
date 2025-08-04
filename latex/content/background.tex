@@ -444,6 +444,16 @@ An abstract representation of a MPNN is depicted in \autoref{fig:gnn_background}
 For every round, all nodes send a message containing their feature vector (or a derived representation) to all their neighbours. The node $n_1$ in \autoref{fig:gnn_background} sends its colour to its neighbours $n_2$ and $n_4$. After all messages have been sent, every node aggregates the received message via a permutation invariant function. In the example, this is simply the average of the received colours. Finally, a learned update function changes the node's feature vector based on the aggregated message and the current feature vector. After several rounds of message passing, which allow information flow between nodes not directly connected to each other, the final graph representation can be used to predict various properties.\\
 Decoders essentially invert the encoder's process to extract either node-level features (e.g. atomic energy, partial charge or node colour in \autoref{fig:gnn_background}) or graph-level properties such as total energy, polarizability or electric dipole moment.\\
 
+\subsection{Network Training and Hyperparameter Tuning}
+\label{subsec:background_ml_training}
+\TODO{Write short section about training, hyperparameter tuning.}
+To include: 
+\begin{enumerate}
+    \item Bayses Search
+    \item Hyperband Tuner
+    \item General training process
+\end{enumerate}
+
 \section{QM9 dataset}
 \label{sec:dataset}
 Dataset selection for training is dominated by two practical considerations:
