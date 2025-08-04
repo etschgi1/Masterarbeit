@@ -1,0 +1,7 @@
+torch
+torch-geometric
+numpy
+scipy
+torch_scatter
+tqdm
+pyscf

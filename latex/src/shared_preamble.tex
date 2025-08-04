@@ -58,6 +58,9 @@
 
 % text
 \usepackage[locale=DE, uncertainty-mode=separate]{siunitx}  % SI units, German formatting - \pm stays \pm instead of ..(.)
+% custom units:
+\DeclareSIUnit{\hartree}{\ensuremath{E_{\mathrm{h}}}}
+
 \let\sqty\qty  % physics overrides \qty of siunitx, therefore make it available as \sqty
 \usepackage{physics}  % macros for easier typesetting of physical formulas
 \usepackage{icomma}  % no space after commas instead of English points) in decimal values
@@ -78,7 +81,7 @@
 
 
 % literacy
-\usepackage[sorting=none, giveninits=true]{biblatex}  % defaults: backend=Biber, style=numeric
+\usepackage[sorting=none, giveninits=true, backend=biber]{biblatex}  % defaults: backend=Biber, style=numeric
 % bibliography styles: https://www.overleaf.com/learn/latex/Biblatex_bibliography_styles
 % citation styles: https://www.overleaf.com/learn/latex/Biblatex_citation_styles
 \usepackage{csquotes}  % better quotation - should also be used in combination with package babel (warning)
@@ -101,10 +104,10 @@
 % KOMA setups
 % header and footer
 \pagestyle{scrheadings}  % KOMA style
-\clearpairofpagestyles  % reset
-\setkomafont{pageheadfoot}{\normalfont}  % standard font in header and footer
-\setlength{\headheight}{27.2pt}  % warning
-\cfoot{\pagemark{} / \pageref*{LastPage}}  % center foot - *: ref but no hyperlink
+% \clearpairofpagestyles  % reset
+% \setkomafont{pageheadfoot}{\normalfont}  % standard font in header and footer
+% \setlength{\headheight}{27.2pt}  % warning
+% \cfoot{\pagemark{}}  % center foot - *: ref but no hyperlink
 % {}: empty statement
 % \ : protected space
 % \,: small space
@@ -145,7 +148,10 @@
 % custom siunitx units
 \DeclareSIUnit{\dig}{dig}  % digits for uncertainty of electronical measurement devices
 \DeclareSIUnit{\px}{px}  % pixels
-\sisetup{table-align-uncertainty=true}
+\sisetup{table-align-uncertainty=true,
+        separate-uncertainty = false,
+        multi-part-units = single,
+        output-decimal-marker={.},}
 
 
 % listings

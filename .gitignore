@@ -3,11 +3,25 @@
 *.xyz
 *._xyz
 *.xyz:Zone.Identifier
-*pkl
+*.pkl
 *tar.bz2
 *.tar.gz
 *.tar.xz
 *.tar
+*.pyc
+*.bcf
+*.keras
 
 /**/*.out
 *scf_guess_tools/**
+**/M-OFDFT/**
+
+/**/logs/
+/**/data/
+/**/models/KRR/
+*pth
+/**/keras_tuning/
+/**/tune_logs/
+/**/qm9_isomeres/
+/**/qm9_isomeres_md/
+/**/qm9/

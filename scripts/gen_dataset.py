@@ -10,13 +10,12 @@ os.environ["NUMEXPR_MAX_THREADS"] = str(slurm_threads)  # NumPy multi-threading
 
 from scf_guess_tools import Backend
 from to_cache import density_fock_overlap
-import psi4, pyscf
+import pyscf
 pyscf.lib.num_threads(slurm_threads)
-psi4.set_num_threads(slurm_threads)
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-XYZ_INPUT_FOLDER = "../datasets/QM9/xyz_c7h10o2"
+XYZ_INPUT_FOLDER = "../datasets/QM9/xyz_c7h10o2_sorted"
 OUTPUT_ROOT = "../datasets/QM9/out"
 
 class GenDataset: 
@@ -146,7 +145,7 @@ class GenDataset:
 
 if __name__ == "__main__": 
     import time
-    gds_options = {"pyscf_guess_type": "minao", "output_folder_name": "c7h10o2_b3lypg_6-31G(2df,p)", "nr_threads": 32, "method":"dft", "functional":"b3lypg"} 
+    gds_options = {"pyscf_guess_type": "minao", "output_folder_name": "c7h10o2_b3lypg_6-31G(2df,p)_sorted", "nr_threads": 32, "method":"dft", "functional":"b3lypg"} 
     basis_path = "6-31g_2df_p_custom_nwchem.gbs"
     gds = GenDataset(Backend.PY, XYZ_INPUT_FOLDER, OUTPUT_ROOT, basis_path, gds_options)
     start_ = time.time()

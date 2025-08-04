@@ -1,0 +1,11 @@
+Metadata-Version: 2.2
+Name: mgnn
+Version: 1.0
+Requires-Dist: torch
+Requires-Dist: torch-geometric
+Requires-Dist: numpy
+Requires-Dist: scipy
+Requires-Dist: torch_scatter
+Requires-Dist: tqdm
+Requires-Dist: pyscf
+Dynamic: requires-dist

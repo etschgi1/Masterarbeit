@@ -1,27 +1,36 @@
 % !TEX Program = lualatex
 \documentclass[11pt,
-  oneside,openany,    % for one-sided printing and screens
-  %parskip=half,      % enable if you want paragraphs separated by vertical spacing instead of indents
-  %draft              % enable to compile faster and test layout
+twoside,openright,    % for one-sided printing and screens
+DIV=15,            % set the main text width
+BCOR=8mm,         % binding correction
+%parskip=half,      % enable if you want paragraphs separated by vertical spacing instead of indents
+%draft              % enable to compile faster and test layout
 ]{scrreprt}
+%\documentclass[report,mono,twoside,openright]{tugrazbooklet}
+%\documentclass[a4paper]{book}
 
-% Settings
+\usepackage[msc,nawi]{tugrazthesis}
+% options:
+%   - msc (for Master's thesis/Masterarbeit) OR
+%     diplom (for Diploma thesis/Diplomarbeit) OR
+%     phd (for Doctoral thesis/Dissertation)
+%   - nawi (for NAWI curricula)
+%   - individual (for Individuelles Masterstudium)
+
+
+
+
+% Example packages for the dummy content
 %info defined in shared preamble
 \usepackage[ngerman,english]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{geometry}
 \usepackage{microtype}
 \usepackage[all]{nowidow}
-\usepackage[msc,             % for Bachelor's Thesis titlepage
-            claim,iaik]{iaikthesis}
-\addtokomafont{disposition}{\rmfamily}
-\academicdegree{Dipl. Ing.}
-
 
 %--- PREAMBLE ------------------------------------------------------------------
-\input{shared_preamble.tex}
-
 % <INSERT YOUR CUSTOM MACROS AND PACKAGES HERE>
+\input{shared_preamble.tex}
 
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{\baselineskip}
@@ -34,11 +43,14 @@
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{datetime}
-\usepackage{tocloft}
 \usepackage{tikz}
+\usetikzlibrary{positioning, arrows.meta, shapes.multipart}
 \usepackage[absolute,overlay]{textpos} % Enable absolute positioning\usepackage{datetime}
+\usepackage{tocloft}
+\usepackage{amssymb}
 
 \usetikzlibrary{arrows}
+\usetikzlibrary{positioning}
 
 \providecommand{\algorithmautorefname}{Algorithm}
 \renewcommand{\algorithmicrequire}{\textbf{Input:}}
@@ -49,6 +61,18 @@
 \newcommand{\TODO}[1]{\textcolor{red}{\textbf{TODO #1}}}
 
 \begin{document}
+
+%- Title ---
+\def\mythesistitle{Machine Learning-Driven Initial Guess Prediction for SCF Procedures}
+\def\mykeywords{computational physics, computational chemistry, machine learning, self-consistent field, initial guess prediction, GNN, graph neural network, density functional theory, DFT, quantum chemistry, QM9 dataset, electronic structure simulation, message passing neural network, message passing}
+\def\mykeywordsabstract{computational quantum chemistry $\cdot$ density functional theory $\cdot$ graph neural network $\cdot$ initial guess prediction $\cdot$ machine learning $\cdot$ self-consistent field}
+\hypersetup{
+  pdfauthor={Wachmann Elias},
+  pdftitle={\mythesistitle},
+  pdfkeywords={\mykeywords},
+  pdfsubject={Master's Thesis},
+  }
+
 % Autoref with cap letters
 \renewcommand{\subsectionautorefname}{Subsection}
 \renewcommand{\sectionautorefname}{Section}
@@ -56,65 +80,78 @@
 \renewcommand{\figureautorefname}{Figure}
 \renewcommand{\tableautorefname}{Table}
 \renewcommand{\algorithmiccomment}[1]{\hspace{-1cm}\hfill$\triangleright$ \texttt{#1}}
+
+
+
 \newdateformat{mydate}{\THEDAY\ \monthname[\THEMONTH]\ \THEYEAR}
 
-%--- INSERT INFORMATION FOR TITLEPAGE ------------------------------------------
+%--- INFORMATION FOR TITLEPAGE -------------------------------------------------
 
-% Your name + previous academic degrees:
-\thesisauthor{Elias Wachmann, BSc. BSc.}
+% Your name including previous academic degrees (optional argument sets a different \author{}):
+\thesisauthor[Elias Wachmann]{Elias Wachmann, BSc., BSc.}
 
-% Title of your thesis:
-\thesistitle{\TODO{}}
+% Title of your thesis (optional argument sets a different \title{}):
+\thesistitle{\mythesistitle}
 
-% Date of completion:
-\thesisdate{\monthname\ \the\year}
+% Date of completion (optional argument sets a different \date{})
+\thesisdate[ ]{\monthname\ \the\year}
 
-% Supervisor:
-\supervisortitle{Supervisors} % or Supervisor
+% Supervisor headline (select male/female/plural version)
+\supervisortitle{\germanenglish{Betreuerin/Betreuer}{Supervisors}}
+
+% Supervisor info
 \supervisor{%
-Ass.Prof. Mag.phil. Dipl.-Ing. Dr.phil. Dr. techn. Hauser W. Andreas
+  Ass.Prof. Mag.phil. Dipl.-Ing. Dr.phil. Dr. techn. Andreas W. Hauser
 
-Dr.techn. Ralf Meyer, BSc MSc
+  Dr.techn. Ralf Meyer, BSc MSc
 
-\medskip
-Institute of Experimental Physics\\
-Graz University of Technology
-
+  \medskip
+  Institute of Experimental Physics\\
 }
 
-% Name of your degree programme according to your curriculum
-\curriculum{Technical Physics}
+% Academic degree achieved with this thesis, according to your curriculum (check curriculum and select male/female version):
+\academicdegree{Diplom-Ingenieur}
+% 
+%\academicdegree{Master of Science} % msc
+%\academicdegree{Diplom-Ingenieur/Diplom-Ingenieurin} % msc
+%\academicdegree{Magister/Magistra der Naturwissenschaften} % diplom
+%\academicdegree{Doktor/Doktorin der technischen Wissenschaften} % phd
+%\academicdegree{Doktor/Doktorin der Naturwissenschaften} % phd
+%\academicdegree{Master of ???} % individual
+
+% Name of your degree programme according to your curriculum (only for msc/diplom; status of the list: academic year 2019/20)
+\curriculum{Technical Physics } % 486
+
+\pagenumbering{roman}
+\printthesistitle
 
 
-% --- Meta data ----------------------------------------------------------------
-%! TODO
-\hypersetup{
-  pdfauthor={Wachmann Elias},
-  pdftitle={TODO},
-  pdfkeywords={computational physics, TODO}
-  }
-  
   %--- FRONT MATTER --------------------------------------------------------------
-  
-  \printthesistitle
-  
-  %--- FRONT MATTER --------------------------------------------------------------
+  \input{../content/declaration}
   \input{../content/abstract}
+  \input{../content/kurzfassung}
   \input{../content/acknowledgements}
 \clearpage
+
+% Roman page numbers for front matter
+
 \setlength{\cftbeforesecskip}{3pt} % adjust as needed
 \setlength\cftparskip{-2pt} % adjust as needed
+
 \tableofcontents
-\listoffigures
-\listoftables
+
+% Switch to arabic page numbers, starting from 1
+\clearpage
+\pagenumbering{arabic}
+
+
 \input{../content/introduction}
 \input{../content/background}
-\input{../content/methods}
-\input{../content/results}
-\input{../content/discussion}
+\input{../content/fock_prediction}
+\input{../content/GNN}
+\input{../content/GNN_application}
 \input{../content/conclusion}
-\input{../content/declaration}
-
+\input{../content/appendix.tex}
 
 %--- INDEX and BIBLIOGRAPHY ----------------------------------------------------
 
@@ -122,7 +159,11 @@ Graz University of Technology
 %\printnoidxglossary[title={Notation}]
 %\printnoidxglossary[type=acronym]
 \newpage
+\listoffigures
+\listoftables
+\newpage
 % Print bibliography and include it in the table of contents:
 \printbibliography[heading=bibintoc]
+
 
 \end{document}

@@ -34,6 +34,8 @@ Thumbs.db
 *.dvi
 *.ps
 
+!fig/**/*.pdf
+
 # BibTeX and bibliography-related files
 *.bbl
 *.blg
