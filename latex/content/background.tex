@@ -296,22 +296,22 @@ DFT accuracy is limited by the choice of functional; standard Kohn-Sham DFT is b
 
 \section{Machine Learning}
 \label{sec:background_ml}
-Machine Learning (ML) constitutes a rich subfield of computer science that aims to develop algorithms capable of inferring patterns from data and making predictions without being explicitly programmed with deterministic instructions. \\
-The history of ML closely coincides with the development of computers. In the 1950s Arthur Lee Samuel coined the term ``machine learning'' while programming a computer to play checkers, eventually beating the 4th ranked player in the US at the time. \parencite{ref:knuth1989comments} Since it's humble beginnings, ML has influenced many scientific fields as well as everyday life.\\
+Machine Learning (ML) constitutes a rich subfield of computer science developing algorithms capable of inferring patterns from data and making predictions without being explicitly programmed with deterministic instructions. \\
+The history of ML closely coincides with the development of computers. In the 1950s, Arthur Lee Samuel coined the term ``machine learning'' while programming a computer to play checkers, eventually beating the 4th ranked player in the US at the time. \parencite{ref:knuth1989comments} Since it's humble beginnings, ML has influenced many scientific fields as well as everyday life.\\
 
-We will give an overview of the most important concepts in ML with special emphasis on techniques used in this thesis. The books written by Bishop \parencite{ref:bishop2006pattern} and Goodfellow \parencite{ref:goodfellow2016deep} provide a more in-depth treatment of various subjects explained in the following introduction.
+In this section, a brief overview will be given of the most important concepts in ML with special emphasis on techniques used in this thesis. The books written by Bishop \parencite{ref:bishop2006pattern} and Goodfellow \parencite{ref:goodfellow2016deep} provide a more in-depth treatment of the various subjects covered in the following introduction.
 \subsection{Classification \& General Remarks}
 \label{subsec:background_ml_general_concepts}
-Machine learning itself is a subfield of artificial intelligence (AI), which is the broader field of creating machines that can perform tasks that would normally require human-level intelligence. \\
-Central to ML is the concept of learning from data. This means that we need to define data given as input to predict a target output. Most broadly speaking, we can either predict a discrete class label (classification) or a continuous value (regression) given our input data. Our focus will be on the latter task, concretely on finding a continuous value (Fock / density matrix entries) given another set of continuous values (atomic coordinates, overlap matrix elements, \dots). \\
-They can also be grouped by learning paradigms: supervised, unsupervised, or reinforcement. Supervised models learn a function that maps input data to labeled target values. Unsupervised models, on the other hand, seek patterns or structure in unlabeled data. Reinforcement learning refers to models that learn a policy through interaction with an environment by maximizing a reward signal over time.\\
+Machine learning itself is a subfield of artificial intelligence (AI) research, which is the broader field of creating machines that can perform tasks that would normally require human-level intelligence. \\
+Central to ML is the concept of learning from data. This means that we need to define data given as input to predict a target output. More broadly speaking, we can either predict a discrete class label (classification) or a continuous value (regression) given input data. The focus will be set on the latter task, in particular on predicting a continuous value (Fock / density matrix entries) given a set of continuous input values of substantially different character (atomic coordinates, overlap matrix elements, \dots). \\
+The various approaches can also be grouped by learning paradigms: supervised, unsupervised, or reinforcement. Supervised models learn a function that maps input data to labeled target values. Unsupervised models, on the other hand, seek patterns or structure in unlabeled data. Reinforcement learning refers to models that learn a policy through interaction with an environment by maximizing a reward signal over time.\\
 
-For the purpose of this thesis, we will focus on supervised models applied to our regression task. For consistency in the following sections, we will introduce the general notation for our model: 
+For the purpose of this thesis, we will focus on supervised models applied to our regression task. For consistency in the following sections, we introduce the general notation for our model as follows:
 \begin{equation}
     \label{eq:general_ML_model_formula}
-    \mathbf{y} = f(\mathbf{x}) + \Delta
+    \mathbf{y} = f(\mathbf{x}) + \Delta,
 \end{equation}
-with the input vector $\mathbf{x} = (x_1, x_2, \dots)$ and the target or output vector $\mathbf{y} = (y_1, y_2, \dots)$ which is not necessarily of the same size as the input. The model $f$ represents the learned mapping from $\mathbf{x}$ to $\mathbf{y}$ with a certain 
+with the input vector denoted as $\mathbf{x} = (x_1, x_2, \dots)$ and the target or output vector $\mathbf{y} = (y_1, y_2, \dots)$, which is not necessarily of the same size as the input vector. The model $f$ represents the learned mapping from $\mathbf{x}$ to $\mathbf{y}$ with a certain 
 error $\Delta$\footnote{This error includes both reducible components—such as discretization error, which may be minimized by refining the DFT grid—and irreducible components, which stem from fundamental uncertainty in quantum mechanical systems.}. 
 
 \subsection{Loss Functions}
@@ -319,19 +319,19 @@ error $\Delta$\footnote{This error includes both reducible components—such as 
 The loss function, also referred to as the cost function, quantifies the quality of the model's predictions by measuring the discrepancy between the predicted and true values. It may be motivated by system specific attributes, as is the case for F-score or DIIS error, or provide a general-purpose, model-agnostic measure of prediction accuracy, such as the mean squared error (MSE) or its root (RMSE). \\
 
 \textbf{F-score}\\
-One way of measuring the closeness of a guessed density $\psi^\sigma_{\text{guess}}$ to the converged density $\psi^\sigma_{\text{SCF}}$ can be defined as the overlap of same spin orbitals in \autoref{eq:f_score}.
+One way of measuring the closeness of a guessed density $\psi^\sigma_{\text{guess}}$ to the converged density $\psi^\sigma_{\text{SCF}}$ can be defined as the overlap of same spin ($\sigma$) orbitals in \autoref{eq:f_score},
 \begin{subequations}
 \label{eq:f_score}
 \begin{align}
-    f &= \frac{\sum\limits_\sigma Q^\sigma}{\sum\limits_\sigma N^\sigma_\text{occ}} \label{eq:f_score_a}\\
-    \text{using} \quad Q^\sigma &= \sum_{i,j=1}^{N^\sigma_\text{occ}} \left| \left\langle \psi^\sigma_{i,\text{guess}} \middle| \psi^\sigma_{j,\text{SCF}} \right\rangle \right|^2 = \mathrm{Tr}\left( \mathbf{P}^{\sigma}_\text{guess} \, \mathbf{S} \, \mathbf{P}^{\sigma}_\text{SCF} \, \mathbf{S} \right)  \label{eq:f_score_b}
+    f &= \frac{\sum\limits_\sigma Q^\sigma}{\sum\limits_\sigma N^\sigma_\text{occ}}, \label{eq:f_score_a}\\
+    \text{with} \quad Q^\sigma &= \sum_{i,j=1}^{N^\sigma_\text{occ}} \left| \left\langle \psi^\sigma_{i,\text{guess}} \middle| \psi^\sigma_{j,\text{SCF}} \right\rangle \right|^2 = \mathrm{Tr}\left( \mathbf{P}^{\sigma}_\text{guess} \, \mathbf{S} \, \mathbf{P}^{\sigma}_\text{SCF} \, \mathbf{S} \right),  \label{eq:f_score_b}
 \end{align}
 \end{subequations}
-Here, the notation introduced in \autoref{sec:background_scf} was used. The normalization in \autoref{eq:f_score_a} is introduced to make the intensive measure of \autoref{eq:f_score_b} extensive and thus attain comparability of differently sized systems.
+using the notation introduced in \autoref{sec:background_scf}. The normalization in \autoref{eq:f_score_a} is introduced to translate the extensive measure of \autoref{eq:f_score_b} into an intensive quantity and thus attain comparability of differently sized systems.
 
 
 \textbf{Mean Squared Error (MSE) / Root Mean Squared Error (RMSE)}\\
-For an abstract prediction matrix $\mathbf{Y^\text{(pred)}}$ the MSE is simply defined by the arithmetic mean of the squared differences with the actual values $\mathbf{Y^\text{(truth)}}$ as given in \autoref{eq:mse}. $F$ denotes the Frobenius norm in this case, and our matrices will usually be square matrices $\rightarrow n \equiv m$\footnote{Only the GNN will use non-square sub-matrix blocks on the off-diagonals to evaluate its loss}.  
+For an abstract prediction matrix $\mathbf{Y^\text{(pred)}}$ the MSE is simply defined by the arithmetic mean of the squared differences with the actual values $\mathbf{Y^\text{(truth)}}$ as given in \autoref{eq:mse}. $F$ denotes the Frobenius norm in this case, and our matrices will usually be square matrices\footnote{Only the GNN will use non-square sub-matrix blocks on the off-diagonals to evaluate its loss} $\rightarrow n \equiv m$.  
 \begin{subequations}
 \begin{align}
 \text{MSE} &= \frac{1}{nm} \sum_{i=1}^{n} \sum_{j=1}^{m} \left( Y^\text{(pred)}_{ij} - Y^\text{(truth)}_{ij} \right)^2 = \frac{1}{nm} \|\mathbf{Y^\text{(pred)}} - \mathbf{Y^\text{(truth)}}\|_F^2 \label{eq:mse}\\
@@ -344,27 +344,27 @@ Calculating the square root of the MSE gives the RMSE in \autoref{eq:rmse}. Besi
 A computationally more demanding score, the DIIS error, may also be used. In this thesis it will be defined as the root mean squared error of the commutator relation of Fock and density matrix. In the general case this writes: 
 \begin{subequations}
 \begin{align}
-\mathbf{E_\sigma} &= \mathbf{F_\sigma} \mathbf{P_\sigma} \mathbf{S} - \mathbf{S} \mathbf{P_\sigma} \mathbf{F_\sigma}\\
-\text{DIIS error} &= \sqrt{\frac{\|\mathbf{E_\uparrow} + \mathbf{E_\downarrow}\|^2_F}{n_\text{elements, $\uparrow$} + n_\text{elements, $\downarrow$}}}\label{eq:diis_error}
+\mathbf{E_\sigma} &= \mathbf{F_\sigma} \mathbf{P_\sigma} \mathbf{S} - \mathbf{S} \mathbf{P_\sigma} \mathbf{F_\sigma},\\
+\text{DIIS error} &= \sqrt{\frac{\|\mathbf{E_\uparrow} + \mathbf{E_\downarrow}\|^2_F}{n_\text{elements, $\uparrow$} + n_\text{elements, $\downarrow$}}},\label{eq:diis_error}
 \end{align}
 \end{subequations}
 with a normalization factor $n_\text{elements, $\uparrow$} + n_\text{elements, $\downarrow$}$ to make different matrix sizes comparable. DIIS gives a measure of self consistency with DIIS error $=0$ (commuting $\mathbf{F} \& \mathbf{P}$), denoting convergence. 
 \subsection{Regression Models}
 \label{subsec:background_ml_model_types}
-Regression models try to establish the mapping in \autoref{eq:general_ML_model_formula} directly by modeling the mapping using a linear combination of terms. The most simple form, a linear regression in the multivariate multi-target case, is given by: 
+Regression models try to establish the mapping in \autoref{eq:general_ML_model_formula} directly by modeling the mapping using a linear combination of terms. In its simplest form, a linear regression in the multivariate multi-target case is given by 
 \begin{equation}
     \label{eq:linear_regression_formula}
     \begin{aligned}
-        y_m &= w_{0, m} + \sum_{i=1}^d w_{i,m} \, x_i \quad \text{for } m = 1, \dots, k\\
-        \mathbf{y} &= \mathbf{W^\top} \mathbf{x} \quad \text{in matrix form}
+        y_m &= w_{0, m} + \sum_{i=1}^d w_{i,m} \, x_i \quad \text{for } m = 1, \dots, k, \quad \text{or}\\
+        \mathbf{y} &= \mathbf{W^\top} \mathbf{x} \quad \text{in matrix form}.
     \end{aligned}
 \end{equation}
-Here, $w_{i,m}$ denotes the coefficients, also called weights in ML, to create a relation between feature $x_i$ and target $y_m$. The zeroth weight, a linear offset, is named bias and is commonly introduced into the matrix notation by prepending a one in the input vector $\mathbf{x}$. Note that we have dropped the $\Delta$ term for compact notation. The weights are chosen to reduce the sum of squared errors, a procedure known as least squares (LS) fitting: 
+Here, $w_{i,m}$ denotes the coefficients, also called weights in ML, to create a relation between feature $x_i$ and target $y_m$. The zeroth weight, a linear offset, is referred to as `bias' and is commonly introduced into the matrix notation by prepending a one in the input vector $\mathbf{x}$. Note that we have dropped the $\Delta$ term for compact notation. The weights are chosen to reduce the sum of squared errors, a procedure known as least squares (LS) fitting: 
 \begin{equation}
     \label{eq:least_squares_error}
     \text{Loss}_\text{LS}(\mathbf{W}) = \sum_{n=1}^{N}\|\mathbf{y}^{(n)} - \mathbf{W^\top} \mathbf{x}^{(n)}\|_2^2
 \end{equation}
-Weights represent the influence of a given feature $x_i$ on the target $y_m$. Least squares fitting of these weights guarantees the minimization of the prediction error on the data the model was trained on; however, nothing can be said for unseen new data. Especially for high dimensional data with correlations between input features this model is prone to overfit. Such cases happen if the model is too flexible and captures noise in the data instead of actual patterns. To combat this issue we will introduce regularization into our problem.\\
+Weights represent the influence of a given feature $x_i$ on the target $y_m$. Least squares fitting of these weights guarantees the minimization of the prediction error on the data the model was trained on; however, nothing can be said about `unseen', i.e. new data. Especially for high dimensional data with correlations between input features this model is prone to overfitting, which may happen if the model is too flexible and captures noise in the data instead of actual patterns. We will introduce regularization into our problem to combat this issue.\\
 
 \textbf{Ridge Regression}\\
 There are multiple ways of introducing a regularization in order to keep weights small and limit overfitting of data. One simple way is to add a penalty term dependent on the size of the weight: 
@@ -383,18 +383,17 @@ Instead of a fixed weight matrix, Kernel Ridge Regression (KRR) uses a kernel fu
 = \|\mathbf{Y} - \mathbf{K}\mathbf{A}\|_F^2 + \lambda\,\mathrm{Tr}(\mathbf{A}^\top \mathbf{K}\mathbf{A}).
 \end{equation}
 
-We get $\mathbf{A} = (\mathbf{K} + \lambda \mathbf{I})^{-1} \mathbf{Y}$ which is used in predicting the target for a new input $\mathbf{x}^*$, via the similarity vector $\mathbf{k}(\mathbf{x}^*) = [\,k(\mathbf{x}^*,\mathbf{x}^{(1)}),\dots,k(\mathbf{x}^*,\mathbf{x}^{(N)})\,]^\top$ by:
+We get $\mathbf{A} = (\mathbf{K} + \lambda \mathbf{I})^{-1} \mathbf{Y}$ which is used to predict the target for a new input $\mathbf{x}^*$, via the similarity vector $\mathbf{k}(\mathbf{x}^*) = [\,k(\mathbf{x}^*,\mathbf{x}^{(1)}),\dots,k(\mathbf{x}^*,\mathbf{x}^{(N)})\,]^\top$,
 
 \begin{equation}
 \label{eq:kernel_ridge_predict}
 f(\mathbf{x}^*) = \mathbf{k}(\mathbf{x}^*)^\top \mathbf{A}.
 \end{equation}
 
-KRR thus extends ridge regression in a non-parametric way, with the regularization term $\lambda \mathbf{I}$ ensuring that $(\mathbf{K} + \lambda \mathbf{I})$ is invertible and numerically stable, while enabling the model to capture complex, nonlinear patterns at a computational cost of $\mathcal{O}(N^3)$. One drawback of KRR is the growing computational cost,  because matrices $\mathbf{K}$ and $\mathbf{A}$ grow with the number of training samples $N$.
-
+KRR thus extends ridge regression in a non-parametric way, with the regularization term $\lambda \mathbf{I}$ ensuring that $(\mathbf{K} + \lambda \mathbf{I})$ is invertible and numerically stable, while enabling the model to capture complex, nonlinear patterns at a computational cost of $\bigO{N^3}$ in the number of training samples $N$.
 \subsection{Neural Network (NN) concepts}
 \label{subsec:nn_concepts}
-Neural networks are based on a simplified model of a biological neuron. Rosenblatt's perceptron algorithm, depicted in \autoref{fig:perceptron}, builds the foundation for nearly all neural network architectures \parencite{ref:rosenblatt1958perceptron}. It introduces the nonlinear mapping from the features $\mathbf{x}$ to the targets $\mathbf{y}$ using a step function $\Theta$ as shown in \autoref{eq:perceptron}\footnote{Bias is again prepended to the weight vector}.
+Neural networks are based on a simplified model of biological neuron interactions. Rosenblatt's perceptron algorithm, depicted in \autoref{fig:perceptron}, lays the foundation for nearly all neural network architectures \parencite{ref:rosenblatt1958perceptron}. It introduced the nonlinear mapping from the features $\mathbf{x}$ to the targets $\mathbf{y}$ using a step function $\Theta$ as shown in \autoref{eq:perceptron}\footnote{Bias is again prepended to the weight vector}.
 \begin{equation}
     \label{eq:perceptron}
     y = \Theta(\mathbf{w} \cdot \mathbf{x}) \quad \text{with} \quad
@@ -404,7 +403,7 @@ Neural networks are based on a simplified model of a biological neuron. Rosenbla
         0 & \text{otherwise}
     \end{cases}
 \end{equation}
-The function used to transform the weight-feature product is also commonly referred to as an `activation' function. A step function gives a binary output and is thus most relevant in classification tasks. In the general case $\Theta$ denotes an arbitrary activation function which may also be monotonic and continuous, contrary to the step function.\\
+The function used to transform the weight-feature product is also commonly referred to as an `activation' function. A step function gives a binary output and is thus most relevant in classification tasks. In the general case, $\Theta$ denotes an arbitrary activation function which may also be monotonic and continuous, contrary to the step function.\\
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.75\textwidth]{../fig/background/Perceptron.pdf}
@@ -420,43 +419,44 @@ Functions mapping to values in the range $[0, 1]$, such as the step function or 
 \end{figure}
 \subsection{Feed forward Networks: Multi Layer Perceptron (MLP)}
 \label{subsec:background_mlp}
-Feed forward networks refer to a network architecture in which the outputs of the networks do not feed back into the inputs or any intermediate representations. Hence the input is fed forward through the network to produce the output. This way there are no loops in the network's dataflow, making training with backpropagation possible. A Multi Layer Perceptron (MLP) as shown in \autoref{fig:mlp} combines many Perceptrons in layers. Data feeds into the input layer Perceptrons which are each connected to every other Perceptron in the first hidden layer. This connectivity is referred to as `fully connected' or `dense'. After several hidden layers, an output layer provides the output in the desired dimensionality and often without activation.\\
+Feed forward networks refer to a network architecture in which the outputs of the networks do not directly feed back into the inputs or any intermediate representations. Hence the input is fed forward through the network to produce the output. This way, there are no loops in the network's dataflow, allowing for training via the backpropagation algorithm. A Multi Layer Perceptron (MLP) as shown in \autoref{fig:mlp} combines many perceptrons in layers. Data feeds into the input layer perceptrons which are each connected to every other perceptron in the first hidden layer. This connectivity is referred to as `fully connected' or `dense'. After several hidden layers, an output layer provides the output in the desired dimensionality and often without activation.\\
 Each connection is associated with a weight that must be learned to enable meaningful predictions on unseen data. This learning process relies on backpropagation, which applies the chain rule iteratively to compute the gradient of the loss with respect to each weight, propagating from the output layer backwards through the network. While data flows forward through the network during prediction, the resulting loss propagates backward, guiding how the weights are adjusted. \\
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.6\textwidth]{../fig/background/MLP.pdf}
-    \caption[Multi Layer Perceptron]{Multi Layer Perceptron with fully connected layers. Different shades of gray represent weights between Perceptrons.}
+    \caption[Multi Layer Perceptron]{Multi Layer Perceptron with fully connected layers. Different shades of gray represent weights between perceptrons.}
     \label{fig:mlp}
 \end{figure}
 
-Like in regression, regularization may also be added in various places. Besides $L_1$ or $L_2$ penalities, which can be easily added to the loss function, dropouts offer a neural network-specific way to regularize. During training, it randomly sets outputs of Perceptrons in the hidden layers to 0, thus deactivating the outgoing signal and reducing interdependence between Perceptrons. 
+Similar to regression, regularization may also be added in various places. Besides $L_1$ or $L_2$ penalities, which can be easily added to the loss function, dropouts offer another, neural network-specific way of regularization. During training, it randomly sets outputs of perceptrons in the hidden layers to 0, thus deactivating the outgoing signal and reducing interdependence between perceptrons. 
 
 \subsection{Graph Neural Network (GNN) / Message Passing Neural Nets (MPNN)}
 \label{subsec:background_gnn}
-Many problems cannot be simply mapped to a flattened input vector without losing information which is important in predictions. A natural representation of a molecule can be attained by using a graph consisting of atoms as the nodes and edges between these bonds to represent interaction (e.g. bonds) between atoms. Learning features on graphs using a Graph Neural Network (GNN) is exploited in various fields across different scales from large protein structurs in DeepMind's Alphafold \parencite{ref:alphafold}, down to molecular features such as energy, polarization and charge density in computational quantum chemistry. For the latter the term Message Passing Neural Nets (MPNN) was coined by Glimer et al. \parencite{ref:gilmer2017neural}.\\
+Many problems cannot be simply mapped to a flattened input vector without losing information that is important for accurate predictions. Within the context of atomistic theories, natural representation e.g. for a molecule may be attained by using a graph consisting of atoms as the nodes and edges between these nodes to represent interaction (e.g. bonds) between atoms. Learning features on graphs using a Graph Neural Network (GNN) is exploited in various fields and across different scales, from large protein structurs in DeepMind's Alphafold \parencite{ref:alphafold} down to molecular features such as energy, polarization and charge density in computational quantum chemistry. For the latter, the term `Message Passing Neural Nets' (MPNN) was coined by Glimer et al. \parencite{ref:gilmer2017neural}.\\
 
-An abstract representation of a MPNN is depicted in \autoref{fig:gnn_background}. Data, such as color in the concrete example, is encoded in the nodes of a graph. For many use cases separate encoder functions or even MLPs may be used to encode various features into the feature vector for a given node or edge. In the context of molecules, these might include atomic number, electronegativity or even overlap matrix elements. After initialization of the graph, the MPNN iteratively updates the nodes feature vector for several message passing rounds. 
-\begin{figure}[h]
+An abstract representation of a MPNN is depicted in \autoref{fig:gnn_background}. Data, such as colour in the concrete example, is encoded in the nodes of a graph. For many use cases, separate encoder functions or even MLPs may be suitable for the encoding of various features into a feature vector for a given node or edge. For molecules, these might include atomic number, electronegativity or even overlap matrix elements. After initialization of the graph, the MPNN iteratively updates the nodes feature vector for several message passing rounds. 
+\begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{../fig/background/GNN.pdf}
-    \caption[Schematic Message Passing Neural Net]{Schematic representation of message passing in a bidirectionally connected graph. Node colors influence neighbours which aggregate neighbour colors and updates own color via leaned update function each step.}
+    \caption[Schematic Message Passing Neural Net]{Schematic representation of message passing in a bidirectionally connected graph. Node colours influence neighbours which aggregate neighbour colours and updates own colour via leaned update function each step.}
     \label{fig:gnn_background}
 \end{figure}
-For every round all nodes send a message containing their feature vector or a derived representation to all its neighbours. The Node $n_1$ in \autoref{fig:gnn_background} sends its color to its neighbours $n_2$ and $n_4$. After all messages have been sent, every node aggregates the received message via a permutation invariant function. In the example, this is simply the average of the received colors. Finally, a learned update function changes the node's feature vector based on the aggregated message and the current feature vector. After several rounds of message passing, which allow information flow between nodes not directly connected to each other, the final graph representation can be used to predict various properties.\\
-Decoders essentially invert the encoder's process to extract either node-level features (e.g. atomic energy, partial charge or node color in \autoref{fig:gnn_background}) or graph-level properties such as total energy, polarizability or dipole moment.\\
+For every round, all nodes send a message containing their feature vector (or a derived representation) to all their neighbours. The node $n_1$ in \autoref{fig:gnn_background} sends its colour to its neighbours $n_2$ and $n_4$. After all messages have been sent, every node aggregates the received message via a permutation invariant function. In the example, this is simply the average of the received colours. Finally, a learned update function changes the node's feature vector based on the aggregated message and the current feature vector. After several rounds of message passing, which allow information flow between nodes not directly connected to each other, the final graph representation can be used to predict various properties.\\
+Decoders essentially invert the encoder's process to extract either node-level features (e.g. atomic energy, partial charge or node colour in \autoref{fig:gnn_background}) or graph-level properties such as total energy, polarizability or electric dipole moment.\\
 
 \section{QM9 dataset}
 \label{sec:dataset}
-During the selection of a dataset for training there are two practical considerations dominating:
+Dataset selection for training is dominated by two practical considerations:
 \begin{enumerate}
-    \item Cost per sample: Time savings through faster convergence are especially relevant for larger systems where the number of SCF iterations and especially the number of integrals to be calculated are large. Stated differently, it is of very little interest to optimize guessing methods for small systems that converge nearly instantly on conventional hardware. 
-    \item Fixed I/O size: Most ML models are constraint to a constant input and output size. 
+    \item Cost per sample: Time savings through faster convergence are especially relevant for larger systems where the number of SCF iterations and the number of integrals to be calculated are large. Stated differently, it is of little interest to optimize guessing methods for small systems that converge nearly instantly on conventional hardware. 
+    \item Fixed I/O size: Most ML models are constrained to a constant input and output size. 
 \end{enumerate}
 
-The QM9 dataset \parencite{ref:data_qm9, ref:article1_qm9,ref:article2_qm9} ticks both of these two boxes. It offers a variety of molecules from as little as 3 constituent atoms up to 29 atoms. Additionally, there are large enough chunks of constitutional isomers to train models on these subsets of same sized matrices. The distribution of molecules by atom count with the predominant constitutional isomers is shown in \autoref{fig:method_qm9_overview}.
+The QM9 dataset \parencite{ref:data_qm9, ref:article1_qm9,ref:article2_qm9} ticks both of these two boxes. It offers a variety of molecules from as little as three constituent atoms up to 29 atoms. Additionally, there are large enough chunks of constitutional isomers to train models on these subsets of same sized matrices. The distribution of molecules by atom count with the predominant constitutional isomers is shown in \autoref{fig:method_qm9_overview}.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.85\textwidth]{../fig/qm9_general/qm9_overview_stacked_bar.pdf}
-    \caption[QM9 dataset overview]{Overview of the QM9 dataset. The dataset contains $134,000$ molecules with up to nine heavy - \ch{C} \ch{O} \ch{N} \ch{F} - atoms. Large groups of constitutional isomers are present (largest depicted in red).}
+    \caption[QM9 dataset overview]{Overview of the QM9 dataset. The dataset contains $134,000$ molecules with up to nine second row elements (\ch{C}, \ch{O}, \ch{N}, \ch{F}). Large groups of constitutional isomers are present (largest depicted in red).}
     \label{fig:method_qm9_overview}
 \end{figure}
+%! Trajectories moved to Application chapter!
