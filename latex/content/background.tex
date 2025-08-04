@@ -1,31 +1,32 @@
 %! Correction + grammar & writing check for Background up to Regression
-\chapter{Background}
+\chapter{Theory \& Methodological Background}
 \label{sec:background}
-This chapter provides an overview of the theoretical background used in this thesis. While the focus of this thesis lays on the application of machine learning methods in the quantum chemistry context, a basic introduction to computational quantum chemistry methods, namely self-consistent field (SCF) methods, is provided. 
+This chapter provides an overview of the theoretical background used in this thesis. While the focus of this thesis is set on the application of machine learning methods within a quantum chemistry context, a basic introduction to computational quantum chemistry methods, in particular self-consistent field (SCF) methods, is provided. 
 
 \section{Self-consistent Field (SCF) Theory}
 \label{sec:background_scf}
-Quantum chemistry has its roots far before the advent of the computer age. Based on the original theories on quantum mechanics formulated by Schrödinger and Heisenberg, the interest in the accurate description of matter via this new theory was sparked. After the introduction of the wavefunction by Schrödinger almost a century ago, Max Born's statistical interpretation enabled a direct calculation of the electron density. \parencite{ref:schroedinger_1926undulatory} Already a year later, Hartree coined a self-consistent method to solve the many-electron problem utilizing a mean-field approach. Slater and Fock independently adapted the method by adding the exchange term and consistency with the Pauli exclusion principle. This method was later named Hartree-Fock (HF) method. \parencite{ref:Hartree_1928,ref:slater1930note,ref:fock1930naherungsmethode}. From that point on many advancements have been made in this field. Most prominently density functional theory (DFT), coupled cluster methods (CC), and perturbation theory (MP2) have been developed. Yet the theory behind the HF method is still the foundation for nearly all of these methods.
+Quantum chemistry has its roots far before the advent of the computer age. Based on the original theories on quantum mechanics formulated by Schrödinger and Heisenberg, the interest in the accurate description of matter via this new theory was sparked. After the introduction of the wavefunction by Schrödinger almost a century ago, Max Born's statistical interpretation enabled a direct calculation of the electron density. \parencite{ref:schroedinger_1926undulatory} Already a year later, Hartree coined a self-consistent method to solve the many-electron problem utilizing a mean-field approach. Slater and Fock independently adapted the method by adding the exchange term and consistency with the Pauli exclusion principle. This method was later named Hartree-Fock (HF) method. \parencite{ref:Hartree_1928,ref:slater1930note,ref:fock1930naherungsmethode}. From that point on many advancements have been made in this field. Most prominently density functional theory (DFT), coupled cluster methods (CC), and pertubative expansions (MP2) have been developed. Yet, the theory behind the HF method is still the foundation for nearly all of these methods.
 
 The following introductory overview of the Hartree-Fock method is mostly based on the book by Szabo and Ostlund \parencite{ref:szabo_ostlund}. 
 
-\subsection{Ideas behind the Hartree-Fock method}
+\subsection{Fundamentals of the Hartree-Fock Approximation}
 \label{subsec:background_hf}
-The Born Oppenheimer approximations allows for a separate treatment of the nuclear and electronic problem of a system. This is motivated by the vastly different masses and hence time-scales of nuclei and electron movement. The total wavefunction of a system may be written as a product state of electronic and nuclear wavefunctions (using the convention of small letters for electrons and capital letters for nuclei coordinates):
+The Born Oppenheimer approximation allows for a separate treatment of the nuclear and electronic problem of a system. This is motivated by the vastly different masses and hence different time scales of nuclei and electron movement. The total wavefunction of a system may be written as a product state of electronic and nuclear wavefunctions (using the convention of small letters for electrons and capital letters for nuclei coordinates):
 \begin{equation}
     \Psi_{\text{tot}}(\mathbf{r}_n, \mathbf{R}_m) = \Psi_{\text{elec}}(\mathbf{r}_n; \mathbf{R}_m) \Psi_{\text{nuc}}(\mathbf{R}_m)
 \end{equation}
-Using our approximation, the total wavefunction can be derived rather easily from the electronic wavefunction via an effective potential for the nuclear motion, given by a solved electronic wavefunction. However, we will focus on this prerequisite, namely, the electronic wavefunction, and therefore omit the subscript from here on. It parametrically depends on the nuclear coordinates and is the solution to the time independent Schrödinger equation:
+Using our approximation, the nuclear wavefunction can be obtained rather easily by solving the nuclear Schrödinger equation for an effective potential which corresponds to the electronic energy written as a function of nuclear coordinates.  
+Within the confines of this thesis, we will focus on the electronic wavefunction as a prerequisite, and therefore omit the subscript from here on. It parametrically depends on the nuclear coordinates and is the solution to the time independent Schrödinger equation:
 \begin{equation}
     H \Psi(\mathbf{r}_n; \mathbf{R}_m) = E[\Psi](\mathbf{R}_m) \Psi(\mathbf{r}_n; \mathbf{R}_m)
 \end{equation}
-The electronic energy $E$ is a functional of the electronic wavefunction. We will minimize this energy using orthogonality constraints on the wavefunction, as will be explained later. The corresponding Hamiltonian operator $H$ reads: 
+The electronic energy $E$ is a functional of the electronic wavefunction. We will minimize this energy using orthogonality constraints on the wavefunction, as will be explained later. Written in atomic units, the corresponding Hamiltonian operator $H$ for $N$ electrons and $M$ nuclei reads
 \begin{equation}
-    H = T + V_{\text{ne}} + V_{\text{ee}} = -\frac{1}{2} \sum_{i=1}^N \nabla_i^2 - \sum_{i=1}^N \sum_{A=1}^M \frac{Z_A}{|\mathbf{r}_i - \mathbf{R}_A|} + \sum_{i<j}^N \frac{1}{|\mathbf{r}_i - \mathbf{r}_j|}
+    H = T + V_{\text{ne}} + V_{\text{ee}} = -\frac{1}{2} \sum_{i=1}^N \nabla_i^2 - \sum_{i=1}^N \sum_{A=1}^M \frac{Z_A}{|\mathbf{r}_i - \mathbf{R}_A|} + \sum_{i<j}^N \frac{1}{|\mathbf{r}_i - \mathbf{r}_j|}.
 \end{equation}
-for $N$ electrons and $M$ nuclei in atomic units. Note that we do not include kinetic or repulsion terms for the nuclei as we are only considering the electronic problem. The first term is the kinetic energy operator, the second term describes the interaction of the electrons with the nuclei and the last term describes the electron-electron interaction.\\
+Note that we do not include kinetic or repulsion terms for the nuclei as we are only considering the electronic problem. The first term is the kinetic energy operator, the second term describes the interaction of the electrons with the nuclei and the last term describes the electron-electron interaction.\\
 
-Given the fermionic problem at hand, we have to take antisymmetrization into account. Mathematically this can be achieved by writing the wavefunction using a determinant which ensures parity change under exchange of two rows\footnote{Furthermore, if two electrons occupy the same orbital the determinant will vanish}. For $N$ electrons this can be written as:
+With electrons being fermions, we have to take antisymmetrization into account. Mathematically, this can be achieved by writing the wavefunction as a determinant, which ensures parity change under exchange of two rows\footnote{Furthermore, if two electrons occupy the same orbital the determinant will vanish}. For $N$ electrons this can be written as:
 \begin{equation}
     \Psi(\mathbf{x}_1, \mathbf{x}_2, \ldots, \mathbf{x}_N) = \frac{1}{\sqrt{N!}}
     \begin{vmatrix}
@@ -35,11 +36,16 @@ Given the fermionic problem at hand, we have to take antisymmetrization into acc
     \chi_1(\mathbf{x}_N) & \chi_2(\mathbf{x}_N) & \cdots & \chi_N(\mathbf{x}_N)
     \end{vmatrix}
 \end{equation}
-To write down this so called Slater determinant we have introduced the notation $\mathbf{x}_i = (\mathbf{r}_i, \sigma_i)$ with $\sigma_i$ being the spin of electron $i$. The functions $\chi_i$ are called spin orbitals and are a product of spatial and spin functions. 
+To write down this so called Slater determinant we have introduced the notation $\mathbf{x}_i = (\mathbf{r}_i, \omega_i)$ with $\omega_i$ being the spin coordinate of electron $i$. The functions $\chi_i$ are called spin orbitals and are a product of spatial and spin functions. 
 \begin{equation}
     \label{eq:spin_orbital_expansion}
-    \chi_i(\mathbf{x}) = \sum_{\nu} C_{\nu i} \chi_\nu(\mathbf{x}) = \sum_{\nu} C_{\nu i} \phi_\nu(\mathbf{r}) \sigma(\sigma) \text{ with } \bra{\chi_i}\ket{\chi_j} = \delta_{ij}
+    \chi_i(\mathbf{x}) = \sum_{\nu} C_{\nu i} \chi_\nu(\mathbf{x}) = \sum_{\nu} C_{\nu i} \phi_\nu(\mathbf{r}) \sigma(\omega) \text{ with } \bra{\chi_i}\ket{\chi_j} = \delta_{ij} \text{ and } \sigma(\omega)=
+  \bigl\{\begin{smallmatrix}
+    \uparrow \text{ for } \omega &= \nicefrac{1}{2}\\
+    \downarrow  \text{ for } \omega &= -\nicefrac{1}{2}
+  \end{smallmatrix}\bigr.
 \end{equation}
+\TODO{check spin notation again in expansion! \\ Correction of Hauser until here!}
 Using this expansion we reduce the problem to the determination of the coefficients $C_{\nu i}$ for a given set of orthogonal basis functions $\phi_\nu(\mathbf{r})$. For a complete set of basis functions this expansion is exact. However, in practice we have to limit the number of basis functions and hence the size of our Slater determinant to a computationally feasible size. For the subsequent considerations we introduce the shorthand ket for a slater determinant $\ket{\Psi} = \ket{\chi_1, \chi_2, \ldots, \chi_N}$ or $\ket{\Psi} = \ket{1, 2, \ldots, N}$ for the sake of brevity.
 
 %Energy functional
@@ -82,8 +88,9 @@ While \autoref{eq:hf_eigenval_equation} seems like an ordinary eigenvalue proble
 \label{subsec:background_hf_computational}
 To solve the self-dependence of the Hartree-Fock equations, we need to iteratively update our wavefunction until convergence is reached. To achieve this we first need to express our pseudo eigenvalue problem in a way that can be solved numerically. Under the premiss that both spin up ($\uparrow$) and spin down ($\downarrow$) electrons have the same spatial distribution (we call this restricted HF) we can write the HF-equations for electron coordinate 1 as:
 \begin{equation}
-    F(\mathbf{x}_1) \chi_i(\mathbf{x}_1) = \varepsilon_i \chi_i(\mathbf{x}_1) \equiv F(\mathbf{x}_1) \psi_i(\mathbf{r}_1) \sigma_i(\sigma_1) = \varepsilon_i \psi_i(\mathbf{r}_1) \sigma_i(\sigma_1)
+    F(\mathbf{x}_1) \chi_i(\mathbf{x}_1) = \varepsilon_i \chi_i(\mathbf{x}_1) \equiv F(\mathbf{x}_1) \psi_i(\mathbf{r}_1) \sigma_i(\sigma_1) = \varepsilon_i \psi_i(\mathbf{r}_1) \sigma_i(\sigma_1) 
 \end{equation}
+\TODO{FIX sigma here and check with notation above of \sigma(...)}
 With the spins integrated out we obtain the HF-equations with spatial orbitals: 
 \begin{equation}
     \label{eq:hf_eigenval_equation_spatial}
