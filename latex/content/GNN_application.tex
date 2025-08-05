@@ -236,7 +236,7 @@ Metrics for re-trained versions of $\text{GNN}_\text{initial}$ and $\text{GNN}_\
 
 \begin{table}[h]
     \centering
-    \caption[GNN predictions on QM9 \ch{C7H10O2} isomer MD]{GNN predictions on the QM9 \ch{C7H10O2} isomer MD test set. With MD-re-trainede\footnote{models marked with a $*$ are architectures from another dataset re-trainede on the current one} versions of $\text{GNN}_\text{initial}$ and $\text{GNN}_\text{f. 0}$.}
+    \caption[GNN predictions on QM9 \ch{C7H10O2} isomer MD]{GNN predictions on the QM9 \ch{C7H10O2} isomer MD test set. With MD-re-trained\footnote{models marked with a $*$ are architectures from another dataset re-trained on the current one} versions of $\text{GNN}_\text{initial}$ and $\text{GNN}_\text{f. 0}$.}
     \label{tab:qm9_md_last_best_retrain}
     % \resizebox{\textwidth}{!}{
         \begin{tabular}{l
@@ -365,15 +365,15 @@ Network hyperparameter tuning was carried out in the same manner as above, excep
             \toprule
             Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / $\unit{\hartree}$} \\
             \midrule %Data from server run!
-            $\text{GNN}^{\text{Full}}_\text{f. 0}$ & \textbf{11.9(21)} & -1070(300) & -0.680(0.04) & 0.20(0.03) & 0.009(0.003) \\ %!TODO not everything rounded good :) 
-            $\text{GNN}^{\text{Full}}_\text{f. 1}$ & 12.0(1.7) & -1060(300) & -0.680(0.04) & 0.20(0.03) & \textbf{0.009(2)} \\
+            $\text{GNN}^{\text{Full}}_\text{f. 0}$ & 12(2)     & -1070(300) & -0.680(0.04) & 0.20(0.03) & 0.009(0.003) \\ %!TODO not everything rounded good :) 
+            $\text{GNN}^{\text{Full}}_\text{f. 1}$ & \textbf{12.0(17)} & -1060(300) & -0.680(0.04) & 0.20(0.03) & \textbf{0.009(2)} \\
             $\text{GNN}^{\text{Full}}_\text{f. 2}$ & 12.0(1.8) & \textbf{-1050(300)} & \textbf{-0.670(4)} & \textbf{0.19(3)} & 0.009(0.003) \\
             $\text{GNN}^{\text{Full}}_\text{f. 3}$ & 12.0(1.9) & -1060(300) & -0.680(0.03) & 0.20(0.03) & 0.009(0.003) \\
             $\text{GNN}^{\text{Full}}_\text{f. 4}$ & 12.0(1.7) & -1060(300) & -0.680(0.04) & 0.20(0.03) & 0.009(0.003) \\
             $\text{GNN}^{\text{Full}}_\text{f. 5}$ & 12.0(1.8) & -1080(300) & -0.680(0.04) & 0.21(0.08) & 0.009(0.003) \\
-            $\text{GNN}^{\text{Full}}_\text{f. 6}$ & 12.0(2.0) & -1080(300) & -0.690(0.04) & 0.20(0.03) & 0.009(0.003) \\
+            $\text{GNN}^{\text{Full}}_\text{f. 6}$ & 12(2)     & -1080(300) & -0.690(0.04) & 0.20(0.03) & 0.009(0.003) \\
             $\text{GNN}^{\text{Full}}_\text{f. 7}$ & 12.1(1.6) & -1080(300) & -0.690(0.04) & 0.20(0.03) & 0.009(0.003) \\
-            $\text{GNN}^{\text{Full}}_\text{f. 8}$ & 12.1(2.1) & \textbf{-1050(300)} & \textbf{-0.670(4)} & \textbf{0.19(3)} & 0.009(0.003) \\
+            $\text{GNN}^{\text{Full}}_\text{f. 8}$ & 12(2)     & \textbf{-1050(300)} & \textbf{-0.670(4)} & \textbf{0.19(3)} & 0.009(0.003) \\
             $\text{GNN}^{\text{Full}}_\text{f. 9}$ & 12.1(1.8) & -1090(300) & -0.690(0.04) & 0.21(0.03) & 0.009(0.003) \\
             \bottomrule
         \end{tabular}
@@ -454,7 +454,7 @@ Using our stratified QM9 sample, we show that our GNN implementation trained on 
     \caption[Models compared to \textsc{PySCF} and $\overline{P}$ schemes - full QM9 dataset]{Comparison of GNN model with calculations employing \textsc{PySCF} and $\overline{P}$ guessing schemes on the full QM9 dataset. Here, $\overline{P}$ is computed block-wise across all molecules by averaging over each \ch{C}, \ch{O}-\ch{H}, \dots block.
 }
     \label{tab:qm9_full_test_overview}
-    % \resizebox{\textwidth}{!}{
+    \resizebox{\textwidth}{!}{
         \begin{tabular}{l
                         S[table-format=2.1(1.1)]
                         S[table-format=-3.4(3)]
@@ -464,7 +464,7 @@ Using our stratified QM9 sample, we show that our GNN implementation trained on 
                         \toprule
                         Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / $\unit{\hartree}$} \\
                         \midrule
-                        $\text{GNN}^{\text{Full}}_\text{f. 0}$ & 11.9(2.1)& -1070(300)& -0.680(0.04) & 0.20(0.03)& \textbf{0.009(3)} \\
+                        $\text{GNN}^{\text{Full}}_\text{f. 1}$ & 12.0(17)& -1060(300) & -0.680(0.04) & 0.20(0.03) & \textbf{0.009(2)} \\
                         $\overline{P}$                & 17(3)            & -800(200)  & -0.52(2)     & 0.11(2)   & 0.014(2)  \\
                         \texttt{1-e}                  & 19(3)            & -225(4)    & -0.124(3)    & 0.122(15) & 0.16(12)  \\
                         \texttt{vsap}                 & 14(2)            & -4.8419(4) & -0.002665(19)& \textbf{0.024(3)}  & 0.0106(14)\\
@@ -472,7 +472,7 @@ Using our stratified QM9 sample, we show that our GNN implementation trained on 
                         \texttt{minao}                & \textbf{11.1(11)}& \textbf{2.86(2)} & \textbf{0.001577(0)}& 0.081(12) & 0.017(3)  \\
                         \bottomrule
                     \end{tabular}
-    % }
+    }
 \end{table}
 Another notable finding emerges when contrasting the full dataset results for $\overline{P}$ with those from the isomer only runs. Although the average number of iterations remained essentially unchanged (only their spread increased for the more diverse dataset), the DIIS error in the full dataset case is an order of magnitude higher. This increase isn't surprising given the broader chemical variety and the block-wise averaging inherent to $\overline{P}$. Crucially, it once again underscores that DIIS error and iteration count are largely uncorrelated.
 
