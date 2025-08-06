@@ -454,10 +454,10 @@ Training neural networks and tuning their hyperparameters are crucial steps to e
 
 \textbf{Network Training}\\
 Training begins with random initialization of network weights. Input data is processed in the network in batches (e.g. 16, 32 or 64 input samples). For each batch, the network performs a forward pass to generate predictions and compute a loss value via a chosen loss function. Backpropagation then calculates gradients of the loss with respect to each weight in the network. The weights are updated using an optimization algorithm, which adjusts the weights in the direction that reduces the loss. This cycle (forward pass, loss computation, backpropagation) repeats for multiple epochs, where one epoch corresponds to one full pass through the training dataset. \\
-Key hyperparameters influence the training dynamics and overall model performance. Several hyperparameters affect the training process and model performance, including the learning rate, batch size, number of epochs, and network architecture (number of layers, neurons per layer, and activation functions).\\
+Key hyperparameters influence the training dynamics and overall model performance. Several hyperparameters affect the training process and model performance, including the learning rate, batch size, number of epochs, and network architecture (number of layers, neurons per layer, and activation functions).
 
 \textbf{Hyperparameter Tuning}\\
-Hyperparameter tuning explores the space of settings to identify combinations that yield the best performance. An exhaustive search over all possible combinations is typically infeasible and not possible for hyperparameters with continuous values. Within this thesis, two approaches will be used: Bayesian search and Hyperband tuning.\\
+Hyperparameter tuning explores the space of settings to identify combinations that yield the best performance. An exhaustive search over all possible combinations is typically infeasible and not possible for hyperparameters with continuous values. Within this thesis, two approaches will be used: Bayesian search and Hyperband tuning.
 
 \textbf{Bayesian Search Tuning}\\
 Bayesian search constructs a surrogate probabilistic model mapping hyperparameters to performance. After evaluating a set of configurations, it updates this model to predict promising regions in hyperparameter space. By sampling where improvement is most likely, it outperforms random or grid search in efficiency and convergence speed.
