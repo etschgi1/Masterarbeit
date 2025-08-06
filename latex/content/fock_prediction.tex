@@ -186,12 +186,12 @@ We implement an MLP model which is trained to map the overlap matrix to the main
 
 \textsc{Tensorflow} is used as backend with \textsc{Keras} and the module \textsc{Keras\_tuner} handled hyperparameter optimization. \parencite{ref:tensorflow,ref:keras,ref:kerastuner}
 All models in the hyperparameter optimization are trained using the Adam optimizer with an exponential decay (rate $0.96$ every 100 batches). Using mean squared error as the optimization objective on the validation set, the Hyperband tuner (see \autoref{subsec:background_ml_training}) selected a single-layer MLP with 1024 neurons and a 10\% dropout rate.\\
-Subsequently, this model was re-trainede for 50 epochs for initial evaluation on the test set. A prediction performance (RMSE on test set) of $\num{0.1 \pm 0.014}$ compared to $\num{0.357 \pm 0.007}$ \texttt{minao}'s on the main diagonal looks promising. However, after reconstructing the full Fock matrix using \autoref{eq:gwh}, the global prediction quality on the full matrix suffers drastically as seen in \autoref{fig:comparison_mlp_gwh_fock}. 
+Subsequently, this model was re-trained for 50 epochs for initial evaluation on the test set. A prediction performance (RMSE on test set) of $\num{0.1 \pm 0.014}$ compared to $\num{0.357 \pm 0.007}$ \texttt{minao}'s on the main diagonal looks promising. However, after reconstructing the full Fock matrix using \autoref{eq:gwh}, the global prediction quality on the full matrix suffers drastically as seen in \autoref{fig:comparison_mlp_gwh_fock}. 
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{../fig/mlp_further_trials/fock_truth_vs_pred.pdf}
-    \caption[MLP vs. reference Fock]{Reference (fully converged Fock matrix) vs. predicted Fock matrix using the MLP model and the GWH re-construction and element-wise difference for \texttt{dsgdb9nsd\_082452}. Plots only show entries for two \ch{O} (upper left) and two \ch{C} (lower right) atoms and their respective off-diagonal elements.}
+    \caption[MLP vs. reference Fock]{Reference (fully converged Fock matrix) vs. predicted Fock matrix using the MLP model and the GWH reconstruction and element-wise difference for \texttt{dsgdb9nsd\_082452}. Plots only show entries for two \ch{O} (upper left) and two \ch{C} (lower right) atoms and their respective off-diagonal elements.}
     \label{fig:comparison_mlp_gwh_fock}
 \end{figure}
 

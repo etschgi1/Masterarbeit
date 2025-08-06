@@ -87,7 +87,7 @@ The GNN is trained using various hyperparameters and configurations to optimize 
 
 \textbf{Loss Function}\\
 The choice of the loss function can also be handled as a hyperparameter. While a physically motivated loss function which correlates well with the iteration count is preferable, it is far from trivial to derive such a metric. A variety of these metrics\footnote{For example F-score for different guessing schemes in \autoref{chap:fock_matrix_predictions}} were initially promising when scoring guesses against converged density, but turned out to be suboptimal in terms of correlation to iteration count. \\
-If not mentioned otherwise in the later subchapters MSE (see \autoref{subsec:background_loss_function}) will be used as a loss function. While this function may not offer a direct physical interpretation besides the total global `overlap' of prediction and target matrices, it is well understood and established in a wide variety of learning problems. Additionally, the loss function, which is evaluated block-wise\footnote{block-wise evaluation is computationally also easier because the full density matrix isn't reconstructed during training} on the target matrices, can be combined and/or weighted in various ways to obtain a single scalar loss value per sample. 
+If not mentioned otherwise in the later subchapters MSE (see \autoref{subsec:background_loss_function}) will be used as a loss function. While this function may not offer a direct physical interpretation besides the total global similarity of prediction and target matrices, it is well understood and established in a wide variety of learning problems. Additionally, the loss function, which is evaluated block-wise\footnote{block-wise evaluation is computationally also easier because the full density matrix isn't reconstructed during training} on the target matrices, can be combined and/or weighted in various ways to obtain a single scalar loss value per sample. 
 
 \textbf{Optimizer \& learn rate \& early stopping}\\
 Similar to the loss function, the optimizer could also be treated as a hyperparameter. However, due to computational and time constraints, it will be fixed for the scope of this thesis. A stochastic gradient descent optimizer, namely AdamW, is used in all training runs in combination with a learn rate scheduler. AdamW is preferred over the initial Adam implementation due to the decoupling of weight decay in AdamW \parencite{ref:adamW}. All parameters in the learn rate scheduler (reduction factor, patience, threshold, etc.) and the initial learn rate are also treated as hyperparameters. \\
@@ -110,7 +110,7 @@ For fairness this average is only evaluated on the elements of the respective tr
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.75\textwidth]{../fig/gnn/0_d_model_iteration_count_bar.pdf}
-    \caption[Iterations till convergence distribution for QM9-isomers]{Iterations till convergence distribution for QM9-isomers for PySCF and $\overline{P}$ guesses.}
+    \caption[Iterations until convergence distribution for QM9-isomers]{Iterations until convergence distribution for QM9-isomers for PySCF and $\overline{P}$ guesses.}
     \label{fig:dummy_iterations_qm9_isomers}
 \end{figure}
 

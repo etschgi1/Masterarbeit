@@ -30,14 +30,14 @@ Faster convergence in terms of iterations was claimed by Schütt et al. for thei
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{../fig/gnn/SO_0D_GNN_model_iteration_count_bar.pdf}
-    \caption[Macro iterations till convergence distribution for QM9-isomers]{Macro iterations till convergence distribution for QM9-isomers for PySCF, $\overline{P}$ and GNN$_\text{initial}$ guesses. All entries with $\geq 20$ macro iterations are grouped at $20$.}
+    \caption[Macro iterations until convergence distribution for QM9-isomers]{Macro iterations until convergence distribution for QM9-isomers for PySCF, $\overline{P}$ and GNN$_\text{initial}$ guesses. All entries with $\geq 20$ macro iterations are grouped at $20$.}
     \label{fig:so_macro_iterations}
 \end{figure}
 Yet, this direct comparison is not a fair one. Contrary to DIIS, which builds the Fock matrix once per iteration, the Newton-solver repeatedly rebuilds the Fock matrix in its inner loop. Summing all Fock matrix builds, one obtains different behaviour depicted in \autoref{fig:so_fock_build_iterations}.  
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{../fig/gnn/SO_0D_GNN_model_fock_build_count_bar.pdf}
-    \caption[Fock matrix build count till convergence QM9-isomers]{Fock matrix build count till convergence for QM9-isomers for PySCF, $\overline{P}$ and GNN$_\text{initial}$ guesses. All entries with $\geq 40$ Fock builds are grouped at $40$.}
+    \caption[Fock matrix build count until convergence QM9-isomers]{Fock matrix build count until convergence for QM9-isomers for PySCF, $\overline{P}$ and GNN$_\text{initial}$ guesses. All entries with $\geq 40$ Fock builds are grouped at $40$.}
     \label{fig:so_fock_build_iterations}
 \end{figure}
 Given this fact, one needs to be cautious in making prediction regarding wall clock time of simulations from 'iteration` counts, especially for comparisons of different algorithms.
