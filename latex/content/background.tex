@@ -417,14 +417,14 @@ Functions mapping to values in the range $[0, 1]$, such as the step function or 
     \caption{Commonly used activation functions.}
     \label{fig:activation_functions}
 \end{figure}
-\subsection{Feed forward Networks: Multi Layer Perceptron (MLP)}
+\subsection{Feed forward Networks: Multilayer Perceptron (MLP)}
 \label{subsec:background_mlp}
-Feed forward networks refer to a network architecture in which the outputs of the networks do not directly feed back into the inputs or any intermediate representations. Hence the input is fed forward through the network to produce the output. This way, there are no loops in the network's dataflow, allowing for training via the backpropagation algorithm. A Multi Layer Perceptron (MLP) as shown in \autoref{fig:mlp} combines many perceptrons in layers. Data feeds into the input layer perceptrons which are each connected to every other perceptron in the first hidden layer. This connectivity is referred to as `fully connected' or `dense'. After several hidden layers, an output layer provides the output in the desired dimensionality and often without activation.\\
+Feed forward networks refer to a network architecture in which the outputs of the networks do not directly feed back into the inputs or any intermediate representations. Hence the input is fed forward through the network to produce the output. This way, there are no loops in the network's dataflow, allowing for training via the backpropagation algorithm. A Multilayer Perceptron (MLP) as shown in \autoref{fig:mlp} combines many perceptrons in layers. Data feeds into the input layer perceptrons which are each connected to every other perceptron in the first hidden layer. This connectivity is referred to as `fully connected' or `dense'. After several hidden layers, an output layer provides the output in the desired dimensionality and often without activation.\\
 Each connection is associated with a weight that must be learned to enable meaningful predictions on unseen data. This learning process relies on backpropagation, which applies the chain rule iteratively to compute the gradient of the loss with respect to each weight, propagating from the output layer backwards through the network. While data flows forward through the network during prediction, the resulting loss propagates backward, guiding how the weights are adjusted. \\
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.6\textwidth]{../fig/background/MLP.pdf}
-    \caption[Multi Layer Perceptron]{Multi Layer Perceptron with fully connected layers. Different shades of gray represent weights between perceptrons.}
+    \caption[Multilayer Perceptron]{Multilayer Perceptron with fully connected layers. Different shades of gray represent weights between perceptrons.}
     \label{fig:mlp}
 \end{figure}
 
