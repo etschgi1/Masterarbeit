@@ -56,7 +56,9 @@
 \def\@degreeprogramme{Name of Degree Programme as in Curriculum (set with \texttt{\textbackslash degreeprogramme\{\}})}
 \newcommand{\curriculum}[1]{\def\@degreeprogramme{#1}}
 \def\@supervisortitle{Supervisor}
+\def\@cosupervisortitle{Co-Supervisor}
 \newcommand{\supervisortitle}[1]{\def\@supervisortitle{#1}}
+\newcommand{\cosupervisortitle}[1]{\def\@cosupervisortitle{#1}}
 \def\@supervisor{%
   Firstname Lastname, academic degrees of supervisor\\
   up to 2 lines
@@ -67,6 +69,7 @@
   (set with \texttt{\textbackslash supervisor\{\}})
 }
 \newcommand{\supervisor}[1]{\def\@supervisor{#1}}
+\newcommand{\cosupervisor}[1]{\def\@cosupervisor{#1}}
 \def\@location{Graz}
 \newcommand{\location}[1]{\def\@location{#1}}
 
@@ -129,9 +132,15 @@
     {\bfseries\tugraz@titlefont\fontsize{12pt}{14pt}\selectfont \germanenglish{Technischen Universit{\"{a}}t Graz}{Graz University of Technology}\par}
     \iftugraz@individual\vskip0.8cm\else\vskip1.2cm\fi
 
+    % Supervisor
     {\bfseries\tugraz@titlefont\fontsize{10pt}{12pt}\selectfont \@supervisortitle \par}
 
     {\fontsize{10pt}{12pt}\selectfont \@supervisor \par}
+    \iftugraz@individual\vskip1.0cm\else\vskip0.8cm\fi
+    % Co-supervisor
+    {\bfseries\tugraz@titlefont\fontsize{10pt}{12pt}\selectfont \@cosupervisortitle \par}
+    {\fontsize{10pt}{12pt}\selectfont \@cosupervisor \par}
+
     \iftugraz@individual\vskip1.2cm\else\vskip1.4cm\fi
 
     {\fontsize{8pt}{11pt}\selectfont \@location, \@thesisdate \par}
