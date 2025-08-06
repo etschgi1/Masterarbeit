@@ -57,7 +57,6 @@ To write down this so-called Slater determinant we have introduced the notation 
     \end{cases}
 \end{equation}
 Here, spin functions use the common notation $\alpha(\omega)$ and $\beta(\omega)$ for spin up and down respectively.
-% \TODO{check spin notation again in expansion! \\ Correction of Hauser until here!}
 Using this expansion, we reduce the problem to the determination of the coefficients $C_{\nu i}$ for a given set of orthogonal basis functions $\phi_\nu(\mathbf{r})$. For a complete set of basis functions this expansion is exact. However, in practice, we have to limit the number of basis functions and hence the size of our Slater determinant to a computationally feasible size. For the subsequent considerations we introduce the shorthand ket for a slater determinant $\ket{\Psi} = \ket{\chi_1, \chi_2, \ldots, \chi_N}$ or $\ket{\Psi} = \ket{1, 2, \ldots, N}$ for the sake of brevity.
 
 %Energy functional
@@ -102,7 +101,6 @@ To solve the self-dependence of the Hartree-Fock equations, we need to iterative
 \begin{equation}
     F(\mathbf{x}_1) \chi_i(\mathbf{x}_1) = \varepsilon_i \chi_i(\mathbf{x}_1) \equiv F(\mathbf{x}_1) \psi_i(\mathbf{r}_1) \sigma_i(\sigma_1) = \varepsilon_i \psi_i(\mathbf{r}_1) \sigma_i(\sigma_1).
 \end{equation}
-% \TODO{FIX sigma here and check with notation above of \sigma(...)}
 With the spins integrated out, we obtain the HF-equations for spatial orbitals, 
 \begin{equation}
     \label{eq:hf_eigenval_equation_spatial}
@@ -120,31 +118,40 @@ We need to represent the spatial orbitals in a finite, computer-readable way. Wh
     \label{eq:psi_approximation}
     \psi_i(\mathbf{r}) \approx \sum_{\nu}^{K} C_{\nu i} \phi_\nu(\mathbf{r})
 \end{equation}
-\TODO{REFORMULATE START - SCHWAMMIG\\}
-Approximating the spatial wavefunction using these basis functions (for details see \autoref{subsec:background_hf_basis_sets}) will reduce our problem to the determination of the coefficients $C_{\nu i}$. Finally, we insert \autoref{eq:psi_approximation} into \autoref{eq:hf_eigenval_equation_spatial} to obtain the matrix form of the HF equations for closed-shell systems, the so-called Roothaan equations:
-\begin{subequations}
+%! start new content
+Possible ways to construct a finite set of basis functions $\phi_\nu(\mathbf{r})$ to represent the spatial orbitals $\psi_i(\mathbf{r})$ are introduced in \autoref{subsec:background_hf_basis_sets}. \\
+Given this finite set of equations, we can now express it in matrix form to make it suitable for numerical solution.
+Substituting \autoref{eq:psi_approximation} into \autoref{eq:hf_eigenval_equation_spatial} expressing $F(\mathbf{r}_1)$ as shown in \autoref{eq:fock_operator_spatial} yields
+\begin{equation}
+    \label{eq:roothhaan_intermediate_1}
+    F(\mathbf{r_1}) \sum_{\nu}^{K} C_{\nu i} \phi_\nu(\mathbf{r_1}) = \varepsilon_i \sum_{\nu}^{K} C_{\nu i} \phi_\nu(\mathbf{r_1}).
+\end{equation}
+We multiply both sides by $\phi_\mu^*(\mathbf{r_1})$ and integrate over the spatial coordinate $\mathbf{r_1}$ to get
+\begin{equation}
     \label{eq:roothaan_equations}
-    \begin{align}
-        \sum_{\nu}^{K} C_{\nu i} \int d\mathbf{r_1} \phi_\mu^*(\mathbf{r_1}) F(\mathbf{r_1}) \phi_\nu^*(\mathbf{r_1})&= \varepsilon_i \sum_{\nu}^{K} C_{\nu i} \int d\mathbf{r_1} \phi_\mu^*(\mathbf{r_1})\phi_\nu^*(\mathbf{r_1}) \\
-        \Rightarrow \mathbf{F(C)C} &= \mathbf{SC} \boldsymbol{\varepsilon}. \label{eq:roothaan_equations_matrix}
-    \end{align}
-\end{subequations}
-In the last step we have introduced the Fock matrix $\mathbf{F}$, the overlap matrix $\mathbf{S}$, the coefficient matrix $\mathbf{C}$ and the diagonal eigenvalue matrix $\boldsymbol{\varepsilon}$ with elements
+        \sum_{\nu}^{K} C_{\nu i} \underbrace{\int d\mathbf{r_1} \phi_\mu^*(\mathbf{r_1}) F(\mathbf{r_1}) \phi_\nu(\mathbf{r_1})}_{F_{\mu\nu}} = \varepsilon_i \sum_{\nu}^{K} C_{\nu i} \underbrace{\int d\mathbf{r_1} \phi_\mu^*(\mathbf{r_1})\phi_\nu(\mathbf{r_1})}_{S_{\mu\nu}}.
+\end{equation}
+Now we define the matrix elements for the Fock matrix $\mathbf{F}$ and the overlap matrix $\mathbf{S}$ using
 \begin{subequations}
     \label{eq:roothaan_matrices}
     \begin{align}
         F_{\mu \nu} &= \int d\mathbf{r_1} \phi_\mu^*(\mathbf{r_1}) F(\mathbf{r_1}) \phi_\nu^*(\mathbf{r_1}), \label{eq:roothaan_mat_F}\\
-        S_{\mu \nu} &= \int d\mathbf{r_1} \phi_\mu^*(\mathbf{r_1}) \phi_\nu^*(\mathbf{r_1}), \\
-        C_{\mu i} &= C_{\nu i} \text{ (coefficients of the } i\text{-th spin orbital)},\\
-        \varepsilon_{ij} &= \varepsilon_i \delta_{ij} \text{ (diagonal matrix with orbital energies)}.
+        S_{\mu \nu} &= \int d\mathbf{r_1} \phi_\mu^*(\mathbf{r_1}) \phi_\nu^*(\mathbf{r_1}),
     \end{align}
 \end{subequations}
-Ultimately, we are interested in the electron density distribution $\rho(\mathbf{r})$, which is given by the sum of the squares of the occupied spin orbitals: 
+so that the eigenvalue problem writes:
+\begin{subequations}
+    \begin{align}
+        \sum_{\nu}^{K} F_{\mu\nu} C_{\nu i}  &= \varepsilon_i \sum_{\nu}^{K} S_{\mu\nu} C_{\nu i},\\
+        \mathbf{FC} &= \mathbf{SC} \boldsymbol{\varepsilon}.    \label{eq:roothaan_equations_matrix}
+    \end{align}
+\end{subequations} 
+In \autoref{eq:roothaan_equations_matrix} $\boldsymbol{\varepsilon}$ is a diagonal matrix with the orbital energies $\varepsilon_i$ on the diagonal and $\mathbf{C}$ is the matrix of the expansion coefficients $C_{\nu i}$. This equation is called the Roothaan equations and can be solved iteratively. \\
+Yet, we still are missing a representation of the density in terms of the expansion coefficients $C_{\nu i}$ and the basis functions $\phi_\nu(\mathbf{r})$. The probability to find an electron in a certain position $\mathbf{r}$ is given by the square of the wavefunction $\psi_i(\mathbf{r})$ and thus the electron density $\rho(\mathbf{r})$ can be written as
 \begin{equation}
-    \rho(\mathbf{r}) = 2 \sum_{i=1}^{N/2} |\psi_i(\mathbf{r})|^2 = 2 \sum_{i=1}^{N/2} \sum_{\mu,\nu}^{K} C_{\mu i} C_{\nu i}^* \phi_\mu(\mathbf{r}) \phi_\nu^*(\mathbf{r}) = \sum_{\mu,\nu}^{K} P_{\mu \nu} \phi_\mu(\mathbf{r}) \phi_\nu^*(\mathbf{r})
+    \rho(\mathbf{r}) = 2 \sum_{i=1}^{N/2} |\psi_i(\mathbf{r})|^2 = 2 \sum_{i=1}^{N/2} \sum_{\mu,\nu}^{K} C_{\mu i} C_{\nu i}^* \phi_\mu(\mathbf{r}) \phi_\nu^*(\mathbf{r}) = \sum_{\mu,\nu}^{K} P_{\mu \nu} \phi_\mu(\mathbf{r}) \phi_\nu^*(\mathbf{r}).
 \end{equation}
-\TODO{REFORMULATE ENDE - SCHWAMMIG\\}
-Here we have used \autoref{eq:psi_approximation} to express the spatial orbitals in terms of the basis functions\footnote{We still need to multiply by two in order to account for spin up and spin down} and defined the density matrix $\mathbf{P}$ which reads
+Here we have used \autoref{eq:psi_approximation} to express the spatial orbitals in terms of the basis functions\footnote{We still need to multiply by two in order to account for spin up and spin down} and defined the density matrix $\mathbf{P}$ with matrix elements
 \begin{equation}
     \label{eq:density_matrix}
     P_{\mu \nu} = 2 \sum_{i=1}^{N/2} C_{\mu i} C_{\nu i}^*.
@@ -158,7 +165,7 @@ As we have seen earlier, the Fock operator $F$ and thus the Fock matrix $\mathbf
             &\qquad - \frac{1}{2} \underbrace{\iint d\mathbf{r}_1 d\mathbf{r}_2\, \phi_\mu^*(\mathbf{r}_1) \phi_\lambda(\mathbf{r}_1) r_{12}^{-1} \phi_\sigma^*(\mathbf{r}_2) \phi_\nu(\mathbf{r}_2)}_{\text{Exchange-term}}
             \Bigg]
 \end{align}
-One and two electron contributions are now split into the core Hamiltonian $H_{\mu\nu}^\text{core}$ term, which is independent of the density matrix and thus stays constant for a given set of basis functions, and the Coulomb and exchange terms that depend on the density matrix $\mathbf{P}$. The latter terms are often denoted as $G_{\mu\nu}$, the so-called two-electron integrals, hence $F_{\mu \nu} = H_{\mu\nu}^\text{core} + G_{\mu\nu}$.\\
+One and two electron contributions are now split into the core Hamiltonian $H_{\mu\nu}^\text{core}$ term, which is independent of the density matrix and thus stays constant for a given set of basis functions, and the Coulomb and exchange terms that depend on the density matrix $\mathbf{P}$. The latter terms are often denoted as $G_{\mu\nu}$, the so-called two-electron integrals, hence $F_{\mu \nu} = H_{\mu\nu}^\text{core} + G_{\mu\nu}$.
 
 \subsection{The Self-Consistent Field (SCF) Algorithm}
 \label{subsec:background_hf_scf}
@@ -225,24 +232,21 @@ For computational treatment, our abstract basis functions $\phi_\nu(\mathbf{r})$
 Motivated by the analytical solution of the Hydrogen atom, one can introduce so-called Slater-type orbitals (STOs) using an exponential radial term and spherical harmonics: \footnote{for sake of clarity the spherical harmonics term is written with $\Omega$ instead of $\theta$ \& $\varphi$}
 \begin{equation}
     \label{eq:slater_orbital}
-    \phi_{n, l, m}^{\text{STO}}(r, \Omega, \zeta) = N Y_{l,m}(\Omega) r^{n-1} e^{\zeta r}
+    \phi_{n, l, m}^{\text{STO}}(r, \Omega, \zeta) = N Y_{l,m}(\Omega) r^{n-1} e^{-\zeta r}
 \end{equation} 
 Computationally, the integrals that occur by using linear combinations of STOs are expensive to calculate. \\
 
-\TODO{UMSCHREIBEN START\\}
 \textbf{Gaussian-Type Orbitals (GTOs)}\\
-Fortunately, a very good approximation of STOs can be achieved by combining several Gaussian-type orbitals (GTOs). This combination, called a contraction of GTOs, referred to as contracted Gaussian function (CGF), only differs in the changed exponential term from the STOs. The GTOs are defined as:
+To circumvent this problem, one approximates STOs using contractions of Gaussian-type orbitals (GTOs), which have a Gaussian $e^{-\zeta r^2}$ in place of the Slater exponential $e^{-\zeta r}$. A GTO is defined as: 
 \begin{equation}
     \label{eq:gaussian_orbital}
     \phi_{n, l, m}^{\text{GTO}}(r, \Omega, \zeta) = N Y_{l,m}(\Omega) r^{n-1} e^{-\zeta r^2}
 \end{equation}
-With each STO modelled by a CGF as: 
+A linear combination of $N$ GTOs to approximate a STO is referred to as a contracted Gaussian function (CGF). We choose the contraction coefficients $c_i$ and the exponents $\zeta_i$ such that the CGF approximates the STO as closely as possible. \\
 \begin{equation}
     \phi_{n, l, m}^{\text{STO}}(r, \Omega, \zeta)  \approx \phi_{n, l, m}^{\text{CGF}}(r, \Omega, \zeta) = \sum_{i=1}^N c_i \phi_{n, l, m}^{\text{GTO}_i}(r, \Omega, \zeta_i)
 \end{equation}
-\TODO{UMSCHREIBEN ENDE\\}
-The contraction coefficients $c_i$ and the exponents $\zeta_i$ are chosen such that the CGF of a STO-nG basis set approximates the STOs as closely as possible. Common STO-nG basis sets include STO-3G, STO-6-31G or STO-6-31G(2df,p). \\
-The n in this nomenclature of Pople type basis sets \parencite{ref:pople_basis} denotes the number of GTOs used in the contraction. While STO-3G uses three GTOs for each orbital, STO-6-31G uses six GTOs for the inner shell and two functions with three and one GTO respectively for the outer shell. Basis sets using more then one contracted function (31 in 6-31G) are so-called double-zeta basis sets; in this particular case it is a split-valence double zeta basis set because the core orbitals (6 in 6-31G) are modeled with only one contraction. The notation in parentheses denotes additional functions, e.g. STO-6-31G(2df,p)\footnote{also referred to as 6-31G(2df,p) in this thesis} uses two additional d-functions and one f-function on heavy atoms (\ch{C}, \ch{O}, \ch{N} \& \ch{F}). \\
+Many basis sets with varying number of CGFs have been developed over the years, some common ones include STO-3G, STO-6-31G or STO-6-31G(2df,p). The n in this nomenclature of Pople type basis sets \parencite{ref:pople_basis} denotes the number of GTOs used in the contraction. While STO-3G uses three GTOs for each orbital, STO-6-31G uses six GTOs for the inner shell and two functions with three and one GTO respectively for the outer shell. Basis sets using more than one contracted function (31 in 6-31G) are so-called double-zeta basis sets; in this particular case it is a split-valence double zeta basis set because the core orbitals (6 in 6-31G) are modelled with only one contraction. The notation in parentheses denotes additional functions, e.g. STO-6-31G(2df,p)\footnote{also referred to as 6-31G(2df,p) in this thesis} uses two additional d-functions and one f-function on heavy atoms (\ch{C}, \ch{O}, \ch{N} \& \ch{F}). \\
 
 \textbf{Segmented Contraction}\\
 Generally, the GTOs used in the contraction of Pople type basis sets are not reused and thus of the segmented contraction type. In contrast, general contraction type basis sets (such as cc-pVXZ \parencite{ref:cc-pVXZ}) reuse some or all primitives in multiple contractions. The latter can be converted to a computationally more efficient segmented form, which retains the initial accuracy. One such modern segmented basis family optimized for density functional theory are the pcseg-n basis sets. \parencite{ref:Jensen2014pcs}\\
@@ -266,7 +270,7 @@ Møller-Plesset Perturbation Theory (MP) partitions the total energy into a zero
 \subsection{Density Functional Theory (DFT)}
 \label{subsec:background_dft}
 Density funcitonal theory (DFT) takes an alternative approach to the many-electron problem. It uses a system of non-interacting electrons to approximate the actual many-electron interacting system. The formulation based on the Hohenberg-Kohn theorems \parencite{ref:hohenberg_kohn1964} states that the ground state energy of a many-electron system is a functional of the electron density $\rho(\mathbf{r})$. Contrary to HF-theory, this functional $G[\rho] = T[\rho] + E_{\text{ex + corr}}[\rho]$ encompasses kinetic energy as well as both exchange and correlation energy. \parencite{ref:kohn_sham_1965}\\
-While the exact functional cannot be attained (with the exception of free-electron gas), functionals can be constructed via fitting methods to experimental data or higher level methods. \TODO{Nachlesen - Kohn-Sham DFT} 
+While the exact functional cannot be attained (with the exception of free-electron gas), functionals can be constructed via fitting methods to experimental data or higher level methods. 
 In its most common implementation, Kohn-Sham DFT, one again solves for the atomic orbitals in an analogous way by minimizing the energy under the constraint of orthogonal orbitals in an iterative, self-consistent manner. In practice, one usually combines multiple different sources such as fitted functionals, corrections and exact exchange contributions from HF. Coefficients for this combinations are fitted and can often be altered in computational chemistry packages. 
 Common choices of DFT functionals grouped by level of accuracy on Perdew's famous Jacob's Ladder \parencite{ref:perdew_jacobs_ladder} include:
 
@@ -444,15 +448,22 @@ An abstract representation of a MPNN is depicted in \autoref{fig:gnn_background}
 For every round, all nodes send a message containing their feature vector (or a derived representation) to all their neighbours. The node $n_1$ in \autoref{fig:gnn_background} sends its colour to its neighbours $n_2$ and $n_4$. After all messages have been sent, every node aggregates the received message via a permutation invariant function. In the example, this is simply the average of the received colours. Finally, a learned update function changes the node's feature vector based on the aggregated message and the current feature vector. After several rounds of message passing, which allow information flow between nodes not directly connected to each other, the final graph representation can be used to predict various properties.\\
 Decoders essentially invert the encoder's process to extract either node-level features (e.g. atomic energy, partial charge or node colour in \autoref{fig:gnn_background}) or graph-level properties such as total energy, polarizability or electric dipole moment.\\
 
-\subsection{Network Training and Hyperparameter Tuning}
+\subsection{Neural Network Training and Hyperparameter Tuning}
 \label{subsec:background_ml_training}
-\TODO{Write short section about training, hyperparameter tuning.}
-To include: 
-\begin{enumerate}
-    \item Bayses Search
-    \item Hyperband Tuner
-    \item General training process
-\end{enumerate}
+Training neural networks and tuning their hyperparameters are crucial steps to ensure models learn meaningful patterns and generalize to unseen data. This section outlines the standard training workflow and introduces two hyperparameter optimization methods employed in this thesis: Bayesian search and Hyperband.
+
+\textbf{Network Training}\\
+Training begins with random initialization of network weights. Input data is processed in the network in batches (e.g. 16, 32 or 64 input samples). For each batch, the network performs a forward pass to generate predictions and compute a loss value via a chosen loss function. Backpropagation then calculates gradients of the loss with respect to each weight in the network. The weights are updated using an optimization algorithm, which adjusts the weights in the direction that reduces the loss. This cycle (forward pass, loss computation, backpropagation) repeats for multiple epochs, where one epoch corresponds to one full pass through the training dataset. \\
+Key hyperparameters influence the training dynamics and overall model performance. Several hyperparameters affect the training process and model performance, including the learning rate, batch size, number of epochs, and network architecture (number of layers, neurons per layer, and activation functions).\\
+
+\textbf{Hyperparameter Tuning}\\
+Hyperparameter tuning explores the space of settings to identify combinations that yield the best performance. An exhaustive search over all possible combinations is typically infeasible and not possible for hyperparameters with continuous values. Within this thesis, two approaches will be used: Bayesian search and Hyperband tuning.\\
+
+\textbf{Bayesian Search Tuning}\\
+Bayesian search constructs a surrogate probabilistic model mapping hyperparameters to performance. After evaluating a set of configurations, it updates this model to predict promising regions in hyperparameter space. By sampling where improvement is most likely, it outperforms random or grid search in efficiency and convergence speed.
+
+\textbf{Hyperband Tuning}\\
+Hyperband tuning methods combine the exploratory power of random search with early stopping to efficiently allocate resources only to promising hyperparameter configurations. It starts with many random configurations, trains each for a few epochs, and discards the worst performers. The top configurations receive additional resources in subsequent rounds. This process is repeated until a certain budget is reached or a maximum number of configurations have been evaluated. This optimization strategy can be fully parallelized, allowing independent evaluation of configurations and fast identification of strong candidates. 
 
 \section{QM9 dataset}
 \label{sec:dataset}

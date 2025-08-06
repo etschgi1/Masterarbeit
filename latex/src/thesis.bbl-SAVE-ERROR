@@ -604,6 +604,51 @@
       \verb 10.1103/PhysRev.140.A1133
       \endverb
     \endentry
+    \entry{ref:perdew_jacobs_ladder}{article}{}
+      \name{author}{2}{}{%
+        {{hash=49bd2640f858f16dfcddcc404b026f30}{%
+           family={Perdew},
+           familyi={P\bibinitperiod},
+           given={John\bibnamedelima P.},
+           giveni={J\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
+        {{hash=7beee164535cfc7b709a1bfa6c811215}{%
+           family={Schmidt},
+           familyi={S\bibinitperiod},
+           given={Karla},
+           giveni={K\bibinitperiod}}}%
+      }
+      \strng{namehash}{1cf990962be460f3b69d74d52b7c067d}
+      \strng{fullhash}{1cf990962be460f3b69d74d52b7c067d}
+      \strng{bibnamehash}{1cf990962be460f3b69d74d52b7c067d}
+      \strng{authorbibnamehash}{1cf990962be460f3b69d74d52b7c067d}
+      \strng{authornamehash}{1cf990962be460f3b69d74d52b7c067d}
+      \strng{authorfullhash}{1cf990962be460f3b69d74d52b7c067d}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{0094-243X}
+      \field{journaltitle}{AIP Conference Proceedings}
+      \field{month}{07}
+      \field{number}{1}
+      \field{title}{Jacob's ladder of density functional approximations for the exchange-correlation energy}
+      \field{volume}{577}
+      \field{year}{2001}
+      \field{pages}{1\bibrangedash 20}
+      \range{pages}{20}
+      \verb{doi}
+      \verb 10.1063/1.1390175
+      \endverb
+      \verb{eprint}
+      \verb https://pubs.aip.org/aip/acp/article-pdf/577/1/1/12108089/1\_1\_online.pdf
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1063/1.1390175
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1063/1.1390175
+      \endverb
+    \endentry
     \entry{ref:slater1951}{article}{}
       \name{author}{1}{}{%
         {{hash=2680effb67f4c8cd7c73443f7af7dbe9}{%
@@ -838,8 +883,8 @@
       \strng{authorbibnamehash}{3a2585af369dbd4150db746c63177b0c}
       \strng{authornamehash}{3a2585af369dbd4150db746c63177b0c}
       \strng{authorfullhash}{3a2585af369dbd4150db746c63177b0c}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{The Journal of Chemical Physics}
@@ -1456,8 +1501,8 @@
       \strng{authorbibnamehash}{3a097aa3ebf2b8c2acf988341dde9710}
       \strng{authornamehash}{3a097aa3ebf2b8c2acf988341dde9710}
       \strng{authorfullhash}{7a67607c66e4af944b5f16461d6d0a87}
-      \field{sortinit}{2}
-      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Journal of Machine Learning Research}
@@ -1752,8 +1797,8 @@
       \strng{authorbibnamehash}{278021aa20410028e4648cf93469c0c5}
       \strng{authornamehash}{278021aa20410028e4648cf93469c0c5}
       \strng{authorfullhash}{278021aa20410028e4648cf93469c0c5}
-      \field{sortinit}{3}
-      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Journal of Chemical Theory and Computation}
@@ -1795,8 +1840,8 @@
       \strng{authorbibnamehash}{2d3ff61117ef3f657b16d6070789673d}
       \strng{authornamehash}{2d3ff61117ef3f657b16d6070789673d}
       \strng{authorfullhash}{85fa9fdf8247a76c044d4bedd7bb0590}
-      \field{sortinit}{3}
-      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Nature Communications}
@@ -2348,8 +2393,8 @@
       \strng{authorbibnamehash}{c7b5508dc5e59a2846d22617276cc27c}
       \strng{authornamehash}{c7b5508dc5e59a2846d22617276cc27c}
       \strng{authorfullhash}{c7b5508dc5e59a2846d22617276cc27c}
-      \field{sortinit}{5}
-      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{{Python} Language Reference, version 3.11.11}
@@ -2361,8 +2406,35 @@
       \verb https://www.python.org
       \endverb
     \endentry
+    \entry{ref:scf_guess_tools}{online}{}
+      \name{author}{2}{}{%
+        {{hash=0d678e72b7f920491fb63cd8171d18a8}{%
+           family={Milacher},
+           familyi={M\bibinitperiod},
+           given={Dominik},
+           giveni={D\bibinitperiod}}}%
+        {{hash=c3db4fe3b3535d10eae84a47592674dd}{%
+           family={Wachmann},
+           familyi={W\bibinitperiod},
+           given={Elias},
+           giveni={E\bibinitperiod}}}%
+      }
+      \strng{namehash}{cfd8a59345ab2a2b8f06c3867f2929a4}
+      \strng{fullhash}{cfd8a59345ab2a2b8f06c3867f2929a4}
+      \strng{bibnamehash}{cfd8a59345ab2a2b8f06c3867f2929a4}
+      \strng{authorbibnamehash}{cfd8a59345ab2a2b8f06c3867f2929a4}
+      \strng{authornamehash}{cfd8a59345ab2a2b8f06c3867f2929a4}
+      \strng{authorfullhash}{cfd8a59345ab2a2b8f06c3867f2929a4}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://github.com/hauser-group/scf_guess_tools}}
+      \field{note}{Accessed: 2025-07-30}
+      \field{title}{{scf\_guess\_tools: Tools for SCF initial guesses}}
+      \field{year}{2025}
+    \endentry
   \enddatalist
-  \missing{ref:qm9}
 \endrefsection
 \endinput
 
