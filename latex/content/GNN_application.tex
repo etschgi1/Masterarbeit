@@ -293,7 +293,7 @@ Moderate dropout rates are generally advisable, but $\text{GNN}^{\text{MD}}_\tex
         \end{tabular}
         }
 \end{table}
-\subsection{Evalutation \& Conclusion}
+\subsection{Evaluation \& Conclusion}
 \label{sec:qm9_md_isomers_conclusion}
 We have seen that not every model and hyperparameter configuration translates to good results for the geometry perturbed MD dataset. The best performing model for the isomers $\text{GNN}^{\text{MD*}}_\text{initial}$ takes two to three iterations longer to converge (even after retraining) than the $\text{GNN}^{\text{MD*}}_\text{f. 0}$ model. Therefore, the latter model generalizes better to the MD geometries. This may be attributed at least to some extend to the full matrix loss used during training for this model. \\
 \autoref{tab:qm9_md_test_overview} compares the best performing GNNs with established guesses. Besides the well established \texttt{minao} scheme, the GNNs outperform all other guessing schemes in terms of iterations. 
@@ -387,7 +387,7 @@ Network hyperparameter tuning was carried out in the same manner as above, excep
         }
 \end{table}
 Both the mean iteration count and its variability increased by about one cycle compared to the best-performing isomer models. Further analysis of iteration performance by molecule size revealed no clear correlation between atom count and the number of iterations to converge.
-\subsection{Evalutation \& Conclusion}
+\subsection{Evaluation \& Conclusion}
 \label{sec:qm9_full_isomers_conclusion}
 Using our stratified QM9 sample, we show that our GNN implementation trained on just 400 molecules achieves lower SCF iteration counts than every guessing scheme except \text{minao}. The greater chemical diversity in this subset leads to a uniformly higher standard deviation in cycle counts across all methods. \autoref{tab:qm9_full_test_overview} compares our top-performing GNN against the established guessing schemes.
 
