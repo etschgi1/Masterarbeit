@@ -175,7 +175,7 @@ Initially, we calculate the core Hamiltonian $H_{\mu\nu}^\text{core}$ and the ov
 \begin{enumerate}[itemsep=0.1em]
     \item Calculate $G_{\mu\nu}$ using the current $\mathbf{P}$.
     \item Build a new $\mathbf{F}$ using $H_{\mu\nu}^\text{core}$ and $G_{\mu\nu}$.
-    \item Solve the generalized eigenvalue problem to obtain a new $\mathbf{C}$ and $\boldsymbol{\varepsilon}$. \footnote{For numerical stability one usually converts to a standard eigenproblem using canonical orthonormalization: diagonalize $\mathbf{S}=\mathbf{U}\,s\,\mathbf{U}^T$, form $\mathbf{X}=\mathbf{U}\,s^{-1/2}$, solve the standard problem $\mathbf{X}^T\mathbf{F}\,\mathbf{X}\,\mathbf{C}'=\mathbf{C}'\,\boldsymbol{\varepsilon}$, and recover $\mathbf{C}=\mathbf{X}\,\mathbf{C}'$.}
+    \item Solve the generalized eigenvalue problem\footnote{For numerical stability one usually converts to a standard eigenproblem using canonical orthonormalization: diagonalize $\mathbf{S}=\mathbf{U}\,s\,\mathbf{U}^T$, form $\mathbf{X}=\mathbf{U}\,s^{-1/2}$, solve the standard problem $\mathbf{X}^T\mathbf{F}\,\mathbf{X}\,\mathbf{C}'=\mathbf{C}'\,\boldsymbol{\varepsilon}$, and recover $\mathbf{C}=\mathbf{X}\,\mathbf{C}'$.} to obtain a new $\mathbf{C}$ and $\boldsymbol{\varepsilon}$. 
     \item Obtain a new density matrix $\mathbf{P}$ from the new $\mathbf{C}$.
     \item Total energy or $\mathbf{P}$ converged? If not, repeat.
 \end{enumerate}
