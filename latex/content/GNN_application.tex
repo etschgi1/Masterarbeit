@@ -69,7 +69,7 @@ Investigating different metrics on the test set in \autoref{tab:qm9_isomers_data
                         S[table-format=1.3(1.1)]
                         S[table-format=1.4(1)]}
             \toprule
-            Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / $\unit{\hartree}$} \\
+            Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{DFT}$ / $\unit{\hartree}$}  & {$\delta E_\text{DFT}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / 1} \\
             \midrule
             $\text{GNN}_\text{initial}$  & \textbf{11.2(6)}  & -1230(30) & -0.703(10) & 0.204(15)  & \textbf{0.0078(6)}\\
             $\text{GNN}_\text{aug. 1.5}$ & \textbf{11.2(6)}  & -1240(40) & -0.707(10) & 0.206(16)& 0.0079(6)\\
@@ -96,7 +96,7 @@ The edge threshold distance has an immediate impact on message passing between n
                         S[table-format=1.3(1.1)]
                         S[table-format=1.4(1)]}
                         \toprule
-                        Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / $\unit{\hartree}$} \\
+                        Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{DFT}$ / $\unit{\hartree}$}  & {$\delta E_\text{DFT}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / 1} \\
                         \midrule
                         $\text{GNN}_\text{dist. thres. 1.5}$ & 15.1(19)& \textbf{-1170(50)} & \textbf{-0.67(3)} & \textbf{0.187(19)}& 0.0104(5)\\
                         $\text{GNN}_\text{dist. thres. 2.0}$ & 12.3(9) & -1290(40) & -0.739(12) & 0.225(18)& 0.0084(5)\\
@@ -126,7 +126,7 @@ For all training runs up until now, the training loss was evaluated only on the 
                         S[table-format=1.3(1)]
                         S[table-format=1.4(1)]}
             \toprule
-            Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / $\unit{\hartree}$} \\
+            Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{DFT}$ / $\unit{\hartree}$}  & {$\delta E_\text{DFT}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / 1} \\
             \midrule
             $\text{GNN}_\text{f. 0}$ & \textbf{11.5(9)} & -1250(40)          & -0.718(0.011)          & 0.209(0.02) & \textbf{0.0076(6)} \\
             $\text{GNN}_\text{f. 1}$ & 11.6(0.7)        & -1250(40)          & -0.713(0.012)          & 0.206(0.02) & 0.0078(0.0006) \\
@@ -159,7 +159,7 @@ For all training runs up until now, the training loss was evaluated only on the 
         \end{tabular}
         }
 \end{table}
-The best performing networks using full matrix loss fare a bit worse with regards to iteration count. Notably, $\text{GNN}_\text{f. 0}$ reaches the lowest RMSE of all benchmarked models so far. Correlation between our surrogate metrics and iterations is rather high with a Pearson correlation coefficient of $0.94$ for DIIS and RMSE and $-0.92$ for $\Delta E_\text{HF}$ for the full matrix loss runs. However, as seen in \autoref{tab:qm9_isomers_dist_hyperparam}, the correlation for $\Delta E_\text{HF}$ and DIIS breaks down for the $\SI{1.5}{\angstrom}$ distance cutoff. On the contrary, RMSE is comparably high for this cutoff. 
+The best performing networks using full matrix loss fare a bit worse with regards to iteration count. Notably, $\text{GNN}_\text{f. 0}$ reaches the lowest RMSE of all benchmarked models so far. Correlation between our surrogate metrics and iterations is rather high with a Pearson correlation coefficient of $0.94$ for DIIS and RMSE and $-0.92$ for $\Delta E_\text{DFT}$ for the full matrix loss runs. However, as seen in \autoref{tab:qm9_isomers_dist_hyperparam}, the correlation for $\Delta E_\text{DFT}$ and DIIS breaks down for the $\SI{1.5}{\angstrom}$ distance cutoff. On the contrary, RMSE is comparably high for this cutoff. 
 \newpage
 \subsection{Evaluation \& Conclusion}
 \label{subsec:qm9_isomers_eval_and_concl}
@@ -176,7 +176,7 @@ Top performing models defined above are compared to \textsc{PySCF} guessing sche
                         S[table-format=1.4(1.1)]
                         S[table-format=1.4(1)]}
             \toprule
-            Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / $\unit{\hartree}$} \\
+            Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{DFT}$ / $\unit{\hartree}$}  & {$\delta E_\text{DFT}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / 1} \\
             \midrule
             $\text{GNN}_\text{initial}$   & 11.2(6)  & -1230(30)   & -0.703(10)& 0.2040(15)& 0.0078(6)\\
             $\text{GNN}_\text{f. 0}$      & 11.5(9)  & -1250(40)   & -0.718(11)& 0.209(2)  & \textbf{0.0076(6)}\\
@@ -189,7 +189,7 @@ Top performing models defined above are compared to \textsc{PySCF} guessing sche
         \end{tabular}
     % }
 \end{table}
-Comparing \textsc{PySCF} and $\overline{P}$ guessing schemes with our GNN approach gives various insights. Most strikingly, it is not necessary to obtain a low error in energy. $\Delta E_\text{HF}$ varies by over 2 magnitudes between the top contenders \texttt{vsap}, \texttt{minao} and $\text{GNN}_\text{initial}$. Furthermore, a low DIIS alone will not necessarily translate into fast convergence of the guessed density.
+Comparing \textsc{PySCF} and $\overline{P}$ guessing schemes with our GNN approach gives various insights. Most strikingly, it is not necessary to obtain a low error in energy. $\Delta E_\text{DFT}$ varies by over 2 magnitudes between the top contenders \texttt{vsap}, \texttt{minao} and $\text{GNN}_\text{initial}$. Furthermore, a low DIIS alone will not necessarily translate into fast convergence of the guessed density.
 
 We have shown that the GNN approach surpasses most conventional guessing schemes and performs nearly on par with \texttt{minao} in terms of iterations. Varying the data augmentation factor had negligible effect on the convergence speed, while the distance threshold contributes for distances around the bond length. It remains to be seen how well these models generalize to other data. 
 
@@ -212,7 +212,7 @@ Zero-shot predictions are made on inputs outside the training set's scope. In ou
                         S[table-format=1.2(1.1)]
                         S[table-format=1.4(1.1)]}
             \toprule
-            Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / $\unit{\hartree}$} \\
+            Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{DFT}$ / $\unit{\hartree}$}  & {$\delta E_\text{DFT}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / 1} \\
             \midrule
             $\text{GNN}_\text{initial}$   & 13(3)  & -1290(60) & -0.73(2)       & 0.23(2)& 0.0094(13) \\
             $\text{GNN}_\text{f. 0}$      & 11.3(8)  & -1250(40) & -0.706(11)       & 0.213(15)& 0.0077(4) \\
@@ -238,7 +238,7 @@ Metrics for re-trained versions of $\text{GNN}_\text{initial}$ and $\text{GNN}_\
                         S[table-format=1.3(2)]
                         S[table-format=1.4(1)]}
             \toprule
-            Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / $\unit{\hartree}$} \\
+            Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{DFT}$ / $\unit{\hartree}$}  & {$\delta E_\text{DFT}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / 1} \\
             \midrule
             $\text{GNN}^{\text{MD*}}_\text{initial}$   & 13.9(11)  & -1350(50) & -0.763(16)      & 0.25(2)& 0.0086(6) \\
             $\text{GNN}^{\text{MD*}}_\text{f. 0}$      & 11.1(5)  & -1250(40) & -0.706(10)       & 0.213(14)& 0.0073(5) \\
@@ -260,7 +260,7 @@ Moderate dropout rates are generally advisable, but $\text{GNN}^{\text{MD}}_\tex
                         S[table-format=1.3(1)]
                         S[table-format=1.4(1)]}
             \toprule
-            Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / $\unit{\hartree}$} \\
+            Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{DFT}$ / $\unit{\hartree}$}  & {$\delta E_\text{DFT}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / 1} \\
             \midrule
             $\text{GNN}^{\text{MD}}_\text{f. 0}$ & \textbf{10.9(5)} & \textbf{-1240 (30)} & -0.702(0.009) & 0.210(0.014) & \textbf{0.0075(4)} \\
             $\text{GNN}^{\text{MD}}_\text{f. 1}$ & 11.0(4) & \textbf{-1240 (30)} & \textbf{-0.700(9)}     & 0.212(0.015) & 0.0076(0.0004) \\
@@ -309,7 +309,7 @@ We have seen that not every model and hyperparameter configuration translates to
                         S[table-format=1.4(1.1)]
                         S[table-format=1.4(1.1)]}
                         \toprule
-                        Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / $\unit{\hartree}$} \\
+                        Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{DFT}$ / $\unit{\hartree}$}  & {$\delta E_\text{DFT}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / 1} \\
                         \midrule
                         $\text{GNN}^{\text{MD*}}_\text{initial}$   & 13.9(11)  & -1350(50) & -0.763(16)      & 0.25(2)& 0.0086(6) \\
                         $\text{GNN}^{\text{MD*}}_\text{f. 0}$      & 11.1(5)  & -1250(40) & -0.706(10)       & 0.213(14)& 0.0073(5) \\
@@ -353,7 +353,7 @@ Network hyperparameter tuning was carried out in the same manner as above, excep
                         S[table-format=1.3(1)]
                         S[table-format=1.4(1)]}
             \toprule
-            Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / $\unit{\hartree}$} \\
+            Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{DFT}$ / $\unit{\hartree}$}  & {$\delta E_\text{DFT}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / 1} \\
             \midrule %Data from server run!
             $\text{GNN}^{\text{Full}}_\text{f. 0}$ & 12(2)     & -1070(300) & -0.680(0.04) & 0.20(0.03) & 0.009(0.003) \\ %!TODO not everything rounded good :) 
             $\text{GNN}^{\text{Full}}_\text{f. 1}$ & \textbf{12.0(17)} & -1060(300) & -0.680(0.04) & 0.20(0.03) & \textbf{0.009(2)} \\
@@ -405,7 +405,7 @@ Another notable finding emerges when contrasting the full dataset results for $\
                         S[table-format=1.3(1.1)]
                         S[table-format=1.4(1.1)]}
                         \toprule
-                        Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{HF}$ / $\unit{\hartree}$}  & {$\delta E_\text{HF}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / $\unit{\hartree}$} \\
+                        Mean metrics:                 & {Iterations / 1} & {$\Delta E_\text{DFT}$ / $\unit{\hartree}$}  & {$\delta E_\text{DFT}$ / 1} & {DIIS error / $\unit{\hartree}$} & {RMSE / 1} \\
                         \midrule
                         $\text{GNN}^{\text{Full}}_\text{f. 1}$ & 12.0(17)& -1060(300) & -0.680(0.04) & 0.20(0.03) & \textbf{0.009(2)} \\
                         $\overline{P}$                & 17(3)            & -800(200)  & -0.52(2)     & 0.11(2)   & 0.014(2)  \\
