@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="500" height="500" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<defs>
+		<radialGradient id="e" cx="2999" cy="168.3" r="57.37" gradientTransform="matrix(.8716 0 0 .8716 -2381 85.65)" gradientUnits="userSpaceOnUse">
+			<stop stop-color="#fff" offset="0"/>
+			<stop stop-color="#d40000" offset="1"/>
+		</radialGradient>
+		<radialGradient id="d" cx="2711" cy="281.3" r="20" gradientTransform="translate(-2403,96.64)" gradientUnits="userSpaceOnUse">
+			<stop stop-color="#f2ffd9" offset="0"/>
+			<stop stop-color="#7dbc00" offset="1"/>
+		</radialGradient>
+	</defs>
+	<circle cx="250" cy="250" r="240" fill="none" stroke="#000" stroke-dasharray="30, 30" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"/>
+	<circle cx="250" cy="250" r="50" fill="url(#e)"/>
+	<use xlink:href="#a"/>
+	<use transform="translate(17.74 14.09)" xlink:href="#a"/>
+	<use transform="translate(31.42 -9.589)" xlink:href="#a"/>
+	<use transform="translate(24.32 -49.57)" xlink:href="#a"/>
+	<use transform="translate(5.376 -31.69)" xlink:href="#a"/>
+	<use transform="translate(-18.56 -41.95)" xlink:href="#a"/>
+	<use transform="translate(-24.61 -9.063)" xlink:href="#a"/>
+	<g id="a" transform="translate(11.18 -15.65)">
+		<rect id="c" x="225.9" y="284.4" width="17" height="3" rx="1.5" ry="1.5"/>
+		<use transform="rotate(-90 234.4 285.9)" xlink:href="#c"/>
+	</g>
+	<g id="b" transform="translate(0,5)">
+		<circle cx="315" cy="385" r="20" fill="url(#d)"/>
+		<path d="m310 384h10v2h-10z" stroke="#000" stroke-linejoin="round"/>
+	</g>
+	<use transform="translate(85,-115)" xlink:href="#b"/>
+	<use transform="translate(83 -202)" xlink:href="#b"/>
+	<use transform="translate(-32.18 -300)" xlink:href="#b"/>
+	<use transform="translate(-185,-250)" xlink:href="#b"/>
+	<use transform="translate(-255,-115)" xlink:href="#b"/>
+	<use transform="translate(-115,-35)" xlink:href="#b"/>
+</svg>
