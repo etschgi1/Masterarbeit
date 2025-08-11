@@ -39,7 +39,7 @@ def load_using_config(config, dataset, basis, model_path):
                             edge_threshold_val=config["edge_threshold_val"],
                             message_net_layers=config["message_net_layers"],
                             message_net_dropout=config["message_net_dropout"],
-                            data_aug_factor=1,#config["data_aug_factor"], -> not important for inference!!!
+                            data_aug_factor=1, #-> not important for inference!!!
                             target="density",
                             verbose_level=1,
                             no_progress_bar=True)
@@ -229,8 +229,8 @@ def main(tune_log_folder, param_paths_override=None, skip_iterations=False, reev
         if os.path.exists(model_path):
             cur_model = load_using_config(cur_config, dataset, basis, model_path)
         else: 
-            # cur_model = train_using_config(cur_config, dataset, basis, model_path)
-            pass
+            print("TRAIN MODEL")
+            cur_model = train_using_config(cur_config, dataset, basis, model_path)
         eval_model(cur_model, dataset, eval_res_path, skip_iterations)
 
 if __name__ == "__main__": 
@@ -240,7 +240,7 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         tune_log_folder = sys.argv[1]
     else:
-        tune_log_folder = select_folder()
+        tune_log_folder = "/home/etschgi1/REPOS/Masterarbeit/3_studies/Block_guessing/6-31g_testing/tune_logs/MGNN_hyp_small_full_mat_loss.py"#select_folder()
         skip_iterations = True if input("skip iterations in benchmark?").lower() == "y" else False
     # check if param_paths_override.txt exists
     if os.path.exists(os.path.join(tune_log_folder, "param_paths_override.txt")):

@@ -5,9 +5,9 @@ This chapter provides an overview of the theoretical background used in this the
 
 \section{Self-consistent Field (SCF) Theory}
 \label{sec:background_scf}
-Quantum chemistry has its roots far before the advent of the computer age. Based on the original theories on quantum mechanics formulated by Schrödinger and Heisenberg, the interest in the accurate description of matter via this new theory was sparked. After the introduction of the wavefunction by Schrödinger almost a century ago, Max Born's statistical interpretation enabled a direct calculation of the electron density. \parencite{ref:schroedinger_1926undulatory} Already a year later, Hartree coined a self-consistent method to solve the many-electron problem utilizing a mean-field approach. Slater and Fock independently adapted the method by adding the exchange term and consistency with the Pauli exclusion principle. This method was later named Hartree-Fock (HF) method. \parencite{ref:Hartree_1928,ref:slater1930note,ref:fock1930naherungsmethode}. From that point on many advancements have been made in this field. Most prominently density functional theory (DFT), coupled cluster methods (CC), and pertubative expansions (MP2) have been developed. Yet, the theory behind the HF method is still the foundation for nearly all of these methods.
+Quantum chemistry has its roots far before the advent of the computer age. Based on the original theories on quantum mechanics formulated by Schrödinger and Heisenberg, the interest in the accurate description of matter via this new theory was sparked. After the introduction of the wavefunction by Schrödinger almost a century ago, Max Born's statistical interpretation enabled a direct calculation of the electron density. \parencite{ref:schroedinger_1926undulatory} Already a year later, Hartree coined a self-consistent method to solve the many-electron problem utilizing a mean-field approach. Slater and Fock independently adapted the method by adding the exchange term and consistency with the Pauli exclusion principle. This method was later named Hartree-Fock (HF) method. \parencite{ref:Hartree_1928,ref:slater1930note,ref:fock1930naherungsmethode} From that point on many advancements have been made in this field. Most prominently density functional theory (DFT), coupled cluster methods (CC), and pertubative expansions (MP2) have been developed. Yet, the theory behind the HF method is still the foundation for nearly all of these methods.
 
-The following introductory overview of the Hartree-Fock method is mostly based on the book by Szabo and Ostlund \parencite{ref:szabo_ostlund}. 
+The following introductory overview of the Hartree-Fock method is mostly based on the book by Szabo and Ostlund. \parencite{ref:szabo_ostlund}
 
 \subsection{Foundations and Formalism of the Hartree-Fock Method}
 \label{subsec:background_hf}
@@ -205,7 +205,7 @@ The lowest $\nicefrac{N}{2}$ eigenvalues correspond to the occupied orbitals, wh
     E^\text{HF}_0 =  \bra{\Psi^\text{HF}_0} H \ket{\Psi^\text{HF}_0},
 \end{equation}
 with $\Psi^\text{HF}_0$ denoting the HF ground state wavefunction built from the $\nicefrac{N}{2}$ lowest energy orbitals.
-Furthermore, the orbital energies can be used to estimate ionization energies in a frozen shell model, as stated by Koopmans' theorem \parencite{ref:koopmans1934}. Removing an electron from an occupied orbital $\chi_i$ will lead to an increase in energy of $\varepsilon_i$.
+Furthermore, the orbital energies can be used to estimate ionization energies in a frozen shell model, as stated by Koopmans' theorem. \parencite{ref:koopmans1934} Removing an electron from an occupied orbital $\chi_i$ will lead to an increase in energy of $\varepsilon_i$.
 
 By inserting $F$ for the Hamiltonian in \autoref{eq:elec_energy}, one directly derives the total energy of the closed-shell ground state: 
 \begin{subequations}
@@ -220,11 +220,11 @@ To get the total energy of the system, one adds the nuclear repulsion energy
 \begin{equation}
 E_\text{nuc} = \sum_{A<B} \frac{Z_A Z_B}{|\mathbf{R}_A - \mathbf{R}_B|}
 \end{equation}
-to the electronic energy $E^\text{HF}_0$, yielding the total energy of the system. Additionally, particularly from a chemical point of view, the number of electrons assigned to each atom is of interest, since partial charges can be derived from it. Given the fact that the density matrix represents spatial orbitals in the atom centered basis set, we can interpret $\mathbf{(PS)}_{\mu \mu}$ as the population of electrons on orbital $\mu$. This leads to a possible definition of a partial charge at atom $A$,
+to the electronic energy $E^\text{HF}_0$, yielding the total energy of the system. Additionally, particularly from a chemical point of view, the number of electrons assigned to each atom is of interest, since partial charges can be derived from it. Given the fact that the density matrix represents spatial orbitals in the atom centred basis set, we can interpret $\mathbf{(PS)}_{\mu \mu}$ as the population of electrons on orbital $\mu$. This leads to a possible definition of a partial charge at atom $A$,
 \begin{equation}
     q_A = Z_A - \sum_{\mu \in A} \mathbf{(PS)}_{\mu \mu},
 \end{equation}
-with index $\mu$ running over all basis functions located at atom $A$. This represents one of several approaches to population and charge analysis, commonly referred to as Mulliken population analysis \parencite{ref:mulliken1955electronic}. 
+with index $\mu$ running over all basis functions located at atom $A$. This represents one of several approaches to population and charge analysis, commonly referred to as Mulliken population analysis. \parencite{ref:mulliken1955electronic}
 \subsection{Basis sets}
 \label{subsec:background_hf_basis_sets}
 For computational treatment, our abstract basis functions $\phi_\nu(\mathbf{r})$ need to manifest in a concrete form. 
@@ -309,7 +309,7 @@ In this section, a brief overview will be given of the most important concepts i
 \label{subsec:background_ml_general_concepts}
 Machine learning itself is a subfield of artificial intelligence (AI) research, which is the broader field of creating machines that can perform tasks that would normally require human-level intelligence. \\
 Central to ML is the concept of learning from data. This means that we need to define data given as input to predict a target output. More broadly speaking, we can either predict a discrete class label (classification) or a continuous value (regression) given input data. The focus will be set on the latter task, in particular on predicting a continuous value (Fock / density matrix entries) given a set of continuous input values of substantially different character (atomic coordinates, overlap matrix elements, \dots). \\
-The various approaches can also be grouped by learning paradigms: supervised, unsupervised, or reinforcement. Supervised models learn a function that maps input data to labeled target values. Unsupervised models, on the other hand, seek patterns or structure in unlabeled data. Reinforcement learning refers to models that learn a policy through interaction with an environment by maximizing a reward signal over time.
+The various approaches can also be grouped by learning paradigms: supervised, unsupervised, or reinforcement. Supervised models learn a function that maps input data to labelled target values. Unsupervised models, on the other hand, seek patterns or structure in unlabelled data. Reinforcement learning refers to models that learn a policy through interaction with an environment by maximizing a reward signal over time.
 
 For the purpose of this thesis, we will focus on supervised models applied to our regression task. For consistency in the following sections, we introduce the general notation for our model as follows:
 \begin{equation}
@@ -356,7 +356,7 @@ A computationally more demanding score, the DIIS error, may also be used. In thi
 with a normalization factor $n_\text{elements, $\uparrow$} + n_\text{elements, $\downarrow$}$ to make different matrix sizes comparable. DIIS gives a measure of self-consistency with DIIS error $=0$ (commuting $\mathbf{F} \& \mathbf{P}$), denoting convergence. 
 \subsection{Regression Models}
 \label{subsec:background_ml_model_types}
-Regression models try to establish the mapping in \autoref{eq:general_ML_model_formula} directly by modeling the mapping using a linear combination of terms. In its simplest form, a linear regression in the multivariate multi-target case is given by 
+Regression models try to establish the mapping in \autoref{eq:general_ML_model_formula} directly by modelling the mapping using a linear combination of terms. In its simplest form, a linear regression in the multivariate multi-target case is given by 
 \begin{equation}
     \label{eq:linear_regression_formula}
     \begin{aligned}
@@ -395,7 +395,7 @@ KRR thus extends ridge regression in a non-parametric way, with the regularizati
 
 \subsection{Neural Network (NN) concepts}
 \label{subsec:nn_concepts}
-Neural networks are based on a simplified model of biological neuron interactions. Rosenblatt's perceptron algorithm, depicted in \autoref{fig:perceptron}, lays the foundation for nearly all neural network architectures \parencite{ref:rosenblatt1958perceptron}. It introduced the nonlinear mapping from the features $\mathbf{x}$ to the targets $\mathbf{y}$ using a step function $\Theta$ as shown in \autoref{eq:perceptron}\footnote{Bias is again prepended to the weight vector}.
+Neural networks are based on a simplified model of biological neuron interactions. Rosenblatt's perceptron algorithm, depicted in \autoref{fig:perceptron}, lays the foundation for nearly all neural network architectures. \parencite{ref:rosenblatt1958perceptron} It introduced the nonlinear mapping from the features $\mathbf{x}$ to the targets $\mathbf{y}$ using a step function $\Theta$ as shown in \autoref{eq:perceptron}\footnote{Bias is again prepended to the weight vector}.
 \begin{equation}
     \label{eq:perceptron}
     y = \Theta(\mathbf{w} \cdot \mathbf{x}) \quad \text{with} \quad
@@ -434,7 +434,7 @@ Similar to regression, regularization may also be added in various places. Besid
 
 \subsection{Graph Neural Network (GNN) / Message Passing Neural Nets (MPNN)}
 \label{subsec:background_gnn}
-Many problems cannot be simply mapped to a flattened input vector without losing information that is important for accurate predictions. Within the context of atomistic theories, a natural representation e.g. for a molecule may be attained by using a graph consisting of atoms as the nodes and edges between these nodes to represent interaction (e.g. bonds) between atoms. Learning features on graphs using a Graph Neural Network (GNN) is exploited in various fields and across different scales, from large protein structurs in DeepMind's Alphafold \parencite{ref:alphafold} down to molecular features such as energy, polarization and charge density in computational quantum chemistry. For the latter, the term `Message Passing Neural Nets' (MPNN) was coined by Glimer et al. \parencite{ref:gilmer2017neural}.
+Many problems cannot be simply mapped to a flattened input vector without losing information that is important for accurate predictions. Within the context of atomistic theories, a natural representation e.g. for a molecule may be attained by using a graph consisting of atoms as the nodes and edges between these nodes to represent interaction (e.g. bonds) between atoms. Learning features on graphs using a Graph Neural Network (GNN) is exploited in various fields and across different scales, from large protein structurs in DeepMind's Alphafold \parencite{ref:alphafold} down to molecular features such as energy, polarization and charge density in computational quantum chemistry. For the latter, the term `Message Passing Neural Nets' (MPNN) was coined by Glimer et al. in \parencite{ref:gilmer2017neural}.
 
 An abstract representation of a MPNN is depicted in \autoref{fig:gnn_background}. Data, such as colour in the concrete example, is encoded in the nodes of a graph. For many use cases, separate encoder functions or even MLPs may be suitable for the encoding of various features into a feature vector for a given node or edge. For molecules, these might include atomic number, electronegativity or even overlap matrix elements. After initialization of the graph, the MPNN iteratively updates the nodes feature vector for several message passing rounds. 
 \begin{figure}[H]
