@@ -44,7 +44,7 @@ Note further that, reconstructing the density from the Fock matrix amplifies res
 \label{sec:qm9_c5h4n2o2}
 As a proof of concept we will use 508 constitutional isomers\footnote{From the 509 constitutional isomers of \ch{C5H4N2O2} 508 converged using the STO-3G basis set and the B3LYP functional.} of \ch{C5H4N2O2} from the QM9 dataset. 
 Single point RKS simulations in \textsc{PySCF} \parencite{ref:pyscf} were performed for these molecules using the B3LYP\footnote{B3LYPG was used to be consistent with the Gaussian program package.} functional and the STO-3G basis set. The resulting converged density, Fock, and overlap matrices were saved for future training purposes. For our very minimal basis, these matrices are of size $49 \times 49$ as can be seen for a converged density in \autoref{fig:density_dsgdb9nsd_022700}. 
-Due to the symmetry of the matrices we can discard nearly half of the elements and are left with 1225 features to learn. A rule of thumb for training classical statistical models is to have at least 10 samples per feature. \parencite{ref:rule_of_10} The given dataset of 508 samples is therefore far from this rule if we discard multiplicity in atoms in the samples. As a first step we shall limit our efforts to single models predicting the system based on the full overlap matrix. Nevertheless, the row / column order of our atoms in the overlap matrix has to be consistent for all the samples in the dataset (as seen in \autoref{fig:density_dsgdb9nsd_022700}). This is achieved by sorting the atoms in the overlap matrix according to their atomic number. Now we are ready to start off our endeavour with a ridge regression model as a first trial. 
+Due to the symmetry of the matrices we can discard nearly half of the elements and are left with 1225 features to learn. A rule of thumb for training classical statistical models is to have at least 10 samples per feature. \parencite{ref:rule_of_10} The given dataset of 508 samples is therefore far from this rule if we discard multiplicity in atoms in the samples. As a first step we shall limit our efforts to single models predicting the system based on the full overlap matrix. Nevertheless, the row/column order of our atoms in the overlap matrix has to be consistent for all the samples in the dataset (as seen in \autoref{fig:density_dsgdb9nsd_022700}). This is achieved by sorting the atoms in the overlap matrix according to their atomic number. Now we are ready to start off our endeavour with a ridge regression model as a first trial. 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{../fig/c5h4n2o2/density\_dsgdb9nsd\_022700.pdf}
@@ -145,7 +145,7 @@ Choosing the larger 6-31G(2df,p) basis set, we see the limitations of our initia
 
 \textbf{MLP Network}\\
 We implement an MLP model which is trained to map the overlap matrix to the main diagonal of the converged Fock matrix, from which density can be reconstructed via GWH. All samples are split into 80\% training, 10\% validation and 10\% test sets. Batchwise data loading is implemented to facilitate training on memory limited hardware. To gauge the performance of different configurations, a hyperparameter search is performed over the parameters in \autoref{tab:hyperparams_mlp}.
-\begin{table}[h]
+\begin{table}[H]
     \caption[Hyperparameter \& Parameters of the MLP model]{Hyperparameter \& Parameters of the MLP model. Model with best parameters marked bold.}
     \label{tab:hyperparams_mlp}
     \centering
@@ -193,7 +193,7 @@ To obtain the density from our Fock matrices we solve \autoref{eq:density_recons
 \end{figure}
 While \texttt{minao} provides a sparse density matrix, our MLP implementation yields a very dense result with many non-zero-off-diagonal elements. This stems from the fact that GWH does introduce large errors in the Fock matrix which propagate through the eigenvalue problem to the density matrix. \\
 A qualitative benchmark of the iteration count until convergence offers a similar picture as before: Calculations using the \texttt{minao} guess converge in roughly 11 iterations, while the simulations using the MLP model with GWH reconstruction take around 20 iterations. The present model thus performs similar to other basic initialization schemes such as the \texttt{1e} guess. Interestingly, our model and the \texttt{1e} guess do not offer statistically relevant benefits in terms of iterations compared to a randomly initialized density matrix as seen in \autoref{tab:mlp_metrics}.
-\begin{table}[h]
+\begin{table}[H]
     \centering
     \caption[\ch{C7H10O2} subset - iterations to convergence MLP]{Iterations needed to convergence for different guessing schemes on the \ch{C7H10O2} test subset. MLP\_GWH uses the MLP prediction with GWH reconstruction of Fock off-diagonals and subsequent derivation of density matrix. The \texttt{random} column refers to a random density guess in the range $[-0.5, 0.5]$}
     \label{tab:mlp_metrics}

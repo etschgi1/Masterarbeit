@@ -39,7 +39,7 @@ def load_using_config(config, dataset, basis, model_path):
                             edge_threshold_val=config["edge_threshold_val"],
                             message_net_layers=config["message_net_layers"],
                             message_net_dropout=config["message_net_dropout"],
-                            data_aug_factor=config["data_aug_factor"],
+                            data_aug_factor=1, # not needed for inference only!
                             target="density",
                             verbose_level=1,
                             no_progress_bar=True)
@@ -153,7 +153,7 @@ def eval_model(model, dataset, eval_result_path, skip_iterations= False):
     for i, (pred_density, key) in enumerate(zip(density_preds, dataset.test_keys)):
         cur_mol = dataset.molecule(key)
         mf = create_mf_from_mol(cur_mol, xc="b3lypg")
-        pred_focks.append(build_fock_from_density(mf, pred_density))
+        pred_focks.append(dataset.solver(key).get_fock(dm=pred_density))
         pred_overlaps.append(mf.get_ovlp())
         coreHs.append(mf.get_hcore())
     print("Done...", flush=True)
@@ -195,7 +195,7 @@ def eval_model(model, dataset, eval_result_path, skip_iterations= False):
     print("Done...")
 
 
-def main(tune_log_folder, param_paths_override=None, skip_iterations=False, retrain=True): 
+def main(tune_log_folder, param_paths_override=None, skip_iterations=False, retrain=False): 
     # get all params
     all_params_path = [os.path.join(tune_log_folder, run, "params.json")  for run in os.listdir(tune_log_folder) if os.path.isdir(os.path.join(tune_log_folder, run))]
     if param_paths_override is not None:
@@ -207,6 +207,8 @@ def main(tune_log_folder, param_paths_override=None, skip_iterations=False, retr
         dataset = Qm9IsomeresMd("/home/dmilacher/datasets/data1", size = 500, val=0.1, test=0.1)
     else:
         dataset = Qm9IsomeresMd("/home/etschgi1/REPOS/Masterarbeit/datasets/QM9", size = 500, val=0.1, test=0.1)
+
+    all_params_path = ["/home/etschgi1/REPOS/Masterarbeit/3_studies/Block_guessing/6-31g_md_testing/tune_logs/zero_shot/initial/params.json"]
 
     basis = BASIS_PATH
     print(f"Dataset: {dataset.name}, for {len(all_params_path)} models", flush=True)
@@ -221,7 +223,7 @@ def main(tune_log_folder, param_paths_override=None, skip_iterations=False, retr
             continue
         print(cur_config)
         model_path =  param_path.replace("params.json", "model.pth")
-        eval_res_path = param_path.replace("params.json", "eval_res.json")
+        eval_res_path = param_path.replace("params.json", "eval_res_reeval.json")
         if os.path.exists(eval_res_path):
             print(f"Evaluation results already exist at {eval_res_path}, skipping...")
             continue

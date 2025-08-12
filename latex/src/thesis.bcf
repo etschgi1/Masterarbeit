@@ -2434,14 +2434,15 @@
     <bcf:citekey order="58" intorder="1">ref:lethola_fully_numerical_atomic_potentials</bcf:citekey>
     <bcf:citekey order="59" intorder="1">ref:schuett_unifying_2019</bcf:citekey>
     <bcf:citekey order="60" intorder="1">ref:python</bcf:citekey>
-    <bcf:citekey order="61" intorder="1">ref:sk-learn</bcf:citekey>
-    <bcf:citekey order="62" intorder="1">ref:tensorflow</bcf:citekey>
-    <bcf:citekey order="63" intorder="1">ref:keras</bcf:citekey>
-    <bcf:citekey order="64" intorder="1">ref:kerastuner</bcf:citekey>
-    <bcf:citekey order="65" intorder="1">ref:PyTorchGeometric</bcf:citekey>
-    <bcf:citekey order="66" intorder="1">ref:ray_tune</bcf:citekey>
-    <bcf:citekey order="67" intorder="1">ref:milacher_scf_guess_datasets</bcf:citekey>
-    <bcf:citekey order="68" intorder="1">ref:scf_guess_tools</bcf:citekey>
+    <bcf:citekey order="61" intorder="1">ref:hauser-group-github</bcf:citekey>
+    <bcf:citekey order="62" intorder="1">ref:sk-learn</bcf:citekey>
+    <bcf:citekey order="63" intorder="1">ref:tensorflow</bcf:citekey>
+    <bcf:citekey order="64" intorder="1">ref:keras</bcf:citekey>
+    <bcf:citekey order="65" intorder="1">ref:kerastuner</bcf:citekey>
+    <bcf:citekey order="66" intorder="1">ref:PyTorchGeometric</bcf:citekey>
+    <bcf:citekey order="67" intorder="1">ref:ray_tune</bcf:citekey>
+    <bcf:citekey order="68" intorder="1">ref:milacher_scf_guess_datasets</bcf:citekey>
+    <bcf:citekey order="69" intorder="1">ref:scf_guess_tools</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="none">
