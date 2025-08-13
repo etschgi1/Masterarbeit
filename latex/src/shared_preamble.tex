@@ -107,7 +107,7 @@
 % \clearpairofpagestyles  % reset
 % \setkomafont{pageheadfoot}{\normalfont}  % standard font in header and footer
 % \setlength{\headheight}{27.2pt}  % warning
-% \cfoot{\pagemark{}}  % center foot - *: ref but no hyperlink
+% \cfoot{\pagemark{}}  % centre foot - *: ref but no hyperlink
 % {}: empty statement
 % \ : protected space
 % \,: small space
@@ -148,7 +148,9 @@
 % custom siunitx units
 \DeclareSIUnit{\dig}{dig}  % digits for uncertainty of electronical measurement devices
 \DeclareSIUnit{\px}{px}  % pixels
-\sisetup{table-align-uncertainty=true,
+\sisetup{detect-weight,
+    mode=text,
+    table-align-uncertainty=true,
         separate-uncertainty = false,
         multi-part-units = single,
         output-decimal-marker={.},}

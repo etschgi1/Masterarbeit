@@ -1,19 +1,16 @@
 %! Editing first round done + spelling!
 \chapter{Fock Matrix prediction}
 \label{chap:fock_matrix_predictions}
-
 SCF methods initially need a density matrix to start off their iterative calculations. Regardless of how the initial guess is actually generated, the computational effort of this step should be negligible compared to that of the SCF procedure.\\
 In a first step, we introduce a method by which the density matrix is constructed from the Fock matrix. The latter is the target for various regression and MLP models which will be introduced in the subsequent sections.
-
 
 \section{Introduction}
 \label{sec:Fock_mathcalrix_prediction_intro}
 As explained in \autoref{subsec:background_hf_computational}, the density matrix $P$ is calculated from the coefficient matrix $C$, which is obtained from the eigenvalue problem of the Fock matrix $F$:
 \begin{equation}
     \label{eq:density_reconstruction_from_fock}
-    F(P)\,C = SC\varepsilon \rightarrow P = 2\,\sum_{i}^{n_{occ}} C_{\mu i}\,C^*_{\nu i}. %2CC^T
+    F(P)\,C = SC\varepsilon \rightarrow P = 2\,\sum_{i}^{\nicefrac{N}{2}} C_{\mu i}\,C^*_{\nu i}. %2CC^T
 \end{equation}
-
 \begin{figure}[H]
     \centering
     \begin{tikzpicture}[scale=1, every node/.style={transform shape}]
@@ -39,17 +36,15 @@ As explained in \autoref{subsec:background_hf_computational}, the density matrix
 \end{figure}
 Effectively, one performs part of the SCF procedure, namely guessing of the Fock matrix (step 2 in \autoref{subsec:background_hf_scf}) using the ML model and then subsequently solving the eigenvalue problem to obtain the density matrix. This step takes $\bigO{K^3}$ time, which is asymptotically faster than a single SCF step scaling as $\bigO{K^4}$. 
 
-The schematic workflow for the generation of a density matrix from the overlap matrix and via the Fock matrix is shown in \autoref{fig:method_data_flow}. Overlap and density matrices appear visually similar, which might lead to the conclusion that predicting the density matrix directly from the overlap matrix is easier than predicting the Fock matrix from the same. However, learning the Fock matrix involves fewer strict physical constraints. A Fock matrix primarily needs to be Hermitian, while a density matrix must be strictly positive semidefinite by construction, as well as normalized to the correct number of electrons. That makes direct density matrix learning more challenging, whereas learning the Fock matrix and then obtaining the density through diagonalization might yield better results. This hypothesis is tested in the following computer experiments.\\
+The schematic workflow for the generation of a density matrix from the overlap matrix and via the Fock matrix is shown in \autoref{fig:method_data_flow}. Overlap and density matrices appear visually similar, which might lead to the conclusion that predicting the density matrix directly from the overlap matrix is easier than predicting the Fock matrix from the same. However, learning the Fock matrix involves fewer strict physical constraints. A Fock matrix primarily needs to be Hermitian, while a density matrix must be strictly positive semidefinite by construction, as well as normalized to the correct number of electrons. That makes direct density matrix learning more challenging, whereas learning the Fock matrix and then obtaining the density through diagonalization might yield better results. This hypothesis is tested in the following computer experiments.
 
 Note further that, reconstructing the density from the Fock matrix amplifies residual errors in the predicted Fock matrix, since the density arises from a self-consistent eigenproblem involving both $F$ and $S$. Ideally, such errors should be small enough to not significantly affect the subsequent SCF iterations. In practice, some iterations (2-5) are always needed, even in calculations with a guessed density constructed from the converged $F$ \& $S$ matrices.\\
 
 \section{\ch{C5H4N2O2}-subset: A first trial}
 \label{sec:qm9_c5h4n2o2}
-
 As a proof of concept we will use 508 constitutional isomers\footnote{From the 509 constitutional isomers of \ch{C5H4N2O2} 508 converged using the STO-3G basis set and the B3LYP functional.} of \ch{C5H4N2O2} from the QM9 dataset. 
-Single point RKS simulations in \textsc{PySCF} \parencite{ref:pyscf} were performed for these molecules using the B3LYP\footnote{B3LYPG was used to be consistent with the Gaussian program package} functional and the STO-3G basis set. The resulting converged density, Fock, and overlap matrices were saved for future training purposes. For our very minimal basis, these matrices are of size $49 \times 49$ as can be seen for a converged density in \autoref{fig:density_dsgdb9nsd_022700}. 
-Due to the symmetry of the matrices we can discard nearly half of the elements and are left with 1225 features to learn. A rule of thumb for training classical statistical models is to have at least 10 samples per feature. \parencite{ref:rule_of_10} The given dataset of 508 samples is therefore far from this rule if we discard multiplicity in atoms in the samples. As a first step we shall limit our efforts to single models predicting the system based on the full overlap matrix. Nevertheless, the row / column order of our atoms in the overlap matrix has to be consistent for all the samples in the dataset (as seen in \autoref{fig:density_dsgdb9nsd_022700}). This is achieved by sorting the atoms in the overlap matrix according to their atomic number. Now we are ready to start off our endeavour with a ridge regression model as a first trial. 
-
+Single point RKS simulations in \textsc{PySCF} \parencite{ref:pyscf} were performed for these molecules using the B3LYP\footnote{B3LYPG was used to be consistent with the Gaussian program package.} functional and the STO-3G basis set. The resulting converged density, Fock, and overlap matrices were saved for future training purposes. For our very minimal basis, these matrices are of size $49 \times 49$ as can be seen for a converged density in \autoref{fig:density_dsgdb9nsd_022700}. 
+Due to the symmetry of the matrices we can discard nearly half of the elements and are left with 1225 features to learn. A rule of thumb for training classical statistical models is to have at least 10 samples per feature. \parencite{ref:rule_of_10} The given dataset of 508 samples is therefore far from this rule if we discard multiplicity in atoms in the samples. As a first step we shall limit our efforts to single models predicting the system based on the full overlap matrix. Nevertheless, the row/column order of our atoms in the overlap matrix has to be consistent for all the samples in the dataset (as seen in \autoref{fig:density_dsgdb9nsd_022700}). This is achieved by sorting the atoms in the overlap matrix according to their atomic number. Now we are ready to start off our endeavour with a ridge regression model as a first trial. 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{../fig/c5h4n2o2/density\_dsgdb9nsd\_022700.pdf}
@@ -57,15 +52,13 @@ Due to the symmetry of the matrices we can discard nearly half of the elements a
     \label{fig:density_dsgdb9nsd_022700}
 \end{figure}
 
-
 \section{Ridge Regressor model} % updated with new sorted dataset
 \label{sec:ridge_regressor_model}
 The ridge Regressor (RR) is set up with a typical $80 / 20$ split into training and testing data. Overlap (input) as well as Fock (output) matrices are flattened, and overlap (input) matrices are additionally rescaled using the \textsc{scikit-learn}'s default Standard Scaler. \parencite{ref:sk-learn} Using a 5-fold cross validation the model, a Multi-Output-Regressor is trained\footnote{also using \textsc{scikit-learn}'s \textsc{RidgeCV} and \textsc{MultiOutputRegressor} classes} with 10 equally $\log_{10}$-spaced $L^2$-regularization parameter $\alpha$ values ranging from $10^{-2}$ to $10^{3}$. Subsequently, the model is re-trained with the arithmetic mean of the best performing $\alpha$ values ($\alpha_{\text{mean}} \approx 34$). This averaging reduces overfitting and yields a slightly lower RMSE on the test set compared to using individual $\alpha$ values per regressor. %! Note the averaging actually leads to a lower RMSE in test set compared to non-averaging the multi-regressor Model!  test RMSE 0.03231 vs. 0.03228 (averaging)
 For the Fock matrix prediction the model yields a RMSE of $0.0057$ on the training set and $0.032$ on the test set which indicates overfitting of the model. We obtain the results in \autoref{tab:ridge_metrics} for the model and various guessing schemes implemented in \textsc{PySCF} (guessing schemes implemented in \textsc{PySCF} are listed in \autoref{sec:pyscf_initial_guessing_methods}).
-
-\begin{table}[h]
+\begin{table}[H]
     \centering
-    \caption[\ch{C7H10O2} subset - iterations to convergence ridge regression]{Comparison of different guessing schemes for 102 (20\%) test samples from the \ch{C5H4N2O2} subset from QM9 \parencite{ref:article1_qm9}. The average F-score is calculated on the test set using the Fock matrix prediction from the ridge regression model and various guessing schemes implemented in \textsc{PySCF}. Averages are shown for the number of iterations until convergence, and the inference time in units of the inference time of the \texttt{minao} guess. The row `Diverged' represents the percentage of samples without convergence within 50 iterations.}
+    \caption[\ch{C7H10O2} subset - iterations to convergence ridge regression]{Comparison of different guessing schemes for 102 (20\%) test samples from the \ch{C5H4N2O2} subset from QM9. \parencite{ref:article1_qm9} The average F-score is calculated on the test set using the Fock matrix prediction from the ridge regression model and various guessing schemes implemented in \textsc{PySCF}. Averages are shown for the number of iterations until convergence, and the inference time in units of the inference time of the \texttt{minao} guess. The row `Diverged' represents the percentage of samples without convergence within 50 iterations.}
     \label{tab:ridge_metrics}
     % \resizebox{\textwidth}{!}{
     \begin{tabular}{l
@@ -88,26 +81,23 @@ For the Fock matrix prediction the model yields a RMSE of $0.0057$ on the traini
 \end{table}
 In terms of iterations, ridge regression performs better than the \texttt{1e} and \texttt{hückel} guessing schemes, but worse than \texttt{minao}, \texttt{atom} and \texttt{vsap}. It should be noted that there seems to be no significant correlation of the F-score with the number of iterations until convergence. While \texttt{vsap} yields by far the highest F-score, it takes on average one iteration more to converge than the \texttt{minao} guessing scheme. This hints at the fact that some guessing strategies might offer a better guess in regions of the density matrix which are more relevant for convergence speed than others. \\
 This prompted a deeper investigation of the guess structures. For each of the 102 test samples, we computed the element-wise difference between the initial guess and the converged density, normalized these differences, and then averaged them across the set. The resulting error patterns for \texttt{minao}, \texttt{vsap} and the ridge regression model are shown in \autoref{fig:density_error_comparison}.
-
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{../fig/c5h4n2o2/density_error_comparison.pdf}
-    \caption[Normalized difference of density guesses]{Normalized mean absolute difference of $\alpha$-electron density guesses to their converged density for \texttt{minao} \& \texttt{vsap} guess and the ridge regression model evaluated on the test set: 102 (20\%) test samples from the \ch{C5H4N2O2} subset from QM9 \parencite{ref:article1_qm9}.}
+    \caption[Normalized difference of density guesses]{Normalized mean absolute difference of $\alpha$-electron density guesses to their converged density for \texttt{minao} \& \texttt{vsap} guess and the ridge regression model evaluated on the test set: 102 (20\%) test samples from the \ch{C5H4N2O2} subset from QM9. \parencite{ref:article1_qm9}}
     \label{fig:density_error_comparison}
 \end{figure}
-All three guessing schemes have spots on the main diagonal of the density matrix, where they are likely to differ from the reference solution. Interestingly, a Mulliken population analysis (see \autoref{subsec:background_hf_derived_quantities}) \parencite{ref:Mulliken_population_analysis} yields a mean value of $31.766$ on the test set prediction for \texttt{minao}, while \texttt{vsap} yields $32$ (only $\alpha$-electrons), as expected. A small error in the initial guess doesn't slow down the convergence since the self-consistent cycle corrects it right away. When comparing \texttt{minao} and \texttt{vsap} with our ridge model, the latter performs worse on the main diagonal, especially for p-orbitals. While \texttt{minao} exhibits more pronounced off-diagonal noise in comparison to \texttt{vsap}, this does not seem to affect convergence speed. At least for this small basis set, errors in the off-diagonal elements do not appear to hinder fast convergence.\\
-% From that we might conclude that a good guess should be close to the reference density especially on the main diagonal, but not necessarily in the off-diagonal elements. We shall continue to investigate this in the next section.
+All three guessing schemes have spots on the main diagonal of the density matrix, where they are likely to differ from the reference solution. Interestingly, a Mulliken population analysis (see \autoref{subsec:background_hf_derived_quantities}) \parencite{ref:Mulliken_population_analysis} yields a mean value of $31.766$ on the test set prediction for \texttt{minao}, while \texttt{vsap} yields $32$ (only $\alpha$-electrons), as expected. A small error in the initial guess does not slow down the convergence since the self-consistent cycle corrects it right away. When comparing \texttt{minao} and \texttt{vsap} with our ridge model, the latter performs worse on the main diagonal, especially for p-orbitals. While \texttt{minao} exhibits more pronounced off-diagonal noise in comparison to \texttt{vsap}, this does not seem to affect convergence speed. At least for this small basis set, errors in the off-diagonal elements do not appear to hinder fast convergence. % From that we might conclude that a good guess should be close to the reference density especially on the main diagonal, but not necessarily in the off-diagonal elements. We shall continue to investigate this in the next section.
 
 \section{Kernel Ridge Regression}
 \label{sec:kernel_ridge_regression}
-Our baseline Ridge Regression (RR) model already introduced $L^2$-regularization.% Maybe bring collinearity back into this - but probably it is to confusing:  handling collinearity in the overlap matrix\footnote{}. 
+Our baseline Ridge Regression (RR) model already introduced $L^2$-regularization. % Maybe bring collinearity back into this - but probably it is to confusing:  handling collinearity in the overlap matrix\footnote{}.
 However, it only models linear relationships between our input and output features. Kernel Ridge Regression (KRR) extends this by using kernel functions to generate a mapping from the input space via a higher dimensional feature space to the output space. This allows nonlinear relationships to be learned. \\
 Using the same train/test split as before, we fit a KRR model with three different kernels: RBF, a polynomial of degree 2 and a polynomial of degree 3. 
-Rather than averaging per-target $\alpha$ values (like in the RidgeCV above), we use a joint BayesSearch with 5-fold cross validation and 30 iterations\footnote{Hyperparameters see \autoref{tab:kernel_ridge_hyperparams}} to obtain the results in \autoref{tab:kernel_ridge_metrics}.
-
-\begin{table}[h]
+Rather than averaging per-target $\alpha$ values (like in the RidgeCV above), we use a joint BayesSearch with 5-fold cross validation and 30 iterations\footnote{Refer to \autoref{tab:kernel_ridge_hyperparams} for hyperparameters.} to obtain the results in \autoref{tab:kernel_ridge_metrics}.
+\begin{table}[H]
     \centering
-    \caption[\ch{C7H10O2} subset - iterations to convergence Kernel Ridge Regression]{Comparison of different Kernel Ridge egression (KRR) guessing schemes for 102 (20\%) test samples from the \ch{C5H4N2O2} subset from QM9 \parencite{ref:article1_qm9}. The F-score is calculated using the Fock matrix prediction from the Kernel Ridge Regression model and the \texttt{minao} guess. The number of iterations until convergence is shown, as well as the percentage samples not converging within 50 iterations and the inference time as a factor of the inference time of the \texttt{minao} guess.}
+    \caption[\ch{C7H10O2} subset - iterations to convergence Kernel Ridge Regression]{Comparison of different Kernel Ridge Regression (KRR) guessing schemes for 102 (20\%) test samples from the \ch{C5H4N2O2} subset from QM9. \parencite{ref:article1_qm9} The F-score is calculated using the Fock matrix prediction from the Kernel Ridge Regression model and the \texttt{minao} guess. The number of iterations until convergence is shown, as well as the percentage samples not converging within 50 iterations and the inference time as a factor of the inference time of the \texttt{minao} guess.}
     \label{tab:kernel_ridge_metrics}
     % \resizebox{\textwidth}{!}{
         \begin{tabular}{l
@@ -127,8 +117,7 @@ Rather than averaging per-target $\alpha$ values (like in the RidgeCV above), we
     % }
 \end{table}
 Hyperparameters found by the BayesSearch are shown bellow in \autoref{tab:kernel_ridge_hyperparams}.
-
-\begin{table}[h]
+\begin{table}[H]
         \centering
     \caption[Hyperparameter Kernel Ridge Regression]{Hyperparameters found using BayesSearch for the Kernel Ridge Regression models with different kernels.\\Search space: $\alpha \sim \operatorname{LogUniform}(10^{-8},10^{4})$, $\gamma \sim \operatorname{LogUniform}(10^{-6},10^{3})$ and $\mathrm{coef0} \sim \operatorname{Uniform}(0,1)$ for polynomial kernels; for the RBF kernel $\mathrm{coef0}$ is ignored}
     \label{tab:kernel_ridge_hyperparams}
@@ -145,22 +134,18 @@ Hyperparameters found by the BayesSearch are shown bellow in \autoref{tab:kernel
         \bottomrule
     \end{tabular}
 \end{table}
-
-While RBF and quadratic kernels yield nearly comparable results (with the exception of inference speed) the cubic kernel performs significantly worse. This may be explained by the fact that the Bayes Search gave a relatively high $\alpha$ value of $0.05$, leading to a strong regularization of the model and making it less flexible. Even with lower regularization, the cubic kernel, as well as the other two kernels, does not yield comparable performance to the \texttt{minao} guessing scheme. Interestingly, our models provide a significantly higher F-score (exception: cubic kernel) compared to \texttt{minao}, but take more iterations to converge. A pattern seen before with the ridge regression model emerges again. This, and the inefficient scaling of KRR with the number of samples suggests further exploration of alternative approaches in the next section.\\ 
-
-
+While RBF and quadratic kernels yield nearly comparable results (with the exception of inference speed) the cubic kernel performs significantly worse. This may be explained by the fact that the Bayes Search gave a relatively high $\alpha$ value of $0.05$, leading to a strong regularization of the model and making it less flexible. Even with lower regularization, the cubic kernel, as well as the other two kernels, does not yield comparable performance to the \texttt{minao} guessing scheme. Interestingly, our models provide a significantly higher F-score (exception: cubic kernel) compared to \texttt{minao}, but take more iterations to converge. A pattern seen before with the ridge regression model emerges again. This, and the inefficient scaling of KRR with the number of samples suggests further exploration of alternative approaches in the next section.
 
 \section{Further trials using MLP}
 \label{sec:further_trials_mlp}
 Previously, we tried to learn a mapping from the overlap to the Fock matrix solely via machine learning means. The study revealed that the quality for these guesses, even on the minimal STO-3G basis, is not on par with the established guessing schemes.\\
 Predicting the main diagonal for a given system is an easier target, given the fact that the model predicts $N$ features from the $N^2$ input features. One way of constructing the off diagonal elements is the generalized Wolfsberg-Helmholtz (GWH) construction \parencite{ref:gwh_wolfsberg1952spectra} (see \autoref{eq:gwh}).
 Utilizing this construction on our dataset, we obtain comparable results to our base ridge regression model in terms of iterations until convergence. \\
-Choosing the larger 6-31G(2df,p) basis set, we see the limitations of our initial approach: Instead of roughly $\nicefrac{49^2}{2}$ features we now have $\nicefrac{254^2}{2}$, a nearly 27-fold increase in the number of features. Furthermore, we move to a species offering more samples for training, namely the 6095 \ch{C7H10O2} structural isomers (this set of isomers will also be used for the GNN benchmarking in \autoref{chap:application}).\\
+Choosing the larger 6-31G(2df,p) basis set, we see the limitations of our initial approach: Instead of roughly $\nicefrac{49^2}{2}$ features we now have $\nicefrac{254^2}{2}$, a nearly 27-fold increase in the number of features. Furthermore, we move to a species offering more samples for training, namely the 6095 \ch{C7H10O2} structural isomers (this set of isomers will also be used for the GNN benchmarking in \autoref{chap:application}).
 
 \textbf{MLP Network}\\
 We implement an MLP model which is trained to map the overlap matrix to the main diagonal of the converged Fock matrix, from which density can be reconstructed via GWH. All samples are split into 80\% training, 10\% validation and 10\% test sets. Batchwise data loading is implemented to facilitate training on memory limited hardware. To gauge the performance of different configurations, a hyperparameter search is performed over the parameters in \autoref{tab:hyperparams_mlp}.
-
-\begin{table}[h]
+\begin{table}[H]
     \caption[Hyperparameter \& Parameters of the MLP model]{Hyperparameter \& Parameters of the MLP model. Model with best parameters marked bold.}
     \label{tab:hyperparams_mlp}
     \centering
@@ -183,18 +168,15 @@ We implement an MLP model which is trained to map the overlap matrix to the main
         \bottomrule
     \end{tabular}
 \end{table}
-
 \textsc{Tensorflow} is used as backend with \textsc{Keras} and the module \textsc{Keras\_tuner} handled hyperparameter optimization. \parencite{ref:tensorflow,ref:keras,ref:kerastuner}
 All models in the hyperparameter optimization are trained using the Adam optimizer with an exponential decay (rate $0.96$ every 100 batches). Using mean squared error as the optimization objective on the validation set, the Hyperband tuner (see \autoref{subsec:background_ml_training}) selected a single-layer MLP with 1024 neurons and a 10\% dropout rate.\\
 Subsequently, this model was re-trained for 50 epochs for initial evaluation on the test set. A prediction performance (RMSE on test set) of $\num{0.1 \pm 0.014}$ compared to $\num{0.357 \pm 0.007}$ \texttt{minao}'s on the main diagonal looks promising. However, after reconstructing the full Fock matrix using \autoref{eq:gwh}, the global prediction quality on the full matrix suffers drastically as seen in \autoref{fig:comparison_mlp_gwh_fock}. 
-
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{../fig/mlp_further_trials/fock_truth_vs_pred.pdf}
     \caption[MLP vs. reference Fock]{Reference (fully converged Fock matrix) vs. predicted Fock matrix using the MLP model and the GWH reconstruction and element-wise difference for \texttt{dsgdb9nsd\_082452}. Plots only show entries for two \ch{O} (upper left) and two \ch{C} (lower right) atoms and their respective off-diagonal elements.}
     \label{fig:comparison_mlp_gwh_fock}
 \end{figure}
-
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{../fig/mlp_further_trials/fock_truth_vs_minao.pdf}
@@ -203,7 +185,6 @@ Subsequently, this model was re-trained for 50 epochs for initial evaluation on 
 \end{figure}
 When comparing \autoref{fig:comparison_mlp_gwh_fock} and \autoref{fig:comparison_minao_fock}, a difference in error patterns is immediately apparent. While the MLP model performs well on the main diagonal, the GWH reconstruction cannot adequately capture the off-diagonal elements, thus resulting in a high RMSE of $0.085$ compared to $0.029$ for the \texttt{minao} guess. Given that many entries are zero—thereby artificially lowering the overall RMSE—the roughly three-fold difference further highlights the substantial underperformance of the GWH reconstruction compared to the \texttt{minao} guess.\\
 To obtain the density from our Fock matrices we solve \autoref{eq:density_reconstruction_from_fock} and gather the lowest $n_{occ}$ eigenvectors to build the density matrix. \autoref{fig:comparison_mlp_gwh_density} shows the density obtained by this procedure and compares it to the density obtained from the \texttt{minao} guess.
-
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{../fig/mlp_further_trials/minao_vs_pred.pdf}
@@ -212,7 +193,7 @@ To obtain the density from our Fock matrices we solve \autoref{eq:density_recons
 \end{figure}
 While \texttt{minao} provides a sparse density matrix, our MLP implementation yields a very dense result with many non-zero-off-diagonal elements. This stems from the fact that GWH does introduce large errors in the Fock matrix which propagate through the eigenvalue problem to the density matrix. \\
 A qualitative benchmark of the iteration count until convergence offers a similar picture as before: Calculations using the \texttt{minao} guess converge in roughly 11 iterations, while the simulations using the MLP model with GWH reconstruction take around 20 iterations. The present model thus performs similar to other basic initialization schemes such as the \texttt{1e} guess. Interestingly, our model and the \texttt{1e} guess do not offer statistically relevant benefits in terms of iterations compared to a randomly initialized density matrix as seen in \autoref{tab:mlp_metrics}.
-\begin{table}[h]
+\begin{table}[H]
     \centering
     \caption[\ch{C7H10O2} subset - iterations to convergence MLP]{Iterations needed to convergence for different guessing schemes on the \ch{C7H10O2} test subset. MLP\_GWH uses the MLP prediction with GWH reconstruction of Fock off-diagonals and subsequent derivation of density matrix. The \texttt{random} column refers to a random density guess in the range $[-0.5, 0.5]$}
     \label{tab:mlp_metrics}

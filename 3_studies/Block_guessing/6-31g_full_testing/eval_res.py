@@ -39,7 +39,7 @@ def load_using_config(config, dataset, basis, model_path):
                             edge_threshold_val=config["edge_threshold_val"],
                             message_net_layers=config["message_net_layers"],
                             message_net_dropout=config["message_net_dropout"],
-                            data_aug_factor=config["data_aug_factor"],
+                            data_aug_factor=1, # not needed for inference only!
                             target="density",
                             verbose_level=1,
                             no_progress_bar=True)
@@ -153,7 +153,7 @@ def eval_model(model, dataset, eval_result_path, skip_iterations= False):
     for i, (pred_density, key) in enumerate(zip(density_preds, dataset.test_keys)):
         cur_mol = dataset.molecule(key)
         mf = create_mf_from_mol(cur_mol, xc="b3lypg")
-        pred_focks.append(build_fock_from_density(mf, pred_density))
+        pred_focks.append(dataset.solver(key).get_fock(dm=pred_density))
         pred_overlaps.append(mf.get_ovlp())
         coreHs.append(mf.get_hcore())
     print("Done...", flush=True)
@@ -195,7 +195,7 @@ def eval_model(model, dataset, eval_result_path, skip_iterations= False):
     print("Done...")
 
 
-def main(tune_log_folder, param_paths_override=None, skip_iterations=False, retrain=True): 
+def main(tune_log_folder, param_paths_override=None, skip_iterations=False, retrain=False): 
     # get all params
     all_params_path = [os.path.join(tune_log_folder, run, "params.json")  for run in os.listdir(tune_log_folder) if os.path.isdir(os.path.join(tune_log_folder, run))]
     if param_paths_override is not None:
@@ -207,6 +207,18 @@ def main(tune_log_folder, param_paths_override=None, skip_iterations=False, retr
         dataset = Qm9("/home/dmilacher/datasets/data1", size = 500, val=0.1, test=0.1)
     else:
         dataset = Qm9("/home/etschgi1/REPOS/Masterarbeit/datasets/QM9", size = 500, val=0.1, test=0.1)
+    
+    all_params_path = [
+"/home/etschgi1/REPOS/Masterarbeit/3_studies/Block_guessing/6-31g_full_testing/tune_logs/MGNN_hyp_small_full_full_mat_loss_server.py/hyperopt_train_036e6_00043_43_batch_size=8,data_aug_factor=4,edge_threshold_val=3.4020,hidden_dim=128,lr=0.0007,message_net_dropou_2025-07-18_12-18-58/params.json",
+"/home/etschgi1/REPOS/Masterarbeit/3_studies/Block_guessing/6-31g_full_testing/tune_logs/MGNN_hyp_small_full_full_mat_loss_server.py/hyperopt_train_036e6_00078_78_batch_size=8,data_aug_factor=1,edge_threshold_val=2.5786,hidden_dim=256,lr=0.0009,message_net_dropou_2025-07-18_15-39-03/params.json",
+"/home/etschgi1/REPOS/Masterarbeit/3_studies/Block_guessing/6-31g_full_testing/tune_logs/MGNN_hyp_small_full_full_mat_loss_server.py/hyperopt_train_036e6_00042_42_batch_size=8,data_aug_factor=1,edge_threshold_val=3.9776,hidden_dim=256,lr=0.0016,message_net_dropou_2025-07-18_12-14-41/params.json",
+"/home/etschgi1/REPOS/Masterarbeit/3_studies/Block_guessing/6-31g_full_testing/tune_logs/MGNN_hyp_small_full_full_mat_loss_server.py/hyperopt_train_036e6_00032_32_batch_size=8,data_aug_factor=1,edge_threshold_val=3.2088,hidden_dim=256,lr=0.0003,message_net_dropou_2025-07-18_11-39-56/params.json",
+"/home/etschgi1/REPOS/Masterarbeit/3_studies/Block_guessing/6-31g_full_testing/tune_logs/MGNN_hyp_small_full_full_mat_loss_server.py/hyperopt_train_036e6_00027_27_batch_size=8,data_aug_factor=2,edge_threshold_val=2.8523,hidden_dim=128,lr=0.0008,message_net_dropou_2025-07-18_11-16-53/params.json",
+"/home/etschgi1/REPOS/Masterarbeit/3_studies/Block_guessing/6-31g_full_testing/tune_logs/MGNN_hyp_small_full_full_mat_loss_server.py/hyperopt_train_036e6_00033_33_batch_size=8,data_aug_factor=1,edge_threshold_val=3.2851,hidden_dim=512,lr=0.0002,message_net_dropou_2025-07-18_11-41-12/params.json",
+"/home/etschgi1/REPOS/Masterarbeit/3_studies/Block_guessing/6-31g_full_testing/tune_logs/MGNN_hyp_small_full_full_mat_loss_server.py/hyperopt_train_036e6_00044_44_batch_size=8,data_aug_factor=4,edge_threshold_val=3.2680,hidden_dim=512,lr=0.0001,message_net_dropou_2025-07-18_12-22-41/params.json",
+"/home/etschgi1/REPOS/Masterarbeit/3_studies/Block_guessing/6-31g_full_testing/tune_logs/MGNN_hyp_small_full_full_mat_loss_server.py/hyperopt_train_036e6_00048_48_batch_size=16,data_aug_factor=3,edge_threshold_val=2.7247,hidden_dim=512,lr=0.0006,message_net_dropo_2025-07-18_12-52-47/params.json",
+"/home/etschgi1/REPOS/Masterarbeit/3_studies/Block_guessing/6-31g_full_testing/tune_logs/MGNN_hyp_small_full_full_mat_loss_server.py/hyperopt_train_036e6_00072_72_batch_size=8,data_aug_factor=1,edge_threshold_val=3.4386,hidden_dim=512,lr=0.0011,message_net_dropou_2025-07-18_15-25-48/params.json",
+"/home/etschgi1/REPOS/Masterarbeit/3_studies/Block_guessing/6-31g_full_testing/tune_logs/MGNN_hyp_small_full_full_mat_loss_server.py/hyperopt_train_036e6_00011_11_batch_size=8,data_aug_factor=2,edge_threshold_val=2.2984,hidden_dim=128,lr=0.0006,message_net_dropou_2025-07-18_10-02-05/params.json"]
 
     basis = BASIS_PATH
     print(f"Dataset: {dataset.name}, for {len(all_params_path)} models", flush=True)
@@ -221,7 +233,7 @@ def main(tune_log_folder, param_paths_override=None, skip_iterations=False, retr
             continue
         print(cur_config)
         model_path =  param_path.replace("params.json", "model.pth")
-        eval_res_path = param_path.replace("params.json", "eval_res.json")
+        eval_res_path = param_path.replace("params.json", "eval_res_reeval.json")
         if os.path.exists(eval_res_path):
             print(f"Evaluation results already exist at {eval_res_path}, skipping...")
             continue
