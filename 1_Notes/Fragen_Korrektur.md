@@ -11,3 +11,10 @@
 -> delta E und DIIS updated! -> Fock construction in eval not right. 
 
 -> molecule size instead of correction molecul size used on page 47. 
+
+-> A.1 Initial guessing methods ist ein direktes Zitat von Pyscf doku - wie soll ich das erweitern oder überhaupt?! idk 
+
+
+# Frage Masterprüfung
+
+-> Raumreservierung wer macht die? 

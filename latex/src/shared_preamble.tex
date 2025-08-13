@@ -148,7 +148,9 @@
 % custom siunitx units
 \DeclareSIUnit{\dig}{dig}  % digits for uncertainty of electronical measurement devices
 \DeclareSIUnit{\px}{px}  % pixels
-\sisetup{table-align-uncertainty=true,
+\sisetup{detect-weight,
+    mode=text,
+    table-align-uncertainty=true,
         separate-uncertainty = false,
         multi-part-units = single,
         output-decimal-marker={.},}

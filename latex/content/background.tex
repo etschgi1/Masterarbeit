@@ -52,8 +52,9 @@ To write down this so-called Slater determinant we have introduced the notation 
   \langle\chi_i|\chi_j\rangle = \delta_{ij},  \quad
   \sigma(\omega) =
     \begin{cases}
-      \alpha(\omega)&\omega=+\tfrac12\\
-      \beta(\omega)&\omega=-\tfrac12
+      \alpha(\omega)&\text{if }\omega=+\tfrac12\\
+      \beta(\omega)&\text{if }\omega=-\tfrac12\\
+      0&\text{otherwise}
     \end{cases}
 \end{equation}
 Here, spin functions use the common notation $\alpha(\omega)$ and $\beta(\omega)$ for spin up and down respectively.
@@ -234,7 +235,7 @@ Motivated by the analytical solution of the Hydrogen atom, one can introduce so-
     \phi_{n, l, m}^{\text{STO}}(r, \Omega, \zeta) = N Y_{l,m}(\Omega) r^{n-1} e^{-\zeta r}
 \end{equation} 
 Computationally, the integrals that occur by using linear combinations of STOs are expensive to calculate. 
-
+\newpage
 \textbf{Gaussian-Type Orbitals (GTOs)}\\
 To circumvent this problem, one approximates STOs using contractions of Gaussian-type orbitals (GTOs), which have a Gaussian $e^{-\zeta r^2}$ in place of the Slater exponential $e^{-\zeta r}$. A GTO is defined as: 
 \begin{equation}
@@ -252,7 +253,7 @@ Generally, the GTOs used in the contraction of Pople type basis sets are not reu
 
 \textbf{Accuracy \& Hartree Limit}\\
 Expanding the spatial orbitals using basis functions introduces an error in the electron density distribution and subsequently the converged Energy $E_{HF}$. Given the limitation of a longer runtime-scaling with $\bigO{K^4}$ in the number of basis functions, the accuracy can be refined using a larger and more complete basis set. The so-called Hartree limit constitutes the lowest energy asymptotically attainable by any HF-calculation, achievable only with an infinitely large basis set. This can be estimated by the shrinking differences of energies obtained in a series of calculations with basis sets of increasing size. \parencite{ref:Jensen2005hf} Yet, it still lacks the correlation energy of electrons, and is therefore only of academic interest. We will discuss methods that build or improve on Hartree Fock next. 
-
+\newpage
 \subsection{Post-Hartree-Fock Methods}
 \label{subsec:background_post_hf}
 HF theory provides a solid foundation to solve the many-electron problem and is usually used as the starting point for following improvements. These are generally bundled under the umbrella term of post-Hartree-Fock methods.
@@ -318,7 +319,7 @@ For the purpose of this thesis, we will focus on supervised models applied to ou
 \end{equation}
 with the input vector denoted as $\mathbf{x} = (x_1, x_2, \dots)$ and the target or output vector $\mathbf{y} = (y_1, y_2, \dots)$, which is not necessarily of the same size as the input vector. The model $f$ represents the learned mapping from $\mathbf{x}$ to $\mathbf{y}$ with a certain 
 error $\Delta$\footnote{This error includes both reducible components—such as discretization error, which may be minimized by refining the DFT grid—and irreducible components, which stem from fundamental uncertainty in quantum mechanical systems.}. 
-
+\newpage
 \subsection{Loss Functions}
 \label{subsec:background_loss_function}
 The loss function, also referred to as the cost function, quantifies the quality of the model's predictions by measuring the discrepancy between the predicted and true values. It may be motivated by system specific attributes, as is the case for F-score or DIIS error, or provide a general-purpose, model-agnostic measure of prediction accuracy, such as the mean squared error (MSE) or its root (RMSE). 
