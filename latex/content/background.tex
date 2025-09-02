@@ -181,7 +181,7 @@ Initially, we calculate the core Hamiltonian $H_{\mu\nu}^\text{core}$ and the ov
     \item Total energy or $\mathbf{P}$ converged? If not, repeat.
 \end{enumerate}
 
-Computationally, the calculation of the two-electron integrals $G_{\mu\nu}$ is the most expensive step which scales with the number of basis functions as $\bigO{K^4}$. Given this fact, a small enough basis set that still captures the essence of the physical system, should be chosen and the number of iterations shall be kept to a minimum by a good initial guess. Keeping our approximations of the spatial orbitals via \autoref{eq:psi_approximation} in mind, we see that better approximations of the electronic wavefunction and its corresponding energy can be achieved with larger basis sets. Given the drawback of increased computational cost (mostly in step 1 of the SCF algorithm), a reduction of iterations is even more crucial for larger systems and larger basis sets.
+Computationally, the calculation of the two-electron integrals $G_{\mu\nu}$ is the most expensive step which scales with the number of basis functions as $\bigO{K^4}$. Given this fact, a small enough basis set that still captures the essence of the physical system, should be chosen and the number of iterations shall be kept to a minimum by a good initial guess. Keeping our approximations of the spatial orbitals via \autoref{eq:psi_approximation} in mind, we see that better approximations of the electronic wavefunction and its corresponding energy can be achieved with larger basis sets. Given the drawback of increased computational cost (mostly in the first step of the SCF algorithm), a reduction of iterations is even more crucial for larger systems and larger basis sets.
 \subsection{Guessing schemes}
 \label{subsec:background_hf_guessing}
 As eluded to earlier, our algorithm needs an initial density matrix $\mathbf{P}$ to start the SCF iteration. Over the years various schemes have been developed and implemented in quantum chemistry packages. It is instructive to introduce two commonly used schemes here. For sake of brevity, details regarding initial guess strategies in PySCF can be found in \autoref{sec:appendix}.\\
@@ -297,7 +297,7 @@ Common choices of DFT functionals grouped by level of accuracy on Perdew's famou
         \textit{Example:} B2PLYP (Becke2 + LYP + MP2 correction) \parencite{ref:grimme2006}
     \end{enumerate}
 \end{samepage}
-DFT accuracy is limited by the choice of functional; standard Kohn-Sham DFT is bound by a $\bigO{K^3}$ scaling (rung 1-3) with the number of basis functions. In practice, commonly used functionals of rung 4 or 5 on Jacob's ladder are bound by a $\bigO{K^4}$-$\bigO{K^6}$ scaling due to the need for exchange-correlation integrals.
+DFT accuracy is limited by the choice of functional; standard Kohn-Sham DFT is bound by a $\bigO{K^3}$ scaling (rung 1-3) with the number of basis functions. In practice, commonly used functionals of rung four or five on Jacob's ladder are bound by a $\bigO{K^4}$-$\bigO{K^6}$ scaling due to the need for exchange-correlation integrals.
 
 \newpage
 \section{Machine Learning}

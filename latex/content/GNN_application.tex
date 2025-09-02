@@ -38,7 +38,7 @@ Note that these initial runs did not use data augmentation, so the training comp
 Training and validation losses both monotonically decrease until around epoch 30. As can be seen in \autoref{fig:initial_train_qm9_isomers}, while the loss on the validation set flattens out rather early, training loss decreases throughout the entire training process. 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{../fig/gnn/MGNN_6-31G_NO_AUG_07_07_manual_ref_train_val_loss.pdf}
+    \includegraphics[width=0.8\textwidth]{../fig/gnn/MGNN_6-31G_NO_AUG_07_07_manual_ref_train_val_loss.pdf}
     \caption[Initial GNN loss on QM9-isomers]{Initial GNN training/ validation loss and corresponding learn rate per epoch on QM9-isomers.}
     \label{fig:initial_train_qm9_isomers}
 \end{figure}
@@ -331,7 +331,7 @@ So far, all experiments and tests focused on structural isomers of a single mole
 For a fair evaluation of the various guessing types, some effort has to be made with respect to the QM9 dataset sampling. Contrary to the previous isomer datasets, we have to ensure a balanced distribution of traits. This is achieved as follows. We stratify the train, validation and test sets by the number of atoms in the molecules. This stratification helps to prevent the models from being unduly biased toward any particular molecular size due to an unbalanced train/validation/test split.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.85\textwidth]{../fig/application/strat_sample.pdf}
+    \includegraphics[width=0.9\textwidth]{../fig/application/strat_sample.pdf}
     \caption[Stratified sample of QM9 dataset]{Stratified sample of QM9 dataset by number of atoms per molecule for each set.}
     \label{fig:sample_QM9}
 \end{figure}
