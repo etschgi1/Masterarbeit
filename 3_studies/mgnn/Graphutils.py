@@ -217,9 +217,8 @@ def rotated_xyz_content(xyz_source, new_coords):
 
 def plot_mat_comp(reference, prediction, reshape=False, title="Fock Matrix Comparison", ref_title="Reference", pred_title="Prediction", vmax=1.5, labels1=None, labels2=None):
     import matplotlib.pyplot as plt
-    from sklearn.metrics import root_mean_squared_error
     diff = reference - prediction
-    rmse = root_mean_squared_error(reference, prediction)
+    rmse = np.sqrt(np.mean((reference - prediction)**2))
     
     reference = unflatten_triang(reference, reshape) if reshape else reference
     prediction = unflatten_triang(prediction, reshape) if reshape else prediction
@@ -258,3 +257,14 @@ def plot_mat_comp(reference, prediction, reshape=False, title="Fock Matrix Compa
     plt.tight_layout()
     plt.show()
 
+def diis_rmse(overlap, density, fock): 
+    """Eq 2.3 - Milacher"""
+    E = fock @ density @ overlap - overlap @ density @ fock
+    diis_rmse_ = np.sqrt(np.linalg.norm(E, ord='fro')**2 / (density.shape[0]**2))
+    return diis_rmse_
+
+def energy_elec(fock, density, coreH): 
+    return np.trace((fock+coreH) @ density)
+
+def energy_err(e_pred, e_conv): 
+    return e_conv - e_pred, e_pred/e_conv -1
