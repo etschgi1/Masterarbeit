@@ -87,8 +87,22 @@ class MolGraphNetwork(torch.nn.Module):
             print(f"Setting verbose level to: {self.verbose_level}")
             set_verbose(self.verbose_level)
 
+    def disturb_densities(self, densities, ev_threshold=1e-8): 
+        """Get rid of """
+        evalout, densities_perturbed = [], []
+        for density in densities: 
+            evals, evecs = np.linalg.eigh(density)
+            evecs = evecs[:, evals > ev_threshold]
+            evals = evals[evals > ev_threshold]
+            rand_index = np.random.randint(len(evals))
+            diff = evals[rand_index] * np.outer(evecs[:, rand_index], evecs[:, rand_index])
+            density_new = density - diff
+            evalout.append(evals[rand_index])
+            densities_perturbed.append(density_new)
+        return evalout, densities_perturbed
 
-    def load_data(self):
+
+    def load_data(self, perturbed_density_input=False):
         """Load data from source directory split into train and test sets and create normalized BlockMatrices."""
         self.molgraphs = [] #reset in case this is called again later!
         dprint(1, f"Loading {self.dataset.size} files from {self.dataset.name}...")
@@ -112,6 +126,12 @@ class MolGraphNetwork(torch.nn.Module):
                     assert len(coords) == int(lines[0]), f"Number of coordinates {len(coords)} does not match number of atoms {int(lines[0])} in file {xyz_file}"
                     coords_in.append(coords)
                     files_in.append(xyz_file)
+            if perturbed_density_input == True and set_name == "train": # density - some random occupied orbitals removed (maybe also add other orbital to it! such that trace == nelec PoC)
+                overlap_in = copy.deepcopy(dens_in) # overlap is source! -> overwrite it with perturbed densities
+                evals, overlap_in = self.disturb_densities(overlap_in) #! we overwrite the overlap matrices with perturbed densities 
+                overlap_in = [self.dataset.guesses(key)["minao"].density for key in set_keys]
+            elif perturbed_density_input == True and set_name != "train":
+                overlap_in = [self.dataset.guesses(key)["minao"].density for key in set_keys] #! MINAO guesses used!  
             if self.target == "fock":
                 return focks_in, overlap_in, coords_in, files_in
             elif self.target == "density":
@@ -411,6 +431,23 @@ class MolGraphNetwork(torch.nn.Module):
                         pred_matrices.append((pred_center_blocks, pred_edge_blocks))
         return pred_matrices
     
+    def getSource(self, graph, inv_transform=True):
+        """Get the source overlap blocks for a single graph, with optional inverse normalization."""
+        if inv_transform:
+            graph = self.apply_inverse_normalization([graph])[0]
+        pred_center_blocks = graph.center_blocks
+        pred_edge_blocks = graph.edge_blocks
+        ao_slices, edge_ao_slices = graph.ao_slices, graph.edge_ao_slices
+        return self.rebuild_matrix(pred_center_blocks, pred_edge_blocks, ao_slices, edge_ao_slices)
+        
+    def getTarget(self, graph, inv_transform=True):
+        if inv_transform:
+            graph = self.apply_inverse_normalization([graph])[0]
+        pred_center_blocks = graph.target_center_blocks
+        pred_edge_blocks = graph.target_edge_blocks
+        ao_slices, edge_ao_slices = graph.ao_slices, graph.edge_ao_slices
+        return self.rebuild_matrix(pred_center_blocks, pred_edge_blocks, ao_slices, edge_ao_slices)
+
     def check_positive_definite(self, S, tol=1e-10):
         eigvals = np.linalg.eigvalsh(S)
         is_pd = np.all(eigvals > tol)
@@ -778,8 +815,12 @@ class MolGraphNetwork(torch.nn.Module):
             inv_g.target_center_blocks = [tcb.clone() for tcb in graph.target_center_blocks]
             inv_g.edge_blocks = [eb.clone() for eb in graph.edge_blocks]
             inv_g.target_edge_blocks = [teb.clone() for teb in graph.target_edge_blocks]
-            inv_g.pred_center_blocks = [cb.clone() for cb in graph.pred_center_blocks]
-            inv_g.pred_edge_blocks = [eb.clone() for eb in graph.pred_edge_blocks]
+            try:
+                inv_g.pred_center_blocks = [cb.clone() for cb in graph.pred_center_blocks]
+                inv_g.pred_edge_blocks = [eb.clone() for eb in graph.pred_edge_blocks]
+            except AttributeError:
+                inv_g.pred_center_blocks = [torch.zeros_like(cb) for cb in graph.center_blocks]  # If predictions are not available, set to zero
+                inv_g.pred_edge_blocks = [torch.zeros_like(eb) for eb in graph.edge_blocks]
             # rest shouldn't change + distance is of no importance for our predictions and benchmarking
             for i, (S_center_block, T_center_block, P_center_block) in enumerate(zip(inv_g.center_blocks, inv_g.target_center_blocks, inv_g.pred_center_blocks)):
                 key = inv_g.atom_sym[i]
