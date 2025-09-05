@@ -162,7 +162,7 @@ For all training runs up until now, the training loss was evaluated only on the 
         }
 \end{table}
 The best performing networks using full matrix loss perform slightly worse with regard to iteration count. Notably, $\text{GNN}_\text{f. 0}$ reaches the lowest RMSE of all benchmarked models so far. Correlation between our surrogate metrics and iterations is rather high for DIIS and RMSE, with a Pearson correlation coefficient of $0.91$ and $0.94$ respectively. 
-Contrary, there is no correlation between the energy errors $|\Delta E_\text{DFT}|$ and $|\delta E_\text{DFT}|$ and the number of iterations. When interpreting these correlations, caution is necessary because they only hold under the specific conditions (GNN trained using full matrix loss) in which they were measured. Bellow, we will see that these relationships exhibit limited generalizability across different guessing schemes.
+Contrary, there is no correlation between the energy errors $|\Delta E_\text{DFT}|$ and $|\delta E_\text{DFT}|$ and the number of iterations. When interpreting these correlations, caution is necessary because they only hold under the specific conditions (GNN trained using full matrix loss) in which they were measured. Below, we will see that these relationships exhibit limited generalizability across different guessing schemes.
 \newpage
 \subsection{Evaluation \& Conclusion}
 \label{subsec:qm9_isomers_eval_and_concl}
@@ -296,7 +296,7 @@ Analogous to the hyperparameter optimization in \autoref{tab:qm9_isomers_further
 \end{table}
 \subsection{Evaluation \& Conclusion}
 \label{sec:qm9_md_isomers_conclusion}
-It has become evident that not every model and hyperparameter configuration translates to good results for the geometry-perturbed MD dataset. The best performing model for the isomers, $\text{GNN}^{\text{MD*}}_\text{initial}$, takes an iterations longer to converge than the $\text{GNN}^{\text{MD*}}_\text{f. 0}$ model (both are re-trained versions!). Therefore, the latter model generalizes better to the MD geometries. This may be attributed, at least to some extend, to the full matrix loss used during training for this model. \autoref{tab:qm9_md_test_overview} compares the best performing GNNs with established guesses. Besides the well established \texttt{minao} scheme, the GNNs outperform all other guessing schemes in terms of iterations. 
+It has become evident that not every model and hyperparameter configuration translates to good results for the geometry-perturbed MD dataset. The best performing model for the isomers, $\text{GNN}^{\text{MD*}}_\text{initial}$, takes an iteration longer to converge than the $\text{GNN}^{\text{MD*}}_\text{f. 0}$ model (both are re-trained versions!). Therefore, the latter model generalizes better to the MD geometries. This may be attributed, at least to some extend, to the full matrix loss used during training for this model. \autoref{tab:qm9_md_test_overview} compares the best performing GNNs with established guesses. Besides the well established \texttt{minao} scheme, the GNNs outperform all other guessing schemes in terms of iterations. 
 \begin{table}[H]
     \centering
     \caption[Models compared to \textsc{PySCF} and $\overline{P}$ schemes - \ch{C7H10O2} MD]{Comparison of different models with \textsc{PySCF} and $\overline{P}$ guessing schemes for QM9 - \ch{C7H10O2} MD.}
@@ -335,7 +335,7 @@ For a fair evaluation of the various guessing types, some effort has to be made 
     \caption[Stratified sample of QM9 dataset]{Stratified sample of QM9 dataset by number of atoms per molecule for each set.}
     \label{fig:sample_QM9}
 \end{figure}
-We sample 500 molecules from the QM9 set in a stratified manner and additionally ensure ample representation for various molecule sizes. Therefore, compared to the actual distribution seen in \autoref{fig:method_qm9_overview}, the representation of molecules with 6 to 13 and 24 to 29 atoms per molecule is increased. This results in the distribution for the train, validation and test sets shown in \autoref{fig:sample_QM9}. Once again the train/validation/test split is 80/10/10 per cent. %BE spelling
+We sample 500 molecules from the QM9 set in a stratified manner and additionally ensure ample representation for various molecule sizes. Therefore, compared to the actual distribution seen in \autoref{fig:method_qm9_overview}, the representation of molecules with 6 to 13 and 24 to 29 atoms per molecule is increased. This results in the distribution for the train, validation and test sets shown in \autoref{fig:sample_QM9}. Once again, the train/validation/test split is 80/10/10 per cent. %BE spelling
 
 Zero-shot predictions like those devised in the previous section are not possible on the full dataset due to missing encoders/decoders for \ch{N}, \ch{F} and their respective interaction blocks. Therefore, we will proceed directly to hyperparameter tuning. 
 \subsection{Hyperparameter tuning}

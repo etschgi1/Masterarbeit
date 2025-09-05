@@ -190,10 +190,10 @@ As eluded to earlier, our algorithm needs an initial density matrix $\mathbf{P}$
 This scheme builds on atomic HF calculations, which are performed for each element appearing in a given molecule. With very little overhead, these calculations yield initial atomic densities, usually calculated in a minimal atomic basis, which are expanded into the molecular basis and used to build an initial block diagonal density matrix. After calculating the Fock matrix from this density, one diagonalizes it to obtain the molecular orbitals. Although the initial density matrix is strictly block-diagonal, diagonalizing the Fock matrix naturally mixes atomic orbitals and generates non-zero off-block elements. \parencite{ref:sad_guess}
 
 \textbf{Generalized Wolfsberg-Helmholtz (GWH)}\\
-A semi-empirical approach is given by the generalized Wolfsberg-Helmholtz method. It approximates the off-diagonal elements of the core Hamiltonian from the diagonal values, weighting them according to orbital overlap.
+A semi-empirical approach is given by the generalized Wolfsberg-Helmholtz method. It approximates the off-diagonal elements of the core Hamiltonian from the diagonal values, weighting them according to orbital overlap,
 \begin{equation}
     \label{eq:gwh}
-    F_{ij} \approx H^{\text{core}}_{ij} = \frac{K}{2}(H^{\text{core}}_{ii} + H^{\text{core}}_{jj})S_{ij}
+    F_{ij} \approx H^{\text{core}}_{ij} = \frac{K}{2}(H^{\text{core}}_{ii} + H^{\text{core}}_{jj})S_{ij},
 \end{equation}
 where $K$ is a constant usually set to $1.75$. From \autoref{eq:fock_full_eq_coul_ex} it is immediately evident that this approximation completely omits Coulomb and exchange terms, reducing the Fock matrix to core-Hamiltonian integrals evaluated with the same orbitals on both sides. \parencite{ref:gwh_wolfsberg1952spectra, ref:Lehtola2019}
 
@@ -277,19 +277,19 @@ Common choices of DFT functionals grouped by level of accuracy on Perdew's famou
 \begin{samepage}
     \begin{enumerate}
         \item \textbf{LDA (Local Density Approximation)}\\
-        Assumes that the exchange-correlation energy depends only on the local electron density, as in a uniform electron gas\\
+        Assumes that the exchange-correlation energy depends only on the local electron density, as in a uniform electron gas.\\
         \textit{Example:} SVWN (Slater exchange + VWN correlation) \parencite{ref:slater1951, ref:vwn1980}
         
         \item \textbf{GGA (Generalized Gradient Approximation)}\\
-        Incorporates both the local density and its gradient\\
+        Incorporates both the local density and its gradient.\\
         \textit{Example:} PBE (Perdew-Burke-Ernzerhof) \parencite{ref:perdew1996}
         
         \item \textbf{Meta-GGA}\\
-        Adds kinetic energy density or Laplacian of the density\\
+        Adds kinetic energy density or Laplacian of the density.\\
         \textit{Example:} SCAN (Strongly Constrained and Appropriately Normed) \parencite{ref:scan2015}
         
         \item \textbf{Hybrid-GGA}\\
-        Mixes exact (Hartree-Fock) exchange with GGA exchange\\
+        Mixes exact (Hartree-Fock) exchange with GGA exchange.\\
         \textit{Example:} B3LYP (Becke3 + LYP correlation) \parencite{ref:lee_yang_parr_1988, ref:becke_1993}
         
         \item \textbf{Double Hybrids}\\
@@ -337,7 +337,7 @@ using the notation introduced in \autoref{sec:background_scf}. The normalization
 
 
 \textbf{Mean Squared Error (MSE) / Root Mean Squared Error (RMSE)}\\
-For an abstract prediction matrix $\mathbf{Y^\text{(pred)}}$ the MSE is simply defined by the arithmetic mean of the squared differences with the actual values $\mathbf{Y^\text{(truth)}}$ as given in \autoref{eq:mse}. $F$ denotes the Frobenius norm in this case, and our matrices will usually be square matrices\footnote{Only the GNN will use non-square sub-matrix blocks on the off-diagonals to evaluate its loss.} $\rightarrow n \equiv m$.  
+For an abstract prediction matrix $\mathbf{Y^\text{(pred)}}$, the MSE is simply defined by the arithmetic mean of the squared differences with the actual values $\mathbf{Y^\text{(truth)}}$ as given in \autoref{eq:mse}. $F$ denotes the Frobenius norm in this case, and our matrices will usually be square matrices\footnote{Only the GNN will use non-square sub-matrix blocks on the off-diagonals to evaluate its loss.} $\rightarrow n \equiv m$.  
 \begin{subequations}
 \begin{align}
 \text{MSE} &= \frac{1}{nm} \sum_{i=1}^{n} \sum_{j=1}^{m} \left( Y^\text{(pred)}_{ij} - Y^\text{(truth)}_{ij} \right)^2 = \frac{1}{nm} \|\mathbf{Y^\text{(pred)}} - \mathbf{Y^\text{(truth)}}\|_F^2 \label{eq:mse}\\
@@ -396,7 +396,7 @@ KRR thus extends ridge regression in a non-parametric way, with the regularizati
 
 \subsection{Neural Network (NN) concepts}
 \label{subsec:nn_concepts}
-Neural networks are based on a simplified model of biological neuron interactions. Rosenblatt's perceptron algorithm, depicted in \autoref{fig:perceptron}, lays the foundation for nearly all neural network architectures. \parencite{ref:rosenblatt1958perceptron} It introduced the nonlinear mapping from the features $\mathbf{x}$ to the targets $\mathbf{y}$ using a step function $\Theta$ as shown in \autoref{eq:perceptron}\footnote{Bias is again prepended to the weight vector}.
+Neural networks are based on a simplified model of biological neuron interactions. Rosenblatt's perceptron algorithm, depicted in \autoref{fig:perceptron}, lays the foundation for nearly all neural network architectures. \parencite{ref:rosenblatt1958perceptron} It introduced the nonlinear mapping from the features $\mathbf{x}$ to the targets $\mathbf{y}$ using a step function $\Theta$ as shown\footnote{Bias is again prepended to the weight vector} in \autoref{eq:perceptron}.
 \begin{equation}
     \label{eq:perceptron}
     y = \Theta(\mathbf{w} \cdot \mathbf{x}) \quad \text{with} \quad

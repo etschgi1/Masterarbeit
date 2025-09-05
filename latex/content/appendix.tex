@@ -18,7 +18,7 @@ The \textsc{PySCF} package offers a variety of initial guessing methods for the 
 \end{itemize}
 \section{Comments on second-order Newton solvers \& iterations}
 \label{sec:notes_on_so_newton}
-A second-order Newton solver essentially uses the Newton algorithm to converge an electron density by constructing density gradients $g$ and approximating the Hessian $H$ of the energy. The implementation in PySCF uses an outer macro loop which takes the newton steps and an inner loop which approximates the solution to the linearized Newton equation:
+A second-order Newton solver essentially uses the Newton algorithm to converge an electron density by constructing density gradients $g$ and approximating the Hessian $H$ of the energy. The implementation in PySCF uses an outer macro loop which takes the Newton steps and an inner loop which approximates the solution to the linearized Newton equation:
 \[H \Delta x = -g\]
 to obtain the update $\Delta x$ which is to be applied to the orbitals.
 
@@ -36,7 +36,7 @@ Yet, this direct comparison is not entirely fair. Contrary to DIIS, which builds
     \caption[Fock matrix build count until convergence QM9-isomers]{Fock matrix build count until convergence for QM9-isomers for PySCF, $\overline{P}$ and GNN$_\text{initial}$ guesses. All entries with $\geq 40$ Fock builds are grouped at $40$.}
     \label{fig:so_fock_build_iterations}
 \end{figure}
-Given this fact, one needs to be cautious in making prediction regarding wall clock time of simulations from 'iteration` counts, especially when comparing of different algorithms.
+Given this fact, one needs to be cautious in making predictions regarding wall clock time of simulations from 'iteration` counts, especially when comparing different algorithms.
 
 \section{Source Code \& Packages used}
 \label{sec:source_code_packages}
