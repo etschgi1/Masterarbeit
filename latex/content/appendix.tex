@@ -30,7 +30,7 @@ Faster convergence in terms of iterations was claimed by Schütt et al. for thei
     \caption[Macro iterations until convergence distribution for QM9-isomers]{Macro iterations until convergence distribution for QM9-isomers for PySCF, $\overline{P}$ and GNN$_\text{initial}$ guesses. All entries with $\geq 20$ macro iterations are grouped at $20$.}
     \label{fig:so_macro_iterations}
 \end{figure}
-Yet, this direct comparison is not entirely fair. Contrary to DIIS, which builds the Fock matrix once per iteration, the Newton-solver repeatedly rebuilds the Fock matrix in its inner loop. Summing all Fock matrix builds, one obtains different behaviour depicted in \autoref{fig:so_fock_build_iterations}.  
+Yet, this direct comparison is not entirely fair. Contrary to DIIS, which builds the Fock matrix once per iteration, the Newton-solver repeatedly rebuilds the Fock matrix in its inner loop. Summing all Fock matrix builds, one obtains different behaviour depicted in \autoref{fig:so_fock_build_iterations}.\newpage
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{../fig/gnn/SO_0D_GNN_model_fock_build_count_bar.pdf}
