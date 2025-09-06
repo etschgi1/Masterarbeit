@@ -16,6 +16,7 @@ The \textsc{PySCF} package offers a variety of initial guessing methods for the 
 
     \item \texttt{vsap}: Superposition of atomic potentials as described in \parencite{ref:Lehtola2019}. A sum of pre-tabulated, fully numerical atomic potentials determined with the approach of \parencite{ref:lethola_fully_numerical_atomic_potentials} is used to build a guess potential on a DFT quadrature grid; this potential is then used to obtain the orbitals. Note: this option is only available for DFT calculations in PySCF.
 \end{itemize}
+\newpage
 \section{Comments on second-order Newton solvers \& iterations}
 \label{sec:notes_on_so_newton}
 A second-order Newton solver essentially uses the Newton algorithm to converge an electron density by constructing density gradients $g$ and approximating the Hessian $H$ of the energy. The implementation in PySCF uses an outer macro loop which takes the Newton steps and an inner loop which approximates the solution to the linearized Newton equation:
